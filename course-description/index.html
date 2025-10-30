@@ -17,7 +17,7 @@
       
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../img/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
     
     
@@ -245,11 +245,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../checklist/" class="md-nav__link">
+      <a href="../about.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Checklist
+    About
   </span>
   
 
@@ -264,16 +264,39 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../code-highlight-test/" class="md-nav__link">
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
   
+  
+    <a href="../tutorials/tutorial1.md" class="md-nav__link">
+      
+  
   <span class="md-ellipsis">
-    Code Highlight Test
+    Tutorials
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -345,6 +368,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../contact/" class="md-nav__link">
         
   
@@ -378,6 +421,119 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-course" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why This Course
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outcomes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outcomes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remember" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remember
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understand" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understand
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Apply
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analyze
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grading
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -400,6 +556,107 @@
 
 
 <h1 id="course-description">Course Description</h1>
+<p><strong>Title:</strong> Benchmarking FFT
+<strong>Course Length:</strong> 10-weeks or independent study
+<strong>Audience:</strong> College juniors or seniors with a curiosity in signal processing</p>
+<h2 id="summary">Summary</h2>
+<p>This course covers the process of doing objective benchmarking of the FFT algorithm on both microcontrollers as well as standard CPUs.  We provide a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing.  We then describe a framework for benchmarking FFT algorithm performance on different data sets.
+We conclude with methods for presenting the results of FFT benchmarks.</p>
+<h2 id="why-this-course">Why This Course</h2>
+<p>In the past, only expensive digital signal processing (DSP) chips did real-time FFTs.  However, in 2001 companies like ARM started to add DSP instructions to their low cost CPUs and microcontrollers.  For example in 2010 the ARM Cortex M4 added instructions to specifically perform DSP functions.  In August 2024 the Raspberry Pi Foundation release the Raspberry Pi Pico 2 built around the ARM Cortex-M33 which had many DSP and floating point functions.  For $6 this made real-time FFT for signal processing affordable for many products.</p>
+<p>However, many programmers were not aware of these DSP functions and the impact faster signal processing has on applications.  Many FFT libraries still used older instruction sets.  The root cause was that many developers were unaware of the signal processing power they had but were not using.</p>
+<p>This course attempts to guide students from the basics of what the FFT algorithm does and how DSP-specific hardware can accelerate signal processing products.  </p>
+<p>We study the process of not only comparing different FFT implementations, but we look at the tradeoffs of different FFT parameters such as FFT size, integer vs. floating point and other choices that impact FFT processing speed.</p>
+<h2 id="content">Content</h2>
+<p>Fourier Transforms
+Math Foundations
+Programming Background
+FFT History
+FFT Timeline
+FFT Basics
+FFT Butterfly
+FFT and IFFT
+FFT Performance
+FFT Benchmarking
+FFT Parameters
+FFT Size
+Integer vs Floating Point
+Preprocessing Signals
+Post Processing of Signals
+Programming Languages
+C Language
+Python Libraries
+Machine Language
+Reading Assembly Languages
+DSP Functions
+FFT Libraries
+GitHub Repositories
+FFT Licenses
+Benchmarking Frameworks
+Performance Comparisons
+Presenting Results
+Performance Charts</p>
+<h2 id="outcomes">Outcomes</h2>
+<p>The Bloom Taxonomy gives us a way to categorize
+outcomes starting with memorization of terms through the
+ability to create new artifacts.</p>
+<p>After this course a student will</p>
+<h3 id="remember">Remember</h3>
+<ul>
+<li>Recall the key properties of the Fast Fourier Transform (FFT) algorithm</li>
+<li>List the DSP instructions available in ARM Cortex-M33 and M4 processors</li>
+<li>Identify common FFT libraries and their licensing requirements</li>
+<li>Define terminology such as FFT size, butterfly operations, and preprocessing</li>
+<li>Name the tradeoffs between integer and floating-point FFT implementations</li>
+</ul>
+<h3 id="understand">Understand</h3>
+<ul>
+<li>Explain how the FFT algorithm transforms time-domain signals to frequency domain</li>
+<li>Describe the relationship between FFT size and computational complexity</li>
+<li>Summarize the historical development of DSP hardware acceleration</li>
+<li>Interpret assembly language output to understand low-level FFT operations</li>
+<li>Clarify why certain hardware features improve FFT performance</li>
+</ul>
+<h3 id="apply">Apply</h3>
+<ul>
+<li>Implement FFT benchmarks using provided frameworks on microcontrollers</li>
+<li>Use appropriate FFT libraries in C and Python for signal processing tasks</li>
+<li>Configure FFT parameters (size, precision, windowing) for specific applications</li>
+<li>Execute performance measurements across different hardware platforms</li>
+<li>Apply preprocessing and post-processing techniques to improve FFT results</li>
+</ul>
+<h3 id="analyze">Analyze</h3>
+<ul>
+<li>Compare the performance characteristics of different FFT implementations</li>
+<li>Examine assembly code to identify optimization opportunities</li>
+<li>Differentiate between factors affecting FFT speed (hardware, software, parameters)</li>
+<li>Investigate the relationship between FFT parameters and execution time</li>
+<li>Break down complex benchmarking results to identify performance bottlenecks</li>
+</ul>
+<h3 id="evaluate">Evaluate</h3>
+<ul>
+<li>Assess which FFT library is most appropriate for a given application</li>
+<li>Critique benchmarking methodologies for validity and completeness</li>
+<li>Judge the quality and accuracy of FFT performance claims</li>
+<li>Determine optimal FFT parameters based on application constraints</li>
+<li>Justify hardware and software choices for real-time signal processing systems</li>
+</ul>
+<h3 id="create">Create</h3>
+<ul>
+<li>Design a comprehensive benchmarking framework for FFT evaluation</li>
+<li>Develop custom visualizations to present FFT performance comparisons</li>
+<li>Produce a capstone project documenting FFT performance across platforms</li>
+<li>Generate recommendations for FFT implementation strategies</li>
+<li>Construct a complete analysis report with methodology, results, and conclusions</li>
+</ul>
+<h2 id="grading">Grading</h2>
+<p>The grading will be as follows:</p>
+<ol>
+<li>25% homework</li>
+<li>25% midterm</li>
+<li>25% capstone project</li>
+<li>25% final exam</li>
+</ol>
 
 
 

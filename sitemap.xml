@@ -5,19 +5,15 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/about/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/checklist/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/concept-taxonomy/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/contact/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/course-concepts-v1/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
@@ -33,19 +29,7 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph-README/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/license/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/quality-assessment/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/quality-metrics/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
@@ -53,11 +37,35 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/taxonomy-distribution/</loc>
+         <loc>https://dmccreary.github.io/fft-benchmarking/cornell-labs/pico-example/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/cornell-labs/pico-example/</loc>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/LEARNING-GRAPH-SUMMARY/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/concept-taxonomy/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/course-concepts-v1/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/quality-assessment/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/quality-metrics/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/taxonomy-distribution/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
 </urlset>

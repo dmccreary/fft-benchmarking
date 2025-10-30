@@ -9,10 +9,6 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/checklist/</loc>
-         <lastmod>2025-10-30</lastmod>
-    </url>
-    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/contact/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
@@ -66,6 +62,18 @@
     </url>
     <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/taxonomy-distribution/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/sims/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/sims/graph-viewer/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/tutorials/tutorial-1/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
 </urlset>

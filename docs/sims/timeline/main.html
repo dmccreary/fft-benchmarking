@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFT History Timeline</title>
+
+    <!-- Load vis-timeline from CDN -->
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #666;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+        #visualization {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .controls button {
+            margin: 5px;
+            padding: 8px 16px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .controls button:hover {
+            background-color: #1976D2;
+        }
+
+        .legend {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .legend h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 5px 15px 5px 0;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border: 1px solid #999;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>FFT History Timeline: 50 Most Important Advances</h1>
+    <div class="description">
+        This timeline shows the evolution of Fast Fourier Transform (FFT) algorithms,
+        from Gauss's discovery in 1805 through the development of dedicated DSP chips,
+        to modern microcontrollers with integrated DSP capabilities.
+    </div>
+
+    <div class="controls">
+        <button onclick="fitTimeline()">Fit All</button>
+        <button onclick="zoomIn()">Zoom In</button>
+        <button onclick="zoomOut()">Zoom Out</button>
+        <button onclick="moveToEarly()">Early History (1965-1980)</button>
+        <button onclick="moveToDSP()">DSP Era (1980-2000)</button>
+        <button onclick="moveToModern()">Modern Era (2000-Present)</button>
+    </div>
+
+    <div id="visualization"></div>
+
+    <div class="legend">
+        <h3>Categories</h3>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #FFE0B2;"></span>
+            <span>FFT Algorithms</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #B3E5FC;"></span>
+            <span>Software Libraries</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #C8E6C9;"></span>
+            <span>DSP Chips</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #F8BBD0;"></span>
+            <span>Microcontrollers</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-color" style="background-color: #D1C4E9;"></span>
+            <span>Hardware Features</span>
+        </div>
+    </div>
+
+    <a href="../.." class="back-link">← Return to Documentation</a>
+
+    <script type="text/javascript">
+        let timeline;
+
+        // Load the timeline data and create visualization
+        fetch('fft-timeline.json')
+            .then(response => response.json())
+            .then(data => {
+                // Create a DataSet with the timeline items
+                const items = new vis.DataSet(data.items);
+                const groups = new vis.DataSet(data.groups);
+
+                // Configuration for the Timeline
+                const options = {
+                    width: '100%',
+                    height: '600px',
+                    margin: {
+                        item: 20,
+                        axis: 40
+                    },
+                    orientation: 'top',
+                    groupOrder: 'content',
+                    zoomMin: 1000 * 60 * 60 * 24 * 365 * 2,  // 2 years
+                    zoomMax: 1000 * 60 * 60 * 24 * 365 * 250, // 250 years
+                    showCurrentTime: false,
+                    stack: true,
+                    tooltip: {
+                        followMouse: true,
+                        overflowMethod: 'cap'
+                    }
+                };
+
+                // Create the Timeline
+                const container = document.getElementById('visualization');
+                timeline = new vis.Timeline(container, items, groups, options);
+
+                // Fit the timeline to show all data initially
+                timeline.fit();
+            })
+            .catch(error => {
+                console.error('Error loading timeline data:', error);
+                document.getElementById('visualization').innerHTML =
+                    '<p style="padding: 20px; color: red;">Error loading timeline data. Please check the console for details.</p>';
+            });
+
+        // Control functions
+        function fitTimeline() {
+            if (timeline) timeline.fit();
+        }
+
+        function zoomIn() {
+            if (timeline) timeline.zoomIn(0.5);
+        }
+
+        function zoomOut() {
+            if (timeline) timeline.zoomOut(0.5);
+        }
+
+        function moveToEarly() {
+            if (timeline) {
+                timeline.setWindow('1965-01-01', '1980-12-31');
+            }
+        }
+
+        function moveToDSP() {
+            if (timeline) {
+                timeline.setWindow('1980-01-01', '2000-12-31');
+            }
+        }
+
+        function moveToModern() {
+            if (timeline) {
+                timeline.setWindow('2000-01-01', '2025-12-31');
+            }
+        }
+    </script>
+</body>
+</html>

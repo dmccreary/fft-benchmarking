@@ -33,6 +33,18 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/01-introduction/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/02-math-foundations/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/03-fft-altorithm/</loc>
+         <lastmod>2025-10-30</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/cornell-labs/pico-example/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
@@ -73,7 +85,7 @@
          <lastmod>2025-10-30</lastmod>
     </url>
     <url>
-         <loc>https://dmccreary.github.io/fft-benchmarking/tutorials/tutorial-1/</loc>
+         <loc>https://dmccreary.github.io/fft-benchmarking/sims/timeline/</loc>
          <lastmod>2025-10-30</lastmod>
     </url>
 </urlset>

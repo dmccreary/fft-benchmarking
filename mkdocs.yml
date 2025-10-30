@@ -25,7 +25,7 @@ nav:
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
   - MicroSims:
     - MicroSims Overview: sims/index.md
-    - Learning Graph: sims/learning-graph/index
+    - Learning Graph: sims/learning-graph/index.md
     - FFT History Timeline: sims/timeline/index.md
   - Glossary: glossary.md
   - How We Built This Site: how-we-built-this-site.md

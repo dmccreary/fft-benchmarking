@@ -1,0 +1,972 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="DESCRIPTION All content licensed Creative Commons ShareAlike Attribution Noncommercial">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/learning-graph-README/">
+      
+      
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>FFT Benchmarking Learning Graph - Mkdocs Template Site</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fft-benchmarking-learning-graph" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Mkdocs Template Site" class="md-header__button md-logo" aria-label="Mkdocs Template Site" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Mkdocs Template Site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FFT Benchmarking Learning Graph
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Mkdocs Template Site" class="md-nav__button md-logo" aria-label="Mkdocs Template Site" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Mkdocs Template Site
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../tutorials/tutorial1.md" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Tutorials
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cornell-labs/pico-example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generated-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generated Files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generated Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Outputs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analysis-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis &amp; Documentation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#taxonomy-categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Taxonomy Categories
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-metrics-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality Metrics Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-course-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Course Development
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Visualization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      For Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Utilities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pedagogical-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pedagogical Recommendations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pedagogical Recommendations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-week-course-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      10-Week Course Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Paths
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualization-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visualization Ideas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license" class="md-nav__link">
+    <span class="md-ellipsis">
+      License
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/learning-graph-README.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="fft-benchmarking-learning-graph">FFT Benchmarking Learning Graph</h1>
+<h2 id="overview">Overview</h2>
+<p>This directory contains a complete <strong>learning graph</strong> for the FFT Benchmarking course, generated using the Learning Graph Generator methodology. The graph represents 200 interconnected concepts organized into a pedagogically sound structure.</p>
+<h2 id="generated-files">Generated Files</h2>
+<h3 id="core-outputs">Core Outputs</h3>
+<ol>
+<li><strong>course-concepts-v1.md</strong> - List of 200 concept labels</li>
+<li>Organized by taxonomy category</li>
+<li>Title Case format (max 32 characters)</li>
+<li>
+<p>Covers mathematical foundations through practical implementation</p>
+</li>
+<li>
+<p><strong>concept-dependencies.csv</strong> - Dependency graph in CSV format</p>
+</li>
+<li>Columns: ConceptID, ConceptLabel, Dependencies, TaxonomyID</li>
+<li>Dependencies use pipe-delimited format (e.g., "1|4|5")</li>
+<li>Valid DAG structure (no cycles)</li>
+<li>
+<p>Ready for import into spreadsheet tools</p>
+</li>
+<li>
+<p><strong>learning-graph.json</strong> - JSON format for visualization tools</p>
+</li>
+<li>Nodes: 200 concepts with ID, label, and taxonomy</li>
+<li>Links: 229 directed edges representing prerequisites</li>
+<li>Metadata: Course title, description, taxonomy definitions</li>
+<li>Compatible with D3.js, vis.js, and other graph visualization libraries</li>
+</ol>
+<h3 id="analysis-documentation">Analysis &amp; Documentation</h3>
+<ol>
+<li><strong>quality-assessment.md</strong> - Course content depth analysis</li>
+<li>Validates course has sufficient depth for 200 concepts</li>
+<li>Compares against similar courses</li>
+<li>
+<p>Identifies content gaps and strengths</p>
+</li>
+<li>
+<p><strong>quality-metrics.md</strong> - Graph structure validation</p>
+</li>
+<li>✓ DAG validation (no cycles detected)</li>
+<li>Foundational concepts: 10 entry points</li>
+<li>Indegree distribution analysis</li>
+<li>Longest dependency chains: 7 levels</li>
+<li>
+<p>Connectivity: 94% in main component</p>
+</li>
+<li>
+<p><strong>concept-taxonomy.md</strong> - Category organization</p>
+</li>
+<li>9 balanced categories (3.5% - 15% each)</li>
+<li>All categories under 30% threshold ✓</li>
+<li>Pedagogical flow recommendations</li>
+<li>
+<p>Clear 3-5 letter abbreviations</p>
+</li>
+<li>
+<p><strong>taxonomy-distribution.md</strong> - Statistical breakdown</p>
+</li>
+<li>Detailed concept listing by category</li>
+<li>Visual distribution table</li>
+<li>Balance verification</li>
+</ol>
+<h2 id="taxonomy-categories">Taxonomy Categories</h2>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Concepts</th>
+<th>%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MATH</td>
+<td>Mathematical Foundations</td>
+<td>20</td>
+<td>10.0%</td>
+</tr>
+<tr>
+<td>FFT</td>
+<td>FFT Algorithm &amp; Implementation</td>
+<td>25</td>
+<td>12.5%</td>
+</tr>
+<tr>
+<td>SIG</td>
+<td>Signal Processing</td>
+<td>25</td>
+<td>12.5%</td>
+</tr>
+<tr>
+<td>ARM</td>
+<td>ARM Architecture &amp; DSP Hardware</td>
+<td>30</td>
+<td>15.0%</td>
+</tr>
+<tr>
+<td>MEM</td>
+<td>Memory Management &amp; Optimization</td>
+<td>25</td>
+<td>12.5%</td>
+</tr>
+<tr>
+<td>FXP</td>
+<td>Fixed-Point Arithmetic</td>
+<td>18</td>
+<td>9.0%</td>
+</tr>
+<tr>
+<td>BENCH</td>
+<td>Benchmarking &amp; Testing</td>
+<td>30</td>
+<td>15.0%</td>
+</tr>
+<tr>
+<td>LIB</td>
+<td>FFT Libraries &amp; Integration</td>
+<td>20</td>
+<td>10.0%</td>
+</tr>
+<tr>
+<td>OPT</td>
+<td>Optimization Techniques</td>
+<td>7</td>
+<td>3.5%</td>
+</tr>
+</tbody>
+</table>
+<h2 id="quality-metrics-summary">Quality Metrics Summary</h2>
+<p>✓ <strong>DAG Structure:</strong> Valid - no cycles
+✓ <strong>Balanced Distribution:</strong> All categories &lt; 30%
+✓ <strong>Foundational Base:</strong> 10 entry-point concepts
+✓ <strong>Manageable Complexity:</strong> Avg 1.15 dependencies per concept
+✓ <strong>Clear Progression:</strong> Max chain length of 7 levels
+✓ <strong>High Connectivity:</strong> 94% in main component</p>
+<h2 id="usage">Usage</h2>
+<h3 id="for-course-development">For Course Development</h3>
+<ol>
+<li>Use <strong>concept-dependencies.csv</strong> to plan weekly modules</li>
+<li>Follow dependency chains to order lessons</li>
+<li>Start with foundational concepts (zero dependencies)</li>
+<li>Build assessments based on taxonomy categories</li>
+</ol>
+<h3 id="for-visualization">For Visualization</h3>
+<ol>
+<li>Load <strong>learning-graph.json</strong> into visualization tools:</li>
+<li>D3.js force-directed graph</li>
+<li>vis.js network diagram</li>
+<li>Graphviz DOT format</li>
+<li>Neo4j graph database</li>
+</ol>
+<h3 id="for-analysis">For Analysis</h3>
+<ol>
+<li>Run <strong>analyze-graph.py</strong> to validate structure</li>
+<li>Run <strong>taxonomy-distribution.py</strong> for category stats</li>
+<li>Run <strong>convert-to-json.py</strong> to regenerate JSON</li>
+</ol>
+<h2 id="python-utilities">Python Utilities</h2>
+<p>Three Python scripts are provided in the repository root:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Validate graph structure</span>
+python3<span class="w"> </span>analyze-graph.py
+
+<span class="c1"># Generate taxonomy distribution report</span>
+python3<span class="w"> </span>taxonomy-distribution.py<span class="w"> </span>&gt;<span class="w"> </span>docs/taxonomy-distribution.md
+
+<span class="c1"># Convert CSV to JSON</span>
+python3<span class="w"> </span>convert-to-json.py
+</code></pre></div></td></tr></table></div>
+<h2 id="pedagogical-recommendations">Pedagogical Recommendations</h2>
+<h3 id="10-week-course-structure">10-Week Course Structure</h3>
+<p><strong>Weeks 1-2:</strong> MATH foundations (20 concepts)
+<strong>Weeks 3-4:</strong> FFT + SIG (50 concepts)
+<strong>Weeks 5-6:</strong> ARM + MEM (55 concepts)
+<strong>Week 7:</strong> FXP + BENCH part 1 (33 concepts)
+<strong>Week 8:</strong> BENCH part 2 + LIB (27 concepts)
+<strong>Weeks 9-10:</strong> OPT + Capstone project (15 concepts)</p>
+<h3 id="learning-paths">Learning Paths</h3>
+<p><strong>Mathematics-First Path:</strong> MATH → FFT → SIG → BENCH
+<strong>Hardware-First Path:</strong> ARM → MEM → FXP → BENCH
+<strong>Practical-First Path:</strong> LIB → SIG → BENCH → FFT</p>
+<h2 id="visualization-ideas">Visualization Ideas</h2>
+<ol>
+<li><strong>Interactive Network Graph</strong></li>
+<li>Color-code by taxonomy</li>
+<li>Show dependencies on hover</li>
+<li>Filter by category</li>
+<li>
+<p>Highlight learning paths</p>
+</li>
+<li>
+<p><strong>Dependency Matrix</strong></p>
+</li>
+<li>Heatmap showing concept relationships</li>
+<li>Identify prerequisite clusters</li>
+<li>
+<p>Spot isolated concepts</p>
+</li>
+<li>
+<p><strong>Learning Path Timeline</strong></p>
+</li>
+<li>Linear visualization by dependency level</li>
+<li>Show parallel learning opportunities</li>
+<li>
+<p>Estimate time per concept</p>
+</li>
+<li>
+<p><strong>Category Distribution Sunburst</strong></p>
+</li>
+<li>Hierarchical view</li>
+<li>Show proportions visually</li>
+<li>Drill down into categories</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li>✓ Generate learning graph (complete)</li>
+<li>☐ Create interactive visualization</li>
+<li>☐ Develop detailed lesson plans per concept</li>
+<li>☐ Design assessments aligned with Bloom's taxonomy</li>
+<li>☐ Build capstone project integrating concepts</li>
+<li>☐ Create MkDocs pages for each concept</li>
+</ol>
+<h2 id="references">References</h2>
+<ul>
+<li>Learning Graph Generator: https://github.com/dmccreary/learning-graphs/tree/main/skills/learning-graph-generator</li>
+<li>Graph Visualization: D3.js, vis.js, Cytoscape.js</li>
+<li>Bloom's Taxonomy: Knowledge → Comprehension → Application → Analysis → Synthesis → Evaluation</li>
+</ul>
+<h2 id="license">License</h2>
+<p>Same as parent repository: Creative Commons ShareAlike Attribution Noncommercial</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

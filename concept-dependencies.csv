@@ -1,0 +1,201 @@
+ConceptID,ConceptLabel,Dependencies,TaxonomyID
+1,Complex Numbers,,MATH
+2,Euler's Formula,1,MATH
+3,Sine Wave Representation,,MATH
+4,Frequency Domain,3,MATH
+5,Time Domain,3,MATH
+6,Discrete Fourier Transform,1|4|5,MATH
+7,Continuous Fourier Transform,1|4|5,MATH
+8,Transform Pairs,6|7,MATH
+9,Linearity Property,6,MATH
+10,Time Shifting,5|6,MATH
+11,Frequency Shifting,4|6,MATH
+12,Convolution Theorem,6,MATH
+13,Parseval's Theorem,6,MATH
+14,Symmetry Properties,1|6,MATH
+15,Magnitude Spectrum,1|4,MATH
+16,Phase Spectrum,1|4,MATH
+17,Rectangular Form,1,MATH
+18,Polar Form,1,MATH
+19,Sampling Theorem,5,MATH
+20,Nyquist Frequency,19,MATH
+21,Fast Fourier Transform,6,FFT
+22,Cooley-Tukey Algorithm,21,FFT
+23,Divide And Conquer,22,FFT
+24,Butterfly Operation,22,FFT
+25,Radix-2 FFT,22|24,FFT
+26,Radix-4 FFT,22|24,FFT
+27,Radix-8 FFT,22|24,FFT
+28,Mixed Radix FFT,25|26,FFT
+29,Decimation In Time,22,FFT
+30,Decimation In Frequency,22,FFT
+31,Bit Reversal Permutation,25,FFT
+32,Twiddle Factors,2|22,FFT
+33,In-Place Computation,21,FFT
+34,Computational Complexity,21,FFT
+35,FFT Size Selection,21|34,FFT
+36,Power Of Two Constraint,25,FFT
+37,Inverse FFT,21,FFT
+38,FFT Scaling,21,FFT
+39,Real FFT,21,FFT
+40,Complex FFT,21,FFT
+41,Half-Spectrum Property,14|39,FFT
+42,Zero Padding,21,FFT
+43,Frequency Resolution,21|42,FFT
+44,Time Resolution Tradeoff,43,FFT
+45,Circular Convolution,12|21,FFT
+46,Digital Signal Processing,5,SIG
+47,Analog To Digital Conversion,5,SIG
+48,Digital To Analog Conversion,5,SIG
+49,Sample Rate,19|47,SIG
+50,Quantization,47,SIG
+51,Bit Depth,50,SIG
+52,Dynamic Range,51,SIG
+53,Signal To Noise Ratio,50|52,SIG
+54,Windowing Functions,21,SIG
+55,Rectangular Window,54,SIG
+56,Hanning Window,54,SIG
+57,Hamming Window,54,SIG
+58,Blackman Window,54,SIG
+59,Kaiser Window,54,SIG
+60,Window Sidelobe Levels,54,SIG
+61,Spectral Leakage,54,SIG
+62,Scalloping Loss,54,SIG
+63,Overlap Add Method,21|54,SIG
+64,Overlap Save Method,21|54,SIG
+65,Frame Size,21,SIG
+66,Hop Size,63|65,SIG
+67,Frequency Bins,21,SIG
+68,Bin Width,43|67,SIG
+69,Spectrum Analysis,15|16,SIG
+70,Spectrogram,69,SIG
+71,ARM Cortex M Series,,ARM
+72,Cortex M4 Processor,71,ARM
+73,Cortex M33 Processor,71,ARM
+74,Instruction Set Architecture,71,ARM
+75,Thumb Instructions,74,ARM
+76,DSP Extension Instructions,74,ARM
+77,Single Instruction Multiple Data,76,ARM
+78,MAC Instructions,76,ARM
+79,Saturating Arithmetic,76,ARM
+80,Floating Point Unit,71,ARM
+81,Single Precision Float,80,ARM
+82,Double Precision Float,80,ARM
+83,Hardware Floating Point,80,ARM
+84,Software Floating Point,,ARM
+85,FPU Register File,80,ARM
+86,Pipeline Architecture,71,ARM
+87,Instruction Pipeline,86,ARM
+88,Branch Prediction,87,ARM
+89,Interrupt Handling,71,ARM
+90,Exception Handling,89,ARM
+91,Memory Mapped IO,71,ARM
+92,Peripheral Access,91,ARM
+93,Clock Configuration,71,ARM
+94,Clock Cycles,93,ARM
+95,Instruction Cycle Count,94,ARM
+96,Wait States,101,ARM
+97,Flash Memory Access,71,ARM
+98,RAM Access Patterns,71,ARM
+99,Direct Memory Access,71,ARM
+100,DMA Channels,99,ARM
+101,Cache Memory,71,MEM
+102,Cache Hit Rate,101,MEM
+103,Cache Miss Penalty,101|102,MEM
+104,Data Cache,101,MEM
+105,Instruction Cache,101,MEM
+106,Cache Line Size,101,MEM
+107,Memory Alignment,71,MEM
+108,Aligned Data Access,107,MEM
+109,Unaligned Data Access,107,MEM
+110,Memory Bandwidth,71,MEM
+111,Memory Latency,110,MEM
+112,Stack Memory,71,MEM
+113,Heap Memory,71,MEM
+114,Static Memory Allocation,112,MEM
+115,Dynamic Memory Allocation,113,MEM
+116,Buffer Management,112|113,MEM
+117,Double Buffering,116,MEM
+118,Ping Pong Buffers,117,MEM
+119,Circular Buffers,116,MEM
+120,Memory Copy Operations,71,MEM
+121,Data Layout,107,MEM
+122,Structure Packing,121,MEM
+123,Array Of Structures,121,MEM
+124,Structure Of Arrays,121,MEM
+125,Memory Fragmentation,115,MEM
+126,Fixed Point Numbers,,FXP
+127,Q Format Notation,126,FXP
+128,Integer Representation,126,FXP
+129,Fractional Representation,126,FXP
+130,Scaling Factor,127,FXP
+131,Fixed Point Multiplication,127,FXP
+132,Fixed Point Division,127,FXP
+133,Fixed Point Addition,127,FXP
+134,Overflow Detection,131,FXP
+135,Saturation Handling,134,FXP
+136,Rounding Modes,126,FXP
+137,Truncation Error,136,FXP
+138,Quantization Noise,50|137,FXP
+139,Dynamic Range Management,52|130,FXP
+140,Precision Analysis,127,FXP
+141,Bit Width Selection,140,FXP
+142,Sign Extension,128,FXP
+143,Fixed To Float Conversion,126|80,FXP
+144,Performance Metrics,,BENCH
+145,Execution Time,144,BENCH
+146,Clock Cycle Measurement,94|145,BENCH
+147,System Timer,71,BENCH
+148,High Resolution Timer,147,BENCH
+149,Timestamp Counter,148,BENCH
+150,Profiling Tools,144,BENCH
+151,Code Profiling,150,BENCH
+152,Function Profiling,151,BENCH
+153,Instruction Profiling,151,BENCH
+154,Statistical Analysis,144,BENCH
+155,Mean Execution Time,145|154,BENCH
+156,Standard Deviation,154,BENCH
+157,Variance Analysis,154|156,BENCH
+158,Outlier Detection,154,BENCH
+159,Confidence Intervals,154,BENCH
+160,Benchmark Repeatability,144|154,BENCH
+161,Test Case Design,144,BENCH
+162,Input Signal Generation,161,BENCH
+163,Sine Wave Test Signal,3|162,BENCH
+164,Chirp Signal,162,BENCH
+165,White Noise Signal,162,BENCH
+166,Impulse Response,162,BENCH
+167,Frequency Sweep,164,BENCH
+168,Amplitude Scaling,162,BENCH
+169,Baseline Measurement,144,BENCH
+170,Comparative Analysis,144|169,BENCH
+171,Performance Regression,170,BENCH
+172,Benchmark Automation,161,BENCH
+173,Test Harness Design,161|172,BENCH
+174,CMSIS DSP Library,21|71,LIB
+175,FFTW Library,21,LIB
+176,Kiss FFT,21,LIB
+177,FFT Library Licensing,174,LIB
+178,Open Source Libraries,,LIB
+179,Proprietary Libraries,,LIB
+180,Library API Design,174,LIB
+181,Function Call Overhead,152,LIB
+182,Initialization Functions,180,LIB
+183,Configuration Parameters,180,LIB
+184,Library Documentation,174,LIB
+185,Example Code,174,LIB
+186,GitHub Repositories,,LIB
+187,Version Control,186,LIB
+188,Library Integration,174,LIB
+189,Header Files,188,LIB
+190,Linking Libraries,188,LIB
+191,Static Linking,190,LIB
+192,Dynamic Linking,190,LIB
+193,Library Dependencies,190,LIB
+194,Compiler Optimization Levels,,OPT
+195,Loop Unrolling,194,OPT
+196,Function Inlining,194,OPT
+197,Code Size Optimization,194,OPT
+198,Speed Optimization,194,OPT
+199,Constant Propagation,194,OPT
+200,Dead Code Elimination,194,OPT

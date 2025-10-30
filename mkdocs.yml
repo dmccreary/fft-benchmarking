@@ -12,6 +12,7 @@ nav:
   - Course Description: course-description.md
   - Tutorials:
       - Tutorial 1: tutorials/tutorial1.md
+  - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
   - Glossary: glossary.md
   - How We Built This Site: how-we-built-this-site.md
   - References: references.md

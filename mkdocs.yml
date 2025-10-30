@@ -8,21 +8,23 @@ edit_uri: 'blob/master/docs'
 
 nav:
   - Home: index.md
-  - Checklist: checklist.md
-  - Code Highlight Test: code-highlight-test.md
+  - About: about.md
+  - Tutorials:
+      - Tutorial 1: tutorials/tutorial1.md
   - Glossary: glossary.md
   - How We Built This Site: how-we-built-this-site.md
   - References: references.md
+  - License: license.md
   - Contact: contact.md
  
-# CoderDojo Microsite Standards from here down
+# Dan's Microsite Standards from here down
 
 theme:
   name: material
   extra_css:
     - styles/custom.css
   logo: img/logo.png
-  # favicon: img/my-icon.png
+  favicon: img/favicon.png
   palette:
     primary: 'blue'
     accent: 'orange'

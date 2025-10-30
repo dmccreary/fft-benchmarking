@@ -10,6 +10,7 @@ nav:
   - Home: index.md
   - About: about.md
   - Course Description: course-description.md
+
   - Learning Graph:
     - Intro: learning-graph/index.md
     - Course Concepts: learning-graph/course-concepts-v1.md
@@ -18,9 +19,13 @@ nav:
     - Quality Assessment: learning-graph/quality-assessment.md
     - Quality Metrics: learning-graph/quality-metrics.md
     - Summary: learning-graph/LEARNING-GRAPH-SUMMARY.md
+  
   - Tutorials:
-      - Tutorial 1: tutorials/tutorial1.md
+      - Tutorial 1: tutorials/tutorial-1.md
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
+  - MicroSims:
+    - MicroSims Overview: sims/index.md
+    - Learning Graph: sims/learning-graph/index
   - Glossary: glossary.md
   - How We Built This Site: how-we-built-this-site.md
   - References: references.md

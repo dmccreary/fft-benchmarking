@@ -12,13 +12,9 @@
         <meta name="author" content="Dan McCreary">
       
       
-        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/cornell-labs/pico-example/">
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/01-introduction/">
       
       
-        <link rel="prev" href="../../learning-graph/LEARNING-GRAPH-SUMMARY/">
-      
-      
-        <link rel="next" href="../../sims/">
       
       
       <link rel="icon" href="../../img/favicon.png">
@@ -26,7 +22,7 @@
     
     
       
-        <title>Cornel Labs FFT on the Pico - FFT Benchmarking</title>
+        <title>Chapter 1: Introduction to FFT Benchmarking - FFT Benchmarking</title>
       
     
     
@@ -78,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cornell-university-ece4760" class="md-skip">
+        <a href="#chapter-1-introduction-to-fft-benchmarking" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cornel Labs FFT on the Pico
+              Chapter 1: Introduction to FFT Benchmarking
             
           </span>
         </div>
@@ -403,32 +399,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Cornel Labs FFT on the Pico
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
         
   
   
@@ -439,62 +413,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#whats-going-on" class="md-nav__link">
-    <span class="md-ellipsis">
-      🎵 What's Going On
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-process-step-by-step" class="md-nav__link">
-    <span class="md-ellipsis">
-      ⚙️ The Process Step-by-Step
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-the-code-runs" class="md-nav__link">
-    <span class="md-ellipsis">
-      🧠 How the Code Runs
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      🧩 Why It Matters
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -689,36 +607,63 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#whats-going-on" class="md-nav__link">
+  <a href="#why-fft-benchmarking-is-important" class="md-nav__link">
     <span class="md-ellipsis">
-      🎵 What's Going On
+      Why FFT Benchmarking is Important
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-process-step-by-step" class="md-nav__link">
+  <a href="#history-of-the-fft" class="md-nav__link">
     <span class="md-ellipsis">
-      ⚙️ The Process Step-by-Step
+      History of the FFT
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-the-code-runs" class="md-nav__link">
+  <a href="#interactive-timeline-of-fft-advancements" class="md-nav__link">
     <span class="md-ellipsis">
-      🧠 How the Code Runs
+      Interactive Timeline of FFT Advancements
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-it-matters" class="md-nav__link">
+  <a href="#fft-in-modern-society" class="md-nav__link">
     <span class="md-ellipsis">
-      🧩 Why It Matters
+      FFT in Modern Society
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-time-sound-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-Time Sound Processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smart-speakers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Smart Speakers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Use This Textbook
     </span>
   </a>
   
@@ -740,7 +685,7 @@
 
 
   
-    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/cornell-labs/pico-example.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/01-introduction/index.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -748,128 +693,18 @@
   
 
 
-<h1 id="cornell-university-ece4760">Cornell University ECE4760</h1>
-<p><a href="https://people.ece.cornell.edu/land/courses/ece4760/RP2350/FFT_iFFT/index_FFT_iFFT.html">FFT/iFFT testing on the Pi Pico RP2350</a></p>
-<div class="admonition quote">
-<p class="admonition-title">Quote</p>
-</div>
-<p>From this web page:
-Please explain this text. Assume you are talking to a high-school student. </p>
-<p>Cornell University ECE4760 FFT/iFFT testing Pi Pico RP2350 Fast Fourier Trnasform and inverse Fast Fourier Transform. Some interesting audio algorithms (e.g. speech compression, effects) work in the frequency domain by doing a FFT on the input signal, fiddling with the frequency components, then transforming back to time domain for output. Since the FFT is a framed computation (works on a stored buffer of input values) you need to be concerned about input-to-output time delay and correctly interpolating from one frame to the next to avoid extremely annoyng artifacts. The approach taken here is to make sure that there is enough information to reasonably interpolate between frames at both the input and output. The steps in the process are: Input samples from ADC at 12.8 Ksamples/sec into a buffer. In the case 512 samples long, which gives 25 FFT frames per second. But with 50% overlap, a new frame starts 50 times/sec. Use a raised cosine window to taper input data to zero at ends of buffer. This is necessary to force periodicity on arbierary input signals. Since the window function goes to zero near both ends, all data is lost there! The windowing means that we need to actually do a FFT on 512 samples, but with only 256 samples separeating the beginning of each transform. This 50% overlap ensures that all data is represented in the FFT output. Do the 512 point FFT with 50% overlap so that no data gets completely lost. Normally here, there would be some sort of filtering, but for this example there is none. We are just verifying that the FFT/iFFT pair reproduces the input. Do iFFT on 512 complex points resulting from the forward FFT. Optionally, window the output of the iFFT (this example does not) before averaging We construct the output buffer by averaging the 50% overlap between iFFTs. This minimizes the inevitable discontinuity between successive transforms. Also, a little thought about data rates will convince you that you need to average the last half of each iFFT output with the first half of the next one to get back to the original sample rate. Construct output buffer of the averaged 50% overlap samples by scaling and offset, Send to DAC at the same rate at the input. The algorithm runs in two parts.: An ISR fills input buffers from the ADC, signals a full input buffer to the thread, and pushes an output buffer to the DAC via SPI. A thread (with a strict time deadline of 256 sample times) runs the windowing, FFT, iFFT, fills an output buffer, and signals the ISR when a new output buffer is ready. There is either a signal generator or microphone attached to ADC channel 2. An SPI channel runs the DAC. VGA output comnections are explained in the code, but the program will run without any VGA connection. Audio examples coming soon.
-!!!!</p>
-<p>Here's a <strong>high-school-level explanation</strong> of that Cornell University ECE4760 description about the <strong>Fast Fourier Transform (FFT)</strong> on the <strong>Raspberry Pi Pico RP2350</strong>:</p>
-<hr />
-<h3 id="whats-going-on">🎵 What's Going On</h3>
-<p>This project is about how computers can <strong>analyze and modify sound</strong> --- like music or voices --- using math.</p>
-<p>When sound enters a microphone, it's a <strong>waveform over time</strong> (called the <em>time domain</em>).
-But many cool audio effects (like speech compression, pitch shifting, or equalizers) work better if you look at the sound as <strong>a collection of frequencies</strong> --- the <em>frequency domain</em>.</p>
-<p>To switch between these two ways of viewing sound, engineers use special math tools:</p>
-<ul>
-<li>
-<p><strong>FFT</strong> (Fast Fourier Transform) → converts sound <em>from time → frequency</em></p>
-</li>
-<li>
-<p><strong>iFFT</strong> (inverse FFT) → converts sound <em>from frequency → time</em></p>
-</li>
-</ul>
-<hr />
-<h3 id="the-process-step-by-step">⚙️ The Process Step-by-Step</h3>
-<ol>
-<li>
-<p><strong>Record sound</strong>
-    The Pi Pico's ADC (analog-to-digital converter) samples the sound 12,800 times per second and stores small chunks (called <em>buffers</em>) of 512 samples each.</p>
-<ul>
-<li>This means you get about <strong>25 frames per second</strong> of data.</li>
-</ul>
-</li>
-<li>
-<p><strong>Overlap the frames</strong>
-    To make the sound smooth, the program starts a new frame halfway through the previous one --- this is called <strong>50% overlap</strong>.</p>
-<ul>
-<li>It helps avoid pops or clicks when frames join together.</li>
-</ul>
-</li>
-<li>
-<p><strong>Windowing (smoothing the edges)</strong>
-    Before running the FFT, each frame is multiplied by a <strong>raised cosine window</strong> --- a curve that fades the beginning and end of the data toward zero.</p>
-<ul>
-<li>
-<p>This makes the signal "look" more periodic and prevents sharp jumps that cause distortion.</p>
-</li>
-<li>
-<p>The trade-off: some data near the edges is lost, so overlapping frames helps recover it.</p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>FFT and (optionally) modify frequencies</strong>
-    The FFT turns that 512-sample frame into 512 numbers showing how strong each frequency is.</p>
-<ul>
-<li>In a real effect, you might change these (boost bass, reduce noise, etc.), but in this lab, they're left unchanged.</li>
-</ul>
-</li>
-<li>
-<p><strong>iFFT back to sound</strong>
-    The iFFT reverses the process, turning the frequency data back into time-domain samples.</p>
-</li>
-<li>
-<p><strong>Blend overlapping frames</strong>
-    Because of the 50% overlap, the second half of one frame and the first half of the next frame are <strong>averaged together</strong>.</p>
-<ul>
-<li>This blending ensures the playback is smooth and the timing matches the input rate.</li>
-</ul>
-</li>
-<li>
-<p><strong>Send to speaker</strong>
-    The DAC (digital-to-analog converter) sends the processed signal out at the same speed (12.8 kHz), reproducing the original (or modified) sound.</p>
-</li>
-</ol>
-<hr />
-<h3 id="how-the-code-runs">🧠 How the Code Runs</h3>
-<p>There are <strong>two main parts</strong> of the program:</p>
-<ul>
-<li>
-<p><strong>ISR (Interrupt Service Routine)</strong>:
-    Works like a super-fast helper that grabs microphone data and sends finished output to the DAC.
-    It quickly fills and empties buffers while the main program thinks.</p>
-</li>
-<li>
-<p><strong>Main Thread</strong>:
-    Runs the FFT, iFFT, and averaging math.
-    It must finish within the time it takes to collect 256 samples (because of the 50% overlap).
-    That's a tight deadline --- it tests whether the code is efficient.</p>
-</li>
-</ul>
-<hr />
-<h3 id="why-it-matters">🧩 Why It Matters</h3>
-<p>This lab shows how real-time digital audio works on a tiny computer.
-It teaches key engineering ideas like:</p>
-<ul>
-<li>
-<p>Sampling and data rates</p>
-</li>
-<li>
-<p>Buffering and frame overlap</p>
-</li>
-<li>
-<p>Frequency-domain processing</p>
-</li>
-<li>
-<p>Synchronizing input and output</p>
-</li>
-</ul>
-<p>Once you understand this, you can build effects like:</p>
-<ul>
-<li>
-<p>Echo, pitch-shift, auto-tune</p>
-</li>
-<li>
-<p>Noise cancellation</p>
-</li>
-<li>
-<p>Equalizers (like the <strong>bass &amp; treble</strong> MicroSim you uploaded)</p>
-</li>
-</ul>
+<h1 id="chapter-1-introduction-to-fft-benchmarking">Chapter 1: Introduction to FFT Benchmarking</h1>
+<h2 id="why-fft-benchmarking-is-important">Why FFT Benchmarking is Important</h2>
+<h2 id="history-of-the-fft">History of the FFT</h2>
+<h2 id="interactive-timeline-of-fft-advancements">Interactive Timeline of FFT Advancements</h2>
+<p>TODO: Generate a list of the 50 most important advances in FFTs.  Include the development of DSPs and the integration of DSP functions into microcontrollers.  For each item, return the results in a format that can be used by the JSON format vis-timeline viewer.
+https://visjs.github.io/vis-timeline/docs/timeline/#Data_Format</p>
+<p>TODO: Use the vis-timeline JavaScript</p>
+<h2 id="fft-in-modern-society">FFT in Modern Society</h2>
+<h2 id="real-time-sound-processing">Real-Time Sound Processing</h2>
+<h2 id="smart-speakers">Smart Speakers</h2>
+<h2 id="how-to-use-this-textbook">How to Use This Textbook</h2>
+<p>Interactive Simulations</p>
 
 
 
@@ -900,44 +735,6 @@ It teaches key engineering ideas like:</p>
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../../learning-graph/LEARNING-GRAPH-SUMMARY/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Summary">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Summary
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../../sims/" class="md-footer__link md-footer__link--next" aria-label="Next: MicroSims Overview">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                MicroSims Overview
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">

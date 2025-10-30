@@ -1,0 +1,424 @@
+{
+  "items": [
+
+    {
+      "id": 2,
+      "content": "Cooley-Tukey FFT algorithm published",
+      "start": "1965-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "James Cooley and John Tukey publish the seminal paper rediscovering the FFT algorithm, making it widely accessible"
+    },
+    {
+      "id": 3,
+      "content": "Gentleman-Sande FFT algorithm",
+      "start": "1966-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Decimation-in-frequency FFT algorithm variant published"
+    },
+    {
+      "id": 4,
+      "content": "Radix-4 FFT algorithm",
+      "start": "1968-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Radix-4 FFT algorithm provides computational advantages over radix-2"
+    },
+    {
+      "id": 5,
+      "content": "Bluestein's FFT algorithm",
+      "start": "1968-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Leo Bluestein publishes chirp-z transform allowing FFTs of arbitrary lengths"
+    },
+    {
+      "id": 6,
+      "content": "Winograd FFT algorithm",
+      "start": "1976-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Shmuel Winograd develops FFT with minimal number of multiplications"
+    },
+    {
+      "id": 7,
+      "content": "Split-radix FFT algorithm",
+      "start": "1984-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Split-radix algorithm achieves lower operation count for power-of-2 lengths"
+    },
+    {
+      "id": 8,
+      "content": "FFTW library released",
+      "start": "1997-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "Fastest Fourier Transform in the West - adaptive FFT library by Frigo and Johnson"
+    },
+    {
+      "id": 9,
+      "content": "Intel MKL FFT library",
+      "start": "2003-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "Intel Math Kernel Library provides highly optimized FFT routines for Intel processors"
+    },
+    {
+      "id": 10,
+      "content": "KISS FFT library",
+      "start": "2003-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "Keep It Simple Stupid FFT - simple, BSD-licensed FFT library in C"
+    },
+    {
+      "id": 11,
+      "content": "Intel IPP 1D FFT",
+      "start": "2000-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "Intel Integrated Performance Primitives for optimized signal processing"
+    },
+    {
+      "id": 12,
+      "content": "Texas Instruments TMS320C10",
+      "start": "1982-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "First commercially successful DSP chip - 16-bit, 5 MHz, single-cycle multiply"
+    },
+    {
+      "id": 13,
+      "content": "Texas Instruments TMS320C25",
+      "start": "1985-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "Improved DSP with 100ns instruction cycle, hardware multiplier-accumulator"
+    },
+    {
+      "id": 14,
+      "content": "AT&T DSP16",
+      "start": "1986-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "16-bit fixed-point DSP processor optimized for digital filtering"
+    },
+    {
+      "id": 15,
+      "content": "Motorola DSP56000",
+      "start": "1986-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "24-bit DSP with 27 MHz clock, Harvard architecture, widely used in audio"
+    },
+    {
+      "id": 16,
+      "content": "Texas Instruments TMS320C30",
+      "start": "1988-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "First floating-point DSP in TMS320 family, 32-bit, 33 MHz"
+    },
+    {
+      "id": 17,
+      "content": "Analog Devices ADSP-2100",
+      "start": "1987-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "16-bit fixed-point DSP with modified Harvard architecture"
+    },
+    {
+      "id": 18,
+      "content": "Texas Instruments TMS320C40",
+      "start": "1991-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "32-bit floating-point DSP with six communication ports for parallel processing"
+    },
+    {
+      "id": 19,
+      "content": "Analog Devices SHARC ADSP-21000",
+      "start": "1994-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "Super Harvard Architecture - 32-bit floating-point, dual computation units"
+    },
+    {
+      "id": 20,
+      "content": "Texas Instruments TMS320C54x",
+      "start": "1995-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "Low-power 16-bit fixed-point DSP, very popular in mobile/wireless"
+    },
+    {
+      "id": 21,
+      "content": "Texas Instruments TMS320C6000",
+      "start": "1997-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "VelociTI VLIW architecture - up to 8 parallel operations per cycle"
+    },
+    {
+      "id": 22,
+      "content": "Analog Devices Blackfin",
+      "start": "2000-01-01",
+      "type": "point",
+      "group": "dsp-chip",
+      "title": "16/32-bit embedded processor combining DSP and MCU capabilities"
+    },
+    {
+      "id": 23,
+      "content": "ARM Cortex-M3 released",
+      "start": "2004-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "32-bit ARM processor without DSP extensions, foundation for later DSP-enabled variants"
+    },
+    {
+      "id": 24,
+      "content": "ARM Cortex-M4 with DSP",
+      "start": "2010-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "First ARM Cortex-M with DSP instructions and optional FPU - revolution in embedded DSP"
+    },
+    {
+      "id": 25,
+      "content": "CMSIS-DSP library released",
+      "start": "2010-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "ARM's Cortex Microcontroller Software Interface Standard DSP library including optimized FFT"
+    },
+    {
+      "id": 26,
+      "content": "ARM Cortex-M7",
+      "start": "2014-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "High-performance Cortex-M with double-precision FPU, cache, and enhanced DSP"
+    },
+    {
+      "id": 27,
+      "content": "STM32F4 series",
+      "start": "2011-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "STMicroelectronics ARM Cortex-M4F MCU with FPU and DSP, up to 180 MHz"
+    },
+    {
+      "id": 28,
+      "content": "STM32H7 series",
+      "start": "2017-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "ARM Cortex-M7 based MCU up to 480 MHz with advanced DSP capabilities"
+    },
+    {
+      "id": 29,
+      "content": "NXP i.MX RT series",
+      "start": "2017-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "Crossover MCUs with Cortex-M7 up to 600 MHz, combining MCU and application processor features"
+    },
+    {
+      "id": 30,
+      "content": "Raspberry Pi Pico (RP2040)",
+      "start": "2021-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "Dual Cortex-M0+ at 133 MHz - low-cost platform for embedded DSP education"
+    },
+    {
+      "id": 31,
+      "content": "Raspberry Pi Pico 2 (RP2350)",
+      "start": "2024-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "Dual Cortex-M33 with DSP extensions and optional floating-point, 150 MHz"
+    },
+    {
+      "id": 32,
+      "content": "Prime factor FFT algorithm",
+      "start": "1977-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Good-Thomas algorithm for FFT of composite lengths using Chinese Remainder Theorem"
+    },
+    {
+      "id": 33,
+      "content": "Rader's FFT algorithm",
+      "start": "1968-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "FFT algorithm for prime-length sequences using number theory"
+    },
+    {
+      "id": 34,
+      "content": "Mixed-radix FFT",
+      "start": "1969-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "FFT algorithms combining different radices for flexible transform lengths"
+    },
+    {
+      "id": 35,
+      "content": "Parallel FFT algorithms",
+      "start": "1989-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Development of FFT algorithms optimized for parallel and distributed computing"
+    },
+    {
+      "id": 36,
+      "content": "GPU-accelerated FFT (CUDA)",
+      "start": "2007-01-01",
+      "type": "point",
+      "group": "hardware",
+      "title": "NVIDIA CUDA enables massive parallelization of FFT on graphics processors"
+    },
+    {
+      "id": 37,
+      "content": "cuFFT library",
+      "start": "2008-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "NVIDIA's FFT library for GPU acceleration using CUDA"
+    },
+    {
+      "id": 38,
+      "content": "ARM Neon SIMD instructions",
+      "start": "2005-01-01",
+      "type": "point",
+      "group": "hardware",
+      "title": "ARM's SIMD extension enabling parallel processing in mobile/embedded processors"
+    },
+    {
+      "id": 39,
+      "content": "Intel AVX instructions",
+      "start": "2011-01-01",
+      "type": "point",
+      "group": "hardware",
+      "title": "Advanced Vector Extensions - 256-bit SIMD for accelerated FFT on x86"
+    },
+    {
+      "id": 40,
+      "content": "ARM Helium (M-Profile Vector Extension)",
+      "start": "2019-01-01",
+      "type": "point",
+      "group": "hardware",
+      "title": "Vector processing extension for ARM Cortex-M, optimized for DSP and ML"
+    },
+    {
+      "id": 41,
+      "content": "ARM Cortex-M55",
+      "start": "2020-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "First Cortex-M with Helium vector extensions for enhanced DSP performance"
+    },
+    {
+      "id": 42,
+      "content": "ARM Cortex-M85",
+      "start": "2022-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "Highest performance Cortex-M with Helium, Pacbti security, up to 2.0 GHz capable"
+    },
+    {
+      "id": 43,
+      "content": "Integer FFT algorithms",
+      "start": "1990-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Development of fixed-point FFT implementations for embedded systems without FPU"
+    },
+    {
+      "id": 44,
+      "content": "In-place FFT algorithms",
+      "start": "1966-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Memory-efficient FFT algorithms that reuse input buffer for output"
+    },
+    {
+      "id": 45,
+      "content": "Sliding DFT algorithm",
+      "start": "1980-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Efficient algorithm for continuously updating DFT as new samples arrive"
+    },
+    {
+      "id": 46,
+      "content": "Goertzel algorithm",
+      "start": "1958-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Efficient computation of individual DFT frequency bins, used in DTMF detection"
+    },
+    {
+      "id": 47,
+      "content": "Sparse FFT algorithms",
+      "start": "2012-01-01",
+      "type": "point",
+      "group": "algorithm",
+      "title": "Sub-linear time FFT algorithms for signals sparse in frequency domain"
+    },
+    {
+      "id": 48,
+      "content": "ARM CMSIS-DSP v1.0",
+      "start": "2010-01-01",
+      "type": "point",
+      "group": "software",
+      "title": "First release of ARM's standard DSP library with optimized FFT implementations"
+    },
+    {
+      "id": 49,
+      "content": "ESP32 with DSP extensions",
+      "start": "2016-01-01",
+      "type": "point",
+      "group": "mcu",
+      "title": "Espressif's Xtensa LX6 MCU with DSP extensions for IoT applications"
+    },
+    {
+      "id": 50,
+      "content": "RISC-V Vector Extension (RVV)",
+      "start": "2021-01-01",
+      "type": "point",
+      "group": "hardware",
+      "title": "Open-source vector ISA extension enabling efficient DSP on RISC-V processors"
+    }
+  ],
+  "groups": [
+    {
+      "id": "algorithm",
+      "content": "FFT Algorithms",
+      "style": "background-color: #FFE0B2;"
+    },
+    {
+      "id": "software",
+      "content": "Software Libraries",
+      "style": "background-color: #B3E5FC;"
+    },
+    {
+      "id": "dsp-chip",
+      "content": "DSP Chips",
+      "style": "background-color: #C8E6C9;"
+    },
+    {
+      "id": "mcu",
+      "content": "Microcontrollers",
+      "style": "background-color: #F8BBD0;"
+    },
+    {
+      "id": "hardware",
+      "content": "Hardware Features",
+      "style": "background-color: #D1C4E9;"
+    }
+  ]
+}

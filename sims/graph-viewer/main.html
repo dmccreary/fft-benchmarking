@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Graph for FFT Visualization</title>
+    <title>FFT Benchmarking Learning Graph Viewer</title>
     <!-- Include the latest vis.js from CDN -->
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <!-- Include the custom script to visualize the graph -->
@@ -14,13 +14,24 @@
         display: flex;
         }
 
+        /* Left side for showing the legend sidebar */
         #sidebar {
             width: auto; /* Automatically adjust width based on content in the table */
-            max-width: 170px; /* Set a maximum width to avoid excessive size */
-            padding: 5px; /* around the sidebar */
-            margin-right: 10px; /* Space between sidebar and main content */
+            max-width: 280px; /* Set a maximum width to accommodate taxonomy names */
+            padding: 10px; /* around the sidebar */
+            margin-right: 15px; /* Space between sidebar and main content */
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        #sidebar table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #sidebar td {
+            padding: 4px 6px;
+            border-bottom: 1px solid #eee;
         }
 
         #main {
@@ -42,57 +53,57 @@
       <button id="toggle-button" onclick="toggleSidebar()">&#9776;</button>
 
       <div id="sidebar">
-          <h3>Legend Sidebar</h3>
+          <h3>Taxonomy Legend</h3>
           <table>
             <tr>
-                <td>Mathematical Foundations</td>
-                <td style="background-color: red; color: white;">Red</td>
+                <td><strong>MATH</strong> - Mathematical Foundations (20)</td>
+                <td style="background-color: #E74C3C; color: white;">Red</td>
             </tr>
             <tr>
-                <td>Signals and Systems</td>
-                <td style="background-color: orange; color: white;">Orange</td>
+                <td><strong>FFT</strong> - FFT Algorithms (25)</td>
+                <td style="background-color: #3498DB; color: white;">Blue</td>
             </tr>
             <tr>
-                <td>Transforms and Frequency Analysis</td>
-                <td style="background-color: yellow;">Yellow</td>
+                <td><strong>SIG</strong> - Signal Processing (25)</td>
+                <td style="background-color: #2ECC71; color: white;">Green</td>
             </tr>
             <tr>
-                <td>Filters and Filter Design</td>
-                <td style="background-color: lightgreen;">Lightgreen</td>
+                <td><strong>ARM</strong> - ARM Architecture (30)</td>
+                <td style="background-color: #9B59B6; color: white;">Purple</td>
             </tr>
             <tr>
-                <td>Random Processes and Statistical Signal Processing</td>
-                <td style="background-color: lightblue;">Lightblue</td>
+                <td><strong>MEM</strong> - Memory Management (25)</td>
+                <td style="background-color: #F39C12; color: white;">Orange</td>
             </tr>
             <tr>
-                <td>Time-Frequency Analysis and Wavelets</td>
-                <td style="background-color: plum;">Plum</td>
+                <td><strong>FXP</strong> - Fixed-Point Arithmetic (18)</td>
+                <td style="background-color: #1ABC9C; color: white;">Teal</td>
             </tr>
             <tr>
-                <td>Advanced Signal Processing Techniques</td>
-                <td style="background-color: violet; color: white;">Violet</td>
+                <td><strong>BENCH</strong> - Benchmarking (30)</td>
+                <td style="background-color: #E67E22; color: white;">Dk Orange</td>
             </tr>
             <tr>
-                <td>Machine Learning and Neural Networks in Signal Processing</td>
-                <td style="background-color: silver;">Silver</td>
+                <td><strong>LIB</strong> - FFT Libraries (20)</td>
+                <td style="background-color: #95A5A6; color: white;">Gray</td>
             </tr>
             <tr>
-                <td>Applications in Communications and Multimedia</td>
-                <td style="background-color: tan;">Tan</td>
-            </tr>
-            <tr>
-                <td>Emerging and Specialized Topics</td>
-                <td style="background-color: mediumaquamarine;">Aquamarine</td>
+                <td><strong>OPT</strong> - Optimization (7)</td>
+                <td style="background-color: #F1C40F;">Gold</td>
             </tr>
         </table>
+        <p style="font-size: 12px; margin-top: 10px;"><strong>Total: 200 concepts</strong></p>
       </div>
     </div>
       <div id="main">
-        <h4>Learning Graph for FFT Benchmarking</h4>
+        <h4>FFT Benchmarking Learning Graph - 200 Concepts</h4>
 
         <div id="mynetwork"></div>
 
-        <a href=".">Return to lesson plan</a>
+        <p style="margin-top: 10px;">
+          <a href="../..">Return to Course Home</a> |
+          <a href="../../learning-graph/concept-taxonomy.html">View Taxonomy Details</a>
+        </p>
 
     </div>
     <!-- Load the graph data and visualize it -->

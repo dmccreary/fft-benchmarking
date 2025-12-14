@@ -1,0 +1,201 @@
+ConceptID,ConceptLabel,Dependencies,TaxonomyID
+1,Complex Numbers,,MATH
+2,Imaginary Unit,1,MATH
+3,Euler's Formula,1|2,MATH
+4,Sine Wave,,MATH
+5,Cosine Wave,4,MATH
+6,Amplitude,4,MATH
+7,Frequency,4,MATH
+8,Phase,4|7,MATH
+9,Periodic Functions,4|5,MATH
+10,Harmonics,7|9,MATH
+11,Complex Conjugate,1|2,MATH
+12,Magnitude,1|6,MATH
+13,Unit Circle,4|5,MATH
+14,Hertz,7,MATH
+15,Time Domain,4|7,MATH
+16,Frequency Domain,7|15,MATH
+17,Analog Signals,4|6|7,SIGP
+18,Digital Signals,17,SIGP
+19,Sampling,17|18,SIGP
+20,Sampling Rate,7|19,SIGP
+21,Nyquist Theorem,7|20,SIGP
+22,Aliasing,20|21,SIGP
+23,Quantization,18|19,SIGP
+24,Bit Depth,23,SIGP
+25,ADC Conversion,17|18|23,SIGP
+26,Signal Noise,17|18,SIGP
+27,Signal To Noise Ratio,6|26,SIGP
+28,Bandwidth,7|16,SIGP
+29,Low Pass Filter,16|28,SIGP
+30,Band Pass Filter,29,SIGP
+31,Windowing Functions,9|15,SIGP
+32,Spectral Leakage,16|31,SIGP
+33,Jean Baptiste Fourier,,FOUR
+34,Fourier Series,3|9|10|33,FOUR
+35,Continuous Fourier Transform,3|15|16|34,FOUR
+36,Discrete Fourier Transform,18|19|35,FOUR
+37,DFT Definition,1|36,FOUR
+38,DFT Complexity,37,FOUR
+39,Inverse DFT,37,FOUR
+40,Frequency Bins,16|37,FOUR
+41,Bin Resolution,20|40,FOUR
+42,Spectral Analysis,16|37|40,FOUR
+43,Power Spectrum,12|42,FOUR
+44,Magnitude Spectrum,12|42,FOUR
+45,Phase Spectrum,8|42,FOUR
+46,Frequency Resolution,40|41,FOUR
+47,Zero Padding,37|46,FOUR
+48,Orthogonality,34,FOUR
+49,FFT Algorithm,36|38,FFTA
+50,FFT History,33|49,FFTA
+51,Cooley Tukey Algorithm,49|50,FFTA
+52,Radix-2 FFT,51,FFTA
+53,Radix-4 FFT,51|52,FFTA
+54,Split Radix FFT,52|53,FFTA
+55,Butterfly Operation,1|49|51,FFTA
+56,Butterfly Diagram,55,FFTA
+57,Twiddle Factors,3|55,FFTA
+58,Bit Reversal,52,FFTA
+59,In Place FFT,52|58,FFTA
+60,Decimation In Time,52|55,FFTA
+61,Decimation In Frequency,52|55,FFTA
+62,FFT Stages,52|55|56,FFTA
+63,FFT Complexity,38|49,FFTA
+64,O(N log N),63,FFTA
+65,FFT Size,49|63,FFTA
+66,Power Of Two Sizes,52|65,FFTA
+67,Real FFT,49|68,FFTA
+68,Complex FFT,1|49,FFTA
+69,Inverse FFT,39|49,FFTA
+70,IFFT Algorithm,69,FFTA
+71,Normalization Factor,49|69,FFTA
+72,FFT Scaling,65|71,FFTA
+73,Microcontroller,,HARD
+74,ARM Architecture,73,HARD
+75,ARM Cortex M Series,74,HARD
+76,ARM Cortex M4,75,HARD
+77,ARM Cortex M33,75|76,HARD
+78,Raspberry Pi Pico,73|75,HARD
+79,Raspberry Pi Pico 2,77|78,HARD
+80,RP2040 Chip,78,HARD
+81,RP2350 Chip,77|79,HARD
+82,DSP Chip,73,HARD
+83,General Purpose CPU,73,HARD
+84,Clock Speed,73,HARD
+85,CPU Cycles,84,HARD
+86,Memory Architecture,73,HARD
+87,Cache Memory,86,HARD
+88,Embedded Systems,73|86,HARD
+89,DSP Instructions,74|82,DSPI
+90,SIMD Instructions,89,DSPI
+91,MAC Instruction,89,DSPI
+92,Multiply Accumulate,91,DSPI
+93,Saturating Arithmetic,89|94,DSPI
+94,Fixed Point Arithmetic,,DSPI
+95,Floating Point Unit,74,DSPI
+96,FPU Operations,95,DSPI
+97,Single Precision Float,95|96,DSPI
+98,Q Format Numbers,94,DSPI
+99,Q15 Format,98,DSPI
+100,Q31 Format,98|99,DSPI
+101,Hardware Multiplier,74|92,DSPI
+102,Pipelining,74,DSPI
+103,Instruction Latency,85|102,DSPI
+104,Real Time Constraints,84|85|103,DSPI
+105,C Language,,PROG
+106,C Compiler,105,PROG
+107,GCC Compiler,106,PROG
+108,ARM Compiler,74|106,PROG
+109,Compiler Optimization,106,PROG
+110,Optimization Flags,109,PROG
+111,Assembly Language,,PROG
+112,ARM Assembly,74|111,PROG
+113,Thumb Instructions,112,PROG
+114,Python Language,,PROG
+115,NumPy Library,114,PROG
+116,SciPy FFT,49|115,PROG
+117,MicroPython,73|114,PROG
+118,Memory Management,105|86,PROG
+119,Reading Assembly Code,111|112,PROG
+120,Disassembly,106|119,PROG
+121,FFT Libraries,49|105,LIBS
+122,CMSIS DSP Library,75|89|121,LIBS
+123,Kiss FFT,105|121,LIBS
+124,FFTW Library,105|121,LIBS
+125,Arm Math Library,75|121|122,LIBS
+126,Pico SDK FFT,78|121,LIBS
+127,Open Source FFT,121,LIBS
+128,Library Licensing,121,LIBS
+129,MIT License,128,LIBS
+130,GPL License,128,LIBS
+131,Library Integration,106|121,LIBS
+132,API Documentation,121|131,LIBS
+133,Benchmarking,,BNCH
+134,Performance Metrics,133,BNCH
+135,Execution Time,85|134,BNCH
+136,Clock Cycles,85|135,BNCH
+137,Microseconds Per FFT,65|136,BNCH
+138,FFTs Per Second,137,BNCH
+139,Throughput Metric,134|138,BNCH
+140,Latency Metric,134|135,BNCH
+141,Memory Usage,86|134,BNCH
+142,Code Size,106|134,BNCH
+143,Test Harness,133|134,BNCH
+144,Warm Up Runs,87|143,BNCH
+145,Statistical Sampling,143,BNCH
+146,Mean Execution Time,135|145,BNCH
+147,Standard Deviation,145|146,BNCH
+148,Reproducibility,143|145,BNCH
+149,Fair Comparison,143|148,BNCH
+150,Benchmarking Framework,133|143|149,BNCH
+151,Integer FFT,49|94,PERF
+152,Floating Point FFT,49|95,PERF
+153,Fixed Point FFT,49|94|98,PERF
+154,Precision Tradeoffs,151|152|153,PERF
+155,Speed Accuracy Tradeoff,63|154,PERF
+156,Cache Effects,87|157,PERF
+157,Memory Access Patterns,86,PERF
+158,Loop Unrolling,109,PERF
+159,Vectorization,90|109,PERF
+160,Real Time Processing,104|49,PERF
+161,Streaming FFT,49|160,PERF
+162,Block Processing,65|161,PERF
+163,Double Buffering,86|162,PERF
+164,Compiler Settings,109|110,PERF
+165,Signal Preprocessing,17|49,PIPE
+166,DC Offset Removal,165,PIPE
+167,Normalization,6|165,PIPE
+168,Window Application,31|165,PIPE
+169,Zero Padding Input,47|165,PIPE
+170,Post Processing,42|49,PIPE
+171,Magnitude Calculation,12|44|170,PIPE
+172,Phase Calculation,8|45|170,PIPE
+173,Decibel Conversion,12|171,PIPE
+174,Peak Detection,170|171,PIPE
+175,Frequency Estimation,40|174,PIPE
+176,Dominant Frequency,174|175,PIPE
+177,Data Visualization,,VAPP
+178,Spectrum Plot,42|177,VAPP
+179,Spectrogram,15|16|178,VAPP
+180,Waterfall Display,179,VAPP
+181,Time Domain Plot,15|177,VAPP
+182,Performance Charts,134|177,VAPP
+183,Comparison Tables,134|182,VAPP
+184,Performance Dashboard,182|183,VAPP
+185,Benchmark Results,150|182,VAPP
+186,Report Generation,183|185,VAPP
+187,Audio Processing,17|49,VAPP
+188,Music Analysis,10|187,VAPP
+189,Voice Recognition,187|188,VAPP
+190,Noise Cancellation,26|29|187,VAPP
+191,Spectrum Analyzer,42|187,VAPP
+192,Pitch Detection,7|188,VAPP
+193,Vibration Analysis,17|42,VAPP
+194,Machine Monitoring,193,VAPP
+195,Radar Processing,16|49,VAPP
+196,Communication Systems,16|28,VAPP
+197,Software Defined Radio,196,VAPP
+198,Sound Processing,17|49|187,VAPP
+199,Capstone Project,150|186,VAPP
+200,Benchmark Suite,150|199,VAPP

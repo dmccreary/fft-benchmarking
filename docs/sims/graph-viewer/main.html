@@ -4,24 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FFT Benchmarking Learning Graph Viewer</title>
-    <!-- Include the latest vis.js from CDN -->
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <!-- Include the custom script to visualize the graph -->
-    <script src="graph-viewer.js" delay></script>
+    <script src="graph-viewer.js" defer></script>
     <style>
         body {
-        font-family: Arial, Helvetica, sans-serif;
-        display: flex;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            margin: 0;
+            padding: 10px;
+        }
+
+        #sidebar-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #toggle-button {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-size: 18px;
         }
 
         /* Left side for showing the legend sidebar */
         #sidebar {
-            width: auto; /* Automatically adjust width based on content in the table */
-            max-width: 280px; /* Set a maximum width to accommodate taxonomy names */
-            padding: 10px; /* around the sidebar */
-            margin-right: 15px; /* Space between sidebar and main content */
+            width: 200px;
+            padding: 10px;
             box-sizing: border-box;
-            font-size: 13px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        #sidebar.collapsed {
+            display: none;
+        }
+
+        #sidebar h3 {
+            margin-top: 0;
+            font-size: 14px;
         }
 
         #sidebar table {
@@ -30,13 +53,60 @@
         }
 
         #sidebar td {
-            padding: 4px 6px;
+            padding: 3px 5px;
             border-bottom: 1px solid #eee;
         }
 
+        #sidebar .color-box {
+            width: 20px;
+            height: 16px;
+            display: inline-block;
+            border: 1px solid #999;
+            vertical-align: middle;
+        }
+
         #main {
-            flex: 1; /* Takes up remaining space to the right */
-            padding: 10px;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        #search-container {
+            margin-bottom: 10px;
+        }
+
+        #search-input {
+            width: 300px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #search-results {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 300px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        #stats {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
         }
 
         #mynetwork {
@@ -45,72 +115,74 @@
             background-color: aliceblue;
             border: 1px solid lightgray;
         }
+
+        .check-controls {
+            margin-bottom: 10px;
+        }
+
+        .check-controls button {
+            font-size: 11px;
+            padding: 3px 8px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .legend-item input {
+            margin-right: 5px;
+        }
+
+        .legend-item label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    
     <div id="sidebar-container">
-      <button id="toggle-button" onclick="toggleSidebar()">&#9776;</button>
-
-      <div id="sidebar">
-          <h3>Taxonomy Legend</h3>
-          <table>
-            <tr>
-                <td><strong>MATH</strong> - Mathematical Foundations (20)</td>
-                <td style="background-color: #E74C3C; color: white;">Red</td>
-            </tr>
-            <tr>
-                <td><strong>FFT</strong> - FFT Algorithms (25)</td>
-                <td style="background-color: #3498DB; color: white;">Blue</td>
-            </tr>
-            <tr>
-                <td><strong>SIG</strong> - Signal Processing (25)</td>
-                <td style="background-color: #2ECC71; color: white;">Green</td>
-            </tr>
-            <tr>
-                <td><strong>ARM</strong> - ARM Architecture (30)</td>
-                <td style="background-color: #9B59B6; color: white;">Purple</td>
-            </tr>
-            <tr>
-                <td><strong>MEM</strong> - Memory Management (25)</td>
-                <td style="background-color: #F39C12; color: white;">Orange</td>
-            </tr>
-            <tr>
-                <td><strong>FXP</strong> - Fixed-Point Arithmetic (18)</td>
-                <td style="background-color: #1ABC9C; color: white;">Teal</td>
-            </tr>
-            <tr>
-                <td><strong>BENCH</strong> - Benchmarking (30)</td>
-                <td style="background-color: #E67E22; color: white;">Dk Orange</td>
-            </tr>
-            <tr>
-                <td><strong>LIB</strong> - FFT Libraries (20)</td>
-                <td style="background-color: #95A5A6; color: white;">Gray</td>
-            </tr>
-            <tr>
-                <td><strong>OPT</strong> - Optimization (7)</td>
-                <td style="background-color: #F1C40F;">Gold</td>
-            </tr>
-        </table>
-        <p style="font-size: 12px; margin-top: 10px;"><strong>Total: 200 concepts</strong></p>
-      </div>
+        <button id="toggle-button" onclick="toggleSidebar()">&#9776;</button>
+        <div id="sidebar">
+            <h3>Categories</h3>
+            <div class="check-controls">
+                <button onclick="checkAll()">Check All</button>
+                <button onclick="uncheckAll()">Uncheck All</button>
+            </div>
+            <div id="legend-container">
+                <!-- Legend items will be dynamically generated -->
+            </div>
+        </div>
     </div>
-      <div id="main">
-        <h4>FFT Benchmarking Learning Graph - 200 Concepts</h4>
+
+    <div id="main">
+        <h4>FFT Benchmarking Learning Graph</h4>
+
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search concepts..." oninput="searchConcepts(this.value)">
+            <div id="search-results"></div>
+        </div>
+
+        <div id="stats">
+            Visible: <span id="visible-nodes">0</span> nodes, <span id="visible-edges">0</span> edges |
+            Foundational: <span id="foundational-count">0</span>
+        </div>
 
         <div id="mynetwork"></div>
 
-        <p style="margin-top: 10px;">
-          <a href="../..">Return to Course Home</a> |
-          <a href="../../learning-graph/concept-taxonomy.html">View Taxonomy Details</a>
+        <p>
+            <a href="../..">Return to Course Home</a> |
+            <a href="../../learning-graph/concept-taxonomy.html">View Taxonomy Details</a>
         </p>
-
     </div>
-    <!-- Load the graph data and visualize it -->
+
     <script>
-        // Call the function to load the graph data and display it
         window.onload = function() {
-            drawGraph();
+            initGraph();
         };
     </script>
 </body>

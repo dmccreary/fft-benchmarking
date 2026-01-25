@@ -6,8 +6,10 @@
 
 ## Summary
 
-This course covers the process of doing objective benchmarking of the FFT algorithm on both microcontrollers as well as standard CPUs.  We provide a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing.  We then describe a framework for benchmarking FFT algorithm performance on different data sets.
-We conclude with methods for presenting the results of FFT benchmarks.
+This course covers the process of doing objective benchmarking and optimization of the FFT algorithm on microcontrollers like the RP2350 as well as standard CPUs and dedicated DSP chips.  We provide a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing.  We then describe a framework for benchmarking FFT algorithm performance on different data sets as
+well as techniques for optimizing FFT performance for various real-time signal processing applications.
+We conclude with methods for objectively presenting the results of FFT benchmarks and using these benchmarks
+to understand performance and resolution tradeoffs.
 
 ## Why This Course
 
@@ -21,34 +23,46 @@ We study the process of not only comparing different FFT implementations, but we
 
 ## Content
 
-Fourier Transforms
-Math Foundations
-Programming Background
-FFT History
-FFT Timeline
-FFT Basics
-FFT Butterfly
-FFT and IFFT
-FFT Performance
-FFT Benchmarking
-FFT Parameters
-FFT Size
-Integer vs Floating Point
-Preprocessing Signals
-Post Processing of Signals
-Programming Languages
-C Language
-Python Libraries
-Machine Language
-Reading Assembly Languages
-DSP Functions
-FFT Libraries
-GitHub Repositories
-FFT Licenses
-Benchmarking Frameworks
-Performance Comparisons
-Presenting Results
-Performance Charts
+Here are the concepts that will be covered in this course:
+
+- Fourier Transforms
+- Math Foundations
+- Programming Background
+- FFT History
+- FFT Timeline
+- FFT Basics
+- FFT Butterfly
+- FFT and IFFT
+- FFT Performance
+- FFT Benchmarking
+- FFT Parameters
+- FFT Size
+- Integer vs Floating Point
+- Preprocessing Signals
+- Post Processing of Signals
+- Programming Languages
+- C Language
+- Python Libraries
+- Machine Language
+- Reading Assembly Languages
+- DSP Functions
+- FFT Libraries
+- GitHub Repositories
+- FFT Licenses
+- Benchmarking Frameworks
+- Performance Comparisons
+- Presenting Results
+- Performance Charts
+- Performance Dashboards
+- FFT Applications
+- Sound Processing
+- Signal Processing
+
+## Concepts Not Covered
+
+- Assembly language in non-ARM instruction sets
+- Use of FPGAs to run FFTs
+- ASIC design for FFTs
 
 ## Outcomes
 
@@ -59,6 +73,7 @@ ability to create new artifacts.
 After this course a student will
 
 ### Remember
+
 - Recall the key properties of the Fast Fourier Transform (FFT) algorithm
 - List the DSP instructions available in ARM Cortex-M33 and M4 processors
 - Identify common FFT libraries and their licensing requirements
@@ -66,6 +81,7 @@ After this course a student will
 - Name the tradeoffs between integer and floating-point FFT implementations
 
 ### Understand
+
 - Explain how the FFT algorithm transforms time-domain signals to frequency domain
 - Describe the relationship between FFT size and computational complexity
 - Summarize the historical development of DSP hardware acceleration
@@ -73,6 +89,7 @@ After this course a student will
 - Clarify why certain hardware features improve FFT performance
 
 ### Apply
+
 - Implement FFT benchmarks using provided frameworks on microcontrollers
 - Use appropriate FFT libraries in C and Python for signal processing tasks
 - Configure FFT parameters (size, precision, windowing) for specific applications
@@ -80,6 +97,7 @@ After this course a student will
 - Apply preprocessing and post-processing techniques to improve FFT results
 
 ### Analyze
+
 - Compare the performance characteristics of different FFT implementations
 - Examine assembly code to identify optimization opportunities
 - Differentiate between factors affecting FFT speed (hardware, software, parameters)
@@ -87,6 +105,7 @@ After this course a student will
 - Break down complex benchmarking results to identify performance bottlenecks
 
 ### Evaluate
+
 - Assess which FFT library is most appropriate for a given application
 - Critique benchmarking methodologies for validity and completeness
 - Judge the quality and accuracy of FFT performance claims
@@ -94,6 +113,7 @@ After this course a student will
 - Justify hardware and software choices for real-time signal processing systems
 
 ### Create
+
 - Design a comprehensive benchmarking framework for FFT evaluation
 - Develop custom visualizations to present FFT performance comparisons
 - Produce a capstone project documenting FFT performance across platforms

@@ -1,0 +1,1939 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "label": "Complex Numbers",
+      "group": "MATH"
+    },
+    {
+      "id": 2,
+      "label": "Euler's Formula",
+      "group": "MATH"
+    },
+    {
+      "id": 3,
+      "label": "Sine Wave Representation",
+      "group": "MATH"
+    },
+    {
+      "id": 4,
+      "label": "Frequency Domain",
+      "group": "MATH"
+    },
+    {
+      "id": 5,
+      "label": "Time Domain",
+      "group": "MATH"
+    },
+    {
+      "id": 6,
+      "label": "Discrete Fourier Transform",
+      "group": "MATH"
+    },
+    {
+      "id": 7,
+      "label": "Continuous Fourier Transform",
+      "group": "MATH"
+    },
+    {
+      "id": 8,
+      "label": "Transform Pairs",
+      "group": "MATH"
+    },
+    {
+      "id": 9,
+      "label": "Linearity Property",
+      "group": "MATH"
+    },
+    {
+      "id": 10,
+      "label": "Time Shifting",
+      "group": "MATH"
+    },
+    {
+      "id": 11,
+      "label": "Frequency Shifting",
+      "group": "MATH"
+    },
+    {
+      "id": 12,
+      "label": "Convolution Theorem",
+      "group": "MATH"
+    },
+    {
+      "id": 13,
+      "label": "Parseval's Theorem",
+      "group": "MATH"
+    },
+    {
+      "id": 14,
+      "label": "Symmetry Properties",
+      "group": "MATH"
+    },
+    {
+      "id": 15,
+      "label": "Magnitude Spectrum",
+      "group": "MATH"
+    },
+    {
+      "id": 16,
+      "label": "Phase Spectrum",
+      "group": "MATH"
+    },
+    {
+      "id": 17,
+      "label": "Rectangular Form",
+      "group": "MATH"
+    },
+    {
+      "id": 18,
+      "label": "Polar Form",
+      "group": "MATH"
+    },
+    {
+      "id": 19,
+      "label": "Sampling Theorem",
+      "group": "MATH"
+    },
+    {
+      "id": 20,
+      "label": "Nyquist Frequency",
+      "group": "MATH"
+    },
+    {
+      "id": 21,
+      "label": "Fast Fourier Transform",
+      "group": "FFT"
+    },
+    {
+      "id": 22,
+      "label": "Cooley-Tukey Algorithm",
+      "group": "FFT"
+    },
+    {
+      "id": 23,
+      "label": "Divide And Conquer",
+      "group": "FFT"
+    },
+    {
+      "id": 24,
+      "label": "Butterfly Operation",
+      "group": "FFT"
+    },
+    {
+      "id": 25,
+      "label": "Radix-2 FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 26,
+      "label": "Radix-4 FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 27,
+      "label": "Radix-8 FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 28,
+      "label": "Mixed Radix FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 29,
+      "label": "Decimation In Time",
+      "group": "FFT"
+    },
+    {
+      "id": 30,
+      "label": "Decimation In Frequency",
+      "group": "FFT"
+    },
+    {
+      "id": 31,
+      "label": "Bit Reversal Permutation",
+      "group": "FFT"
+    },
+    {
+      "id": 32,
+      "label": "Twiddle Factors",
+      "group": "FFT"
+    },
+    {
+      "id": 33,
+      "label": "In-Place Computation",
+      "group": "FFT"
+    },
+    {
+      "id": 34,
+      "label": "Computational Complexity",
+      "group": "FFT"
+    },
+    {
+      "id": 35,
+      "label": "FFT Size Selection",
+      "group": "FFT"
+    },
+    {
+      "id": 36,
+      "label": "Power Of Two Constraint",
+      "group": "FFT"
+    },
+    {
+      "id": 37,
+      "label": "Inverse FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 38,
+      "label": "FFT Scaling",
+      "group": "FFT"
+    },
+    {
+      "id": 39,
+      "label": "Real FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 40,
+      "label": "Complex FFT",
+      "group": "FFT"
+    },
+    {
+      "id": 41,
+      "label": "Half-Spectrum Property",
+      "group": "FFT"
+    },
+    {
+      "id": 42,
+      "label": "Zero Padding",
+      "group": "FFT"
+    },
+    {
+      "id": 43,
+      "label": "Frequency Resolution",
+      "group": "FFT"
+    },
+    {
+      "id": 44,
+      "label": "Time Resolution Tradeoff",
+      "group": "FFT"
+    },
+    {
+      "id": 45,
+      "label": "Circular Convolution",
+      "group": "FFT"
+    },
+    {
+      "id": 46,
+      "label": "Digital Signal Processing",
+      "group": "SIG"
+    },
+    {
+      "id": 47,
+      "label": "Analog To Digital Conversion",
+      "group": "SIG"
+    },
+    {
+      "id": 48,
+      "label": "Digital To Analog Conversion",
+      "group": "SIG"
+    },
+    {
+      "id": 49,
+      "label": "Sample Rate",
+      "group": "SIG"
+    },
+    {
+      "id": 50,
+      "label": "Quantization",
+      "group": "SIG"
+    },
+    {
+      "id": 51,
+      "label": "Bit Depth",
+      "group": "SIG"
+    },
+    {
+      "id": 52,
+      "label": "Dynamic Range",
+      "group": "SIG"
+    },
+    {
+      "id": 53,
+      "label": "Signal To Noise Ratio",
+      "group": "SIG"
+    },
+    {
+      "id": 54,
+      "label": "Windowing Functions",
+      "group": "SIG"
+    },
+    {
+      "id": 55,
+      "label": "Rectangular Window",
+      "group": "SIG"
+    },
+    {
+      "id": 56,
+      "label": "Hanning Window",
+      "group": "SIG"
+    },
+    {
+      "id": 57,
+      "label": "Hamming Window",
+      "group": "SIG"
+    },
+    {
+      "id": 58,
+      "label": "Blackman Window",
+      "group": "SIG"
+    },
+    {
+      "id": 59,
+      "label": "Kaiser Window",
+      "group": "SIG"
+    },
+    {
+      "id": 60,
+      "label": "Window Sidelobe Levels",
+      "group": "SIG"
+    },
+    {
+      "id": 61,
+      "label": "Spectral Leakage",
+      "group": "SIG"
+    },
+    {
+      "id": 62,
+      "label": "Scalloping Loss",
+      "group": "SIG"
+    },
+    {
+      "id": 63,
+      "label": "Overlap Add Method",
+      "group": "SIG"
+    },
+    {
+      "id": 64,
+      "label": "Overlap Save Method",
+      "group": "SIG"
+    },
+    {
+      "id": 65,
+      "label": "Frame Size",
+      "group": "SIG"
+    },
+    {
+      "id": 66,
+      "label": "Hop Size",
+      "group": "SIG"
+    },
+    {
+      "id": 67,
+      "label": "Frequency Bins",
+      "group": "SIG"
+    },
+    {
+      "id": 68,
+      "label": "Bin Width",
+      "group": "SIG"
+    },
+    {
+      "id": 69,
+      "label": "Spectrum Analysis",
+      "group": "SIG"
+    },
+    {
+      "id": 70,
+      "label": "Spectrogram",
+      "group": "SIG"
+    },
+    {
+      "id": 71,
+      "label": "ARM Cortex M Series",
+      "group": "ARM"
+    },
+    {
+      "id": 72,
+      "label": "Cortex M4 Processor",
+      "group": "ARM"
+    },
+    {
+      "id": 73,
+      "label": "Cortex M33 Processor",
+      "group": "ARM"
+    },
+    {
+      "id": 74,
+      "label": "Instruction Set Architecture",
+      "group": "ARM"
+    },
+    {
+      "id": 75,
+      "label": "Thumb Instructions",
+      "group": "ARM"
+    },
+    {
+      "id": 76,
+      "label": "DSP Extension Instructions",
+      "group": "ARM"
+    },
+    {
+      "id": 77,
+      "label": "Single Instruction Multiple Data",
+      "group": "ARM"
+    },
+    {
+      "id": 78,
+      "label": "MAC Instructions",
+      "group": "ARM"
+    },
+    {
+      "id": 79,
+      "label": "Saturating Arithmetic",
+      "group": "ARM"
+    },
+    {
+      "id": 80,
+      "label": "Floating Point Unit",
+      "group": "ARM"
+    },
+    {
+      "id": 81,
+      "label": "Single Precision Float",
+      "group": "ARM"
+    },
+    {
+      "id": 82,
+      "label": "Double Precision Float",
+      "group": "ARM"
+    },
+    {
+      "id": 83,
+      "label": "Hardware Floating Point",
+      "group": "ARM"
+    },
+    {
+      "id": 84,
+      "label": "Software Floating Point",
+      "group": "ARM"
+    },
+    {
+      "id": 85,
+      "label": "FPU Register File",
+      "group": "ARM"
+    },
+    {
+      "id": 86,
+      "label": "Pipeline Architecture",
+      "group": "ARM"
+    },
+    {
+      "id": 87,
+      "label": "Instruction Pipeline",
+      "group": "ARM"
+    },
+    {
+      "id": 88,
+      "label": "Branch Prediction",
+      "group": "ARM"
+    },
+    {
+      "id": 89,
+      "label": "Interrupt Handling",
+      "group": "ARM"
+    },
+    {
+      "id": 90,
+      "label": "Exception Handling",
+      "group": "ARM"
+    },
+    {
+      "id": 91,
+      "label": "Memory Mapped IO",
+      "group": "ARM"
+    },
+    {
+      "id": 92,
+      "label": "Peripheral Access",
+      "group": "ARM"
+    },
+    {
+      "id": 93,
+      "label": "Clock Configuration",
+      "group": "ARM"
+    },
+    {
+      "id": 94,
+      "label": "Clock Cycles",
+      "group": "ARM"
+    },
+    {
+      "id": 95,
+      "label": "Instruction Cycle Count",
+      "group": "ARM"
+    },
+    {
+      "id": 96,
+      "label": "Wait States",
+      "group": "ARM"
+    },
+    {
+      "id": 97,
+      "label": "Flash Memory Access",
+      "group": "ARM"
+    },
+    {
+      "id": 98,
+      "label": "RAM Access Patterns",
+      "group": "ARM"
+    },
+    {
+      "id": 99,
+      "label": "Direct Memory Access",
+      "group": "ARM"
+    },
+    {
+      "id": 100,
+      "label": "DMA Channels",
+      "group": "ARM"
+    },
+    {
+      "id": 101,
+      "label": "Cache Memory",
+      "group": "MEM"
+    },
+    {
+      "id": 102,
+      "label": "Cache Hit Rate",
+      "group": "MEM"
+    },
+    {
+      "id": 103,
+      "label": "Cache Miss Penalty",
+      "group": "MEM"
+    },
+    {
+      "id": 104,
+      "label": "Data Cache",
+      "group": "MEM"
+    },
+    {
+      "id": 105,
+      "label": "Instruction Cache",
+      "group": "MEM"
+    },
+    {
+      "id": 106,
+      "label": "Cache Line Size",
+      "group": "MEM"
+    },
+    {
+      "id": 107,
+      "label": "Memory Alignment",
+      "group": "MEM"
+    },
+    {
+      "id": 108,
+      "label": "Aligned Data Access",
+      "group": "MEM"
+    },
+    {
+      "id": 109,
+      "label": "Unaligned Data Access",
+      "group": "MEM"
+    },
+    {
+      "id": 110,
+      "label": "Memory Bandwidth",
+      "group": "MEM"
+    },
+    {
+      "id": 111,
+      "label": "Memory Latency",
+      "group": "MEM"
+    },
+    {
+      "id": 112,
+      "label": "Stack Memory",
+      "group": "MEM"
+    },
+    {
+      "id": 113,
+      "label": "Heap Memory",
+      "group": "MEM"
+    },
+    {
+      "id": 114,
+      "label": "Static Memory Allocation",
+      "group": "MEM"
+    },
+    {
+      "id": 115,
+      "label": "Dynamic Memory Allocation",
+      "group": "MEM"
+    },
+    {
+      "id": 116,
+      "label": "Buffer Management",
+      "group": "MEM"
+    },
+    {
+      "id": 117,
+      "label": "Double Buffering",
+      "group": "MEM"
+    },
+    {
+      "id": 118,
+      "label": "Ping Pong Buffers",
+      "group": "MEM"
+    },
+    {
+      "id": 119,
+      "label": "Circular Buffers",
+      "group": "MEM"
+    },
+    {
+      "id": 120,
+      "label": "Memory Copy Operations",
+      "group": "MEM"
+    },
+    {
+      "id": 121,
+      "label": "Data Layout",
+      "group": "MEM"
+    },
+    {
+      "id": 122,
+      "label": "Structure Packing",
+      "group": "MEM"
+    },
+    {
+      "id": 123,
+      "label": "Array Of Structures",
+      "group": "MEM"
+    },
+    {
+      "id": 124,
+      "label": "Structure Of Arrays",
+      "group": "MEM"
+    },
+    {
+      "id": 125,
+      "label": "Memory Fragmentation",
+      "group": "MEM"
+    },
+    {
+      "id": 126,
+      "label": "Fixed Point Numbers",
+      "group": "FXP"
+    },
+    {
+      "id": 127,
+      "label": "Q Format Notation",
+      "group": "FXP"
+    },
+    {
+      "id": 128,
+      "label": "Integer Representation",
+      "group": "FXP"
+    },
+    {
+      "id": 129,
+      "label": "Fractional Representation",
+      "group": "FXP"
+    },
+    {
+      "id": 130,
+      "label": "Scaling Factor",
+      "group": "FXP"
+    },
+    {
+      "id": 131,
+      "label": "Fixed Point Multiplication",
+      "group": "FXP"
+    },
+    {
+      "id": 132,
+      "label": "Fixed Point Division",
+      "group": "FXP"
+    },
+    {
+      "id": 133,
+      "label": "Fixed Point Addition",
+      "group": "FXP"
+    },
+    {
+      "id": 134,
+      "label": "Overflow Detection",
+      "group": "FXP"
+    },
+    {
+      "id": 135,
+      "label": "Saturation Handling",
+      "group": "FXP"
+    },
+    {
+      "id": 136,
+      "label": "Rounding Modes",
+      "group": "FXP"
+    },
+    {
+      "id": 137,
+      "label": "Truncation Error",
+      "group": "FXP"
+    },
+    {
+      "id": 138,
+      "label": "Quantization Noise",
+      "group": "FXP"
+    },
+    {
+      "id": 139,
+      "label": "Dynamic Range Management",
+      "group": "FXP"
+    },
+    {
+      "id": 140,
+      "label": "Precision Analysis",
+      "group": "FXP"
+    },
+    {
+      "id": 141,
+      "label": "Bit Width Selection",
+      "group": "FXP"
+    },
+    {
+      "id": 142,
+      "label": "Sign Extension",
+      "group": "FXP"
+    },
+    {
+      "id": 143,
+      "label": "Fixed To Float Conversion",
+      "group": "FXP"
+    },
+    {
+      "id": 144,
+      "label": "Performance Metrics",
+      "group": "BENCH"
+    },
+    {
+      "id": 145,
+      "label": "Execution Time",
+      "group": "BENCH"
+    },
+    {
+      "id": 146,
+      "label": "Clock Cycle Measurement",
+      "group": "BENCH"
+    },
+    {
+      "id": 147,
+      "label": "System Timer",
+      "group": "BENCH"
+    },
+    {
+      "id": 148,
+      "label": "High Resolution Timer",
+      "group": "BENCH"
+    },
+    {
+      "id": 149,
+      "label": "Timestamp Counter",
+      "group": "BENCH"
+    },
+    {
+      "id": 150,
+      "label": "Profiling Tools",
+      "group": "BENCH"
+    },
+    {
+      "id": 151,
+      "label": "Code Profiling",
+      "group": "BENCH"
+    },
+    {
+      "id": 152,
+      "label": "Function Profiling",
+      "group": "BENCH"
+    },
+    {
+      "id": 153,
+      "label": "Instruction Profiling",
+      "group": "BENCH"
+    },
+    {
+      "id": 154,
+      "label": "Statistical Analysis",
+      "group": "BENCH"
+    },
+    {
+      "id": 155,
+      "label": "Mean Execution Time",
+      "group": "BENCH"
+    },
+    {
+      "id": 156,
+      "label": "Standard Deviation",
+      "group": "BENCH"
+    },
+    {
+      "id": 157,
+      "label": "Variance Analysis",
+      "group": "BENCH"
+    },
+    {
+      "id": 158,
+      "label": "Outlier Detection",
+      "group": "BENCH"
+    },
+    {
+      "id": 159,
+      "label": "Confidence Intervals",
+      "group": "BENCH"
+    },
+    {
+      "id": 160,
+      "label": "Benchmark Repeatability",
+      "group": "BENCH"
+    },
+    {
+      "id": 161,
+      "label": "Test Case Design",
+      "group": "BENCH"
+    },
+    {
+      "id": 162,
+      "label": "Input Signal Generation",
+      "group": "BENCH"
+    },
+    {
+      "id": 163,
+      "label": "Sine Wave Test Signal",
+      "group": "BENCH"
+    },
+    {
+      "id": 164,
+      "label": "Chirp Signal",
+      "group": "BENCH"
+    },
+    {
+      "id": 165,
+      "label": "White Noise Signal",
+      "group": "BENCH"
+    },
+    {
+      "id": 166,
+      "label": "Impulse Response",
+      "group": "BENCH"
+    },
+    {
+      "id": 167,
+      "label": "Frequency Sweep",
+      "group": "BENCH"
+    },
+    {
+      "id": 168,
+      "label": "Amplitude Scaling",
+      "group": "BENCH"
+    },
+    {
+      "id": 169,
+      "label": "Baseline Measurement",
+      "group": "BENCH"
+    },
+    {
+      "id": 170,
+      "label": "Comparative Analysis",
+      "group": "BENCH"
+    },
+    {
+      "id": 171,
+      "label": "Performance Regression",
+      "group": "BENCH"
+    },
+    {
+      "id": 172,
+      "label": "Benchmark Automation",
+      "group": "BENCH"
+    },
+    {
+      "id": 173,
+      "label": "Test Harness Design",
+      "group": "BENCH"
+    },
+    {
+      "id": 174,
+      "label": "CMSIS DSP Library",
+      "group": "LIB"
+    },
+    {
+      "id": 175,
+      "label": "FFTW Library",
+      "group": "LIB"
+    },
+    {
+      "id": 176,
+      "label": "Kiss FFT",
+      "group": "LIB"
+    },
+    {
+      "id": 177,
+      "label": "FFT Library Licensing",
+      "group": "LIB"
+    },
+    {
+      "id": 178,
+      "label": "Open Source Libraries",
+      "group": "LIB"
+    },
+    {
+      "id": 179,
+      "label": "Proprietary Libraries",
+      "group": "LIB"
+    },
+    {
+      "id": 180,
+      "label": "Library API Design",
+      "group": "LIB"
+    },
+    {
+      "id": 181,
+      "label": "Function Call Overhead",
+      "group": "LIB"
+    },
+    {
+      "id": 182,
+      "label": "Initialization Functions",
+      "group": "LIB"
+    },
+    {
+      "id": 183,
+      "label": "Configuration Parameters",
+      "group": "LIB"
+    },
+    {
+      "id": 184,
+      "label": "Library Documentation",
+      "group": "LIB"
+    },
+    {
+      "id": 185,
+      "label": "Example Code",
+      "group": "LIB"
+    },
+    {
+      "id": 186,
+      "label": "GitHub Repositories",
+      "group": "LIB"
+    },
+    {
+      "id": 187,
+      "label": "Version Control",
+      "group": "LIB"
+    },
+    {
+      "id": 188,
+      "label": "Library Integration",
+      "group": "LIB"
+    },
+    {
+      "id": 189,
+      "label": "Header Files",
+      "group": "LIB"
+    },
+    {
+      "id": 190,
+      "label": "Linking Libraries",
+      "group": "LIB"
+    },
+    {
+      "id": 191,
+      "label": "Static Linking",
+      "group": "LIB"
+    },
+    {
+      "id": 192,
+      "label": "Dynamic Linking",
+      "group": "LIB"
+    },
+    {
+      "id": 193,
+      "label": "Library Dependencies",
+      "group": "LIB"
+    },
+    {
+      "id": 194,
+      "label": "Compiler Optimization Levels",
+      "group": "OPT"
+    },
+    {
+      "id": 195,
+      "label": "Loop Unrolling",
+      "group": "OPT"
+    },
+    {
+      "id": 196,
+      "label": "Function Inlining",
+      "group": "OPT"
+    },
+    {
+      "id": 197,
+      "label": "Code Size Optimization",
+      "group": "OPT"
+    },
+    {
+      "id": 198,
+      "label": "Speed Optimization",
+      "group": "OPT"
+    },
+    {
+      "id": 199,
+      "label": "Constant Propagation",
+      "group": "OPT"
+    },
+    {
+      "id": 200,
+      "label": "Dead Code Elimination",
+      "group": "OPT"
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "to": 2
+    },
+    {
+      "from": 3,
+      "to": 4
+    },
+    {
+      "from": 3,
+      "to": 5
+    },
+    {
+      "from": 1,
+      "to": 6
+    },
+    {
+      "from": 4,
+      "to": 6
+    },
+    {
+      "from": 5,
+      "to": 6
+    },
+    {
+      "from": 1,
+      "to": 7
+    },
+    {
+      "from": 4,
+      "to": 7
+    },
+    {
+      "from": 5,
+      "to": 7
+    },
+    {
+      "from": 6,
+      "to": 8
+    },
+    {
+      "from": 7,
+      "to": 8
+    },
+    {
+      "from": 6,
+      "to": 9
+    },
+    {
+      "from": 5,
+      "to": 10
+    },
+    {
+      "from": 6,
+      "to": 10
+    },
+    {
+      "from": 4,
+      "to": 11
+    },
+    {
+      "from": 6,
+      "to": 11
+    },
+    {
+      "from": 6,
+      "to": 12
+    },
+    {
+      "from": 6,
+      "to": 13
+    },
+    {
+      "from": 1,
+      "to": 14
+    },
+    {
+      "from": 6,
+      "to": 14
+    },
+    {
+      "from": 1,
+      "to": 15
+    },
+    {
+      "from": 4,
+      "to": 15
+    },
+    {
+      "from": 1,
+      "to": 16
+    },
+    {
+      "from": 4,
+      "to": 16
+    },
+    {
+      "from": 1,
+      "to": 17
+    },
+    {
+      "from": 1,
+      "to": 18
+    },
+    {
+      "from": 5,
+      "to": 19
+    },
+    {
+      "from": 19,
+      "to": 20
+    },
+    {
+      "from": 6,
+      "to": 21
+    },
+    {
+      "from": 21,
+      "to": 22
+    },
+    {
+      "from": 22,
+      "to": 23
+    },
+    {
+      "from": 22,
+      "to": 24
+    },
+    {
+      "from": 22,
+      "to": 25
+    },
+    {
+      "from": 24,
+      "to": 25
+    },
+    {
+      "from": 22,
+      "to": 26
+    },
+    {
+      "from": 24,
+      "to": 26
+    },
+    {
+      "from": 22,
+      "to": 27
+    },
+    {
+      "from": 24,
+      "to": 27
+    },
+    {
+      "from": 25,
+      "to": 28
+    },
+    {
+      "from": 26,
+      "to": 28
+    },
+    {
+      "from": 22,
+      "to": 29
+    },
+    {
+      "from": 22,
+      "to": 30
+    },
+    {
+      "from": 25,
+      "to": 31
+    },
+    {
+      "from": 2,
+      "to": 32
+    },
+    {
+      "from": 22,
+      "to": 32
+    },
+    {
+      "from": 21,
+      "to": 33
+    },
+    {
+      "from": 21,
+      "to": 34
+    },
+    {
+      "from": 21,
+      "to": 35
+    },
+    {
+      "from": 34,
+      "to": 35
+    },
+    {
+      "from": 25,
+      "to": 36
+    },
+    {
+      "from": 21,
+      "to": 37
+    },
+    {
+      "from": 21,
+      "to": 38
+    },
+    {
+      "from": 21,
+      "to": 39
+    },
+    {
+      "from": 21,
+      "to": 40
+    },
+    {
+      "from": 14,
+      "to": 41
+    },
+    {
+      "from": 39,
+      "to": 41
+    },
+    {
+      "from": 21,
+      "to": 42
+    },
+    {
+      "from": 21,
+      "to": 43
+    },
+    {
+      "from": 42,
+      "to": 43
+    },
+    {
+      "from": 43,
+      "to": 44
+    },
+    {
+      "from": 12,
+      "to": 45
+    },
+    {
+      "from": 21,
+      "to": 45
+    },
+    {
+      "from": 5,
+      "to": 46
+    },
+    {
+      "from": 5,
+      "to": 47
+    },
+    {
+      "from": 5,
+      "to": 48
+    },
+    {
+      "from": 19,
+      "to": 49
+    },
+    {
+      "from": 47,
+      "to": 49
+    },
+    {
+      "from": 47,
+      "to": 50
+    },
+    {
+      "from": 50,
+      "to": 51
+    },
+    {
+      "from": 51,
+      "to": 52
+    },
+    {
+      "from": 50,
+      "to": 53
+    },
+    {
+      "from": 52,
+      "to": 53
+    },
+    {
+      "from": 21,
+      "to": 54
+    },
+    {
+      "from": 54,
+      "to": 55
+    },
+    {
+      "from": 54,
+      "to": 56
+    },
+    {
+      "from": 54,
+      "to": 57
+    },
+    {
+      "from": 54,
+      "to": 58
+    },
+    {
+      "from": 54,
+      "to": 59
+    },
+    {
+      "from": 54,
+      "to": 60
+    },
+    {
+      "from": 54,
+      "to": 61
+    },
+    {
+      "from": 54,
+      "to": 62
+    },
+    {
+      "from": 21,
+      "to": 63
+    },
+    {
+      "from": 54,
+      "to": 63
+    },
+    {
+      "from": 21,
+      "to": 64
+    },
+    {
+      "from": 54,
+      "to": 64
+    },
+    {
+      "from": 21,
+      "to": 65
+    },
+    {
+      "from": 63,
+      "to": 66
+    },
+    {
+      "from": 65,
+      "to": 66
+    },
+    {
+      "from": 21,
+      "to": 67
+    },
+    {
+      "from": 43,
+      "to": 68
+    },
+    {
+      "from": 67,
+      "to": 68
+    },
+    {
+      "from": 15,
+      "to": 69
+    },
+    {
+      "from": 16,
+      "to": 69
+    },
+    {
+      "from": 69,
+      "to": 70
+    },
+    {
+      "from": 71,
+      "to": 72
+    },
+    {
+      "from": 71,
+      "to": 73
+    },
+    {
+      "from": 71,
+      "to": 74
+    },
+    {
+      "from": 74,
+      "to": 75
+    },
+    {
+      "from": 74,
+      "to": 76
+    },
+    {
+      "from": 76,
+      "to": 77
+    },
+    {
+      "from": 76,
+      "to": 78
+    },
+    {
+      "from": 76,
+      "to": 79
+    },
+    {
+      "from": 71,
+      "to": 80
+    },
+    {
+      "from": 80,
+      "to": 81
+    },
+    {
+      "from": 80,
+      "to": 82
+    },
+    {
+      "from": 80,
+      "to": 83
+    },
+    {
+      "from": 80,
+      "to": 85
+    },
+    {
+      "from": 71,
+      "to": 86
+    },
+    {
+      "from": 86,
+      "to": 87
+    },
+    {
+      "from": 87,
+      "to": 88
+    },
+    {
+      "from": 71,
+      "to": 89
+    },
+    {
+      "from": 89,
+      "to": 90
+    },
+    {
+      "from": 71,
+      "to": 91
+    },
+    {
+      "from": 91,
+      "to": 92
+    },
+    {
+      "from": 71,
+      "to": 93
+    },
+    {
+      "from": 93,
+      "to": 94
+    },
+    {
+      "from": 94,
+      "to": 95
+    },
+    {
+      "from": 101,
+      "to": 96
+    },
+    {
+      "from": 71,
+      "to": 97
+    },
+    {
+      "from": 71,
+      "to": 98
+    },
+    {
+      "from": 71,
+      "to": 99
+    },
+    {
+      "from": 99,
+      "to": 100
+    },
+    {
+      "from": 71,
+      "to": 101
+    },
+    {
+      "from": 101,
+      "to": 102
+    },
+    {
+      "from": 101,
+      "to": 103
+    },
+    {
+      "from": 102,
+      "to": 103
+    },
+    {
+      "from": 101,
+      "to": 104
+    },
+    {
+      "from": 101,
+      "to": 105
+    },
+    {
+      "from": 101,
+      "to": 106
+    },
+    {
+      "from": 71,
+      "to": 107
+    },
+    {
+      "from": 107,
+      "to": 108
+    },
+    {
+      "from": 107,
+      "to": 109
+    },
+    {
+      "from": 71,
+      "to": 110
+    },
+    {
+      "from": 110,
+      "to": 111
+    },
+    {
+      "from": 71,
+      "to": 112
+    },
+    {
+      "from": 71,
+      "to": 113
+    },
+    {
+      "from": 112,
+      "to": 114
+    },
+    {
+      "from": 113,
+      "to": 115
+    },
+    {
+      "from": 112,
+      "to": 116
+    },
+    {
+      "from": 113,
+      "to": 116
+    },
+    {
+      "from": 116,
+      "to": 117
+    },
+    {
+      "from": 117,
+      "to": 118
+    },
+    {
+      "from": 116,
+      "to": 119
+    },
+    {
+      "from": 71,
+      "to": 120
+    },
+    {
+      "from": 107,
+      "to": 121
+    },
+    {
+      "from": 121,
+      "to": 122
+    },
+    {
+      "from": 121,
+      "to": 123
+    },
+    {
+      "from": 121,
+      "to": 124
+    },
+    {
+      "from": 115,
+      "to": 125
+    },
+    {
+      "from": 126,
+      "to": 127
+    },
+    {
+      "from": 126,
+      "to": 128
+    },
+    {
+      "from": 126,
+      "to": 129
+    },
+    {
+      "from": 127,
+      "to": 130
+    },
+    {
+      "from": 127,
+      "to": 131
+    },
+    {
+      "from": 127,
+      "to": 132
+    },
+    {
+      "from": 127,
+      "to": 133
+    },
+    {
+      "from": 131,
+      "to": 134
+    },
+    {
+      "from": 134,
+      "to": 135
+    },
+    {
+      "from": 126,
+      "to": 136
+    },
+    {
+      "from": 136,
+      "to": 137
+    },
+    {
+      "from": 50,
+      "to": 138
+    },
+    {
+      "from": 137,
+      "to": 138
+    },
+    {
+      "from": 52,
+      "to": 139
+    },
+    {
+      "from": 130,
+      "to": 139
+    },
+    {
+      "from": 127,
+      "to": 140
+    },
+    {
+      "from": 140,
+      "to": 141
+    },
+    {
+      "from": 128,
+      "to": 142
+    },
+    {
+      "from": 126,
+      "to": 143
+    },
+    {
+      "from": 80,
+      "to": 143
+    },
+    {
+      "from": 144,
+      "to": 145
+    },
+    {
+      "from": 94,
+      "to": 146
+    },
+    {
+      "from": 145,
+      "to": 146
+    },
+    {
+      "from": 71,
+      "to": 147
+    },
+    {
+      "from": 147,
+      "to": 148
+    },
+    {
+      "from": 148,
+      "to": 149
+    },
+    {
+      "from": 144,
+      "to": 150
+    },
+    {
+      "from": 150,
+      "to": 151
+    },
+    {
+      "from": 151,
+      "to": 152
+    },
+    {
+      "from": 151,
+      "to": 153
+    },
+    {
+      "from": 144,
+      "to": 154
+    },
+    {
+      "from": 145,
+      "to": 155
+    },
+    {
+      "from": 154,
+      "to": 155
+    },
+    {
+      "from": 154,
+      "to": 156
+    },
+    {
+      "from": 154,
+      "to": 157
+    },
+    {
+      "from": 156,
+      "to": 157
+    },
+    {
+      "from": 154,
+      "to": 158
+    },
+    {
+      "from": 154,
+      "to": 159
+    },
+    {
+      "from": 144,
+      "to": 160
+    },
+    {
+      "from": 154,
+      "to": 160
+    },
+    {
+      "from": 144,
+      "to": 161
+    },
+    {
+      "from": 161,
+      "to": 162
+    },
+    {
+      "from": 3,
+      "to": 163
+    },
+    {
+      "from": 162,
+      "to": 163
+    },
+    {
+      "from": 162,
+      "to": 164
+    },
+    {
+      "from": 162,
+      "to": 165
+    },
+    {
+      "from": 162,
+      "to": 166
+    },
+    {
+      "from": 164,
+      "to": 167
+    },
+    {
+      "from": 162,
+      "to": 168
+    },
+    {
+      "from": 144,
+      "to": 169
+    },
+    {
+      "from": 144,
+      "to": 170
+    },
+    {
+      "from": 169,
+      "to": 170
+    },
+    {
+      "from": 170,
+      "to": 171
+    },
+    {
+      "from": 161,
+      "to": 172
+    },
+    {
+      "from": 161,
+      "to": 173
+    },
+    {
+      "from": 172,
+      "to": 173
+    },
+    {
+      "from": 21,
+      "to": 174
+    },
+    {
+      "from": 71,
+      "to": 174
+    },
+    {
+      "from": 21,
+      "to": 175
+    },
+    {
+      "from": 21,
+      "to": 176
+    },
+    {
+      "from": 174,
+      "to": 177
+    },
+    {
+      "from": 174,
+      "to": 180
+    },
+    {
+      "from": 152,
+      "to": 181
+    },
+    {
+      "from": 180,
+      "to": 182
+    },
+    {
+      "from": 180,
+      "to": 183
+    },
+    {
+      "from": 174,
+      "to": 184
+    },
+    {
+      "from": 174,
+      "to": 185
+    },
+    {
+      "from": 186,
+      "to": 187
+    },
+    {
+      "from": 174,
+      "to": 188
+    },
+    {
+      "from": 188,
+      "to": 189
+    },
+    {
+      "from": 188,
+      "to": 190
+    },
+    {
+      "from": 190,
+      "to": 191
+    },
+    {
+      "from": 190,
+      "to": 192
+    },
+    {
+      "from": 190,
+      "to": 193
+    },
+    {
+      "from": 194,
+      "to": 195
+    },
+    {
+      "from": 194,
+      "to": 196
+    },
+    {
+      "from": 194,
+      "to": 197
+    },
+    {
+      "from": 194,
+      "to": 198
+    },
+    {
+      "from": 194,
+      "to": 199
+    },
+    {
+      "from": 194,
+      "to": 200
+    }
+  ],
+  "metadata": {
+    "title": "FFT Benchmarking Course Learning Graph",
+    "description": "200 interconnected concepts for a 10-week course on FFT benchmarking",
+    "nodeCount": 200,
+    "edgeCount": 229,
+    "taxonomies": {
+      "MATH": "Mathematical Foundations",
+      "FFT": "FFT Algorithm & Implementation",
+      "SIG": "Signal Processing",
+      "ARM": "ARM Architecture & DSP Hardware",
+      "MEM": "Memory Management & Optimization",
+      "FXP": "Fixed-Point Arithmetic",
+      "BENCH": "Benchmarking & Testing",
+      "LIB": "FFT Libraries & Integration",
+      "OPT": "Optimization Techniques"
+    }
+  }
+}

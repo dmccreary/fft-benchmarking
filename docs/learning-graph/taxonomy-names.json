@@ -1,0 +1,14 @@
+{
+  "MATH": "Mathematical Foundations",
+  "SIGP": "Signal Processing",
+  "FOUR": "Fourier Theory",
+  "FFTA": "FFT Algorithm",
+  "HARD": "Hardware Platforms",
+  "DSPI": "DSP Instructions",
+  "PROG": "Programming",
+  "LIBS": "FFT Libraries",
+  "BNCH": "Benchmarking",
+  "PERF": "Performance Optimization",
+  "PIPE": "Signal Pipeline",
+  "VAPP": "Visualization and Applications"
+}

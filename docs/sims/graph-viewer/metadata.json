@@ -44,5 +44,25 @@
     "Apply learning graph viewer to solve problems",
     "Visualize and interpret learning graph viewer relationships",
     "Experiment with parameters to observe their effects on learning graph viewer"
-  ]
+  ],
+  "pedagogical": {
+    "pattern": "demonstration",
+    "bloomAlignment": [
+      "understand",
+      "apply"
+    ],
+    "bloomVerbs": [
+      "classify",
+      "illustrate",
+      "implement",
+      "use"
+    ],
+    "pacing": "self-paced",
+    "supportsPrediction": false,
+    "dataVisibility": "medium",
+    "feedbackType": [
+      "corrective"
+    ],
+    "interactionStyle": "observe"
+  }
 }

@@ -75,3 +75,22 @@ function drawGraph() {
           console.error("Error loading or parsing learning-graph.json:", error);
   });
 }
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const mainContent = document.getElementById("main");
+  const toggleButton = document.getElementById("toggle-button");
+
+  if (sidebar.style.display === "none") {
+    sidebar.style.display = "block";
+    // toggleButton.textContent = "☰"; // Open icon
+    toggleButton.innerHTML = "&#9776;"; // Hamburger menu icon (open state)
+
+    mainContent.style.marginLeft = "auto"; // Restore margin
+  } else {
+    sidebar.style.display = "none";
+    // toggleButton.textContent = "→"; // Collapse sidebar icon
+    toggleButton.innerHTML = "&#8594;"; // Right arrow (collapsed state)
+    mainContent.style.marginLeft = "0"; // Remove margin for full width
+  }
+}

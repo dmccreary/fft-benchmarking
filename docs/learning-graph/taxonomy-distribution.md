@@ -1,258 +1,332 @@
-Analyzing taxonomy distribution...
+# Taxonomy Distribution Report
 
-======================================================================
-TAXONOMY DISTRIBUTION ANALYSIS
-======================================================================
+## Overview
 
-Total Concepts: 200
+- **Total Concepts**: 200
+- **Number of Taxonomies**: 12
+- **Average Concepts per Taxonomy**: 16.7
 
-Distribution by Category:
-Category | Count | Percentage | Status
-----------------------------------------------------------------------
-ARM      |    30 |      15.0% | ✓
-BENCH    |    30 |      15.0% | ✓
-FFT      |    25 |      12.5% | ✓
-SIG      |    25 |      12.5% | ✓
-MEM      |    25 |      12.5% | ✓
-MATH     |    20 |      10.0% | ✓
-LIB      |    20 |      10.0% | ✓
-FXP      |    18 |       9.0% | ✓
-OPT      |     7 |       3.5% | ✓
+## Distribution Summary
 
-======================================================================
-✓ All categories are under 30% threshold - BALANCED
+| Category | TaxonomyID | Count | Percentage | Status |
+|----------|-----------|-------|------------|--------|
+| FFT Algorithm | FFTA | 24 | 12.0% | ✅ |
+| Visualization and Applications | VAPP | 24 | 12.0% | ✅ |
+| Benchmarking | BNCH | 18 | 9.0% | ✅ |
+| Mathematical Foundations | MATH | 16 | 8.0% | ✅ |
+| Signal Processing | SIGP | 16 | 8.0% | ✅ |
+| Fourier Theory | FOUR | 16 | 8.0% | ✅ |
+| Hardware Platforms | HARD | 16 | 8.0% | ✅ |
+| DSP Instructions | DSPI | 16 | 8.0% | ✅ |
+| Programming | PROG | 16 | 8.0% | ✅ |
+| Performance Optimization | PERF | 14 | 7.0% | ✅ |
+| FFT Libraries | LIBS | 12 | 6.0% | ✅ |
+| Signal Pipeline | PIPE | 12 | 6.0% | ✅ |
 
-Largest category: 15.0%
-Number of categories: 9
-======================================================================
+## Visual Distribution
 
+```
+FFTA   ██████  24 ( 12.0%)
+VAPP   ██████  24 ( 12.0%)
+BNCH   ████  18 (  9.0%)
+MATH   ████  16 (  8.0%)
+SIGP   ████  16 (  8.0%)
+FOUR   ████  16 (  8.0%)
+HARD   ████  16 (  8.0%)
+DSPI   ████  16 (  8.0%)
+PROG   ████  16 (  8.0%)
+PERF   ███  14 (  7.0%)
+LIBS   ███  12 (  6.0%)
+PIPE   ███  12 (  6.0%)
+```
 
-Detailed Concept Listing by Category:
-======================================================================
+## Balance Analysis
 
-ARM - 30 concepts (15.0%)
-----------------------------------------------------------------------
-   71. ARM Cortex M Series
-   72. Cortex M4 Processor
-   73. Cortex M33 Processor
-   74. Instruction Set Architecture
-   75. Thumb Instructions
-   76. DSP Extension Instructions
-   77. Single Instruction Multiple Data
-   78. MAC Instructions
-   79. Saturating Arithmetic
-   80. Floating Point Unit
-   81. Single Precision Float
-   82. Double Precision Float
-   83. Hardware Floating Point
-   84. Software Floating Point
-   85. FPU Register File
-   86. Pipeline Architecture
-   87. Instruction Pipeline
-   88. Branch Prediction
-   89. Interrupt Handling
-   90. Exception Handling
-   91. Memory Mapped IO
-   92. Peripheral Access
-   93. Clock Configuration
-   94. Clock Cycles
-   95. Instruction Cycle Count
-   96. Wait States
-   97. Flash Memory Access
-   98. RAM Access Patterns
-   99. Direct Memory Access
-  100. DMA Channels
+### ✅ No Over-Represented Categories
 
-BENCH - 30 concepts (15.0%)
-----------------------------------------------------------------------
-  144. Performance Metrics
-  145. Execution Time
-  146. Clock Cycle Measurement
-  147. System Timer
-  148. High Resolution Timer
-  149. Timestamp Counter
-  150. Profiling Tools
-  151. Code Profiling
-  152. Function Profiling
-  153. Instruction Profiling
-  154. Statistical Analysis
-  155. Mean Execution Time
-  156. Standard Deviation
-  157. Variance Analysis
-  158. Outlier Detection
-  159. Confidence Intervals
-  160. Benchmark Repeatability
-  161. Test Case Design
-  162. Input Signal Generation
-  163. Sine Wave Test Signal
-  164. Chirp Signal
-  165. White Noise Signal
-  166. Impulse Response
-  167. Frequency Sweep
-  168. Amplitude Scaling
-  169. Baseline Measurement
-  170. Comparative Analysis
-  171. Performance Regression
-  172. Benchmark Automation
-  173. Test Harness Design
+All categories are under the 30% threshold. Good balance!
 
-FFT - 25 concepts (12.5%)
-----------------------------------------------------------------------
-   21. Fast Fourier Transform
-   22. Cooley-Tukey Algorithm
-   23. Divide And Conquer
-   24. Butterfly Operation
-   25. Radix-2 FFT
-   26. Radix-4 FFT
-   27. Radix-8 FFT
-   28. Mixed Radix FFT
-   29. Decimation In Time
-   30. Decimation In Frequency
-   31. Bit Reversal Permutation
-   32. Twiddle Factors
-   33. In-Place Computation
-   34. Computational Complexity
-   35. FFT Size Selection
-   36. Power Of Two Constraint
-   37. Inverse FFT
-   38. FFT Scaling
-   39. Real FFT
-   40. Complex FFT
-   41. Half-Spectrum Property
-   42. Zero Padding
-   43. Frequency Resolution
-   44. Time Resolution Tradeoff
-   45. Circular Convolution
+## Category Details
 
-SIG - 25 concepts (12.5%)
-----------------------------------------------------------------------
-   46. Digital Signal Processing
-   47. Analog To Digital Conversion
-   48. Digital To Analog Conversion
-   49. Sample Rate
-   50. Quantization
-   51. Bit Depth
-   52. Dynamic Range
-   53. Signal To Noise Ratio
-   54. Windowing Functions
-   55. Rectangular Window
-   56. Hanning Window
-   57. Hamming Window
-   58. Blackman Window
-   59. Kaiser Window
-   60. Window Sidelobe Levels
-   61. Spectral Leakage
-   62. Scalloping Loss
-   63. Overlap Add Method
-   64. Overlap Save Method
-   65. Frame Size
-   66. Hop Size
-   67. Frequency Bins
-   68. Bin Width
-   69. Spectrum Analysis
-   70. Spectrogram
+### FFT Algorithm (FFTA)
 
-MEM - 25 concepts (12.5%)
-----------------------------------------------------------------------
-  101. Cache Memory
-  102. Cache Hit Rate
-  103. Cache Miss Penalty
-  104. Data Cache
-  105. Instruction Cache
-  106. Cache Line Size
-  107. Memory Alignment
-  108. Aligned Data Access
-  109. Unaligned Data Access
-  110. Memory Bandwidth
-  111. Memory Latency
-  112. Stack Memory
-  113. Heap Memory
-  114. Static Memory Allocation
-  115. Dynamic Memory Allocation
-  116. Buffer Management
-  117. Double Buffering
-  118. Ping Pong Buffers
-  119. Circular Buffers
-  120. Memory Copy Operations
-  121. Data Layout
-  122. Structure Packing
-  123. Array Of Structures
-  124. Structure Of Arrays
-  125. Memory Fragmentation
+**Count**: 24 concepts (12.0%)
 
-MATH - 20 concepts (10.0%)
-----------------------------------------------------------------------
-    1. Complex Numbers
-    2. Euler's Formula
-    3. Sine Wave Representation
-    4. Frequency Domain
-    5. Time Domain
-    6. Discrete Fourier Transform
-    7. Continuous Fourier Transform
-    8. Transform Pairs
-    9. Linearity Property
-   10. Time Shifting
-   11. Frequency Shifting
-   12. Convolution Theorem
-   13. Parseval's Theorem
-   14. Symmetry Properties
-   15. Magnitude Spectrum
-   16. Phase Spectrum
-   17. Rectangular Form
-   18. Polar Form
-   19. Sampling Theorem
-   20. Nyquist Frequency
+**Concepts**:
 
-LIB - 20 concepts (10.0%)
-----------------------------------------------------------------------
-  174. CMSIS DSP Library
-  175. FFTW Library
-  176. Kiss FFT
-  177. FFT Library Licensing
-  178. Open Source Libraries
-  179. Proprietary Libraries
-  180. Library API Design
-  181. Function Call Overhead
-  182. Initialization Functions
-  183. Configuration Parameters
-  184. Library Documentation
-  185. Example Code
-  186. GitHub Repositories
-  187. Version Control
-  188. Library Integration
-  189. Header Files
-  190. Linking Libraries
-  191. Static Linking
-  192. Dynamic Linking
-  193. Library Dependencies
+- 49. FFT Algorithm
+- 50. FFT History
+- 51. Cooley Tukey Algorithm
+- 52. Radix-2 FFT
+- 53. Radix-4 FFT
+- 54. Split Radix FFT
+- 55. Butterfly Operation
+- 56. Butterfly Diagram
+- 57. Twiddle Factors
+- 58. Bit Reversal
+- 59. In Place FFT
+- 60. Decimation In Time
+- 61. Decimation In Frequency
+- 62. FFT Stages
+- 63. FFT Complexity
+- *...and 9 more*
 
-FXP - 18 concepts (9.0%)
-----------------------------------------------------------------------
-  126. Fixed Point Numbers
-  127. Q Format Notation
-  128. Integer Representation
-  129. Fractional Representation
-  130. Scaling Factor
-  131. Fixed Point Multiplication
-  132. Fixed Point Division
-  133. Fixed Point Addition
-  134. Overflow Detection
-  135. Saturation Handling
-  136. Rounding Modes
-  137. Truncation Error
-  138. Quantization Noise
-  139. Dynamic Range Management
-  140. Precision Analysis
-  141. Bit Width Selection
-  142. Sign Extension
-  143. Fixed To Float Conversion
+### Visualization and Applications (VAPP)
 
-OPT - 7 concepts (3.5%)
-----------------------------------------------------------------------
-  194. Compiler Optimization Levels
-  195. Loop Unrolling
-  196. Function Inlining
-  197. Code Size Optimization
-  198. Speed Optimization
-  199. Constant Propagation
-  200. Dead Code Elimination
+**Count**: 24 concepts (12.0%)
+
+**Concepts**:
+
+- 177. Data Visualization
+- 178. Spectrum Plot
+- 179. Spectrogram
+- 180. Waterfall Display
+- 181. Time Domain Plot
+- 182. Performance Charts
+- 183. Comparison Tables
+- 184. Performance Dashboard
+- 185. Benchmark Results
+- 186. Report Generation
+- 187. Audio Processing
+- 188. Music Analysis
+- 189. Voice Recognition
+- 190. Noise Cancellation
+- 191. Spectrum Analyzer
+- *...and 9 more*
+
+### Benchmarking (BNCH)
+
+**Count**: 18 concepts (9.0%)
+
+**Concepts**:
+
+- 133. Benchmarking
+- 134. Performance Metrics
+- 135. Execution Time
+- 136. Clock Cycles
+- 137. Microseconds Per FFT
+- 138. FFTs Per Second
+- 139. Throughput Metric
+- 140. Latency Metric
+- 141. Memory Usage
+- 142. Code Size
+- 143. Test Harness
+- 144. Warm Up Runs
+- 145. Statistical Sampling
+- 146. Mean Execution Time
+- 147. Standard Deviation
+- *...and 3 more*
+
+### Mathematical Foundations (MATH)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 1. Complex Numbers
+- 2. Imaginary Unit
+- 3. Euler's Formula
+- 4. Sine Wave
+- 5. Cosine Wave
+- 6. Amplitude
+- 7. Frequency
+- 8. Phase
+- 9. Periodic Functions
+- 10. Harmonics
+- 11. Complex Conjugate
+- 12. Magnitude
+- 13. Unit Circle
+- 14. Hertz
+- 15. Time Domain
+- *...and 1 more*
+
+### Signal Processing (SIGP)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 17. Analog Signals
+- 18. Digital Signals
+- 19. Sampling
+- 20. Sampling Rate
+- 21. Nyquist Theorem
+- 22. Aliasing
+- 23. Quantization
+- 24. Bit Depth
+- 25. ADC Conversion
+- 26. Signal Noise
+- 27. Signal To Noise Ratio
+- 28. Bandwidth
+- 29. Low Pass Filter
+- 30. Band Pass Filter
+- 31. Windowing Functions
+- *...and 1 more*
+
+### Fourier Theory (FOUR)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 33. Jean Baptiste Fourier
+- 34. Fourier Series
+- 35. Continuous Fourier Transform
+- 36. Discrete Fourier Transform
+- 37. DFT Definition
+- 38. DFT Complexity
+- 39. Inverse DFT
+- 40. Frequency Bins
+- 41. Bin Resolution
+- 42. Spectral Analysis
+- 43. Power Spectrum
+- 44. Magnitude Spectrum
+- 45. Phase Spectrum
+- 46. Frequency Resolution
+- 47. Zero Padding
+- *...and 1 more*
+
+### Hardware Platforms (HARD)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 73. Microcontroller
+- 74. ARM Architecture
+- 75. ARM Cortex M Series
+- 76. ARM Cortex M4
+- 77. ARM Cortex M33
+- 78. Raspberry Pi Pico
+- 79. Raspberry Pi Pico 2
+- 80. RP2040 Chip
+- 81. RP2350 Chip
+- 82. DSP Chip
+- 83. General Purpose CPU
+- 84. Clock Speed
+- 85. CPU Cycles
+- 86. Memory Architecture
+- 87. Cache Memory
+- *...and 1 more*
+
+### DSP Instructions (DSPI)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 89. DSP Instructions
+- 90. SIMD Instructions
+- 91. MAC Instruction
+- 92. Multiply Accumulate
+- 93. Saturating Arithmetic
+- 94. Fixed Point Arithmetic
+- 95. Floating Point Unit
+- 96. FPU Operations
+- 97. Single Precision Float
+- 98. Q Format Numbers
+- 99. Q15 Format
+- 100. Q31 Format
+- 101. Hardware Multiplier
+- 102. Pipelining
+- 103. Instruction Latency
+- *...and 1 more*
+
+### Programming (PROG)
+
+**Count**: 16 concepts (8.0%)
+
+**Concepts**:
+
+- 105. C Language
+- 106. C Compiler
+- 107. GCC Compiler
+- 108. ARM Compiler
+- 109. Compiler Optimization
+- 110. Optimization Flags
+- 111. Assembly Language
+- 112. ARM Assembly
+- 113. Thumb Instructions
+- 114. Python Language
+- 115. NumPy Library
+- 116. SciPy FFT
+- 117. MicroPython
+- 118. Memory Management
+- 119. Reading Assembly Code
+- *...and 1 more*
+
+### Performance Optimization (PERF)
+
+**Count**: 14 concepts (7.0%)
+
+**Concepts**:
+
+- 151. Integer FFT
+- 152. Floating Point FFT
+- 153. Fixed Point FFT
+- 154. Precision Tradeoffs
+- 155. Speed Accuracy Tradeoff
+- 156. Cache Effects
+- 157. Memory Access Patterns
+- 158. Loop Unrolling
+- 159. Vectorization
+- 160. Real Time Processing
+- 161. Streaming FFT
+- 162. Block Processing
+- 163. Double Buffering
+- 164. Compiler Settings
+
+### FFT Libraries (LIBS)
+
+**Count**: 12 concepts (6.0%)
+
+**Concepts**:
+
+- 121. FFT Libraries
+- 122. CMSIS DSP Library
+- 123. Kiss FFT
+- 124. FFTW Library
+- 125. Arm Math Library
+- 126. Pico SDK FFT
+- 127. Open Source FFT
+- 128. Library Licensing
+- 129. MIT License
+- 130. GPL License
+- 131. Library Integration
+- 132. API Documentation
+
+### Signal Pipeline (PIPE)
+
+**Count**: 12 concepts (6.0%)
+
+**Concepts**:
+
+- 165. Signal Preprocessing
+- 166. DC Offset Removal
+- 167. Normalization
+- 168. Window Application
+- 169. Zero Padding Input
+- 170. Post Processing
+- 171. Magnitude Calculation
+- 172. Phase Calculation
+- 173. Decibel Conversion
+- 174. Peak Detection
+- 175. Frequency Estimation
+- 176. Dominant Frequency
+
+## Recommendations
+
+- ✅ **Excellent balance**: Categories are evenly distributed (spread: 6.0%)
+- ✅ **MISC category minimal**: Good categorization specificity
+
+### Educational Use Recommendations
+
+- Use taxonomy categories for color-coding in graph visualizations
+- Design curriculum modules based on taxonomy groupings
+- Create filtered views for focused learning paths
+- Use categories for assessment organization
+- Enable navigation by topic area in interactive tools
+
+---
+
+*Report generated by learning-graph-reports/taxonomy_distribution.py*

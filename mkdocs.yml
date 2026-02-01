@@ -73,3 +73,7 @@ extra_css:
 #    provider: google
     # https://analytics.google.com/analytics/web/#/a1420179p349994530/admin/streams/table/4433129821
 #    property: G-XXXX
+extra:
+  schema: https://dmccreary.github.io/intelligent-textbooks/ns/textbook/v1
+  textbook_name: FFT Benchmarking
+  textbook_version: "1.0"

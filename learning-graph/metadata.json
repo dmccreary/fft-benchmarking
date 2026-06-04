@@ -1,0 +1,10 @@
+{
+  "title": "Benchmarking FFT",
+  "description": "A 10-week course covering objective benchmarking and optimization of the FFT algorithm on microcontrollers like the RP2350 as well as standard CPUs and dedicated DSP chips. Provides a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing, along with a framework for benchmarking FFT algorithm performance.",
+  "creator": "Dan McCreary",
+  "date": "2025-12-13",
+  "version": "1.0",
+  "format": "Learning Graph JSON v1.0",
+  "schema": "https://raw.githubusercontent.com/dmccreary/learning-graphs/refs/heads/main/src/schema/learning-graph-schema.json",
+  "license": "CC BY-NC-SA 4.0 DEED"
+}

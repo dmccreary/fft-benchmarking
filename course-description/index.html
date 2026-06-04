@@ -342,6 +342,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concepts-not-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Not Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#outcomes" class="md-nav__link">
     <span class="md-ellipsis">
       Outcomes
@@ -450,8 +459,6 @@
       
         
       
-        
-      
     
     
     
@@ -508,7 +515,7 @@
         
   
   
-    <a href="../tutorials/tutorial-1/" class="md-nav__link">
+    <a href="../tutorials/tutorial-1.md" class="md-nav__link">
       
   
   <span class="md-ellipsis">
@@ -560,6 +567,12 @@
           
         
       
+        
+          
+        
+      
+        
+          
         
       
     
@@ -748,6 +761,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#concepts-not-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Not Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#outcomes" class="md-nav__link">
     <span class="md-ellipsis">
       Outcomes
@@ -853,42 +875,57 @@
 <strong>Course Length:</strong> 10-weeks or independent study
 <strong>Audience:</strong> College juniors or seniors with a curiosity in signal processing</p>
 <h2 id="summary">Summary</h2>
-<p>This course covers the process of doing objective benchmarking of the FFT algorithm on both microcontrollers as well as standard CPUs.  We provide a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing.  We then describe a framework for benchmarking FFT algorithm performance on different data sets.
-We conclude with methods for presenting the results of FFT benchmarks.</p>
+<p>This course covers the process of doing objective benchmarking and optimization of the FFT algorithm on microcontrollers like the RP2350 as well as standard CPUs and dedicated DSP chips.  We provide a high-level background to the FFT algorithm and why it is critical in modern real-time signal processing.  We then describe a framework for benchmarking FFT algorithm performance on different data sets as
+well as techniques for optimizing FFT performance for various real-time signal processing applications.
+We conclude with methods for objectively presenting the results of FFT benchmarks and using these benchmarks
+to understand performance and resolution tradeoffs.</p>
 <h2 id="why-this-course">Why This Course</h2>
 <p>In the past, only expensive digital signal processing (DSP) chips did real-time FFTs.  However, in 2001 companies like ARM started to add DSP instructions to their low cost CPUs and microcontrollers.  For example in 2010 the ARM Cortex M4 added instructions to specifically perform DSP functions.  In August 2024 the Raspberry Pi Foundation release the Raspberry Pi Pico 2 built around the ARM Cortex-M33 which had many DSP and floating point functions.  For $6 this made real-time FFT for signal processing affordable for many products.</p>
 <p>However, many programmers were not aware of these DSP functions and the impact faster signal processing has on applications.  Many FFT libraries still used older instruction sets.  The root cause was that many developers were unaware of the signal processing power they had but were not using.</p>
 <p>This course attempts to guide students from the basics of what the FFT algorithm does and how DSP-specific hardware can accelerate signal processing products.  </p>
 <p>We study the process of not only comparing different FFT implementations, but we look at the tradeoffs of different FFT parameters such as FFT size, integer vs. floating point and other choices that impact FFT processing speed.</p>
 <h2 id="content">Content</h2>
-<p>Fourier Transforms
-Math Foundations
-Programming Background
-FFT History
-FFT Timeline
-FFT Basics
-FFT Butterfly
-FFT and IFFT
-FFT Performance
-FFT Benchmarking
-FFT Parameters
-FFT Size
-Integer vs Floating Point
-Preprocessing Signals
-Post Processing of Signals
-Programming Languages
-C Language
-Python Libraries
-Machine Language
-Reading Assembly Languages
-DSP Functions
-FFT Libraries
-GitHub Repositories
-FFT Licenses
-Benchmarking Frameworks
-Performance Comparisons
-Presenting Results
-Performance Charts</p>
+<p>Here are the concepts that will be covered in this course:</p>
+<ul>
+<li>Fourier Transforms</li>
+<li>Math Foundations</li>
+<li>Programming Background</li>
+<li>FFT History</li>
+<li>FFT Timeline</li>
+<li>FFT Basics</li>
+<li>FFT Butterfly</li>
+<li>FFT and IFFT</li>
+<li>FFT Performance</li>
+<li>FFT Benchmarking</li>
+<li>FFT Parameters</li>
+<li>FFT Size</li>
+<li>Integer vs Floating Point</li>
+<li>Preprocessing Signals</li>
+<li>Post Processing of Signals</li>
+<li>Programming Languages</li>
+<li>C Language</li>
+<li>Python Libraries</li>
+<li>Machine Language</li>
+<li>Reading Assembly Languages</li>
+<li>DSP Functions</li>
+<li>FFT Libraries</li>
+<li>GitHub Repositories</li>
+<li>FFT Licenses</li>
+<li>Benchmarking Frameworks</li>
+<li>Performance Comparisons</li>
+<li>Presenting Results</li>
+<li>Performance Charts</li>
+<li>Performance Dashboards</li>
+<li>FFT Applications</li>
+<li>Sound Processing</li>
+<li>Signal Processing</li>
+</ul>
+<h2 id="concepts-not-covered">Concepts Not Covered</h2>
+<ul>
+<li>Assembly language in non-ARM instruction sets</li>
+<li>Use of FPGAs to run FFTs</li>
+<li>ASIC design for FFTs</li>
+</ul>
 <h2 id="outcomes">Outcomes</h2>
 <p>The Bloom Taxonomy gives us a way to categorize
 outcomes starting with memorization of terms through the
@@ -1002,13 +1039,13 @@ ability to create new artifacts.</p>
         
         
           
-          <a href="../learning-graph/" class="md-footer__link md-footer__link--next" aria-label="Next: Intro">
+          <a href="../learning-graph/" class="md-footer__link md-footer__link--next" aria-label="Next: Introduction">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Intro
+                Introduction
               </div>
             </div>
             <div class="md-footer__button md-icon">

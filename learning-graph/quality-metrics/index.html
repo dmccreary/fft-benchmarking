@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/learning-graph/quality-metrics/">
       
       
-        <link rel="prev" href="../quality-assessment/">
+        <link rel="prev" href="../taxonomy-distribution/">
       
       
-        <link rel="next" href="../LEARNING-GRAPH-SUMMARY/">
+        <link rel="next" href="../../cornell-labs/pico-example/">
       
       
       <link rel="icon" href="../../img/favicon.png">
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#learning-graph-quality-metrics" class="md-skip">
+        <a href="#learning-graph-quality-metrics-report" class="md-skip">
           Skip to content
         </a>
       
@@ -307,8 +307,6 @@
       
         
       
-        
-      
     
     
     
@@ -356,11 +354,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../course-concepts-v1/" class="md-nav__link">
+      <a href="../course-description-assessment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Course Concepts
+    Course Description Assessment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concept-list/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Concept List
   </span>
   
 
@@ -403,27 +422,6 @@
   
   <span class="md-ellipsis">
     Taxonomy Distribution
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../quality-assessment/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Quality Assessment
   </span>
   
 
@@ -486,100 +484,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#analysis-summary" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Analysis Summary
+      Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-dag-validation" class="md-nav__link">
+  <a href="#graph-structure-validation" class="md-nav__link">
     <span class="md-ellipsis">
-      1. DAG Validation ✓
+      Graph Structure Validation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-foundational-concepts" class="md-nav__link">
+  <a href="#foundational-concepts" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Foundational Concepts
+      Foundational Concepts
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-indegree-distribution" class="md-nav__link">
+  <a href="#dependency-chain-analysis" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Indegree Distribution
+      Dependency Chain Analysis
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-longest-dependency-chains" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Longest Dependency Chains
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-connectivity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Connectivity Analysis
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-graph-statistics" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Graph Statistics
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-pedagogical-assessment" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Pedagogical Assessment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7. Pedagogical Assessment">
+    <nav class="md-nav" aria-label="Dependency Chain Analysis">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#strengths" class="md-nav__link">
+  <a href="#longest-learning-path" class="md-nav__link">
     <span class="md-ellipsis">
-      Strengths ✓
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#observations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Observations ⚠
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#recommendations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommendations
+      Longest Learning Path:
     </span>
   </a>
   
@@ -591,18 +535,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-course-structure-recommendations" class="md-nav__link">
+  <a href="#orphaned-nodes-analysis" class="md-nav__link">
     <span class="md-ellipsis">
-      8. Course Structure Recommendations
+      Orphaned Nodes Analysis
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#overall-quality-rating-excellent" class="md-nav__link">
+  <a href="#connected-components" class="md-nav__link">
     <span class="md-ellipsis">
-      Overall Quality Rating: ✓ EXCELLENT
+      Connected Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indegree-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indegree Analysis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outdegree-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outdegree Distribution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommendations
     </span>
   </a>
   
@@ -612,27 +583,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../LEARNING-GRAPH-SUMMARY/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Summary
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -669,7 +619,7 @@
         
   
   
-    <a href="../../tutorials/tutorial-1/" class="md-nav__link">
+    <a href="../../tutorials/tutorial-1.md" class="md-nav__link">
       
   
   <span class="md-ellipsis">
@@ -721,6 +671,12 @@
           
         
       
+        
+          
+        
+      
+        
+          
         
       
     
@@ -882,100 +838,46 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#analysis-summary" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Analysis Summary
+      Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-dag-validation" class="md-nav__link">
+  <a href="#graph-structure-validation" class="md-nav__link">
     <span class="md-ellipsis">
-      1. DAG Validation ✓
+      Graph Structure Validation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-foundational-concepts" class="md-nav__link">
+  <a href="#foundational-concepts" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Foundational Concepts
+      Foundational Concepts
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-indegree-distribution" class="md-nav__link">
+  <a href="#dependency-chain-analysis" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Indegree Distribution
+      Dependency Chain Analysis
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-longest-dependency-chains" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Longest Dependency Chains
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-connectivity-analysis" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Connectivity Analysis
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-graph-statistics" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. Graph Statistics
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-pedagogical-assessment" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Pedagogical Assessment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="7. Pedagogical Assessment">
+    <nav class="md-nav" aria-label="Dependency Chain Analysis">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#strengths" class="md-nav__link">
+  <a href="#longest-learning-path" class="md-nav__link">
     <span class="md-ellipsis">
-      Strengths ✓
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#observations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Observations ⚠
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#recommendations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Recommendations
+      Longest Learning Path:
     </span>
   </a>
   
@@ -987,18 +889,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#8-course-structure-recommendations" class="md-nav__link">
+  <a href="#orphaned-nodes-analysis" class="md-nav__link">
     <span class="md-ellipsis">
-      8. Course Structure Recommendations
+      Orphaned Nodes Analysis
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#overall-quality-rating-excellent" class="md-nav__link">
+  <a href="#connected-components" class="md-nav__link">
     <span class="md-ellipsis">
-      Overall Quality Rating: ✓ EXCELLENT
+      Connected Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indegree-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Indegree Analysis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outdegree-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outdegree Distribution
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommendations
     </span>
   </a>
   
@@ -1027,235 +956,200 @@
   
 
 
-<h1 id="learning-graph-quality-metrics">Learning Graph Quality Metrics</h1>
-<h2 id="analysis-summary">Analysis Summary</h2>
-<p><strong>Total Concepts:</strong> 200
-<strong>Analysis Date:</strong> 2025-10-30</p>
-<h2 id="1-dag-validation">1. DAG Validation ✓</h2>
-<p><strong>Status:</strong> ✓ <strong>PASSED</strong></p>
-<p>The graph is a valid Directed Acyclic Graph (DAG) with <strong>no cycles detected</strong>.</p>
-<p>This ensures:
-- Concepts have clear prerequisite relationships
-- No circular dependencies
-- Linear learning progression is possible
-- Topological ordering can be computed</p>
-<h2 id="2-foundational-concepts">2. Foundational Concepts</h2>
-<p><strong>Count:</strong> 10 concepts with zero dependencies</p>
-<p>These concepts require no prerequisites and serve as entry points:</p>
+<h1 id="learning-graph-quality-metrics-report">Learning Graph Quality Metrics Report</h1>
+<h2 id="overview">Overview</h2>
+<ul>
+<li><strong>Total Concepts</strong>: 200</li>
+<li><strong>Foundational Concepts</strong> (no dependencies): 10</li>
+<li><strong>Concepts with Dependencies</strong>: 190</li>
+<li><strong>Average Dependencies per Concept</strong>: 1.83</li>
+</ul>
+<h2 id="graph-structure-validation">Graph Structure Validation</h2>
+<ul>
+<li><strong>Valid DAG Structure</strong>: ❌ No</li>
+<li><strong>Self-Dependencies</strong>: None detected ✅</li>
+<li><strong>Cycles Detected</strong>: 0</li>
+</ul>
+<h2 id="foundational-concepts">Foundational Concepts</h2>
+<p>These concepts have no prerequisites:</p>
+<ul>
+<li><strong>1</strong>: Complex Numbers</li>
+<li><strong>4</strong>: Sine Wave</li>
+<li><strong>33</strong>: Jean Baptiste Fourier</li>
+<li><strong>73</strong>: Microcontroller</li>
+<li><strong>94</strong>: Fixed Point Arithmetic</li>
+<li><strong>105</strong>: C Language</li>
+<li><strong>111</strong>: Assembly Language</li>
+<li><strong>114</strong>: Python Language</li>
+<li><strong>133</strong>: Benchmarking</li>
+<li><strong>177</strong>: Data Visualization</li>
+</ul>
+<h2 id="dependency-chain-analysis">Dependency Chain Analysis</h2>
+<ul>
+<li><strong>Maximum Dependency Chain Length</strong>: 15</li>
+</ul>
+<h3 id="longest-learning-path">Longest Learning Path:</h3>
 <ol>
-<li>Complex Numbers</li>
-<li>Sine Wave Representation</li>
-<li>ARM Cortex M Series</li>
-<li>Software Floating Point</li>
-<li>Fixed Point Numbers</li>
-<li>Performance Metrics</li>
-<li>Open Source Libraries</li>
-<li>Proprietary Libraries</li>
-<li>GitHub Repositories</li>
-<li>Compiler Optimization Levels</li>
+<li><strong>Sine Wave</strong> (ID: 4)</li>
+<li><strong>Cosine Wave</strong> (ID: 5)</li>
+<li><strong>Periodic Functions</strong> (ID: 9)</li>
+<li><strong>Harmonics</strong> (ID: 10)</li>
+<li><strong>Fourier Series</strong> (ID: 34)</li>
+<li><strong>Continuous Fourier Transform</strong> (ID: 35)</li>
+<li><strong>Discrete Fourier Transform</strong> (ID: 36)</li>
+<li><strong>DFT Definition</strong> (ID: 37)</li>
+<li><strong>DFT Complexity</strong> (ID: 38)</li>
+<li><strong>FFT Algorithm</strong> (ID: 49)</li>
+<li><strong>FFT History</strong> (ID: 50)</li>
+<li><strong>Cooley Tukey Algorithm</strong> (ID: 51)</li>
+<li><strong>Radix-2 FFT</strong> (ID: 52)</li>
+<li><strong>Radix-4 FFT</strong> (ID: 53)</li>
+<li><strong>Split Radix FFT</strong> (ID: 54)</li>
 </ol>
-<p><strong>Analysis:</strong> Good distribution of foundational concepts across mathematical, hardware, and software engineering domains.</p>
-<h2 id="3-indegree-distribution">3. Indegree Distribution</h2>
+<h2 id="orphaned-nodes-analysis">Orphaned Nodes Analysis</h2>
+<ul>
+<li><strong>Total Orphaned Nodes</strong>: 76</li>
+</ul>
+<p>Concepts that are not prerequisites for any other concept:</p>
+<ul>
+<li><strong>11</strong>: Complex Conjugate</li>
+<li><strong>13</strong>: Unit Circle</li>
+<li><strong>14</strong>: Hertz</li>
+<li><strong>22</strong>: Aliasing</li>
+<li><strong>24</strong>: Bit Depth</li>
+<li><strong>25</strong>: ADC Conversion</li>
+<li><strong>27</strong>: Signal To Noise Ratio</li>
+<li><strong>30</strong>: Band Pass Filter</li>
+<li><strong>32</strong>: Spectral Leakage</li>
+<li><strong>43</strong>: Power Spectrum</li>
+<li><strong>48</strong>: Orthogonality</li>
+<li><strong>54</strong>: Split Radix FFT</li>
+<li><strong>57</strong>: Twiddle Factors</li>
+<li><strong>59</strong>: In Place FFT</li>
+<li><strong>60</strong>: Decimation In Time</li>
+<li><strong>61</strong>: Decimation In Frequency</li>
+<li><strong>62</strong>: FFT Stages</li>
+<li><strong>64</strong>: O(N log N)</li>
+<li><strong>66</strong>: Power Of Two Sizes</li>
+<li><strong>67</strong>: Real FFT</li>
+</ul>
+<p><em>...and 56 more</em></p>
+<h2 id="connected-components">Connected Components</h2>
+<ul>
+<li><strong>Number of Connected Components</strong>: 1</li>
+</ul>
+<p>✅ All concepts are connected in a single graph.</p>
+<h2 id="indegree-analysis">Indegree Analysis</h2>
+<p>Top 10 concepts that are prerequisites for the most other concepts:</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Concept ID</th>
+<th>Concept Label</th>
+<th>Indegree</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>49</td>
+<td>FFT Algorithm</td>
+<td>21</td>
+</tr>
+<tr>
+<td>2</td>
+<td>7</td>
+<td>Frequency</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>16</td>
+<td>Frequency Domain</td>
+<td>9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>121</td>
+<td>FFT Libraries</td>
+<td>9</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+<td>Sine Wave</td>
+<td>8</td>
+</tr>
+<tr>
+<td>6</td>
+<td>17</td>
+<td>Analog Signals</td>
+<td>8</td>
+</tr>
+<tr>
+<td>7</td>
+<td>52</td>
+<td>Radix-2 FFT</td>
+<td>8</td>
+</tr>
+<tr>
+<td>8</td>
+<td>73</td>
+<td>Microcontroller</td>
+<td>8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>134</td>
+<td>Performance Metrics</td>
+<td>8</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>Complex Numbers</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<h2 id="outdegree-distribution">Outdegree Distribution</h2>
 <table>
 <thead>
 <tr>
 <th>Dependencies</th>
-<th>Concept Count</th>
-<th>Percentage</th>
+<th>Number of Concepts</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>0</td>
 <td>10</td>
-<td>5.0%</td>
 </tr>
 <tr>
 <td>1</td>
-<td>153</td>
-<td>76.5%</td>
+<td>53</td>
 </tr>
 <tr>
 <td>2</td>
-<td>35</td>
-<td>17.5%</td>
+<td>118</td>
 </tr>
 <tr>
 <td>3</td>
+<td>17</td>
+</tr>
+<tr>
+<td>4</td>
 <td>2</td>
-<td>1.0%</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Analysis:</strong>
-- Most concepts (76.5%) have exactly one prerequisite - simple linear progression
-- 17.5% have two prerequisites - reasonable concept convergence
-- Only 2 concepts have three prerequisites - controlled complexity
-- Maximum indegree of 3 keeps learning manageable</p>
-<h2 id="4-longest-dependency-chains">4. Longest Dependency Chains</h2>
-<p>Top 10 concepts by chain depth:</p>
-<table>
-<thead>
-<tr>
-<th>Concept</th>
-<th>Chain Length</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Static Linking</td>
-<td>7</td>
-</tr>
-<tr>
-<td>Dynamic Linking</td>
-<td>7</td>
-</tr>
-<tr>
-<td>Library Dependencies</td>
-<td>7</td>
-</tr>
-<tr>
-<td>Mixed Radix FFT</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Bit Reversal Permutation</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Power Of Two Constraint</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Initialization Functions</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Configuration Parameters</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Header Files</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Linking Libraries</td>
-<td>6</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Analysis:</strong>
-- Maximum chain depth: 7 levels
-- Advanced topics naturally appear deeper in the dependency tree
-- Library integration concepts require the most prerequisites
-- Reasonable depth - not too shallow (would indicate poor structure) nor too deep (would be overwhelming)</p>
-<h2 id="5-connectivity-analysis">5. Connectivity Analysis</h2>
-<p><strong>Status:</strong> ⚠ <strong>6 disconnected components detected</strong></p>
-<table>
-<thead>
-<tr>
-<th>Component</th>
-<th>Size</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>188</td>
-<td>Main connected graph (94%)</td>
-</tr>
-<tr>
-<td>2-6</td>
-<td>12</td>
-<td>Small isolated clusters (6%)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Interpretation:</strong>
-- Main component contains 94% of concepts - excellent core connectivity
-- 6% of concepts are in isolated clusters
-- This is actually pedagogically valid - some topics (e.g., version control, licensing) are independent of core FFT/DSP material
-- These can be studied in parallel with the main learning path</p>
-<p><strong>Isolated Concepts:</strong>
-- Likely include: licensing, documentation, version control tools
-- These support topics don't require technical prerequisites</p>
-<h2 id="6-graph-statistics">6. Graph Statistics</h2>
-<table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Total Edges (Dependencies)</td>
-<td>229</td>
-</tr>
-<tr>
-<td>Average Dependencies per Concept</td>
-<td>1.15</td>
-</tr>
-<tr>
-<td>Graph Density</td>
-<td>0.0058</td>
-</tr>
-<tr>
-<td>Foundational Concepts</td>
-<td>10</td>
-</tr>
-<tr>
-<td>Maximum Indegree</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Maximum Chain Length</td>
-<td>7</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Interpretation:</strong>
-- Low average dependencies (1.15) - concepts are well-isolated and focused
-- Low graph density (0.58%) - sparse graph indicates clear learning paths
-- This is ideal for educational content - not overly interdependent</p>
-<h2 id="7-pedagogical-assessment">7. Pedagogical Assessment</h2>
-<h3 id="strengths">Strengths ✓</h3>
-<ol>
-<li><strong>Valid DAG structure</strong> - no circular dependencies</li>
-<li><strong>Good foundational base</strong> - 10 entry points across domains</li>
-<li><strong>Manageable complexity</strong> - low average dependencies</li>
-<li><strong>Clear progression</strong> - longest chains are 7 levels deep</li>
-<li><strong>Focused concepts</strong> - low graph density suggests well-defined topics</li>
-<li><strong>Multiple entry points</strong> - learners can start with math, hardware, or software</li>
-</ol>
-<h3 id="observations">Observations ⚠</h3>
-<ol>
-<li><strong>Minor isolation</strong> - 6% of concepts in small disconnected components</li>
-<li>This is acceptable for support topics like licensing and version control</li>
-<li>Can be addressed by adding cross-references in documentation</li>
-</ol>
-<h3 id="recommendations">Recommendations</h3>
-<ol>
-<li>Consider adding lightweight connections between isolated clusters and main graph</li>
-<li>Use the foundational concepts as course module starting points</li>
-<li>Organize curriculum to follow the dependency chains</li>
-<li>Advanced topics (chain length 6-7) should be in later weeks</li>
-</ol>
-<h2 id="8-course-structure-recommendations">8. Course Structure Recommendations</h2>
-<p>Based on the graph structure, suggested 10-week organization:</p>
-<p><strong>Weeks 1-2:</strong> Foundational concepts (10 concepts with zero dependencies)
-<strong>Weeks 3-4:</strong> Level 1-2 concepts (mathematical foundations, basic FFT)
-<strong>Weeks 5-6:</strong> Level 3-4 concepts (ARM architecture, signal processing)
-<strong>Weeks 7-8:</strong> Level 5 concepts (optimization, benchmarking methods)
-<strong>Weeks 9-10:</strong> Level 6-7 concepts (advanced library integration, capstone project)</p>
-<h2 id="overall-quality-rating-excellent">Overall Quality Rating: ✓ EXCELLENT</h2>
-<p>The learning graph demonstrates:
-- Sound pedagogical structure
-- Clear prerequisite relationships
-- Appropriate complexity progression
-- Good balance of breadth and depth
-- Ready for taxonomy organization and visualization</p>
+<h2 id="recommendations">Recommendations</h2>
+<ul>
+<li>⚠️ <strong>Many orphaned nodes</strong> (76): Consider if these should be prerequisites for advanced concepts</li>
+</ul>
+<hr />
+<p><em>Report generated by learning-graph-reports/analyze_graph.py</em></p>
 
 
 
@@ -1291,7 +1185,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../quality-assessment/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quality Assessment">
+          <a href="../taxonomy-distribution/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Taxonomy Distribution">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1301,20 +1195,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Quality Assessment
+                Taxonomy Distribution
               </div>
             </div>
           </a>
         
         
           
-          <a href="../LEARNING-GRAPH-SUMMARY/" class="md-footer__link md-footer__link--next" aria-label="Next: Summary">
+          <a href="../../cornell-labs/pico-example/" class="md-footer__link md-footer__link--next" aria-label="Next: Cornel Labs FFT on the Pico">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Summary
+                Cornel Labs FFT on the Pico
               </div>
             </div>
             <div class="md-footer__button md-icon">

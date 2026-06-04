@@ -1,0 +1,68 @@
+{
+  "title": "Learning Graph Viewer",
+  "description": "![](./view-graph.png)",
+  "subject": "Mathematics",
+  "topic": "Learning Graph Viewer",
+  "gradeLevel": "6-12",
+  "bloomsTaxonomy": [
+    "Understand",
+    "Apply"
+  ],
+  "author": "Dan McCreary",
+  "dateCreated": "2026-01-23",
+  "dateModified": "2026-01-23",
+  "version": "1.0.0",
+  "license": "MIT",
+  "language": "en",
+  "format": "text/html",
+  "type": "Interactive Simulation",
+  "framework": "vis-network",
+  "url": "https://dmccreary.github.io/fft-benchmarking/sims/graph-viewer/",
+  "identifier": "https://dmccreary.github.io/fft-benchmarking/sims/graph-viewer/",
+  "_source": {
+    "repo": "fft-benchmarking",
+    "sim": "graph-viewer",
+    "github_url": "https://github.com/dmccreary/fft-benchmarking/tree/main/docs/sims/graph-viewer",
+    "auto_generated": true,
+    "generation_date": "2026-01-23"
+  },
+  "subjects": [
+    "Mathematics",
+    "Physics",
+    "Computer Science",
+    "Chemistry",
+    "Engineering"
+  ],
+  "visualizationType": [
+    "simulation",
+    "chart",
+    "graph",
+    "network"
+  ],
+  "learningObjectives": [
+    "Understand the mathematical concept of learning graph viewer",
+    "Apply learning graph viewer to solve problems",
+    "Visualize and interpret learning graph viewer relationships",
+    "Experiment with parameters to observe their effects on learning graph viewer"
+  ],
+  "pedagogical": {
+    "pattern": "demonstration",
+    "bloomAlignment": [
+      "understand",
+      "apply"
+    ],
+    "bloomVerbs": [
+      "classify",
+      "illustrate",
+      "implement",
+      "use"
+    ],
+    "pacing": "self-paced",
+    "supportsPrediction": false,
+    "dataVisibility": "medium",
+    "feedbackType": [
+      "corrective"
+    ],
+    "interactionStyle": "observe"
+  }
+}

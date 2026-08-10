@@ -1,0 +1,11 @@
+variant,label,best_cycles,mean_cycles,stddev_cycles,max_err_vs_v0
+v0,baseline radix-2 DIT (assembly),130024,131099.7,446.9,0.000000e+00
+v2,real-input FFT (half-size complex transform),103076,104729.2,703.1,4.552208e-05
+v9,combined: real-input + specialized + branchless + VFMA,91923,93257.0,718.6,3.789268e-05
+v1,specialized trivial-twiddle stages,116648,117655.5,587.7,3.814697e-06
+v4,swap-list bit-reversal (branchless),126060,126964.0,579.1,0.000000e+00
+v6,interleaved complex layout,2133832,2134938.8,724.2,0.000000e+00
+v7,hand-encoded VFMA (fused multiply-add),128785,130332.5,644.5,1.525879e-05
+v3-viper,@micropython.viper (typed ints, boxed floats),22693209,23123396.0,586101.8,0.000000e+00
+v3-native,@micropython.native (compiled, boxed floats),23119348,23552932.0,585021.0,0.000000e+00
+v3-python,pure Python (interpreted),26501319,26936832.0,584715.6,0.000000e+00

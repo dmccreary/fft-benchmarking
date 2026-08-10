@@ -1,9 +1,30 @@
 # Test Plan 02: Competing FFT Variants & Architecture Tradeoffs
 
-**Status:** Draft — design document, no variant code written yet.
+**Status:** ✅ Executed — 8 of 11 variants built, measured and documented on hardware.
 **Depends on:** [Plan 01](01-fft-test-plan.md) (complete — baseline FFT at 132,808 cycles).
 **Goal:** Build a family of competing FFT implementations so students can measure, rather
 than be told, how architecture and algorithm choices trade against each other.
+**Implementation:** [`src/fft-benchmark/variants/`](../../src/fft-benchmark/variants/) ·
+**Results:** [`variant-comparison.md`](../../src/fft-benchmark/outputs/variant-comparison.md)
+
+| Variant | Best cycles | Speedup | Hypothesis (§5) | Outcome |
+|---|---:|---:|---|---|
+| v9 combined | 91,923 | **1.41×** | — | wins stack sub-linearly (predicted 1.46×) |
+| v2 real-input | 103,076 | 1.26× | 40–45 % | **over-predicted** — split step eats part of it |
+| v1 specialized | 116,648 | 1.11× | 10–15 % | close to prediction |
+| v4 fast bit-reversal | 126,060 | 1.03× | 8–12 % | **over-predicted** |
+| v7 hand-encoded VFMA | 128,785 | 1.01× | 5–7 % | **over-predicted**, feasibility proven |
+| v0 baseline | 130,024 | 1.00× | — | reference |
+| v6 interleaved | 2,133,832 | 0.06× | 5–10 % | **kernel 1.28× but conversion costs 95 %** |
+| v3 viper / native / python | 22.7M–26.5M | ~0.005× | — | compiled Python ≈ interpreted Python here |
+
+Not built: **radix-4** (V5) and **dual-core** (V8) remain specified but unimplemented;
+**Q15 fixed-point** (V9 in §5) is confirmed blocked. See the variants README for why.
+
+Every quantitative hypothesis in §5 was optimistic. That is the most useful outcome of the
+exercise and should be preserved in the student lab: predictions were directionally right and
+consistently too generous, because they reasoned about instruction counts in a system where
+loop overhead and memory access dominate.
 
 > **Note on scope.** This plan began as "VFMA optimization." A hardware probe (§2) found that
 > VFMA is *not reachable* from MicroPython's inline assembler, and profiling (§3) found it

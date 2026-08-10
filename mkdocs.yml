@@ -19,13 +19,21 @@ nav:
     - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
     - Quality Metrics: learning-graph/quality-metrics.md
   
-  - Tutorials:
-      - Tutorial 1: tutorials/tutorial-1.md
+  - Hands-On Labs:
+      - List of Labs: tutorials/tutorial-1.md
+  
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
+  
   - MicroSims:
     - MicroSims Overview: sims/index.md
     - Graph Viewer: sims/graph-viewer/index.md
     - FFT History Timeline: sims/timeline/index.md
+  
+  - Plans:
+    - List of Plans: plans/index.md
+    - Plan 1: plans/01-fft-test-plan.md
+    - Plan 2: plans/02-competing-variants.md
+  
   - Glossary: glossary.md
   - How We Built This Site: how-we-built-this-site.md
   - References: references.md

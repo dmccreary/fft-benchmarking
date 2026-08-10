@@ -1,0 +1,97 @@
+{
+  "fft_size": 512,
+  "sample_rate_hz": 12800.0,
+  "bin_spacing_hz": 25.0,
+  "signals": [
+    {
+      "index": 1,
+      "name": "silence",
+      "file": "01-silence.csv",
+      "description": "All zeros. Spectrum must be exactly zero in every bin.",
+      "peak_bin": 0,
+      "peak_hz": 0.0,
+      "rms": 0.0
+    },
+    {
+      "index": 2,
+      "name": "dc-offset",
+      "file": "02-dc-offset.csv",
+      "description": "Constant 0.5. All energy in bin 0 (DC), nothing elsewhere.",
+      "peak_bin": 0,
+      "peak_hz": 0.0,
+      "rms": 0.5
+    },
+    {
+      "index": 3,
+      "name": "single-tone-450hz",
+      "file": "03-single-tone-450hz.csv",
+      "description": "Pure 450 Hz sine = bin 18 exactly. One sharp peak, no leakage.",
+      "peak_bin": 18,
+      "peak_hz": 450.0,
+      "rms": 0.5656854249492381
+    },
+    {
+      "index": 4,
+      "name": "two-tone-dtmf",
+      "file": "04-two-tone-dtmf.csv",
+      "description": "DTMF '1' (697+1209 Hz). Not bin-aligned, so leakage is visible.",
+      "peak_bin": 28,
+      "peak_hz": 700.0,
+      "rms": 0.5002778647755922
+    },
+    {
+      "index": 5,
+      "name": "harmonic-series",
+      "file": "05-harmonic-series.csv",
+      "description": "200/400/600 Hz at bins 8/16/24 with 1.0/0.5/0.25 amplitudes.",
+      "peak_bin": 8,
+      "peak_hz": 200.0,
+      "rms": 0.4629100498862757
+    },
+    {
+      "index": 6,
+      "name": "chirp-linear",
+      "file": "06-chirp-linear.csv",
+      "description": "Linear sweep 200->3000 Hz. Broadband, time-varying content.",
+      "peak_bin": 111,
+      "peak_hz": 2775.0,
+      "rms": 0.5651079221011408
+    },
+    {
+      "index": 7,
+      "name": "white-noise",
+      "file": "07-white-noise.csv",
+      "description": "Seeded Gaussian noise. Flat-ish spectrum, stability stress test.",
+      "peak_bin": 118,
+      "peak_hz": 2950.0,
+      "rms": 0.2542129233122586
+    },
+    {
+      "index": 8,
+      "name": "nyquist-tone",
+      "file": "08-nyquist-tone.csv",
+      "description": "Alternating +1/-1. All energy at bin 256 (fs/2). Edge case.",
+      "peak_bin": 256,
+      "peak_hz": 6400.0,
+      "rms": 1.0
+    },
+    {
+      "index": 9,
+      "name": "impulse",
+      "file": "09-impulse.csv",
+      "description": "Unit impulse at sample 0. Magnitude must be flat (1.0) in all bins.",
+      "peak_bin": 0,
+      "peak_hz": 0.0,
+      "rms": 0.04419417382415922
+    },
+    {
+      "index": 10,
+      "name": "full-scale-clipping",
+      "file": "10-full-scale-clipping.csv",
+      "description": "1 kHz tone (bin 40) hard-clipped. Odd harmonics, must not overflow.",
+      "peak_bin": 40,
+      "peak_hz": 1000.0,
+      "rms": 0.8504295445578874
+    }
+  ]
+}

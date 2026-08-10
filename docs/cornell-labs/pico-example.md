@@ -2,18 +2,19 @@
 
 [FFT/iFFT testing on the Pi Pico RP2350](https://people.ece.cornell.edu/land/courses/ece4760/RP2350/FFT_iFFT/index_FFT_iFFT.html)
 
-!!! quote
-From this web page:
-Please explain this text. Assume you are talking to a high-school student. 
+!!! prompt
+    From this web page:
+    Please explain this text. Assume you are talking to a high-school student. 
 
-Cornell University ECE4760 FFT/iFFT testing Pi Pico RP2350 Fast Fourier Trnasform and inverse Fast Fourier Transform. Some interesting audio algorithms (e.g. speech compression, effects) work in the frequency domain by doing a FFT on the input signal, fiddling with the frequency components, then transforming back to time domain for output. Since the FFT is a framed computation (works on a stored buffer of input values) you need to be concerned about input-to-output time delay and correctly interpolating from one frame to the next to avoid extremely annoyng artifacts. The approach taken here is to make sure that there is enough information to reasonably interpolate between frames at both the input and output. The steps in the process are: Input samples from ADC at 12.8 Ksamples/sec into a buffer. In the case 512 samples long, which gives 25 FFT frames per second. But with 50% overlap, a new frame starts 50 times/sec. Use a raised cosine window to taper input data to zero at ends of buffer. This is necessary to force periodicity on arbierary input signals. Since the window function goes to zero near both ends, all data is lost there! The windowing means that we need to actually do a FFT on 512 samples, but with only 256 samples separeating the beginning of each transform. This 50% overlap ensures that all data is represented in the FFT output. Do the 512 point FFT with 50% overlap so that no data gets completely lost. Normally here, there would be some sort of filtering, but for this example there is none. We are just verifying that the FFT/iFFT pair reproduces the input. Do iFFT on 512 complex points resulting from the forward FFT. Optionally, window the output of the iFFT (this example does not) before averaging We construct the output buffer by averaging the 50% overlap between iFFTs. This minimizes the inevitable discontinuity between successive transforms. Also, a little thought about data rates will convince you that you need to average the last half of each iFFT output with the first half of the next one to get back to the original sample rate. Construct output buffer of the averaged 50% overlap samples by scaling and offset, Send to DAC at the same rate at the input. The algorithm runs in two parts.: An ISR fills input buffers from the ADC, signals a full input buffer to the thread, and pushes an output buffer to the DAC via SPI. A thread (with a strict time deadline of 256 sample times) runs the windowing, FFT, iFFT, fills an output buffer, and signals the ISR when a new output buffer is ready. There is either a signal generator or microphone attached to ADC channel 2. An SPI channel runs the DAC. VGA output comnections are explained in the code, but the program will run without any VGA connection. Audio examples coming soon.
-!!!!
+*
+Cornell University ECE4760 FFT/iFFT testing Pi Pico RP2350 Fast Fourier Transform and inverse Fast Fourier Transform. Some interesting audio algorithms (e.g. speech compression, effects) work in the frequency domain by doing a FFT on the input signal, fiddling with the frequency components, then transforming back to time domain for output. Since the FFT is a framed computation (works on a stored buffer of input values) you need to be concerned about input-to-output time delay and correctly interpolating from one frame to the next to avoid extremely annoying artifacts. The approach taken here is to make sure that there is enough information to reasonably interpolate between frames at both the input and output. The steps in the process are: Input samples from ADC at 12.8 Ksamples/sec into a buffer. In the case 512 samples long, which gives 25 FFT frames per second. But with 50% overlap, a new frame starts 50 times/sec. Use a raised cosine window to taper input data to zero at ends of buffer. This is necessary to force periodicity on arbitrary input signals. Since the window function goes to zero near both ends, all data is lost there! The windowing means that we need to actually do a FFT on 512 samples, but with only 256 samples separating the beginning of each transform. This 50% overlap ensures that all data is represented in the FFT output. Do the 512 point FFT with 50% overlap so that no data gets completely lost. Normally here, there would be some sort of filtering, but for this example there is none. We are just verifying that the FFT/iFFT pair reproduces the input. Do iFFT on 512 complex points resulting from the forward FFT. Optionally, window the output of the iFFT (this example does not) before averaging We construct the output buffer by averaging the 50% overlap between iFFTs. This minimizes the inevitable discontinuity between successive transforms. Also, a little thought about data rates will convince you that you need to average the last half of each iFFT output with the first half of the next one to get back to the original sample rate. Construct output buffer of the averaged 50% overlap samples by scaling and offset, Send to DAC at the same rate at the input. The algorithm runs in two parts.: An ISR fills input buffers from the ADC, signals a full input buffer to the thread, and pushes an output buffer to the DAC via SPI. A thread (with a strict time deadline of 256 sample times) runs the windowing, FFT, iFFT, fills an output buffer, and signals the ISR when a new output buffer is ready. There is either a signal generator or microphone attached to ADC channel 2. An SPI channel runs the DAC. VGA output connections are explained in the code, but the program will run without any VGA connection. Audio examples coming soon.
+*
 
 Here's a **high-school-level explanation** of that Cornell University ECE4760 description about the **Fast Fourier Transform (FFT)** on the **Raspberry Pi Pico RP2350**:
 
 * * * *
 
-### 🎵 What's Going On
+### What's Going On
 
 This project is about how computers can **analyze and modify sound** --- like music or voices --- using math.
 
@@ -28,7 +29,7 @@ To switch between these two ways of viewing sound, engineers use special math to
 
 * * * *
 
-### ⚙️ The Process Step-by-Step
+### The Process Step-by-Step
 
 1.  **Record sound**
     The Pi Pico's ADC (analog-to-digital converter) samples the sound 12,800 times per second and stores small chunks (called *buffers*) of 512 samples each.
@@ -65,7 +66,7 @@ To switch between these two ways of viewing sound, engineers use special math to
 
 * * * *
 
-### 🧠 How the Code Runs
+### How the Code Runs
 
 There are **two main parts** of the program:
 
@@ -80,7 +81,7 @@ There are **two main parts** of the program:
 
 * * * *
 
-### 🧩 Why It Matters
+### Why It Matters
 
 This lab shows how real-time digital audio works on a tiny computer.
 It teaches key engineering ideas like:

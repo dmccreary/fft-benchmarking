@@ -1,0 +1,39 @@
+# main.py -- runs automatically every time the Pico powers on.
+#
+# Rename this file to main.py on the device to make your board standalone:
+# plug it into any USB charger and it runs with no computer attached.
+#
+# IMPORTANT: always give yourself an escape hatch. A main.py that starts a
+# tight infinite loop immediately can make the board hard to reconnect to.
+# The delay below leaves a window where Ctrl-C still works.
+
+import config
+import time
+
+# --- escape hatch ---------------------------------------------------------
+print("main.py starting in 3 seconds. Press Ctrl-C now to cancel.")
+try:
+    time.sleep(3)
+except KeyboardInterrupt:
+    print("Cancelled. Board is yours.")
+    raise SystemExit
+
+# --- your program ---------------------------------------------------------
+oled = config.init_display()
+button_a, button_b = config.init_buttons()
+
+count = 0
+try:
+    while True:
+        oled.fill(config.BLACK)
+        oled.text("Standalone!", 16, 12, config.WHITE)
+        oled.text("No laptop", 24, 28, config.WHITE)
+        oled.text("uptime %ds" % count, 16, 46, config.WHITE)
+        oled.show()
+        time.sleep(1)
+        count += 1
+
+except KeyboardInterrupt:
+    oled.fill(config.BLACK)
+    oled.text("Stopped.", 32, 28, config.WHITE)
+    oled.show()

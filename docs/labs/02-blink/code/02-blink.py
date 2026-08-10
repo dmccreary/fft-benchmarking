@@ -6,9 +6,20 @@
 from machine import Pin
 import time
 
-# GPIO 25 is wired to the little green LED on the Pico 2 board.
+# Where is the onboard LED? It depends on which board you have:
+#
+#   Pico 2    -> GPIO 25, an ordinary pin
+#   Pico 2 W  -> not a GPIO at all. The wireless chip drives it, and
+#                MicroPython exposes it under the name "LED".
+#
+# Asking for Pin(25) on a W board succeeds but lights nothing, which is a
+# nasty way to lose an afternoon. So we ask for "LED" first and fall back.
+try:
+    led = Pin("LED", Pin.OUT)      # Pico 2 W and other wireless boards
+except (ValueError, TypeError):
+    led = Pin(25, Pin.OUT)         # plain Pico 2
+
 # Pin.OUT means "I want to drive this pin", not "read it".
-led = Pin(25, Pin.OUT)
 
 print("Blinking! Press Ctrl-C to stop.")
 

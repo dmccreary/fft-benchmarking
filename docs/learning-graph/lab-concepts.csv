@@ -1,0 +1,375 @@
+Lab,LabTitle,ConceptID,ConceptLabel,TaxonomyID
+1,Hello World with Thonny,201,Thonny IDE,TOOL
+1,Hello World with Thonny,202,MicroPython Firmware,TOOL
+1,Hello World with Thonny,203,USB Serial Connection,TOOL
+1,Hello World with Thonny,204,REPL,TOOL
+1,Hello World with Thonny,205,Print Statement,TOOL
+1,Hello World with Thonny,206,Script Execution,TOOL
+1,Hello World with Thonny,207,Saving To Device,TOOL
+1,Hello World with Thonny,208,Device Filesystem,TOOL
+1,Hello World with Thonny,209,Keyboard Interrupt,TOOL
+1,Hello World with Thonny,210,MicroPython vs CPython,TOOL
+2,Blink: Your First Hardware Program,211,General Purpose IO,MCIO
+2,Blink: Your First Hardware Program,212,GPIO Pin,MCIO
+2,Blink: Your First Hardware Program,213,Pin Object,MCIO
+2,Blink: Your First Hardware Program,214,Digital Output,MCIO
+2,Blink: Your First Hardware Program,215,Onboard LED,MCIO
+2,Blink: Your First Hardware Program,216,Logic High And Low,MCIO
+2,Blink: Your First Hardware Program,217,Pin Toggle,MCIO
+2,Blink: Your First Hardware Program,218,Sleep Delay,MCIO
+2,Blink: Your First Hardware Program,219,Infinite Loop,MCIO
+3,Know Your Board,220,Firmware Version,TOOL
+3,Know Your Board,221,CPU Clock Frequency,HARD
+3,Know Your Board,222,RAM Versus Flash,HARD
+3,Know Your Board,223,Free Memory Query,TOOL
+3,Know Your Board,224,Filesystem Statistics,TOOL
+3,Know Your Board,225,Memory Mapped Register,HARD
+3,Know Your Board,226,CPUID Register,HARD
+3,Know Your Board,227,Silicon Revision,HARD
+3,Know Your Board,228,Unique Device ID,HARD
+4,The OLED Display,229,Serial Peripheral Interface,MCIO
+4,The OLED Display,230,SPI Clock And Data,MCIO
+4,The OLED Display,231,Chip Select Line,MCIO
+4,The OLED Display,232,Display Driver Chip,MCIO
+4,The OLED Display,233,SSD1306 Controller,MCIO
+4,The OLED Display,234,Framebuffer,VAPP
+4,The OLED Display,235,Monochrome Display,VAPP
+4,The OLED Display,236,Pixel Coordinates,VAPP
+4,The OLED Display,237,Text Rendering,VAPP
+4,The OLED Display,238,Display Refresh,VAPP
+4,The OLED Display,239,Shared Configuration Module,TOOL
+5,Buttons and Interaction,240,Digital Input,MCIO
+5,Buttons and Interaction,241,Pull Up Resistor,MCIO
+5,Buttons and Interaction,242,Active Low Logic,MCIO
+5,Buttons and Interaction,243,Switch Bounce,MCIO
+5,Buttons and Interaction,244,Debouncing,MCIO
+5,Buttons and Interaction,245,Polling Loop,MCIO
+5,Buttons and Interaction,246,Edge Detection,MCIO
+5,Buttons and Interaction,247,Event Loop,MCIO
+5,Buttons and Interaction,248,Mode Switching,MCIO
+6,Deploying Code and Libraries,249,File Transfer To Device,TOOL
+6,Deploying Code and Libraries,250,mpremote Tool,TOOL
+6,Deploying Code and Libraries,251,Library Directory,TOOL
+6,Deploying Code and Libraries,252,Import Path,TOOL
+6,Deploying Code and Libraries,253,Module Import,TOOL
+6,Deploying Code and Libraries,254,Autorun main.py,TOOL
+6,Deploying Code and Libraries,255,Standalone Operation,TOOL
+6,Deploying Code and Libraries,256,Code Organization,TOOL
+7,Your First Sound Capture,257,MEMS Microphone,AUDI
+7,Your First Sound Capture,258,INMP441 Microphone,AUDI
+7,Your First Sound Capture,259,Digital Microphone Output,AUDI
+7,Your First Sound Capture,260,I2S Protocol,MCIO
+7,Your First Sound Capture,261,Bit Clock,MCIO
+7,Your First Sound Capture,262,Word Select Line,MCIO
+7,Your First Sound Capture,263,I2S Serial Data,MCIO
+7,Your First Sound Capture,264,Audio Buffer,AUDI
+7,Your First Sound Capture,265,Buffered Read,MCIO
+7,Your First Sound Capture,266,Sample Word Format,AUDI
+7,Your First Sound Capture,267,Twenty Four Bit In Thirty Two,AUDI
+7,Your First Sound Capture,268,Arithmetic Right Shift,AUDI
+7,Your First Sound Capture,269,Unpacking Binary Data,AUDI
+8,Sound Levels: RMS and a VU Meter,270,Root Mean Square,AUDI
+8,Sound Levels: RMS and a VU Meter,271,Sound Level,AUDI
+8,Sound Levels: RMS and a VU Meter,272,Loudness Perception,AUDI
+8,Sound Levels: RMS and a VU Meter,273,Thonny Plotter,VAPP
+8,Sound Levels: RMS and a VU Meter,274,Moving Average,AUDI
+8,Sound Levels: RMS and a VU Meter,275,Exponential Smoothing,AUDI
+8,Sound Levels: RMS and a VU Meter,276,Sensor Auto Calibration,AUDI
+8,Sound Levels: RMS and a VU Meter,277,Bar Graph Display,VAPP
+8,Sound Levels: RMS and a VU Meter,278,Decibel Scale,AUDI
+8,Sound Levels: RMS and a VU Meter,279,Level Meter,VAPP
+9,Sampling Rate and Aliasing,280,Sample Period,SIGP
+9,Sampling Rate and Aliasing,281,Sampling Theorem,SIGP
+9,Sampling Rate and Aliasing,282,Nyquist Frequency,SIGP
+9,Sampling Rate and Aliasing,283,Aliasing Artifact,SIGP
+9,Sampling Rate and Aliasing,284,Frequency Folding,SIGP
+9,Sampling Rate and Aliasing,285,Anti Aliasing Filter,SIGP
+9,Sampling Rate and Aliasing,286,Undersampling,SIGP
+9,Sampling Rate and Aliasing,287,Tone Generator,AUDI
+9,Sampling Rate and Aliasing,288,Sample Rate Selection,SIGP
+9,Sampling Rate and Aliasing,289,Sample Rate Selection Tradeoff,SIGP
+9,Sampling Rate and Aliasing,290,Productive Failure,LABM
+10,"Bit Depth, Headroom and Clipping",291,Dynamic Range,AUDI
+10,"Bit Depth, Headroom and Clipping",292,Full Scale Value,AUDI
+10,"Bit Depth, Headroom and Clipping",293,Headroom,AUDI
+10,"Bit Depth, Headroom and Clipping",294,Clipping,AUDI
+10,"Bit Depth, Headroom and Clipping",295,Clipping Distortion,AUDI
+10,"Bit Depth, Headroom and Clipping",296,Quantization Error,SIGP
+10,"Bit Depth, Headroom and Clipping",297,Noise Floor,AUDI
+10,"Bit Depth, Headroom and Clipping",298,Amplitude Normalization,AUDI
+10,"Bit Depth, Headroom and Clipping",299,Integer Overflow,AUDI
+11,"Sine Waves: Amplitude, Frequency, Phase",300,Radians,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",301,Angular Frequency,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",302,Period Of A Wave,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",303,Phase Offset,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",304,Sine Synthesis,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",305,Sample Index To Time,SIGP
+11,"Sine Waves: Amplitude, Frequency, Phase",306,Waveform Plotting,VAPP
+11,"Sine Waves: Amplitude, Frequency, Phase",307,Peak Amplitude,MATH
+11,"Sine Waves: Amplitude, Frequency, Phase",308,DC Component,SIGP
+11,"Sine Waves: Amplitude, Frequency, Phase",309,Signal Synthesis,SIGP
+12,Adding Waves: Superposition and Beats,310,Superposition Principle,MATH
+12,Adding Waves: Superposition and Beats,311,Wave Addition,MATH
+12,Adding Waves: Superposition and Beats,312,Constructive Interference,MATH
+12,Adding Waves: Superposition and Beats,313,Destructive Interference,MATH
+12,Adding Waves: Superposition and Beats,314,Beat Frequency,AUDI
+12,Adding Waves: Superposition and Beats,315,Amplitude Envelope,AUDI
+12,Adding Waves: Superposition and Beats,316,Fundamental Frequency,AUDI
+12,Adding Waves: Superposition and Beats,317,Overtones,AUDI
+12,Adding Waves: Superposition and Beats,318,Timbre,AUDI
+12,Adding Waves: Superposition and Beats,319,Additive Synthesis,AUDI
+13,Correlation: Does My Signal Contain This Note?,320,Correlation,FOUR
+13,Correlation: Does My Signal Contain This Note?,321,Multiply And Sum,FOUR
+13,Correlation: Does My Signal Contain This Note?,322,Dot Product,MATH
+13,Correlation: Does My Signal Contain This Note?,323,Test Frequency,FOUR
+13,Correlation: Does My Signal Contain This Note?,324,Similarity Measure,FOUR
+13,Correlation: Does My Signal Contain This Note?,325,Orthogonal Functions,FOUR
+13,Correlation: Does My Signal Contain This Note?,326,In Phase Component,FOUR
+13,Correlation: Does My Signal Contain This Note?,327,Quadrature Component,FOUR
+13,Correlation: Does My Signal Contain This Note?,328,Phase Independence,FOUR
+13,Correlation: Does My Signal Contain This Note?,329,Correlation Magnitude,FOUR
+13,Correlation: Does My Signal Contain This Note?,330,Basis Function,FOUR
+13,Correlation: Does My Signal Contain This Note?,331,Projection Onto Basis,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,332,Frequency Sweep,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,333,Bin Index,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,334,Bin Center Frequency,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,335,Bin Width,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,336,Spectrum Array,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,337,Eight Point DFT By Hand,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,338,Complex Exponential,MATH
+14,Sweeping All Frequencies: You Just Built a DFT,339,Real And Imaginary Parts,MATH
+14,Sweeping All Frequencies: You Just Built a DFT,340,Spectrum Symmetry,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,341,Negative Frequencies,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,342,DC Bin,FOUR
+14,Sweeping All Frequencies: You Just Built a DFT,343,Nyquist Bin,FOUR
+15,Validating Your DFT on a Known Signal,344,Ground Truth,LABM
+15,Validating Your DFT on a Known Signal,345,Known Signal Test,LABM
+15,Validating Your DFT on a Known Signal,346,Validation Before Trust,LABM
+15,Validating Your DFT on a Known Signal,347,Numerical Tolerance,LABM
+15,Validating Your DFT on a Known Signal,348,Absolute Error,LABM
+15,Validating Your DFT on a Known Signal,349,Relative Error,LABM
+15,Validating Your DFT on a Known Signal,350,Bin Exact Frequency,FOUR
+15,Validating Your DFT on a Known Signal,351,Expected Peak,LABM
+15,Validating Your DFT on a Known Signal,352,Debugging By Bisection,LABM
+15,Validating Your DFT on a Known Signal,353,Test Signal Design,LABM
+16,Your DFT Is Too Slow,354,Algorithmic Complexity,BNCH
+16,Your DFT Is Too Slow,355,Quadratic Complexity,BNCH
+16,Your DFT Is Too Slow,356,Operation Counting,BNCH
+16,Your DFT Is Too Slow,357,Scaling Behavior,BNCH
+16,Your DFT Is Too Slow,358,Real Time Budget,PERF
+16,Your DFT Is Too Slow,359,Frame Duration,PERF
+16,Your DFT Is Too Slow,360,Processing Deadline,PERF
+16,Your DFT Is Too Slow,361,Performance Bottleneck,BNCH
+16,Your DFT Is Too Slow,362,Motivation For Optimization,BNCH
+17,Divide and Conquer: From DFT to FFT,363,Divide And Conquer,FFTA
+17,Divide and Conquer: From DFT to FFT,364,Even Odd Split,FFTA
+17,Divide and Conquer: From DFT to FFT,365,Recursive Decomposition,FFTA
+17,Divide and Conquer: From DFT to FFT,366,Subproblem,FFTA
+17,Divide and Conquer: From DFT to FFT,367,Recombination Step,FFTA
+17,Divide and Conquer: From DFT to FFT,368,Logarithmic Stages,FFTA
+17,Divide and Conquer: From DFT to FFT,369,Complexity Reduction,FFTA
+17,Divide and Conquer: From DFT to FFT,370,Power Of Two Constraint,FFTA
+17,Divide and Conquer: From DFT to FFT,371,Redundant Computation,FFTA
+17,Divide and Conquer: From DFT to FFT,372,Symmetry Exploitation,FFTA
+18,Bit Reversal and Twiddle Factors,373,Bit Reversal Permutation,FFTA
+18,Bit Reversal and Twiddle Factors,374,Index Reversal,FFTA
+18,Bit Reversal and Twiddle Factors,375,Permutation Table,FFTA
+18,Bit Reversal and Twiddle Factors,376,Roots Of Unity,MATH
+18,Bit Reversal and Twiddle Factors,377,Twiddle Factor Table,FFTA
+18,Bit Reversal and Twiddle Factors,378,Precomputation,PERF
+18,Bit Reversal and Twiddle Factors,379,Lookup Table,PERF
+18,Bit Reversal and Twiddle Factors,380,Loop Invariant Hoisting,PERF
+18,Bit Reversal and Twiddle Factors,381,In Place Reordering,FFTA
+18,Bit Reversal and Twiddle Factors,382,Swap Operation,FFTA
+18,Bit Reversal and Twiddle Factors,383,Interleaved Storage,PERF
+19,The Butterfly,384,Butterfly Structure,FFTA
+19,The Butterfly,385,Complex Multiplication,MATH
+19,The Butterfly,386,Four Multiply Form,FFTA
+19,The Butterfly,387,Butterfly Pair,FFTA
+19,The Butterfly,388,Stage Span,FFTA
+19,The Butterfly,389,Data Flow Graph,FFTA
+19,The Butterfly,390,Butterfly Count,FFTA
+19,The Butterfly,391,Stage Loop,FFTA
+19,The Butterfly,392,Cross Add And Subtract,FFTA
+20,A Complete Python FFT,393,Iterative FFT,FFTA
+20,A Complete Python FFT,394,Algorithm Assembly,FFTA
+20,A Complete Python FFT,395,Reference Implementation,LABM
+20,A Complete Python FFT,396,Cross Validation,LABM
+20,A Complete Python FFT,397,Speedup Factor,BNCH
+20,A Complete Python FFT,398,Correctness Before Speed,LABM
+20,A Complete Python FFT,399,Function Decomposition,PROG
+21,Spectrum of a Real Sound,400,Magnitude Computation,PIPE
+21,Spectrum of a Real Sound,401,Fast Magnitude Approximation,PIPE
+21,Spectrum of a Real Sound,402,Power Versus Magnitude,PIPE
+21,Spectrum of a Real Sound,403,Bin Averaging For Display,VAPP
+21,Spectrum of a Real Sound,404,Logarithmic Scaling,VAPP
+21,Spectrum of a Real Sound,405,Square Root Scaling,VAPP
+21,Spectrum of a Real Sound,406,Spectrum Bars,VAPP
+21,Spectrum of a Real Sound,407,Frame Capture,AUDI
+21,Spectrum of a Real Sound,408,Live Spectrum Display,VAPP
+21,Spectrum of a Real Sound,409,Whistle Test,LABM
+21,Spectrum of a Real Sound,410,Half Spectrum Display,VAPP
+22,Windowing and Spectral Leakage,411,Spectral Leakage Effect,SIGP
+22,Windowing and Spectral Leakage,412,Rectangular Window,SIGP
+22,Windowing and Spectral Leakage,413,Hanning Window,SIGP
+22,Windowing and Spectral Leakage,414,Hamming Window,SIGP
+22,Windowing and Spectral Leakage,415,Blackman Window,SIGP
+22,Windowing and Spectral Leakage,416,Main Lobe Width,SIGP
+22,Windowing and Spectral Leakage,417,Side Lobe Level,SIGP
+22,Windowing and Spectral Leakage,418,Window Tradeoff,SIGP
+22,Windowing and Spectral Leakage,419,Coherent Gain,SIGP
+22,Windowing and Spectral Leakage,420,Edge Discontinuity,SIGP
+22,Windowing and Spectral Leakage,421,Window Table,SIGP
+23,Peak Detection: Build a Tuner,422,Argmax Search,PIPE
+23,Peak Detection: Build a Tuner,423,Peak Bin,PIPE
+23,Peak Detection: Build a Tuner,424,Bin To Frequency,PIPE
+23,Peak Detection: Build a Tuner,425,Frequency Resolution Limit,PIPE
+23,Peak Detection: Build a Tuner,426,Parabolic Interpolation,PIPE
+23,Peak Detection: Build a Tuner,427,Sub Bin Accuracy,PIPE
+23,Peak Detection: Build a Tuner,428,Local Maximum,PIPE
+23,Peak Detection: Build a Tuner,429,Threshold Rejection,PIPE
+23,Peak Detection: Build a Tuner,430,Pitch,AUDI
+23,Peak Detection: Build a Tuner,431,Musical Note Mapping,AUDI
+23,Peak Detection: Build a Tuner,432,Octave,AUDI
+24,Real-Time Spectrum Analyzer,433,Frame Rate,PERF
+24,Real-Time Spectrum Analyzer,434,Stage Profiling,BNCH
+24,Real-Time Spectrum Analyzer,435,Capture Time,BNCH
+24,Real-Time Spectrum Analyzer,436,Compute Time,BNCH
+24,Real-Time Spectrum Analyzer,437,Draw Time,BNCH
+24,Real-Time Spectrum Analyzer,438,Overlap Processing,PERF
+24,Real-Time Spectrum Analyzer,439,Hop Size,PERF
+24,Real-Time Spectrum Analyzer,440,Buffer Swapping,PERF
+24,Real-Time Spectrum Analyzer,441,Processing Latency,PERF
+24,Real-Time Spectrum Analyzer,442,Bottleneck Identification,BNCH
+25,How Long Did That Take?,443,Millisecond Timer,BNCH
+25,How Long Did That Take?,444,Microsecond Timer,BNCH
+25,How Long Did That Take?,445,Timer Resolution,BNCH
+25,How Long Did That Take?,446,Counter Wraparound,BNCH
+25,How Long Did That Take?,447,Cycle Counter,HARD
+25,How Long Did That Take?,448,DWT Unit,HARD
+25,How Long Did That Take?,449,CYCCNT Register,HARD
+25,How Long Did That Take?,450,DEMCR Register,HARD
+25,How Long Did That Take?,451,Register Bit Manipulation,HARD
+25,How Long Did That Take?,452,Cycles To Microseconds,BNCH
+25,How Long Did That Take?,453,Counter Verification,LABM
+26,Benchmarking Methodology,454,Cold Start Effect,BNCH
+26,Benchmarking Methodology,455,Warm Up Discard,BNCH
+26,Benchmarking Methodology,456,Best Of N,BNCH
+26,Benchmarking Methodology,457,Minimum Sample,BNCH
+26,Benchmarking Methodology,458,Variance Sources,BNCH
+26,Benchmarking Methodology,459,Interrupt Interference,BNCH
+26,Benchmarking Methodology,460,Observer Effect,LABM
+26,Benchmarking Methodology,461,Timing Overhead,BNCH
+26,Benchmarking Methodology,462,Measurement Discipline,LABM
+26,Benchmarking Methodology,463,Prediction Before Measurement,LABM
+26,Benchmarking Methodology,464,Honest Reporting,LABM
+26,Benchmarking Methodology,465,What A Benchmark Excludes,LABM
+26,Benchmarking Methodology,466,Negative Result,LABM
+27,The Abstraction Ladder,467,Bytecode Interpretation,PROG
+27,The Abstraction Ladder,468,Native Code Emitter,PROG
+27,The Abstraction Ladder,469,Viper Code Emitter,PROG
+27,The Abstraction Ladder,470,Boxed Values,PROG
+27,The Abstraction Ladder,471,Unboxed Values,PROG
+27,The Abstraction Ladder,472,Type Annotation,PROG
+27,The Abstraction Ladder,473,Machine Types,PROG
+27,The Abstraction Ladder,474,Abstraction Cost,PERF
+27,The Abstraction Ladder,475,Language Tradeoff Analysis,PROG
+27,The Abstraction Ladder,476,Calling C From MicroPython,PROG
+27,The Abstraction Ladder,477,Library Over Handwritten Code,PROG
+28,Does Your CPU Have an FPU?,478,Instruction Set Architecture,ASMP
+28,Does Your CPU Have an FPU?,479,ARMv6-M,ASMP
+28,Does Your CPU Have an FPU?,480,ARMv7-M,ASMP
+28,Does Your CPU Have an FPU?,481,ARMv8-M,ASMP
+28,Does Your CPU Have an FPU?,482,Cortex M0 Plus,HARD
+28,Does Your CPU Have an FPU?,483,FPU Presence Detection,ASMP
+28,Does Your CPU Have an FPU?,484,MVFR0 Register,ASMP
+28,Does Your CPU Have an FPU?,485,FPv5-SP Unit,DSPI
+28,Does Your CPU Have an FPU?,486,Capability Probing,LABM
+28,Does Your CPU Have an FPU?,487,Hardware Feature Gate,LABM
+28,Does Your CPU Have an FPU?,488,Portability Constraint,ASMP
+28,Does Your CPU Have an FPU?,489,Failure Root Cause,LABM
+29,Your First Assembly Function,490,Inline Assembler,ASMP
+29,Your First Assembly Function,491,asm_thumb Decorator,ASMP
+29,Your First Assembly Function,492,CPU Register,ASMP
+29,Your First Assembly Function,493,General Purpose Register,ASMP
+29,Your First Assembly Function,494,Register Allocation,ASMP
+29,Your First Assembly Function,495,Move Instruction,ASMP
+29,Your First Assembly Function,496,Add Instruction,ASMP
+29,Your First Assembly Function,497,Compare Instruction,ASMP
+29,Your First Assembly Function,498,Conditional Branch,ASMP
+29,Your First Assembly Function,499,Assembly Label,ASMP
+29,Your First Assembly Function,500,Assembly Loop,ASMP
+29,Your First Assembly Function,501,Argument Passing Convention,ASMP
+29,Your First Assembly Function,502,Return Value Register,ASMP
+29,Your First Assembly Function,503,Machine Code,ASMP
+29,Your First Assembly Function,504,Instruction Mnemonic,ASMP
+30,Talking to the FPU,505,Floating Point Register,ASMP
+30,Talking to the FPU,506,Register Bank s0 to s31,ASMP
+30,Talking to the FPU,507,Load Store Architecture,ASMP
+30,Talking to the FPU,508,VLDR Instruction,ASMP
+30,Talking to the FPU,509,VSTR Instruction,ASMP
+30,Talking to the FPU,510,VADD Instruction,ASMP
+30,Talking to the FPU,511,VSUB Instruction,ASMP
+30,Talking to the FPU,512,VMUL Instruction,ASMP
+30,Talking to the FPU,513,Memory Address,ASMP
+30,Talking to the FPU,514,Address Of Buffer,ASMP
+30,Talking to the FPU,515,Typed Array,PROG
+30,Talking to the FPU,516,Pointer Arithmetic,ASMP
+30,Talking to the FPU,517,Byte Offset,ASMP
+30,Talking to the FPU,518,No Allocation In Timed Region,LABM
+31,"The Butterfly in Assembly, and a Complete FFT",519,Assembly Butterfly,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",520,Register Pressure,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",521,Register Spilling,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",522,Scratch Register,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",523,Stage Parameter Block,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",524,Python Assembly Boundary,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",525,Work Split Strategy,ASMP
+31,"The Butterfly in Assembly, and a Complete FFT",526,Assembly Debugging,LABM
+31,"The Butterfly in Assembly, and a Complete FFT",527,Bit For Bit Match,LABM
+31,"The Butterfly in Assembly, and a Complete FFT",528,Hot Loop,PERF
+32,Making It Faster: Specialization and Branchless Code,529,Special Case Optimization,PERF
+32,Making It Faster: Specialization and Branchless Code,530,Trivial Twiddle,PERF
+32,Making It Faster: Specialization and Branchless Code,531,Multiply By One,PERF
+32,Making It Faster: Specialization and Branchless Code,532,Multiply By i,PERF
+32,Making It Faster: Specialization and Branchless Code,533,Branch Prediction,HARD
+32,Making It Faster: Specialization and Branchless Code,534,Unpredictable Branch,PERF
+32,Making It Faster: Specialization and Branchless Code,535,Branchless Code,PERF
+32,Making It Faster: Specialization and Branchless Code,536,Precomputed Swap List,PERF
+32,Making It Faster: Specialization and Branchless Code,537,Code Size Tradeoff,PERF
+32,Making It Faster: Specialization and Branchless Code,538,Loop Overhead,PERF
+32,Making It Faster: Specialization and Branchless Code,539,Address Computation Cost,PERF
+32,Making It Faster: Specialization and Branchless Code,540,Optimization Attribution,LABM
+33,Beyond the Assembler: Hand-Encoding an Instruction,541,Instruction Encoding,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,542,Opcode,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,543,Encoding Bit Field,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,544,Encoding Table,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,545,Halfword,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,546,Thumb-2 Encoding,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,547,Data Directive,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,548,Raw Machine Word,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,549,Fused Multiply Add,DSPI
+33,Beyond the Assembler: Hand-Encoding an Instruction,550,VFMA Instruction,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,551,Fused Rounding,DSPI
+33,Beyond the Assembler: Hand-Encoding an Instruction,552,Assembler Limitation,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,553,ISA Versus Toolchain,ASMP
+33,Beyond the Assembler: Hand-Encoding an Instruction,554,Encoding Verification,LABM
+34,"Competing Variants: Predict, Measure, Explain",555,Variant Comparison,BNCH
+34,"Competing Variants: Predict, Measure, Explain",556,Controlled Variable,LABM
+34,"Competing Variants: Predict, Measure, Explain",557,Comparison Matrix,VAPP
+34,"Competing Variants: Predict, Measure, Explain",558,Ranking Prediction,LABM
+34,"Competing Variants: Predict, Measure, Explain",559,Optimization Composition,PERF
+34,"Competing Variants: Predict, Measure, Explain",560,Sub Linear Composition,PERF
+34,"Competing Variants: Predict, Measure, Explain",561,Integration Cost,PERF
+34,"Competing Variants: Predict, Measure, Explain",562,Kernel Versus Total Time,BNCH
+34,"Competing Variants: Predict, Measure, Explain",563,Data Marshalling Cost,PERF
+34,"Competing Variants: Predict, Measure, Explain",564,Surprising Result,LABM
+35,"Capstone: Design, Benchmark and Report",565,Experimental Design,LABM
+35,"Capstone: Design, Benchmark and Report",566,Research Question,LABM
+35,"Capstone: Design, Benchmark and Report",567,Independent Variable,LABM
+35,"Capstone: Design, Benchmark and Report",568,Dependent Variable,LABM
+35,"Capstone: Design, Benchmark and Report",569,Methodology Section,VAPP
+35,"Capstone: Design, Benchmark and Report",570,Results Presentation,VAPP
+35,"Capstone: Design, Benchmark and Report",571,Limitations Statement,LABM
+35,"Capstone: Design, Benchmark and Report",572,Conclusion Drawing,LABM
+35,"Capstone: Design, Benchmark and Report",573,Project Scoping,LABM
+35,"Capstone: Design, Benchmark and Report",574,Peer Review,LABM

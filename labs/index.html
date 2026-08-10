@@ -1,0 +1,1784 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/labs/">
+      
+      
+        <link rel="prev" href="../learning-graph/mascot-test/">
+      
+      
+        <link rel="next" href="01-hello-world/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>List of Labs - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+      <link rel="stylesheet" href="../css/mascot.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hands-on-labs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              List of Labs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Hands-On Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="01-hello-world/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 0 — Getting Started
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="04-oled-display/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 1 — Peripherals
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="07-first-sound/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 2 — Sound as Numbers
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="11-sine-waves/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 3 — Discovering Frequency
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="17-divide-and-conquer/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 4 — The FFT
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="21-real-spectrum/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 5 — Real Spectra
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="25-timing/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 6 — Measuring Performance
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="28-fpu-check/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 7 — Assembly Language
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="32-specialization/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 8 — Optimization and Capstone
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cornell-labs/pico-example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../plans/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-is-worth-your-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why this is worth your time
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      What you'll need
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      The labs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The labs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-0-getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 0 — Getting Started
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-1-peripherals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1 — Peripherals
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2-sound-as-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2 — Sound as Numbers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3-discovering-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3 — Discovering Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-4-the-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 4 — The FFT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-5-real-spectra" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 5 — Real Spectra
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-6-measuring-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 6 — Measuring Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-7-assembly-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 7 — Assembly Language
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-8-optimization-and-capstone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 8 — Optimization and Capstone
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/labs/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="hands-on-labs">Hands-On Labs</h1>
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Welcome, signal hunter!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../img/mascot/welcome.png" />
+Hi, I'm Echo. I hunt things by listening — that's literally what echolocation is,
+real-time signal processing with flippers. Over these 35 labs you're going to teach a
+$5 chip to do the same trick. <strong>Time to transform!</strong></p>
+</div>
+<p>Thirty-five labs that take you from <em>"what's a Thonny?"</em> to <em>"I hand-wrote an ARM assembly
+FFT and benchmarked it against eight competing versions."</em></p>
+<p>You need <strong>no prior experience</strong> with FFTs, signal processing, or assembly language. Lab 1
+assumes you own a computer. That's it.</p>
+<h2 id="why-this-is-worth-your-time">Why this is worth your time</h2>
+<p>Here's the thing nobody tells you: <strong>a fast FFT is a superpower.</strong> Sound, vibration, radio —
+anything that wiggles — looks like meaningless noise until you transform it into the frequency
+domain. Then patterns leap out. A whistle becomes a number. An engine's rattle becomes a
+diagnosis.</p>
+<p>Doing that transformation <em>fast enough to keep up with the real world</em>, on a chip that costs
+less than a sandwich, used to require expensive dedicated hardware. Most CS and EE
+undergraduates never get to touch this. You're about to.</p>
+<h2 id="what-youll-need">What you'll need</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Approx. cost</th>
+<th>Used from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raspberry Pi Pico 2 (RP2350)</td>
+<td>$5</td>
+<td>Lab 1</td>
+</tr>
+<tr>
+<td>SSD1306 OLED display, 128×64, SPI</td>
+<td>$5</td>
+<td>Lab 4</td>
+</tr>
+<tr>
+<td>Two push buttons</td>
+<td>$1</td>
+<td>Lab 5</td>
+</tr>
+<tr>
+<td>INMP441 I²S MEMS microphone</td>
+<td>$3</td>
+<td>Lab 7</td>
+</tr>
+<tr>
+<td>Breadboard + jumper wires</td>
+<td>$5</td>
+<td>Lab 4</td>
+</tr>
+</tbody>
+</table>
+<p>Every pin number lives in one file — <code>config.py</code> — which you'll set up in Lab 4 and import
+everywhere after that.</p>
+<h2 id="the-labs">The labs</h2>
+<h3 id="module-0-getting-started">Module 0 — Getting Started</h3>
+<p>Your computer talks to a microcontroller for the first time.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><a href="01-hello-world/">Hello World with Thonny</a></td>
+<td>Your first program on real hardware</td>
+</tr>
+<tr>
+<td>2</td>
+<td><a href="02-blink/">Blink: Your First Hardware Program</a></td>
+<td>A blinking LED you control</td>
+</tr>
+<tr>
+<td>3</td>
+<td><a href="03-know-your-board/">Know Your Board</a></td>
+<td>A report on your chip, read from its own registers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-1-peripherals">Module 1 — Peripherals</h3>
+<p>Adding eyes, hands, and a filing cabinet.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td><a href="04-oled-display/">The OLED Display</a></td>
+<td>Text and pixels on a real screen</td>
+</tr>
+<tr>
+<td>5</td>
+<td><a href="05-buttons/">Buttons and Interaction</a></td>
+<td>A menu you can click through</td>
+</tr>
+<tr>
+<td>6</td>
+<td><a href="06-deploying-code/">Deploying Code and Libraries</a></td>
+<td>A program that runs on power-up, untethered</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-2-sound-as-numbers">Module 2 — Sound as Numbers</h3>
+<p>The microphone arrives. Everything gets more fun.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td><a href="07-first-sound/">Your First Sound Capture</a></td>
+<td>Raw audio samples, straight off the mic</td>
+</tr>
+<tr>
+<td>8</td>
+<td><a href="08-sound-levels/">Sound Levels: RMS and a VU Meter</a></td>
+<td>A live loudness meter that reacts to your voice</td>
+</tr>
+<tr>
+<td>9</td>
+<td><a href="09-aliasing/">Sampling Rate and Aliasing</a></td>
+<td>A tone that <em>lies</em> about its pitch — and why</td>
+</tr>
+<tr>
+<td>10</td>
+<td><a href="10-bit-depth/">Bit Depth, Headroom and Clipping</a></td>
+<td>Deliberately blown-out audio, and the fix</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-3-discovering-frequency">Module 3 — Discovering Frequency</h3>
+<p>The heart of the course. You will <em>invent</em> the DFT rather than be handed it.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td><a href="11-sine-waves/">Sine Waves: Amplitude, Frequency, Phase</a></td>
+<td>Waves from scratch, in code</td>
+</tr>
+<tr>
+<td>12</td>
+<td><a href="12-superposition/">Adding Waves: Superposition and Beats</a></td>
+<td>Two notes that fight, and wobble</td>
+</tr>
+<tr>
+<td>13</td>
+<td><a href="13-correlation/">Correlation: Does My Signal Contain This Note?</a></td>
+<td>A detector for one specific frequency</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a href="14-building-a-dft/">Sweeping All Frequencies: You Just Built a DFT</a></td>
+<td><strong>Your own DFT.</strong> Yes, really</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a href="15-validating/">Validating Your DFT on a Known Signal</a></td>
+<td>Proof that it actually works</td>
+</tr>
+<tr>
+<td>16</td>
+<td><a href="16-too-slow/">Your DFT Is Too Slow</a></td>
+<td>The measurement that motivates everything next</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-4-the-fft">Module 4 — The FFT</h3>
+<p>Same answer. Vastly less work.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>17</td>
+<td><a href="17-divide-and-conquer/">Divide and Conquer: From DFT to FFT</a></td>
+<td>The trick that kills the wasted work</td>
+</tr>
+<tr>
+<td>18</td>
+<td><a href="18-bit-reversal-twiddles/">Bit Reversal and Twiddle Factors</a></td>
+<td>The bookkeeping that makes it fit in place</td>
+</tr>
+<tr>
+<td>19</td>
+<td><a href="19-butterfly/">The Butterfly</a></td>
+<td>The four-line operation at the centre of it all</td>
+</tr>
+<tr>
+<td>20</td>
+<td><a href="20-complete-python-fft/">A Complete Python FFT</a></td>
+<td>A working FFT, validated against your DFT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-5-real-spectra">Module 5 — Real Spectra</h3>
+<p>Point it at the world.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td><a href="21-real-spectrum/">Spectrum of a Real Sound</a></td>
+<td>A live spectrum — <strong>whistle and watch the peak move</strong></td>
+</tr>
+<tr>
+<td>22</td>
+<td><a href="22-windowing/">Windowing and Spectral Leakage</a></td>
+<td>Smeared peaks, then sharp ones</td>
+</tr>
+<tr>
+<td>23</td>
+<td><a href="23-tuner/">Peak Detection: Build a Tuner</a></td>
+<td>A working instrument tuner</td>
+</tr>
+<tr>
+<td>24</td>
+<td><a href="24-realtime-analyzer/">Real-Time Spectrum Analyzer</a></td>
+<td>The full pipeline, profiled stage by stage</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-6-measuring-performance">Module 6 — Measuring Performance</h3>
+<p>You cannot optimize what you cannot measure honestly.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25</td>
+<td><a href="25-timing/">How Long Did That Take?</a></td>
+<td>Nanosecond-accurate timing from a CPU register</td>
+</tr>
+<tr>
+<td>26</td>
+<td><a href="26-benchmarking/">Benchmarking Methodology</a></td>
+<td>A harness that doesn't lie to you</td>
+</tr>
+<tr>
+<td>27</td>
+<td><a href="27-abstraction-ladder/">The Abstraction Ladder</a></td>
+<td>Python vs. native vs. viper vs. C vs. assembly</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-7-assembly-language">Module 7 — Assembly Language</h3>
+<p>Where the speed actually lives.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>28</td>
+<td><a href="28-fpu-check/">Does Your CPU Have an FPU?</a></td>
+<td>A capability probe — and a cautionary tale</td>
+</tr>
+<tr>
+<td>29</td>
+<td><a href="29-first-assembly/">Your First Assembly Function</a></td>
+<td>Machine instructions you wrote yourself</td>
+</tr>
+<tr>
+<td>30</td>
+<td><a href="30-fpu-assembly/">Talking to the FPU</a></td>
+<td>Float math at hardware speed</td>
+</tr>
+<tr>
+<td>31</td>
+<td><a href="31-assembly-fft/">The Butterfly in Assembly</a></td>
+<td><strong>A complete assembly FFT</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-8-optimization-and-capstone">Module 8 — Optimization and Capstone</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>You'll build</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>32</td>
+<td><a href="32-specialization/">Specialization and Branchless Code</a></td>
+<td>Faster code by doing less</td>
+</tr>
+<tr>
+<td>33</td>
+<td><a href="33-hand-encoding/">Beyond the Assembler: Hand-Encoding</a></td>
+<td>An instruction your assembler refuses to write</td>
+</tr>
+<tr>
+<td>34</td>
+<td><a href="34-variants/">Competing Variants: Predict, Measure, Explain</a></td>
+<td>A comparison matrix, and some surprises</td>
+</tr>
+<tr>
+<td>35</td>
+<td><a href="35-capstone/">Capstone</a></td>
+<td>Your own variant, benchmarked and written up</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-tip">
+<p class="admonition-title">How to get the most out of these</p>
+<p><img alt="Echo offering a tip" class="mascot-admonition-img" src="../img/mascot/tip.png" />
+Whenever a lab says <strong>Predict, then measure</strong> — actually write your guess down first.
+In Plan 02 of this project, <em>every single</em> performance prediction turned out to be
+too optimistic. Being wrong on paper is how you learn what the machine really does.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../learning-graph/mascot-test/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Mascot Style Guide">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Mascot Style Guide
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="01-hello-world/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 1: Hello World with Thonny">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 1: Hello World with Thonny
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

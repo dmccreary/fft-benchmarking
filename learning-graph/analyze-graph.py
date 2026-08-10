@@ -66,10 +66,15 @@ def verify_dag(concepts: Dict[int, str],
     """Verify the graph is a DAG using topological sort. Returns (is_dag, cycles_found)."""
     indeg = {cid: 0 for cid in concepts}
 
-    # Calculate indegree
+    # Calculate indegree.
+    # An edge runs prereq -> concept, so the concept is the one with the
+    # incoming edge. Incrementing indeg[prereq] here instead would invert the
+    # graph and disagree with the decrement below, making every valid DAG
+    # report as invalid.
     for concept_id, prereqs in dependencies.items():
         for prereq in prereqs:
-            indeg[prereq] += 1
+            if prereq in indeg:
+                indeg[concept_id] += 1
 
     # Kahn's algorithm for topological sort
     queue = deque([cid for cid in concepts if indeg[cid] == 0])

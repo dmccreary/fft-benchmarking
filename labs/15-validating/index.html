@@ -1,0 +1,2466 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/labs/15-validating/">
+      
+      
+        <link rel="prev" href="../14-building-a-dft/">
+      
+      
+        <link rel="next" href="../16-too-slow/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Lab 15: Validating Your DFT on a Known Signal - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-15-validating-your-dft-on-a-known-signal" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 15: Validating Your DFT on a Known Signal
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Hands-On Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../01-hello-world/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 0 — Getting Started
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../04-oled-display/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 1 — Peripherals
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../07-first-sound/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 2 — Sound as Numbers
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../11-sine-waves/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Module 3 — Discovering Frequency
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Module 3 — Discovering Frequency
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-superposition/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab 12: Adding Waves: Superposition and Beats
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-correlation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab 13: Correlation: Does My Signal Contain This Note?
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-building-a-dft/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab 14: Sweeping All Frequencies: You Just Built a DFT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Lab 15: Validating Your DFT on a Known Signal
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Lab 15: Validating Your DFT on a Known Signal
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-introduced" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Introduced
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-bother-when-it-looked-fine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why bother, when it looked fine?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signals-with-spectra-you-can-predict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signals with spectra you can predict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-an2-comes-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where A·N/2 comes from
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Procedure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Procedure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-predict-before-you-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 — Predict before you run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-run-the-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 — Run the suite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-understand-the-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 — Understand the tolerance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-break-it-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4 — Break it deliberately
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-debug-by-bisection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5 — Debug by bisection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-your-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Your Understanding
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-too-slow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab 16: Your DFT Is Too Slow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../17-divide-and-conquer/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 4 — The FFT
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../21-real-spectrum/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 5 — Real Spectra
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../25-timing/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 6 — Measuring Performance
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../28-fpu-check/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 7 — Assembly Language
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../32-specialization/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Module 8 — Optimization and Capstone
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You'll Build
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-introduced" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Introduced
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-bother-when-it-looked-fine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why bother, when it looked fine?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signals-with-spectra-you-can-predict" class="md-nav__link">
+    <span class="md-ellipsis">
+      Signals with spectra you can predict
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-an2-comes-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where A·N/2 comes from
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Procedure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Procedure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-predict-before-you-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1 — Predict before you run
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-run-the-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2 — Run the suite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-understand-the-tolerance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3 — Understand the tolerance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-break-it-deliberately" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4 — Break it deliberately
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-debug-by-bisection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5 — Debug by bisection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expected Output
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges" class="md-nav__link">
+    <span class="md-ellipsis">
+      Challenges
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-your-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check Your Understanding
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/labs/15-validating/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="lab-15-validating-your-dft-on-a-known-signal">Lab 15: Validating Your DFT on a Known Signal</h1>
+<p><strong>Time:</strong> ~45 minutes  |  <strong>Prerequisites:</strong> <a href="../14-building-a-dft/">Lab 14</a>  |  <strong>Hardware:</strong> Pico 2 (no microphone needed)</p>
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Looking right isn't being right</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Your DFT produced convincing-looking spectra last lab. So would a DFT with a sign error
+in it, or one that's off by a factor of two. Today we find out which one you have — by
+testing it on signals whose answers we already know. Let's tune in.</p>
+</div>
+<h2 id="what-youll-build">What You'll Build</h2>
+<p>A test suite for your own DFT: seven signals with spectra you can work out on paper, checked
+automatically with an honest tolerance.</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li><strong>Predict</strong> a spectrum analytically before computing it</li>
+<li><strong>Choose</strong> a tolerance appropriate to the arithmetic available</li>
+<li><strong>Distinguish</strong> absolute from relative error</li>
+<li><strong>Apply</strong> validation-before-trust as a working habit</li>
+<li><strong>Debug</strong> by bisection when a test fails</li>
+<li><strong>Explain</strong> why single-precision floats limit what "zero" means here</li>
+</ul>
+<h2 id="concepts-introduced">Concepts Introduced</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Concept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>344</td>
+<td>Ground Truth</td>
+</tr>
+<tr>
+<td>345</td>
+<td>Known Signal Test</td>
+</tr>
+<tr>
+<td>346</td>
+<td>Validation Before Trust</td>
+</tr>
+<tr>
+<td>347</td>
+<td>Numerical Tolerance</td>
+</tr>
+<tr>
+<td>348</td>
+<td>Absolute Error</td>
+</tr>
+<tr>
+<td>349</td>
+<td>Relative Error</td>
+</tr>
+<tr>
+<td>350</td>
+<td>Bin Exact Frequency</td>
+</tr>
+<tr>
+<td>351</td>
+<td>Expected Peak</td>
+</tr>
+<tr>
+<td>352</td>
+<td>Debugging By Bisection</td>
+</tr>
+<tr>
+<td>353</td>
+<td>Test Signal Design</td>
+</tr>
+</tbody>
+</table>
+<h2 id="background">Background</h2>
+<h3 id="why-bother-when-it-looked-fine">Why bother, when it looked fine?</h3>
+<p>Because in Lab 21 you'll point this DFT at a microphone. If the spectrum looks wrong then, the
+suspects are: the mic wiring, the sample format, the DC offset, the DFT, the magnitude
+calculation, or the display. Six candidates and no way to choose.</p>
+<p>Unless you've <em>already proven</em> the DFT correct. Then it's five.</p>
+<p>Every subsystem in this course gets tested against a known answer before it's trusted with an
+unknown one. The previous version of this kit skipped this step, and students who got garbage
+had no way to find out why.</p>
+<h3 id="signals-with-spectra-you-can-predict">Signals with spectra you can predict</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Expected spectrum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all zeros</td>
+<td>every bin 0</td>
+</tr>
+<tr>
+<td>constant <code>D</code></td>
+<td>bin 0 = <code>D·N</code>, rest 0</td>
+</tr>
+<tr>
+<td>sine, amplitude <code>A</code>, at bin <code>k</code></td>
+<td>bin <code>k</code> = <code>A·N/2</code> (mirrored at <code>N−k</code>)</td>
+</tr>
+<tr>
+<td>impulse at sample 0</td>
+<td><strong>every</strong> bin = 1.0, perfectly flat</td>
+</tr>
+<tr>
+<td>alternating +1/−1</td>
+<td>bin <code>N/2</code> = <code>N</code></td>
+</tr>
+</tbody>
+</table>
+<p>The impulse is the loveliest of these: one sample of 1.0 and the rest zeros produces a
+completely flat spectrum. An instantaneous click contains every frequency equally — which is why
+a clap is a decent way to test a room's acoustics.</p>
+<h3 id="where-an2-comes-from">Where <code>A·N/2</code> comes from</h3>
+<p>A real sine splits its energy between its bin and the mirror bin. Each half gets <code>A·N/2</code>, so
+they sum to <code>A·N</code>. The program demonstrates this explicitly.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">How close to zero is zero?</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+Bins that should be exactly 0 come out around <strong>1×10⁻⁴</strong> on this board. Not a bug —
+MicroPython here uses <strong>single-precision</strong> floats (check: <code>repr(1/3)</code> gives
+<code>0.3333333</code>, only 7 digits). Our angle <code>2πkt/N</code> climbs to about 390 radians for the top
+bins, and a float32 can't pin a number that large down better than ~4×10⁻⁵ radians. So
+<code>cos()</code> is inaccurate before it even runs.</p>
+</div>
+<h2 id="procedure">Procedure</h2>
+<h3 id="step-1-predict-before-you-run">Step 1 — Predict before you run</h3>
+<p>Fill this in first, using the table above. N = 64.</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Which bin peaks?</th>
+<th>What value?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>constant 0.5</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sine amplitude 1.0 at bin 3</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>sine amplitude 0.25 at bin 7</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>impulse at sample 0</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-run-the-suite">Step 2 — Run the suite</h3>
+<p>Open <code>15-validating.py</code> and run it:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Lab 15: Validating Your DFT on a Known Signal</span>
+<span class="c1">#</span>
+<span class="c1"># You wrote a DFT last lab and the output LOOKED right. That is not the same</span>
+<span class="c1"># as being right.</span>
+<span class="c1">#</span>
+<span class="c1"># This lab builds signals whose spectra we can predict on paper, then checks</span>
+<span class="c1"># the code against those predictions. If the DFT ever disagrees with theory,</span>
+<span class="c1"># we find out here -- in a controlled test with a known answer -- and not in</span>
+<span class="c1"># Lab 21 with a microphone attached and four things that could be at fault.</span>
+<span class="c1">#</span>
+<span class="c1"># This habit has a name: VALIDATE BEFORE YOU TRUST.</span>
+
+<span class="kn">import</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">RATE</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">SAMPLE_RATE</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">BIN</span> <span class="o">=</span> <span class="n">RATE</span> <span class="o">/</span> <span class="n">N</span>
+
+<span class="c1"># How close is &quot;equal&quot;? This is a real decision, not a formality.</span>
+<span class="c1">#</span>
+<span class="c1"># MicroPython on this board uses SINGLE-precision floats -- about 7 digits.</span>
+<span class="c1"># Worse, our angle 2*pi*k*t/N reaches ~390 radians for the highest bins, and</span>
+<span class="c1"># a float32 can only pin that down to about 4e-5 radians. So bins that should</span>
+<span class="c1"># be exactly zero come out around 1e-4 instead.</span>
+<span class="c1">#</span>
+<span class="c1"># A tolerance of 1e-6 would therefore fail every time, not because the DFT is</span>
+<span class="c1"># wrong but because the tolerance is a fantasy. We express it RELATIVE to the</span>
+<span class="c1"># size of the signal instead.</span>
+<span class="n">REL_TOL</span> <span class="o">=</span> <span class="mf">1e-3</span>            <span class="c1"># 0.1% of the largest expected value</span>
+
+
+<span class="k">def</span> <span class="nf">dft</span><span class="p">(</span><span class="n">signal</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="n">real</span><span class="p">,</span> <span class="n">imag</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">re</span> <span class="o">=</span> <span class="n">im</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="n">re</span> <span class="o">+=</span> <span class="n">signal</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">im</span> <span class="o">-=</span> <span class="n">signal</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">real</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="p">)</span>
+        <span class="n">imag</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">real</span><span class="p">,</span> <span class="n">imag</span>
+
+
+<span class="k">def</span> <span class="nf">magnitudes</span><span class="p">(</span><span class="n">real</span><span class="p">,</span> <span class="n">imag</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">real</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">imag</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">real</span><span class="p">))]</span>
+
+
+<span class="k">def</span> <span class="nf">sine</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">amp</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">RATE</span><span class="p">)</span> <span class="o">+</span> <span class="n">phase</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># The test cases. Each one has a spectrum we can work out on paper.</span>
+<span class="c1"># =========================================================================</span>
+<span class="c1">#</span>
+<span class="c1">#  signal                     expected spectrum</span>
+<span class="c1">#  -----------------------    -------------------------------------------</span>
+<span class="c1">#  all zeros                  every bin 0</span>
+<span class="c1">#  constant D                 bin 0 = D*N, everything else 0</span>
+<span class="c1">#  sine, amplitude A, bin k   bin k = A*N/2  (and mirrored at N-k)</span>
+<span class="c1">#  impulse at sample 0        EVERY bin = 1.0  (perfectly flat)</span>
+<span class="c1">#  alternating +1/-1          bin N/2 = N, everything else 0</span>
+
+<span class="n">tests</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;silence&quot;</span><span class="p">,</span>
+    <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;every bin zero&quot;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">all</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="p">),</span>
+<span class="p">))</span>
+
+<span class="n">D</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;constant </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">D</span><span class="p">,</span>
+    <span class="p">[</span><span class="n">D</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span><span class="p">,</span>
+    <span class="s2">&quot;bin 0 = </span><span class="si">%.1f</span><span class="s2">, rest zero&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">N</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">D</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">D</span> <span class="o">*</span> <span class="n">N</span>
+              <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">D</span> <span class="o">*</span> <span class="n">N</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">:]),</span>
+<span class="p">))</span>
+
+<span class="n">A</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;sine amp </span><span class="si">%.1f</span><span class="s2"> at bin </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">K</span><span class="p">),</span>
+    <span class="n">sine</span><span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="n">BIN</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="n">A</span><span class="p">),</span>
+    <span class="s2">&quot;bin </span><span class="si">%d</span><span class="s2"> = </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">A</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">K</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="n">A2</span><span class="p">,</span> <span class="n">K2</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mi">7</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;sine amp </span><span class="si">%.2f</span><span class="s2"> at bin </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">K2</span><span class="p">),</span>
+    <span class="n">sine</span><span class="p">(</span><span class="n">K2</span> <span class="o">*</span> <span class="n">BIN</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="n">A2</span><span class="p">),</span>
+    <span class="s2">&quot;bin </span><span class="si">%d</span><span class="s2"> = </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">K2</span><span class="p">,</span> <span class="n">A2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">K2</span><span class="p">]</span> <span class="o">-</span> <span class="n">A2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">A2</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;phase-shifted sine&quot;</span><span class="p">,</span>
+    <span class="n">sine</span><span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="n">BIN</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mf">1.234</span><span class="p">),</span>
+    <span class="s2">&quot;bin </span><span class="si">%d</span><span class="s2"> still = </span><span class="si">%.1f</span><span class="s2"> (phase must not matter)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">K</span><span class="p">]</span> <span class="o">-</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="n">impulse</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span>
+<span class="n">impulse</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;impulse at sample 0&quot;</span><span class="p">,</span>
+    <span class="n">impulse</span><span class="p">,</span>
+    <span class="s2">&quot;every bin = 1.0 (flat spectrum)&quot;</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">all</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">m</span><span class="p">),</span>
+<span class="p">))</span>
+
+<span class="n">alt</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1.0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+    <span class="s2">&quot;alternating +1/-1&quot;</span><span class="p">,</span>
+    <span class="n">alt</span><span class="p">,</span>
+    <span class="s2">&quot;bin </span><span class="si">%d</span><span class="s2"> = </span><span class="si">%d</span><span class="s2"> (Nyquist)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">N</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">N</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">N</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">REL_TOL</span> <span class="o">*</span> <span class="n">N</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># Run them</span>
+<span class="c1"># =========================================================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Validating the DFT against hand-computed answers&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N = </span><span class="si">%d</span><span class="s2">, bin width = </span><span class="si">%.0f</span><span class="s2"> Hz, relative tolerance = </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">BIN</span><span class="p">,</span> <span class="n">REL_TOL</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-26s</span><span class="s2"> </span><span class="si">%-34s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;test signal&quot;</span><span class="p">,</span> <span class="s2">&quot;expected&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">74</span><span class="p">)</span>
+
+<span class="n">passed</span> <span class="o">=</span> <span class="n">failed</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">expectation</span><span class="p">,</span> <span class="n">check</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+    <span class="n">mags</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">(</span><span class="o">*</span><span class="n">dft</span><span class="p">(</span><span class="n">signal</span><span class="p">))</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-26s</span><span class="s2"> </span><span class="si">%-34s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">expectation</span><span class="p">,</span> <span class="s2">&quot;PASS&quot;</span> <span class="k">if</span> <span class="n">ok</span> <span class="k">else</span> <span class="s2">&quot;*** FAIL ***&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="n">passed</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">failed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># A failure should tell you WHERE to look, not just that it happened.</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mags</span><span class="p">)),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">mags</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      -&gt; largest bin was </span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.0f</span><span class="s2"> Hz) at magnitude </span><span class="si">%.4f</span><span class="s2">&quot;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">top</span> <span class="o">*</span> <span class="n">BIN</span><span class="p">,</span> <span class="n">mags</span><span class="p">[</span><span class="n">top</span><span class="p">]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">74</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> passed, </span><span class="si">%d</span><span class="s2"> failed&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">passed</span><span class="p">,</span> <span class="n">failed</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">failed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Every prediction confirmed. The DFT is trustworthy -- so when&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;something looks wrong in a later lab, the DFT is not the suspect.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Something disagrees with theory. Debug by BISECTION: start with&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the simplest failing case and shrink N until you can check the&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;arithmetic by hand.&quot;</span><span class="p">)</span>
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># Where the expected numbers come from</span>
+<span class="c1"># =========================================================================</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== How close to zero is zero? ===&quot;</span><span class="p">)</span>
+<span class="n">zeros</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">(</span><span class="o">*</span><span class="n">dft</span><span class="p">([</span><span class="mf">0.5</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span><span class="p">))</span>
+<span class="n">worst</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">zeros</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;For a constant signal every bin above 0 should be EXACTLY zero.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Largest one actually measured: </span><span class="si">%.3e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">worst</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That is not a bug in the DFT. This board uses single-precision&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;floats (repr(1/3) = </span><span class="si">%s</span><span class="s2">), and our angle 2*pi*k*t/N climbs to about&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.0f</span><span class="s2"> radians for the top bins. float32 cannot hold a number that&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;large to better than ~1e-4 radians, so cos() starts out inaccurate&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;before it even runs.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Two lessons:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  1. A tolerance must match the arithmetic you actually have.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  2. Recomputing big angles is wasteful AND imprecise -- which is&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     exactly why Lab 18 precomputes a small table of twiddle factors&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     instead of calling cos() half a million times.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Why a sine of amplitude A peaks at A*N/2 ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A real sine splits its energy between the positive frequency (bin k)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;and its mirror (bin N-k). Each half gets A*N/2.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">mags</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="p">(</span><span class="o">*</span><span class="n">dft</span><span class="p">(</span><span class="n">sine</span><span class="p">(</span><span class="n">K</span> <span class="o">*</span> <span class="n">BIN</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;amplitude 1.0, N = </span><span class="si">%d</span><span class="s2">  -&gt;  expected </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  bin </span><span class="si">%2d</span><span class="s2">  = </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">mags</span><span class="p">[</span><span class="n">K</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  bin </span><span class="si">%2d</span><span class="s2">  = </span><span class="si">%.4f</span><span class="s2">   &lt;- the mirror&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">K</span><span class="p">,</span> <span class="n">mags</span><span class="p">[</span><span class="n">N</span> <span class="o">-</span> <span class="n">K</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  total   = </span><span class="si">%.4f</span><span class="s2">   = A * N&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mags</span><span class="p">[</span><span class="n">K</span><span class="p">]</span> <span class="o">+</span> <span class="n">mags</span><span class="p">[</span><span class="n">N</span> <span class="o">-</span> <span class="n">K</span><span class="p">]))</span>
+</code></pre></div></td></tr></table></div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>test signal                expected                           result
+--------------------------------------------------------------------------
+silence                    every bin zero                     PASS
+constant 0.5               bin 0 = 32.0, rest zero            PASS
+sine amp 1.0 at bin 3      bin 3 = 32.0                       PASS
+sine amp 0.25 at bin 7     bin 7 = 8.0                        PASS
+phase-shifted sine         bin 3 still = 32.0                 PASS
+impulse at sample 0        every bin = 1.0 (flat spectrum)    PASS
+alternating +1/-1          bin 32 = 64 (Nyquist)              PASS
+--------------------------------------------------------------------------
+7 passed, 0 failed
+</code></pre></div></td></tr></table></div>
+<h3 id="step-3-understand-the-tolerance">Step 3 — Understand the tolerance</h3>
+<p>The suite uses a <strong>relative</strong> tolerance — 0.1% of the expected value — not an absolute one.</p>
+<p>That's a deliberate choice. An absolute tolerance of <code>1e-6</code> fails every time on this hardware,
+not because the DFT is wrong but because the tolerance is a fantasy about precision we don't
+have. <strong>A tolerance must match the arithmetic you actually own.</strong></p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">A test that fails for the wrong reason is worse than no test</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+If your suite cries wolf on every run, you'll start ignoring it — and then it won't
+catch the real bug when it appears. Getting the tolerance right is part of writing the
+test, not an afterthought.</p>
+</div>
+<h3 id="step-4-break-it-deliberately">Step 4 — Break it deliberately</h3>
+<p>Introduce a bug and confirm the suite catches it. Change the DFT's sign:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">im</span> <span class="o">+=</span> <span class="n">signal</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>     <span class="c1"># was -=</span>
+</code></pre></div></td></tr></table></div>
+<p>Which tests fail? Which still pass? Now try a scale error — divide <code>re</code> and <code>im</code> by 2. Notice
+that the <em>impulse</em> test still passes while the sine tests fail. Test suites have blind spots,
+and knowing yours is part of the job.</p>
+<h3 id="step-5-debug-by-bisection">Step 5 — Debug by bisection</h3>
+<p>When something fails, don't stare at 64 bins. Shrink the problem:</p>
+<ol>
+<li>Drop N to 8 — small enough to check by hand</li>
+<li>Use the simplest failing signal</li>
+<li>Print intermediate values inside the loop</li>
+<li>Compare one bin against arithmetic you do yourself</li>
+</ol>
+<h2 id="expected-output">Expected Output</h2>
+<p>All 7 tests pass, then the precision discussion, then a demonstration that bins 3 and 61 each
+hold 32.0 and sum to 64.0 = <code>A·N</code>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Everything fails</td>
+<td>Tolerance too tight</td>
+<td>Use relative, not absolute</td>
+</tr>
+<tr>
+<td>Only sine tests fail</td>
+<td>Scale or sign error in the DFT</td>
+<td>Check the <code>A·N/2</code> derivation</td>
+</tr>
+<tr>
+<td>Impulse test fails</td>
+<td>Impulse not at index 0</td>
+<td>A shifted impulse changes phase, not magnitude</td>
+</tr>
+<tr>
+<td>Nyquist test fails</td>
+<td>Off-by-one on <code>N/2</code></td>
+<td>With N = 64 the Nyquist bin is 32</td>
+</tr>
+<tr>
+<td>Results differ run to run</td>
+<td>Not possible here — it's deterministic</td>
+<td>Something else changed; check your edits</td>
+</tr>
+</tbody>
+</table>
+<h2 id="challenges">Challenges</h2>
+<ol>
+<li><strong>Add a test.</strong> Two sines at different bins and amplitudes. Predict both peaks, then check.</li>
+<li><strong>Find the limit.</strong> Lower <code>REL_TOL</code> until tests start failing. What's the tightest tolerance
+   this hardware supports?</li>
+<li><strong>Parseval's theorem.</strong> The energy in the time domain equals the energy in the frequency
+   domain (with a scale factor). Work out the factor and add it as a test — it's a strong
+   whole-transform check.</li>
+</ol>
+<h2 id="check-your-understanding">Check Your Understanding</h2>
+<ol>
+<li>Why validate against a known signal before using a microphone?</li>
+<li>What spectrum does an impulse produce, and why?</li>
+<li>A sine of amplitude 1.0 with N = 128 — what's the peak bin value?</li>
+<li>Why is a relative tolerance better than an absolute one here?</li>
+<li>Describe debugging by bisection in your own words.</li>
+</ol>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Now you can trust it</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Seven predictions, seven confirmations. Your DFT is correct — and you can <em>prove</em> it,
+which is a different and better thing than believing it. <strong>Next lab: find out whether
+it's fast enough.</strong> (It is not. Spectacularly.)</p>
+</div>
+<hr />
+<p><strong>Next:</strong> <a href="../16-too-slow/">Lab 16: Your DFT Is Too Slow</a>  |  <strong>Previous:</strong> <a href="../14-building-a-dft/">Lab 14</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../14-building-a-dft/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 14: Sweeping All Frequencies: You Just Built a DFT">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 14: Sweeping All Frequencies: You Just Built a DFT
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../16-too-slow/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 16: Your DFT Is Too Slow">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 16: Your DFT Is Too Slow
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

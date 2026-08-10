@@ -1,0 +1,1812 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/plans/03-hands-on-labs/">
+      
+      
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Test Plan 03: Hands-On Lab Series - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#test-plan-03-hands-on-lab-series" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Test Plan 03: Hands-On Lab Series
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goal-and-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Goal and Audience
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-the-previous-kit-taught-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What the Previous Kit Taught Us
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What the Previous Kit Taught Us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-got-right-and-we-should-keep" class="md-nav__link">
+    <span class="md-ellipsis">
+      What it got right, and we should keep
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-failures-we-must-not-repeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      The failures we must not repeat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lineage-worth-stating-in-the-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lineage worth stating in the labs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-instructional-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Instructional Design Principles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hardware-and-shared-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hardware and Shared Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-lab-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Lab Sequence
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. The Lab Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-0-environment-week-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 0 — Environment (Week 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-1-peripherals-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1 — Peripherals (Week 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2-sound-as-numbers-week-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2 — Sound as Numbers (Week 3)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3-discovering-frequency-weeks-45-the-cliff-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3 — Discovering Frequency (Weeks 4–5) — the cliff-fix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-4-the-fft-week-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 4 — The FFT (Week 6)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-5-real-spectra-week-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 5 — Real Spectra (Week 7)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-6-measuring-performance-week-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 6 — Measuring Performance (Week 8)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-7-assembly-language-week-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 7 — Assembly Language (Week 9)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-8-optimization-and-capstone-week-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 8 — Optimization and Capstone (Week 10)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-lab-document-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Lab Document Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-learning-graph-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Learning Graph Expansion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Learning Graph Expansion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-new-taxonomy-categories-12-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Five new taxonomy categories (12 → 17)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion-of-existing-categories-145-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expansion of existing categories (~145 concepts)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-existing-issue-to-resolve-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-existing issue to resolve first
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-course-description-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Course Description Updates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-microsim-and-visual-asset-opportunities" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. MicroSim and Visual Asset Opportunities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-repository-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Repository Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Milestones
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-open-questions-for-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Open Questions for Review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/plans/03-hands-on-labs.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="test-plan-03-hands-on-lab-series">Test Plan 03: Hands-On Lab Series</h1>
+<p><strong>Status:</strong> Draft for review — design document, no lab content written yet.
+<strong>Depends on:</strong> <a href="../01-fft-test-plan/">Plan 01</a> (assembly FFT), <a href="../02-competing-variants/">Plan 02</a> (variants).
+<strong>Deliverable:</strong> 32 hands-on labs in <code>docs/labs/NN-name/</code>, plus updates to
+<a href="../../course-description/"><code>course-description.md</code></a> and the
+<a href="../../learning-graph/">learning graph</a>.</p>
+<h2 id="1-goal-and-audience">1. Goal and Audience</h2>
+<p>Build a lab series that takes a student from <strong>"I have never opened Thonny"</strong> to
+<strong>"I hand-wrote an ARM assembly FFT, benchmarked it against five competing variants, and can
+explain why the one I expected to win came last."</strong></p>
+<p>The binding constraint: <strong>assume no prior experience with FFTs, signal processing, or assembly
+language.</strong> The existing course description targets juniors/seniors "with a curiosity in signal
+processing" — curiosity, not background. Every concept must be introduced from zero.</p>
+<p>The hardware kit is a Raspberry Pi Pico 2 with an SSD1306 OLED, two buttons, and an INMP441
+I²S MEMS microphone. The microphone matters pedagogically out of proportion to its $3 cost: it
+turns every abstract concept into something the student can <em>whistle at</em>.</p>
+<h2 id="2-what-the-previous-kit-taught-us">2. What the Previous Kit Taught Us</h2>
+<p>An earlier lab kit by the same author exists at <code>spectrum-analyzer/src/fft-kit-1/</code> (16 numbered
+MicroPython files). It is worth studying because its strengths and its failures both transfer
+directly.</p>
+<h3 id="what-it-got-right-and-we-should-keep">What it got right, and we should keep</h3>
+<ul>
+<li><strong>Peripheral bring-up in isolation</strong> — display alone, then signal alone, then microphone
+  alone, before any combination.</li>
+<li><strong>Thonny's plotter before the OLED.</strong> Students see a waveform on a large screen before
+  fighting a 128×64 framebuffer.</li>
+<li><strong>Measurement treated as a lab step.</strong> A startup banner printing bin width, frequency range,
+  FFT size and sample rate turns invisible DSP tradeoffs into visible numbers.</li>
+<li><strong>Honest attribution</strong> (Mike Teachman for I²S, Peter Hinch for the assembly FFT).</li>
+<li><strong>A consistent <code>try / except KeyboardInterrupt / finally: deinit()</code> skeleton</strong> in every file.</li>
+</ul>
+<h3 id="the-failures-we-must-not-repeat">The failures we must not repeat</h3>
+<table>
+<thead>
+<tr>
+<th>Problem in the old kit</th>
+<th>Fix in this plan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The 10 → 19 cliff.</strong> One file prints a single RMS number; the next is 297 lines containing bit-reversal, twiddle factors, butterflies, windowing, magnitude approximation and peak detection all at once. Nothing teaches what a frequency bin <em>is</em>.</td>
+<td><strong>Module 3 (Labs 11–16)</strong> builds frequency analysis from correlation, one idea per lab. This is the centrepiece of the design.</td>
+</tr>
+<tr>
+<td><strong>The assembly track was dead on arrival.</strong> It targeted the original Pico — Cortex-M0+, ARMv6-M, <strong>no FPU</strong> — so every <code>vldr</code>/<code>vmul</code> in the vendored library was unassemblable. Four successive attempts wrapped in <code>try/except</code> and <code>inspect.signature</code> probing never converged, and the real blocker is never stated in the code.</td>
+<td><strong>Lab 27 is an explicit CPU-capability gate</strong> before any float assembly, using the probes already written this session. The failure becomes a <em>lesson</em> rather than a trap.</td>
+</tr>
+<tr>
+<td><strong>No validation on a known signal.</strong> The FFT is never checked against a synthetic sine. A student getting garbage cannot tell whether the mic, the wiring, the FFT, or the display is at fault.</td>
+<td><strong>Lab 15 validates the student's own DFT on a synthetic sine before the microphone is ever involved.</strong> Validation-first is a stated principle (§3).</td>
+</tr>
+<tr>
+<td><strong>No windowing lesson.</strong> A Hanning window appears fully formed with no before/after comparison; spectral leakage is never shown.</td>
+<td><strong>Lab 22</strong> is a dedicated productive-failure lab: leakage first, window second.</td>
+</tr>
+<tr>
+<td><strong>Pin maps drift silently</strong> between files (OLED on SPI0 in most, SPI1 in one; I²S on 10/11/12 in most, 16/17/18 in others), with no warning.</td>
+<td><strong>A single shared <code>config.py</code></strong> imported by every lab. Pin numbers appear in exactly one file.</td>
+</tr>
+<tr>
+<td><strong>Broken code shipped as labs.</strong> Two files cannot run at all (<code>import array</code> then <code>array('f',…)</code>; a library that does <code>import pyb</code> on an RP2 board).</td>
+<td>Every lab file must run on the physical board before the lab ships. Non-negotiable.</td>
+</tr>
+<tr>
+<td><strong>Duplicate files with no differentiator</strong> (three exact byte-identical pairs) and version suffixes where <code>55-fft-asm-working</code> is <em>not</em> the endpoint — <code>56</code> is.</td>
+<td><strong>Contiguous numbering, one canonical file per lab, no version suffixes.</strong></td>
+</tr>
+<tr>
+<td><strong>Two variables changed at once</strong> (FFT size <em>and</em> profiling added in the same file), so speed changes cannot be attributed.</td>
+<td>One new variable per lab, enforced in review.</td>
+</tr>
+<tr>
+<td><strong>Buttons never used</strong> despite being in the kit.</td>
+<td><strong>Lab 5</strong> introduces them; later labs use them for mode switching.</td>
+</tr>
+<tr>
+<td><strong>No deployment lesson</strong> — nothing explains that <code>lib/</code> must be copied to the board.</td>
+<td><strong>Lab 6</strong> covers file transfer, <code>lib/</code>, import paths and <code>main.py</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lineage-worth-stating-in-the-labs">Lineage worth stating in the labs</h3>
+<p>The old kit vendored <strong>Peter Hinch's <code>micropython-fourier</code></strong> assembly FFT. Our implementation is
+independent but sits in the same tradition, and uses the same underlying idea: hardware
+single-precision VFP arithmetic driven from <code>@micropython.asm_thumb</code>. The difference in outcome
+is <em>hardware</em>, not approach — the Pico 2's Cortex-M33 has the FPv5-SP unit the RP2040 lacked.
+Labs 27–30 should say this explicitly and credit Hinch.</p>
+<h2 id="3-instructional-design-principles">3. Instructional Design Principles</h2>
+<p>These are the rules the labs are held to in review. Each exists because violating it caused a
+concrete failure in the previous kit.</p>
+<ol>
+<li><strong>Zero-prerequisite entry.</strong> Lab 1 assumes only that the student owns a computer.</li>
+<li><strong>Concrete before abstract.</strong> Hear or see the phenomenon before the mathematics. Students
+   meet aliasing as <em>a tone that lies about its pitch</em> before they meet the Nyquist criterion.</li>
+<li><strong>Bounded cognitive load.</strong> 3–6 new concepts per lab. A 297-line lab is a design failure.</li>
+<li><strong>One new variable per lab.</strong> If a lab changes both FFT size and adds profiling, the student
+   cannot attribute the result.</li>
+<li><strong>Validation before trust.</strong> Every subsystem is proven against a known input before it is
+   used on unknown input. The FFT meets a synthetic sine before it meets a microphone.</li>
+<li><strong>Productive failure.</strong> Some labs deliberately hit a wall before the fix arrives: aliasing
+   (Lab 9), spectral leakage (Lab 22), a hopelessly slow DFT (Lab 16). The struggle is the
+   lesson; the fix is the reward.</li>
+<li><strong>Predict, then measure.</strong> Carried forward from Plan 02, where <em>every</em> quantitative
+   prediction proved optimistic. Students write a prediction down before running the benchmark.</li>
+<li><strong>Scaffolding that fades.</strong> Early labs supply complete, runnable code. Middle labs supply
+   skeletons with gaps. Late labs supply a specification and a test.</li>
+<li><strong>Every lab ships something observable.</strong> No lab ends with only a number in a console — there
+   is a blinking light, a plot, a display, a tone identified, or a measured speedup.</li>
+<li><strong>Spiral, don't sprint.</strong> The butterfly appears in Lab 19 (concept), Lab 20 (Python), Lab 29
+    (assembly), Lab 31 (optimized). Each pass adds depth to a familiar object.</li>
+</ol>
+<h2 id="4-hardware-and-shared-configuration">4. Hardware and Shared Configuration</h2>
+<table>
+<thead>
+<tr>
+<th>Peripheral</th>
+<th>Interface</th>
+<th>GPIO</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Onboard LED</td>
+<td>—</td>
+<td>25</td>
+<td>Lab 2</td>
+</tr>
+<tr>
+<td>SSD1306 OLED, 128×64</td>
+<td>SPI0</td>
+<td>SCL 2, SDA 3, RES 4, DC 5, CS 6</td>
+<td>matches existing <code>src/kits/oled-2-buttons/config.py</code></td>
+</tr>
+<tr>
+<td>Button A / B</td>
+<td>GPIO in</td>
+<td>14, 15</td>
+<td><code>PULL_UP</code>, active low</td>
+</tr>
+<tr>
+<td>INMP441 microphone</td>
+<td>I²S0</td>
+<td>SCK 10, WS 11, SD 12</td>
+<td>24-bit samples in 32-bit words</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verified this session:</strong> no pin conflicts, and <code>machine.I2S</code> constructs successfully on
+10/11/12 on stock MicroPython v1.28.0.</p>
+<p><strong><code>config.py</code></strong> — one module, imported by every lab, holding every pin number, the sample
+rate, the FFT size, and the display constants. This single file eliminates the entire class of
+silent-no-output failures that the old kit's pin drift produced.</p>
+<h2 id="5-the-lab-sequence">5. The Lab Sequence</h2>
+<p>32 labs in 8 modules. Mapped to a 10-week course: roughly one module per week, plus a midterm
+week and a capstone week.</p>
+<p>Column key: <strong>New</strong> = approximate count of new learning-graph concepts introduced.</p>
+<h3 id="module-0-environment-week-1">Module 0 — Environment (Week 1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Hello World with Thonny</td>
+<td>Thonny, REPL, MicroPython vs Python, running from editor vs saving to device, Ctrl-C</td>
+<td>12</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Blink: Your First Hardware Program</td>
+<td>GPIO, <code>Pin</code>, output mode, loops, <code>sleep</code>, the infinite-loop pattern</td>
+<td>10</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Know Your Board</td>
+<td><code>sys.implementation</code>, clock speed, RAM vs flash, <code>CPUID</code>, what "Cortex-M33" means</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><em>Reuses <a href="../../src/kits/oled-2-buttons/02-get-info.py"><code>02-get-info.py</code></a> from this session.</em></p>
+<h3 id="module-1-peripherals-week-2">Module 1 — Peripherals (Week 2)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>The OLED Display</td>
+<td>SPI, framebuffer, pixels vs text, <code>show()</code>, <code>config</code> pattern</td>
+<td>12</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Buttons and Interaction</td>
+<td>Digital input, pull-up resistors, active-low, bounce and debounce, event loops, mode switching</td>
+<td>11</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Deploying Code and Libraries</td>
+<td>File transfer, <code>lib/</code>, import paths, <code>main.py</code>, running standalone on power-up</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-2-sound-as-numbers-week-3">Module 2 — Sound as Numbers (Week 3)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>Your First Sound Capture</td>
+<td>MEMS microphones, I²S, <code>readinto</code>, buffers, 24-bit-in-32-bit words, the <code>&gt;&gt; 8</code> shift, <code>struct.unpack</code></td>
+<td>16</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Sound Levels: RMS and a VU Meter</td>
+<td>RMS, the Thonny plotter, moving averages, smoothing, dB, bar-graph output</td>
+<td>13</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Sampling Rate and Aliasing</strong> <em>(productive failure)</em></td>
+<td>Sampling rate, Nyquist criterion, aliasing, anti-alias filtering — student plays a tone above Nyquist and watches the reading lie</td>
+<td>12</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Bit Depth, Headroom and Clipping</td>
+<td>Quantization, bit depth, dynamic range, full scale, clipping distortion, noise floor</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-3-discovering-frequency-weeks-45-the-cliff-fix">Module 3 — Discovering Frequency (Weeks 4–5) — <strong>the cliff-fix</strong></h3>
+<p>This module is the single most important part of the design. It is what the previous kit lacked
+entirely, and it is where a student with no DSP background either gains or loses the FFT.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11</td>
+<td>Sine Waves: Amplitude, Frequency, Phase</td>
+<td>Generating a sine in software, the three parameters, period vs frequency, radians</td>
+<td>12</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Adding Waves: Superposition and Beats</td>
+<td>Superposition, constructive/destructive interference, beat frequencies, harmonics, timbre</td>
+<td>12</td>
+</tr>
+<tr>
+<td>13</td>
+<td><strong>Correlation: Does My Signal Contain This Note?</strong></td>
+<td>Multiply-and-sum against a test sine; large answer = present, near zero = absent. Orthogonality, the sine <em>and</em> cosine pair, phase independence</td>
+<td>14</td>
+</tr>
+<tr>
+<td>14</td>
+<td><strong>Sweeping All Frequencies: You Just Built a DFT</strong></td>
+<td>Loop the correlation over every test frequency. Bins, bin width, the spectrum. Worked by hand at N = 8 first</td>
+<td>14</td>
+</tr>
+<tr>
+<td>15</td>
+<td><strong>Validating Your DFT on a Known Signal</strong></td>
+<td>Synthetic sine in → single peak out. Ground truth, tolerance, bin-exact vs leaky frequencies, debugging by bisection</td>
+<td>12</td>
+</tr>
+<tr>
+<td>16</td>
+<td><strong>Your DFT Is Too Slow</strong> <em>(productive failure)</em></td>
+<td>Time it. O(n²). Doubling N quadruples the work. Real-time budget: a 512-sample frame at 12.8 kHz lasts 40 ms</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The pedagogical spine:</strong> a student who has written correlation by hand (Lab 13) and looped it
+over frequencies (Lab 14) <em>owns</em> the DFT. The FFT then arrives in Module 4 not as magic, but as
+"the same answer, computed cleverly" — and they already have a working reference implementation
+to validate it against.</p>
+<h3 id="module-4-the-fft-week-6">Module 4 — The FFT (Week 6)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>17</td>
+<td>Divide and Conquer: From DFT to FFT</td>
+<td>Splitting even/odd samples, recursion, why n log n, Cooley-Tukey, the power-of-two constraint</td>
+<td>13</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Bit Reversal and Twiddle Factors</td>
+<td>Bit-reversal permutation, twiddle factors, roots of unity on the unit circle, precomputed tables, in-place computation</td>
+<td>14</td>
+</tr>
+<tr>
+<td>19</td>
+<td>The Butterfly</td>
+<td>The butterfly operation, complex multiply, stages, decimation in time vs frequency</td>
+<td>12</td>
+</tr>
+<tr>
+<td>20</td>
+<td>A Complete Python FFT</td>
+<td>Assemble the pieces; validate against the Lab 15 DFT; measure the speedup over Lab 16</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<h3 id="module-5-real-spectra-week-7">Module 5 — Real Spectra (Week 7)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td>Spectrum of a Real Sound</td>
+<td>Microphone → FFT → magnitude → OLED bars. Magnitude vs power, fast magnitude approximation, bin averaging for display, log scaling</td>
+<td>14</td>
+</tr>
+<tr>
+<td>22</td>
+<td><strong>Windowing and Spectral Leakage</strong> <em>(productive failure)</em></td>
+<td>Non-bin-exact tone smears; Hanning, Hamming, Blackman; main lobe vs sidelobes; coherent gain</td>
+<td>13</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Peak Detection: Build a Tuner</td>
+<td>Argmax over bins, bin → Hz conversion, frequency resolution limits, interpolation, musical note mapping</td>
+<td>12</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Real-Time Spectrum Analyzer</td>
+<td>Frame rate, three-stage profiling (capture / FFT / draw), overlap, the real-time budget, double buffering</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+<p><em>Lab 24 carries forward the old kit's best instrumentation idea: separate timers for capture,
+FFT and draw — which usually reveals the FFT is not the bottleneck.</em></p>
+<h3 id="module-6-measuring-performance-week-8">Module 6 — Measuring Performance (Week 8)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25</td>
+<td>How Long Did That Take?</td>
+<td><code>ticks_us</code>, resolution limits, the DWT cycle counter, <code>machine.mem32</code>, enabling <code>TRCENA</code>/<code>CYCCNTENA</code>, verifying a counter before trusting it</td>
+<td>14</td>
+</tr>
+<tr>
+<td>26</td>
+<td><strong>Benchmarking Methodology</strong></td>
+<td>Warm-up runs, best-of-N vs mean, standard deviation, observer effect, fair comparison, reproducibility, what a benchmark excludes</td>
+<td>15</td>
+</tr>
+<tr>
+<td>27</td>
+<td>The Abstraction Ladder</td>
+<td><code>@micropython.native</code>, <code>@micropython.viper</code>, boxed vs unboxed values, why viper's integer typing does not help float code</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><em>Reuses <a href="../../src/fft-benchmark/device/dwt_timer.py"><code>dwt_timer.py</code></a> and the Plan 02 harness.
+Lab 26 uses this session's real finding: an undisciplined measurement reported 1.93× where the
+honest figure was 1.26×.</em></p>
+<h3 id="module-7-assembly-language-week-9">Module 7 — Assembly Language (Week 9)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>28</td>
+<td><strong>Does Your CPU Have an FPU?</strong> <em>(the gate)</em></td>
+<td>CPU registers, <code>CPUID</code>, <code>MVFR0</code>, instruction sets, ARMv6-M vs ARMv8-M, why the previous generation's assembly FFT could never have worked</td>
+<td>14</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Your First Assembly Function</td>
+<td><code>@micropython.asm_thumb</code>, registers r0–r7, <code>mov</code>/<code>add</code>/<code>cmp</code>, labels and branches, argument passing, return values</td>
+<td>16</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Talking to the FPU</td>
+<td><code>s0</code>–<code>s31</code>, <code>vldr</code>/<code>vstr</code>/<code>vadd</code>/<code>vsub</code>/<code>vmul</code>, <code>array('f')</code>, <code>uctypes.addressof</code>, pointers, why nothing is allocated in the timed region</td>
+<td>15</td>
+</tr>
+<tr>
+<td>31</td>
+<td>The Butterfly in Assembly, and a Complete FFT</td>
+<td>One stage in assembly, then the full transform; validate bit-for-bit against the Lab 20 Python FFT</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+<p><em>Reuses <a href="../../src/kits/oled-2-buttons/04-asm-thumb-probe.py"><code>04-asm-thumb-probe.py</code></a>,
+<a href="../../src/kits/oled-2-buttons/05-asm-instruction-probe.py"><code>05-asm-instruction-probe.py</code></a> and
+<a href="../../src/fft-benchmark/device/fft_asm.py"><code>fft_asm.py</code></a>.</em></p>
+<h3 id="module-8-optimization-and-capstone-week-10">Module 8 — Optimization and Capstone (Week 10)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Lab</th>
+<th>Introduces</th>
+<th>New</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>32a</td>
+<td>Making It Faster: Specialization and Branchless Code</td>
+<td>Trivial twiddles, multiply-by-one elimination, branch prediction, precomputation, code size vs speed</td>
+<td>13</td>
+</tr>
+<tr>
+<td>32b</td>
+<td>Beyond the Assembler: Hand-Encoding an Instruction</td>
+<td>Instruction encoding, bit fields, <code>data()</code>, fused multiply-add, the assembler is not the ISA</td>
+<td>13</td>
+</tr>
+<tr>
+<td>32c</td>
+<td>Competing Variants: Predict, Measure, Explain</td>
+<td>Runs the Plan 02 harness; students rank variants before measuring</td>
+<td>10</td>
+</tr>
+<tr>
+<td>32d</td>
+<td><strong>Capstone</strong>: Design, Benchmark and Report Your Own Variant</td>
+<td>Experimental design, hypothesis, controls, technical writing, honest reporting of negative results</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Module 8 is written as 32a–d for review convenience; renumber to 32–35 if the series runs to
+35 labs. See §11 open questions.)</em></p>
+<p><strong>Approximate total: ~350 new concepts</strong> across 32 labs, averaging 11 per lab.</p>
+<h2 id="6-lab-document-template">6. Lab Document Template</h2>
+<p>Every <code>docs/labs/NN-name/index.md</code> follows the same structure. Consistency lets students build
+navigation habits, and lets us audit coverage mechanically.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="gh"># Lab NN: Title</span>
+
+<span class="gs">**Time:**</span> ~45 minutes | <span class="gs">**Prerequisites:**</span> Lab NN-1 | <span class="gs">**Hardware:**</span> Pico 2, OLED, mic
+
+<span class="gu">## What You&#39;ll Build</span>
+One paragraph and a photo or screenshot of the finished result. Motivation first.
+
+<span class="gu">## Learning Objectives</span>
+Bloom-tagged, 3-5 items. &quot;Explain why...&quot;, &quot;Measure...&quot;, &quot;Predict then verify...&quot;
+
+<span class="gu">## Concepts Introduced</span>
+Bulleted, each linked to its learning-graph concept ID.
+
+<span class="gu">## Background</span>
+Short. Under 400 words. Links to the relevant chapter for depth.
+
+<span class="gu">## Wiring</span>
+Diagram or table. Omitted when the lab adds no new connections.
+
+<span class="gu">## Procedure</span>
+Numbered steps. Complete code early in the series, skeletons later.
+
+<span class="gu">## Expected Output</span>
+What success looks like — text, a plot, a photo of the display.
+
+<span class="gu">## Predict, Then Measure         (labs with a measurable outcome)</span>
+A prediction the student writes down before running anything.
+
+<span class="gu">## Troubleshooting</span>
+Symptom → cause → fix. Populated from real failures during authoring.
+
+<span class="gu">## Challenges</span>
+2-3 extensions, from &quot;change a parameter&quot; to &quot;add a feature&quot;.
+
+<span class="gu">## Check Your Understanding</span>
+3-5 questions feeding the quiz-generator skill later.
+</code></pre></div></td></tr></table></div>
+<p>Directory layout per lab:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>docs/labs/07-first-sound-capture/
+  index.md
+  code/            MicroPython files the student runs
+    07-mic-raw.py
+  images/          wiring photo, output screenshot
+</code></pre></div></td></tr></table></div>
+<p>Runnable code is duplicated into <code>src/kits/fft-lab-kit/</code> so the whole kit can be deployed to a
+board in one command, with <code>docs/labs/*/code/</code> as the canonical copy.</p>
+<h2 id="7-learning-graph-expansion">7. Learning Graph Expansion</h2>
+<p>Current state: <strong>200 concepts</strong>, IDs 1–200, in 12 taxonomy categories, defined in
+<code>learning-graph.csv</code> (<code>ConceptID,ConceptLabel,Dependencies,TaxonomyID</code>, dependencies
+pipe-separated) and rendered via <code>csv-to-json.py</code>.</p>
+<p>Target: <strong>~550 concepts</strong>, comfortably under the 600 ceiling.</p>
+<h3 id="five-new-taxonomy-categories-12-17">Five new taxonomy categories (12 → 17)</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Scope</th>
+<th>~Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TOOL</code></td>
+<td>Development Environment</td>
+<td>Thonny, REPL, mpremote, file transfer, firmware, <code>main.py</code></td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>MCIO</code></td>
+<td>Microcontroller I/O</td>
+<td>GPIO, SPI, I²S, pull-ups, debounce, buffers, framebuffers</td>
+<td>45</td>
+</tr>
+<tr>
+<td><code>AUDI</code></td>
+<td>Audio and Acoustics</td>
+<td>MEMS mics, PCM, RMS, dB, pitch, timbre, notes, clipping</td>
+<td>50</td>
+</tr>
+<tr>
+<td><code>ASMP</code></td>
+<td>Assembly Programming</td>
+<td>Registers, Thumb, addressing, ABI, FPU registers, encoding</td>
+<td>55</td>
+</tr>
+<tr>
+<td><code>LABM</code></td>
+<td>Laboratory Method</td>
+<td>Validation-first, ground truth, debugging by bisection, prediction, honest reporting</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+<h3 id="expansion-of-existing-categories-145-concepts">Expansion of existing categories (~145 concepts)</h3>
+<p>Weighted toward the categories the labs exercise most: <code>SIGP</code> +40, <code>FFTA</code> +30, <code>BNCH</code> +30,
+<code>MATH</code> +20, <code>FOUR</code> +25.</p>
+<h3 id="process">Process</h3>
+<ol>
+<li>Extract the concept list per lab from §5 into <code>docs/learning-graph/lab-concepts.csv</code>
+   (<code>LabNumber, ConceptLabel, TaxonomyID, Dependencies</code>).</li>
+<li>Assign IDs 201+ in <strong>lab order</strong>, so ID sequence follows teaching sequence. This is a
+   deliberate property: a monotonically increasing ID within a lab's prerequisites means the
+   graph and the curriculum agree.</li>
+<li>Merge into <code>learning-graph.csv</code>; every new concept's dependencies must point at concepts
+   introduced in the <em>same or an earlier</em> lab.</li>
+<li>Regenerate <code>learning-graph.json</code> (<code>csv-to-json.py</code>), quality metrics (<code>analyze-graph.py</code>),
+   <code>concept-list.md</code>, <code>concept-taxonomy.md</code>, <code>taxonomy-distribution.md</code>.</li>
+<li>Update <code>color-config.json</code> and <code>taxonomy-names.json</code> for the five new categories.</li>
+</ol>
+<h3 id="pre-existing-issue-to-resolve-first">Pre-existing issue to resolve first</h3>
+<p><code>quality-metrics.md</code> currently reports <strong>"Valid DAG Structure: ❌ No"</strong> while simultaneously
+reporting <strong>0 cycles detected</strong>. That contradiction should be diagnosed and fixed <em>before</em>
+adding 350 concepts on top, or we will not be able to tell new breakage from old.</p>
+<h2 id="8-course-description-updates">8. Course Description Updates</h2>
+<p><a href="../../course-description/"><code>course-description.md</code></a> predates the lab series and this session's
+work. Proposed changes:</p>
+<ul>
+<li><strong>Add a Hardware Kit section</strong> listing the Pico 2, OLED, buttons and INMP441 with approximate
+  cost, and stating that the course is hands-on throughout.</li>
+<li><strong>Revise Audience/Prerequisites</strong> to say explicitly that no prior FFT, DSP, or assembly
+  experience is assumed — currently implied but never stated, and it is the central design
+  constraint.</li>
+<li><strong>Add lab-derived outcomes</strong> to the Bloom sections. The current list is written for a reading
+  course; it has no outcome covering "capture real audio," "wire a peripheral," "debug a signal
+  chain," or "validate an implementation against ground truth."</li>
+<li><strong>Add a Lab Series section</strong> with the 8-module structure and the 10-week mapping.</li>
+<li><strong>Update the Content list</strong> with the new topic areas (I²S audio capture, real-time
+  constraints, instruction encoding, measurement methodology).</li>
+<li><strong>Revise Grading</strong> to include lab work. The current split (25% homework / 25% midterm /
+  25% capstone / 25% final) has no line for 32 labs.</li>
+</ul>
+<h2 id="9-microsim-and-visual-asset-opportunities">9. MicroSim and Visual Asset Opportunities</h2>
+<p>The abstract concepts in Module 3 and 4 are where an interactive simulation earns its cost.
+Candidates, roughly in priority order:</p>
+<table>
+<thead>
+<tr>
+<th>MicroSim</th>
+<th>Lab</th>
+<th>Why it helps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Correlation explorer</td>
+<td>13</td>
+<td>Drag a test frequency, watch multiply-and-sum area change. <strong>The highest-value sim in the series.</strong></td>
+</tr>
+<tr>
+<td>Sampling and aliasing</td>
+<td>9</td>
+<td>Slide the sample rate below Nyquist and watch a wheel spin backwards</td>
+</tr>
+<tr>
+<td>Sine wave explorer</td>
+<td>11</td>
+<td>Amplitude / frequency / phase sliders</td>
+</tr>
+<tr>
+<td>Superposition and beats</td>
+<td>12</td>
+<td>Add two sines, see and hear the envelope</td>
+</tr>
+<tr>
+<td>DFT bin explorer</td>
+<td>14</td>
+<td>Hover a bin, see which test sine it corresponds to</td>
+</tr>
+<tr>
+<td>Windowing and leakage</td>
+<td>22</td>
+<td>Toggle window functions, compare spectra side by side</td>
+</tr>
+<tr>
+<td>Butterfly diagram</td>
+<td>19</td>
+<td>Animated data flow through one stage</td>
+</tr>
+<tr>
+<td>Bit-reversal permutation</td>
+<td>18</td>
+<td>Watch indices shuffle</td>
+</tr>
+<tr>
+<td>Twiddle factors on the unit circle</td>
+<td>18</td>
+<td>Roots of unity, rotating</td>
+</tr>
+<tr>
+<td>Variant benchmark chart</td>
+<td>32c</td>
+<td>Plan 02's measured results as a comparison chart</td>
+</tr>
+</tbody>
+</table>
+<p>Static assets needed: wiring diagrams per peripheral (Labs 4, 5, 7), a kit photo, and OLED
+output screenshots for expected-output sections.</p>
+<h2 id="10-repository-changes">10. Repository Changes</h2>
+<ul>
+<li><strong>Fix the navigation bug.</strong> <code>mkdocs.yml</code> currently points "Hands-On Labs" at
+  <code>tutorials/tutorial-1.md</code>, which <strong>does not exist</strong>. It should point at <code>labs/index.md</code>.</li>
+<li><code>docs/labs/index.md</code> exists as a stub and is not in the nav; <code>docs/labs/01-setup/index.md</code>
+  exists and is <strong>empty</strong>. Both need replacing under the new structure.</li>
+<li>Add <code>src/kits/fft-lab-kit/</code> containing <code>config.py</code>, <code>lib/ssd1306.py</code>, and the deployable
+  copy of every lab's code.</li>
+<li>Add the 32 lab directories under <code>docs/labs/</code>.</li>
+</ul>
+<h2 id="11-milestones">11. Milestones</h2>
+<ol>
+<li><strong>Review this plan</strong> and settle the open questions in §12.</li>
+<li><strong>Fix the learning-graph DAG issue</strong> and the mkdocs nav bug.</li>
+<li><strong>Author <code>config.py</code></strong> and verify every peripheral on the physical board — OLED, both
+   buttons, and the INMP441 with a real microphone attached. <em>Nothing else starts until the
+   hardware is proven.</em></li>
+<li><strong>Draft the concept list</strong> (<code>lab-concepts.csv</code>) for all 32 labs and merge into the learning
+   graph. Doing this before writing prose keeps labs and graph in sync from the start.</li>
+<li><strong>Write Module 0–2 (Labs 1–10)</strong> end to end, including running every code file on hardware.
+   Review as a batch to settle voice, depth and template before scaling.</li>
+<li><strong>Write Module 3 (Labs 11–16)</strong> — the highest-risk, highest-value module. Consider
+   pilot-testing this module on a real beginner before continuing.</li>
+<li><strong>Write Modules 4–8 (Labs 17–32).</strong></li>
+<li><strong>Build the priority MicroSims</strong>, starting with the correlation explorer.</li>
+<li><strong>Update <code>course-description.md</code></strong> to match what was actually built.</li>
+<li><strong>Regenerate all learning-graph artifacts</strong> and re-run quality metrics.</li>
+</ol>
+<h2 id="12-open-questions-for-review">12. Open Questions for Review</h2>
+<ol>
+<li><strong>Lab count.</strong> 32 labs at ~45 minutes is roughly 24 contact hours. Is that the right weight
+   for a 10-week course, or should Modules 4 and 7 compress?
+   <strong>Dan's Answer:</strong> 32 labs @45 minutes/lab is fine.  Do not compress.  An instructor can opt to skip over some labs.</li>
+<li><strong>Module 8 numbering</strong> — 32a–d as written, or expand the series to 35 labs? <strong>Dan's Answer:</strong> expand to 35 distinct labs</li>
+<li><strong>Does the microphone arrive in Module 2 (Lab 7) or later?</strong> Current design brings it in
+   early so that sampling, aliasing and bit depth are taught on <em>real</em> audio. The alternative is
+   synthetic signals only until Module 5, which is safer but less motivating. <strong>Dan's Answer:</strong> Bring the microphone labs in early.  They provide a fun interactive display for students.  Ask the students to try to whistle into the mic at different pitches and see if they can see the peak frequency in an FFT move.  We want to make this class FUN!!!</li>
+<li><strong>How much C?</strong> The course description lists "C Language" and "Python Libraries" as content,
+   but this lab series is MicroPython and assembly throughout. Either the labs need a C strand,
+   or the course description should be narrowed. Related: Plan 02 identified fixed-point Q15 as
+   genuinely blocked without a C toolchain — that is the natural home for a C module if we want
+   one.  <strong>Dan's Answer:</strong> We need to mention C because it is used in other courses, but it is not the intent of this course to go in depth.  Give a basic coverage and some comparison of Assembler, C and MicroPython and the tradeoffs of each.  Note that since we can call both C and Assembler from MicroPython that we will usually prefer the solution that gives the best results.  Very few people will modify assembly language code in production since there will usually be a library of well tested assembly-language functions.  Reading both assembly language and C and having a crystal clear image of the way data moves through the hardware is the key in this course.</li>
+<li><strong>Capstone scope.</strong> "Design your own variant" assumes assembly fluency by Week 10. A gentler
+   alternative is "benchmark an existing variant on a new signal class and report."  <strong>Dan's Answer:</strong> - provide options for the capstone scope and allow the instructor to select the options.  Note that an Instructor's Guide MUST be generated after most of the hands-on labs and the chapter content has been generated.  Please remind me to run the /book-installer Instructor's guide after the chapters have been written.</li>
+<li><strong>Assessment.</strong> Are labs graded on completion, on a submitted artifact, or on the
+   check-your-understanding questions? This determines how much scaffolding each lab needs.  <strong>Dan's Answer:</strong> it is up to the instructor to decide if labs will be graded.  Provide simple check-your-understanding at the end of each hands-on-lab, but we will use the quiz-generator skill to add formal quiz questions to each chapter directory later.</li>
+</ol>
+<h2 id="13-references">13. References</h2>
+<ul>
+<li><a href="../01-fft-test-plan/">Plan 01</a>, <a href="../02-competing-variants/">Plan 02</a> — the implementation this series teaches</li>
+<li><a href="../../src/fft-benchmark/variants/README.md"><code>src/fft-benchmark/variants/README.md</code></a> — the five architecture lessons, written for lesson generation</li>
+<li><a href="../../arm-programming-guide/"><code>arm-programming-guide/</code></a> — Cortex-M33 r1p0 user guide, matched to this silicon</li>
+<li><code>spectrum-analyzer/src/fft-kit-1/</code> — the previous kit; Peter Hinch's <code>micropython-fourier</code> and Mike Teachman's I²S examples</li>
+<li><a href="../../cornell-labs/pico-example/">Cornell ECE4760 FFT/iFFT on the Pico</a> — the 512-sample / 12.8 kHz framing this course uses</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

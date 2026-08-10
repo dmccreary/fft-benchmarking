@@ -1,0 +1,1570 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/plans/02-competing-variants/">
+      
+      
+        <link rel="prev" href="../01-fft-test-plan/">
+      
+      
+        <link rel="next" href="../../glossary/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Plan 2 - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#test-plan-02-competing-fft-variants-architecture-tradeoffs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plan 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Plans
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Plans
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-fft-test-plan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Plan 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Plan 2
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Plan 2
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-this-plan-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why This Plan Exists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-instruction-availability-probe-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Instruction Availability (Probe Result)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-where-the-baselines-cycles-actually-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Where the Baseline's Cycles Actually Go
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Where the Baseline's Cycles Actually Go">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-measurement-findings-worth-teaching-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two measurement findings worth teaching directly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-tradeoff-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. The Tradeoff Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-variant-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Variant Specifications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Variant Specifications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-high-value-low-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 — high value, low risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-moderate-effort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2 — moderate effort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3 — advanced
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-benchmark-methodology" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Benchmark Methodology
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Directory Layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Milestones
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-student-lab-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Student Lab Shape
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-this-plan-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why This Plan Exists
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-instruction-availability-probe-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Instruction Availability (Probe Result)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-where-the-baselines-cycles-actually-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Where the Baseline's Cycles Actually Go
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Where the Baseline's Cycles Actually Go">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-measurement-findings-worth-teaching-directly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two measurement findings worth teaching directly
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-tradeoff-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. The Tradeoff Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-variant-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Variant Specifications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Variant Specifications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tier-1-high-value-low-risk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 1 — high value, low risk
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-2-moderate-effort" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 2 — moderate effort
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tier-3-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tier 3 — advanced
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-benchmark-methodology" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Benchmark Methodology
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-directory-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Directory Layout
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Milestones
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-student-lab-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Student Lab Shape
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/plans/02-competing-variants.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="test-plan-02-competing-fft-variants-architecture-tradeoffs">Test Plan 02: Competing FFT Variants &amp; Architecture Tradeoffs</h1>
+<p><strong>Status:</strong> ✅ Executed — 8 of 11 variants built, measured and documented on hardware.
+<strong>Depends on:</strong> <a href="../01-fft-test-plan/">Plan 01</a> (complete — baseline FFT at 132,808 cycles).
+<strong>Goal:</strong> Build a family of competing FFT implementations so students can measure, rather
+than be told, how architecture and algorithm choices trade against each other.
+<strong>Implementation:</strong> <a href="../../src/fft-benchmark/variants/"><code>src/fft-benchmark/variants/</code></a> ·
+<strong>Results:</strong> <a href="../../src/fft-benchmark/outputs/variant-comparison.md"><code>variant-comparison.md</code></a></p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th style="text-align: right;">Best cycles</th>
+<th style="text-align: right;">Speedup</th>
+<th>Hypothesis (§5)</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v9 combined</td>
+<td style="text-align: right;">91,923</td>
+<td style="text-align: right;"><strong>1.41×</strong></td>
+<td>—</td>
+<td>wins stack sub-linearly (predicted 1.46×)</td>
+</tr>
+<tr>
+<td>v2 real-input</td>
+<td style="text-align: right;">103,076</td>
+<td style="text-align: right;">1.26×</td>
+<td>40–45 %</td>
+<td><strong>over-predicted</strong> — split step eats part of it</td>
+</tr>
+<tr>
+<td>v1 specialized</td>
+<td style="text-align: right;">116,648</td>
+<td style="text-align: right;">1.11×</td>
+<td>10–15 %</td>
+<td>close to prediction</td>
+</tr>
+<tr>
+<td>v4 fast bit-reversal</td>
+<td style="text-align: right;">126,060</td>
+<td style="text-align: right;">1.03×</td>
+<td>8–12 %</td>
+<td><strong>over-predicted</strong></td>
+</tr>
+<tr>
+<td>v7 hand-encoded VFMA</td>
+<td style="text-align: right;">128,785</td>
+<td style="text-align: right;">1.01×</td>
+<td>5–7 %</td>
+<td><strong>over-predicted</strong>, feasibility proven</td>
+</tr>
+<tr>
+<td>v0 baseline</td>
+<td style="text-align: right;">130,024</td>
+<td style="text-align: right;">1.00×</td>
+<td>—</td>
+<td>reference</td>
+</tr>
+<tr>
+<td>v6 interleaved</td>
+<td style="text-align: right;">2,133,832</td>
+<td style="text-align: right;">0.06×</td>
+<td>5–10 %</td>
+<td><strong>kernel 1.28× but conversion costs 95 %</strong></td>
+</tr>
+<tr>
+<td>v3 viper / native / python</td>
+<td style="text-align: right;">22.7M–26.5M</td>
+<td style="text-align: right;">~0.005×</td>
+<td>—</td>
+<td>compiled Python ≈ interpreted Python here</td>
+</tr>
+</tbody>
+</table>
+<p>Not built: <strong>radix-4</strong> (V5) and <strong>dual-core</strong> (V8) remain specified but unimplemented;
+<strong>Q15 fixed-point</strong> (V9 in §5) is confirmed blocked. See the variants README for why.</p>
+<p>Every quantitative hypothesis in §5 was optimistic. That is the most useful outcome of the
+exercise and should be preserved in the student lab: predictions were directionally right and
+consistently too generous, because they reasoned about instruction counts in a system where
+loop overhead and memory access dominate.</p>
+<blockquote>
+<p><strong>Note on scope.</strong> This plan began as "VFMA optimization." A hardware probe (§2) found that
+VFMA is <em>not reachable</em> from MicroPython's inline assembler, and profiling (§3) found it
+would have been a minor win regardless. The plan therefore covers the full space of variants
+worth building, of which raw-encoded VFMA is one (V7).</p>
+</blockquote>
+<h2 id="1-why-this-plan-exists">1. Why This Plan Exists</h2>
+<p>Plan 01 produced one working assembly FFT. A single implementation teaches that assembly is
+fast; it does not teach <em>why</em>, or what to give up to get there. A family of variants measured
+against each other under one harness turns the course's benchmarking vocabulary
+(<code>Fair Comparison</code>, <code>Reproducibility</code>, <code>Statistical Sampling</code>, <code>Mean Execution Time</code>,
+<code>Standard Deviation</code> — all already concept nodes in the learning graph) into something
+students exercise rather than memorize.</p>
+<p>The intended student deliverable is a comparison matrix they generate themselves, plus the
+ability to explain <em>why</em> each row lands where it does.</p>
+<h2 id="2-instruction-availability-probe-result">2. Instruction Availability (Probe Result)</h2>
+<p><a href="../../src/kits/oled-2-buttons/05-asm-instruction-probe.py"><code>src/kits/oled-2-buttons/05-asm-instruction-probe.py</code></a>
+asks the runtime directly which optimization instructions assemble:</p>
+<table>
+<thead>
+<tr>
+<th>Instruction group</th>
+<th>Result</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vfma</code> / <code>vfms</code> (fused MAC)</td>
+<td><strong>missing</strong></td>
+<td>V7 must hand-encode the instruction word</td>
+</tr>
+<tr>
+<td><code>vmla</code> / <code>vmls</code> (chained MAC)</td>
+<td><strong>missing</strong></td>
+<td>no assembler-level MAC at all</td>
+</tr>
+<tr>
+<td><code>smulbb</code>, <code>smlabb</code>, <code>smuad</code>, <code>qadd16</code>, <code>ssat</code>, <code>pkhbt</code></td>
+<td><strong>missing</strong></td>
+<td>fixed-point Q15 SIMD is unreachable (V9)</td>
+</tr>
+<tr>
+<td><code>mla</code> (32-bit MAC)</td>
+<td><strong>missing</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vneg</code>, <code>vdiv</code>, <code>vsqrt</code>, <code>asr</code></td>
+<td>available</td>
+<td>usable in variants</td>
+</tr>
+<tr>
+<td><code>@micropython.native</code>, <code>@micropython.viper</code></td>
+<td>available</td>
+<td>enables the abstraction ladder (V3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The distinction that matters pedagogically:</strong> the Cortex-M33 r1p0 <em>silicon</em> implements all
+of these — they are documented in the ARM guide saved in this repo (§3.8 saturating, §3.9
+packing, §3.12 floating-point). What is missing is MicroPython's <em>assembler</em> support. The
+instruction set and the assembler are not the same thing, and V7 exists to make that concrete.</p>
+<h2 id="3-where-the-baselines-cycles-actually-go">3. Where the Baseline's Cycles Actually Go</h2>
+<p>Profiling the current implementation on hardware (per-stage timing, 512-point transform):</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Cycles</th>
+<th>Share</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bit-reversal permutation</td>
+<td>~22,000</td>
+<td>~17 %</td>
+</tr>
+<tr>
+<td>9 butterfly stages</td>
+<td>~105,000</td>
+<td>~83 %</td>
+</tr>
+<tr>
+<td><strong>Total (best of 15 runs)</strong></td>
+<td><strong>127,086</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Per-butterfly cost by stage, in cycles:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>stage 1 (half=1)   92.7   &lt;- most expensive, yet its twiddle is always (1, 0)
+stage 2 (half=2)   79.1
+stage 3 (half=4)   83.3
+stage 4 (half=8)   73.5   &lt;- cheapest
+stage 5 (half=16)  75.6
+stage 6 (half=32)  75.5
+stage 7 (half=64)  78.3
+stage 8 (half=128) 79.0
+stage 9 (half=256) 84.5
+</code></pre></div></td></tr></table></div>
+<p>Three conclusions drive the variant selection:</p>
+<ol>
+<li><strong>Overhead dominates arithmetic.</strong> The butterfly body is ~28 instructions but costs 73–93
+   cycles. Loop control, address computation, register spills to <code>s29</code>/<code>s30</code>, and memory
+   access — not the multiplies — are the bulk of the time. A fused MAC removes 2 instructions
+   of 28; that ceiling is ~7 %, and only if those instructions were the bottleneck, which they
+   are not. <strong>This is why VFMA was never the big win</strong>, and it is worth showing students the
+   measurement that establishes it.</li>
+<li><strong>Cost is U-shaped across stages.</strong> Stage 1 runs one twiddle over 256 blocks; stage 9 runs
+   256 twiddles over one block each. Both extremes pay one loop's per-iteration overhead 256
+   times, while middle stages balance the two. Stage 1 being the <em>most</em> expensive despite a
+   trivial <code>(1, 0)</code> twiddle is the clearest single argument for specialization (V1).</li>
+<li><strong>Bit-reversal is a sixth of the runtime</strong> for what is only a permutation — 512 loop
+   iterations, a table load, a compare and a branch, to perform roughly 240 actual swaps.</li>
+</ol>
+<h3 id="two-measurement-findings-worth-teaching-directly">Two measurement findings worth teaching directly</h3>
+<ul>
+<li><strong>Instrumentation overhead is not free.</strong> Timing the 9 stages individually sums to ~206,000
+  cycles, while the whole transform measures ~127,000. The ~8,850 cycles/stage difference is
+  the measurement apparatus itself (Python attribute lookups, parameter writes, two DWT reads
+  per stage). A textbook observer effect, measured on the students' own hardware.</li>
+<li><strong>Run-to-run variance is not garbage collection.</strong> Disabling the GC changed the best time by
+  0.14 % (127,086 → 126,906). The ~1.4 % spread comes from elsewhere (USB interrupt servicing
+  and flash XIP cache behaviour are the likely candidates). This motivates reporting
+  <strong>best-of-N</strong> alongside mean and standard deviation: for a deterministic algorithm the
+  minimum is the least-contaminated sample.</li>
+</ul>
+<h2 id="4-the-tradeoff-matrix">4. The Tradeoff Matrix</h2>
+<p>Each variant isolates one dimension, so a student can attribute a result to a cause.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Variants</th>
+<th>Lesson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Abstraction level</td>
+<td>V3: Python → native → viper → asm</td>
+<td>what interpretation costs</td>
+</tr>
+<tr>
+<td>Algorithm</td>
+<td>V2 real-input, V5 radix-4</td>
+<td>operation count vs. complexity</td>
+</tr>
+<tr>
+<td>Specialization</td>
+<td>V1 trivial-twiddle stages, V4 bit-reversal</td>
+<td>generality has a price</td>
+</tr>
+<tr>
+<td>Memory layout</td>
+<td>V6 interleaved vs. split</td>
+<td>addressing overhead</td>
+</tr>
+<tr>
+<td>Instruction encoding</td>
+<td>V7 raw-encoded VFMA</td>
+<td>the assembler is not the ISA</td>
+</tr>
+<tr>
+<td>Parallelism</td>
+<td>V8 dual-core</td>
+<td>Amdahl's law, synchronization cost</td>
+</tr>
+<tr>
+<td>Numeric representation</td>
+<td>V9 fixed-point Q15</td>
+<td>precision vs. speed (needs firmware)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-variant-specifications">5. Variant Specifications</h2>
+<p>Expected gains are <strong>hypotheses to be tested</strong>, stated so students can compare a prediction
+against a measurement — not promises.</p>
+<h3 id="tier-1-high-value-low-risk">Tier 1 — high value, low risk</h3>
+<p><strong>V1 — Specialized early stages.</strong> Stage 1's twiddle is always <code>(1, 0)</code>, making the butterfly
+a pure add/subtract with zero multiplies. Stage 2's twiddles are <code>(1, 0)</code> and <code>(0, -1)</code>, so
+multiplication by <code>-i</code> is a register swap and a sign flip. Additionally, the <code>j = 0</code> butterfly
+of <em>every</em> stage has twiddle <code>(1, 0)</code>. Write dedicated routines for these cases.
+<em>Hypothesis: 10–15 %.</em> Teaching point: profiling tells you where to look; stage 1 was the most
+expensive despite doing the least arithmetic.</p>
+<p><strong>V2 — Real-input FFT.</strong> Every test signal is real-valued audio, but the baseline transforms a
+complex input with a zeroed imaginary array — half the arithmetic is multiplying by zero. A
+512-point real FFT can be computed as a 256-point complex FFT plus an O(n) split step.
+<em>Hypothesis: 40–45 %, the single largest win available.</em> Teaching point: algorithmic choice
+outranks every instruction-level optimization in this plan combined. Note the output format
+changes (256 unique bins + Nyquist), so the verifier needs a real-FFT comparison path.</p>
+<p><strong>V3 — Abstraction ladder.</strong> The same radix-2 DIT algorithm at four levels: pure Python
+(measured: 28.7 M cycles), <code>@micropython.native</code>, <code>@micropython.viper</code>, and the assembly
+baseline (127 K cycles). Almost no implementation risk, and it spans a ~225× range.
+<em>Teaching point:</em> where the cost of abstraction actually lands, and that viper often gets
+surprisingly close to assembly for a fraction of the effort.</p>
+<p><strong>V4 — Faster bit-reversal.</strong> Replace the 512-iteration compare-and-branch loop with a
+precomputed list of only the ~240 index pairs that actually swap, eliminating the branch
+entirely. Alternatively fold the permutation into the first butterfly stage.
+<em>Hypothesis: recovers 8–12 % of total runtime.</em> Teaching point: 17 % of the time was going to
+something that is not arithmetic at all.</p>
+<h3 id="tier-2-moderate-effort">Tier 2 — moderate effort</h3>
+<p><strong>V5 — Radix-4.</strong> 512 = 4⁴ × 2, so four radix-4 stages plus one radix-2 stage. Radix-4 reduces
+multiplication count roughly 25 % by handling four points per butterfly, at the cost of much
+higher register pressure — and registers are already tight enough that the baseline spills to
+<code>s29</code>/<code>s30</code>. <em>Hypothesis: 15–20 %, or a regression if spill traffic outweighs the savings.</em>
+Teaching point: fewer operations does not automatically mean faster.</p>
+<p><strong>V6 — Interleaved complex layout.</strong> Store <code>[re₀, im₀, re₁, im₁, …]</code> in one array instead of
+two parallel arrays, halving pointer arithmetic (one base register instead of two) and
+improving access locality. <em>Hypothesis: 5–10 %.</em> Teaching point: data layout is a performance
+decision, and RP2350's SRAM has no data cache, so the gain here comes from addressing, not
+locality — a nuance worth measuring rather than assuming.</p>
+<h3 id="tier-3-advanced">Tier 3 — advanced</h3>
+<p><strong>V7 — Raw-encoded VFMA.</strong> MicroPython's assembler rejects <code>vfma</code>, but <code>@micropython.asm_thumb</code>
+provides a <code>data()</code> directive that emits raw words into the instruction stream. Hand-encode
+<code>VFMA.F32 Sd, Sn, Sm</code> from the ARM guide's encoding tables and place it inline.
+<em>Hypothesis: 5–7 %, i.e. small — which is the point.</em> Teaching point: this is the plan's
+headline architecture lesson. Students derive an instruction encoding from the manual, discover
+the toolchain was the only thing standing in the way, and then measure that the payoff is
+modest — because §3 already showed arithmetic is not the bottleneck. <strong>Gate:</strong> verify <code>data()</code>
+emits into the executable code stream before committing to this variant; if it only emits into
+a literal pool, V7 is blocked and becomes a paper exercise in encoding instead.</p>
+<p><strong>V8 — Dual-core.</strong> <code>_thread</code> is available and the RP2350 has two M33 cores. Split the butterfly
+stages across both. <em>Hypothesis: well under 2×, plausibly a regression</em> — the transform is only
+~850 µs, so synchronization and cache-coherency costs are significant relative to the work.
+Teaching point: Amdahl's law and the real cost of coordination.</p>
+<p><strong>V9 — Fixed-point Q15.</strong> <strong>Blocked on the inline-assembly path</strong> (§2): none of the DSP
+instructions a Q15 FFT needs are exposed. This is the one variant that genuinely justifies
+returning to the Pico SDK C firmware approach that Plan 01 designed and then set aside — the
+packed 2-way SIMD (<code>SMUAD</code>, <code>QADD16</code>) could process two Q15 values per instruction.
+<em>Teaching point:</em> precision traded for speed, and a concrete answer to "when is the heavier
+toolchain worth it?" Document as a scoped follow-on plan (Plan 03) rather than attempting it
+here.</p>
+<h2 id="6-benchmark-methodology">6. Benchmark Methodology</h2>
+<p>The course is <em>about</em> benchmarking, so the harness is curriculum, not scaffolding.</p>
+<ul>
+<li><strong>Identical conditions.</strong> Every variant runs the same 10 signals from
+  <a href="../../src/fft-benchmark/inputs/"><code>src/fft-benchmark/inputs/</code></a>, same trial count, same
+  buffers, one warm-up discarded.</li>
+<li><strong>Report three statistics, not one.</strong> Best-of-N (least contaminated, appropriate for a
+  deterministic algorithm), mean, and standard deviation. §3 showed these differ by ~4 %.</li>
+<li><strong>Report accuracy beside speed.</strong> Every variant is verified against the numpy reference.
+  V2 (real FFT) and V9 (Q15) change the numerics, so "fastest" is not a complete answer —
+  a variant that is 2× faster and 100× less accurate has made a trade, not an improvement.</li>
+<li><strong>Report code size.</strong> Bytes of compiled assembly per variant. On a microcontroller this is a
+  real constraint, and V1/V5 trade code size for speed explicitly.</li>
+<li><strong>Measure whole transforms, not fragments.</strong> §3 quantified ~8,850 cycles of instrumentation
+  overhead per measurement point; fine-grained timing distorts what it measures.</li>
+<li><strong>State the baseline in every claim.</strong> "1.3× faster than V0 on signal 03" — not "faster."</li>
+</ul>
+<p>Output: <code>outputs/variant-comparison.md</code>, a matrix of variant × (best cycles, mean, stddev,
+speedup vs. V0, max relative error, code size), plus a short interpretation of each row.</p>
+<h2 id="7-directory-layout">7. Directory Layout</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code>src/fft-benchmark/
+  variants/
+    v0_baseline.py        # current implementation, re-exported for comparison
+    v1_specialized.py     # trivial-twiddle stages
+    v2_real_input.py      # real-input FFT
+    v3_python.py          # abstraction ladder: pure Python
+    v3_native.py          #                     @micropython.native
+    v3_viper.py           #                     @micropython.viper
+    v4_fast_bitrev.py     # swap-pair-only permutation
+    v5_radix4.py          # radix-4 + final radix-2 stage
+    v6_interleaved.py     # interleaved complex layout
+    v7_vfma_raw.py        # hand-encoded VFMA via data()
+    v8_dualcore.py        # _thread across both M33 cores
+    common.py             # shared interface + table construction
+  device/
+    compare.py            # runs every variant over all 10 signals
+  tools/
+    build_comparison.py   # assembles outputs/variant-comparison.md
+  outputs/
+    variant-comparison.md
+</code></pre></div></td></tr></table></div>
+<p>Every variant exposes the Plan 01 interface (<code>make_buffers</code>, <code>run</code>, <code>run_timed</code>) so
+<code>compare.py</code> drives them uniformly and no variant gets an accidental advantage from a
+different calling pattern.</p>
+<h2 id="8-milestones">8. Milestones</h2>
+<ol>
+<li><strong>Harness first.</strong> Build <code>variants/common.py</code> and <code>device/compare.py</code> against V0 alone,
+   confirming the runner reproduces Plan 01's 132,808-cycle result before any variant exists.
+   A harness that cannot reproduce a known number cannot be trusted to compare unknown ones.</li>
+<li><strong><code>data()</code> feasibility probe</strong> — determine whether raw words reach the executable code
+   stream. Gates V7.</li>
+<li><strong>V3 abstraction ladder</strong> — cheapest to build, immediately useful, and stresses the harness
+   across a 225× dynamic range.</li>
+<li><strong>V1 + V4</strong> — the two specialization wins that §3's profile points at directly.</li>
+<li><strong>V2 real-input FFT</strong> — the largest expected win; requires extending the verifier.</li>
+<li><strong>V6, V5</strong> — layout, then radix-4.</li>
+<li><strong>V7 raw-encoded VFMA</strong> — if milestone 2 passed.</li>
+<li><strong>V8 dual-core</strong> — last, being the most likely to disappoint and the most instructive
+   about why.</li>
+<li><strong>Comparison matrix + write-up</strong>, including a section on which hypotheses from §5 were
+   wrong and what the measurement revealed instead.</li>
+</ol>
+<h2 id="9-student-lab-shape">9. Student Lab Shape</h2>
+<p>The intended exercise: give students V0 and the harness, have them <strong>predict</strong> the ranking of
+the remaining variants before measuring, then implement two or three and check their
+predictions. The gap between prediction and measurement is the actual lesson — particularly
+for V5 (radix-4 may lose to register pressure) and V8 (more cores may be slower).</p>
+<h2 id="10-references">10. References</h2>
+<ul>
+<li><a href="../01-fft-test-plan/">Plan 01: assembly FFT</a> — baseline, harness, and verification pipeline</li>
+<li><a href="../../arm-programming-guide/arm-cortex-m33-r1p0-generic-user-guide.pdf">ARM Cortex-M33 Devices Generic User Guide r1p0</a> — §3.12 floating-point encodings (V7), §3.8–3.9 DSP/saturating (V9)</li>
+<li><a href="../../src/kits/oled-2-buttons/05-asm-instruction-probe.py"><code>05-asm-instruction-probe.py</code></a> — the availability data in §2</li>
+<li><a href="../../src/fft-benchmark/outputs/verification-report.md"><code>outputs/verification-report.md</code></a> — V0 correctness and timing baseline</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../01-fft-test-plan/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plan 1">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Plan 1
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: Glossary">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Glossary
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -73,6 +73,134 @@
          <lastmod>2026-08-10</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/04-oled-display/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/05-buttons/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/06-deploying-code/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/07-first-sound/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/08-sound-levels/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/09-aliasing/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/10-bit-depth/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/11-sine-waves/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/12-superposition/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/13-correlation/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/14-building-a-dft/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/15-validating/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/16-too-slow/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/17-divide-and-conquer/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/18-bit-reversal-twiddles/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/19-butterfly/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/20-complete-python-fft/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/21-real-spectrum/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/22-windowing/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/23-tuner/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/24-realtime-analyzer/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/25-timing/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/26-benchmarking/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/27-abstraction-ladder/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/28-fpu-check/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/29-first-assembly/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/30-fpu-assembly/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/31-assembly-fft/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/32-specialization/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/33-hand-encoding/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/34-variants/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/labs/35-capstone/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/</loc>
          <lastmod>2026-08-10</lastmod>
     </url>
@@ -118,6 +246,10 @@
     </url>
     <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/taxonomy-distribution/</loc>
+         <lastmod>2026-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/parts/</loc>
          <lastmod>2026-08-10</lastmod>
     </url>
     <url>

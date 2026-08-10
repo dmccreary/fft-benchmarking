@@ -22,6 +22,50 @@ nav:
 
   - Hands-On Labs:
       - List of Labs: labs/index.md
+      - Module 0 — Getting Started:
+          - 'Lab 1: Hello World with Thonny': labs/01-hello-world/index.md
+          - 'Lab 2: Blink: Your First Hardware Program': labs/02-blink/index.md
+          - 'Lab 3: Know Your Board': labs/03-know-your-board/index.md
+      - Module 1 — Peripherals:
+          - 'Lab 4: The OLED Display': labs/04-oled-display/index.md
+          - 'Lab 5: Buttons and Interaction': labs/05-buttons/index.md
+          - 'Lab 6: Deploying Code and Libraries': labs/06-deploying-code/index.md
+      - Module 2 — Sound as Numbers:
+          - 'Lab 7: Your First Sound Capture': labs/07-first-sound/index.md
+          - 'Lab 8: Sound Levels: RMS and a VU Meter': labs/08-sound-levels/index.md
+          - 'Lab 9: Sampling Rate and Aliasing': labs/09-aliasing/index.md
+          - 'Lab 10: Bit Depth, Headroom and Clipping': labs/10-bit-depth/index.md
+      - Module 3 — Discovering Frequency:
+          - 'Lab 11: Sine Waves: Amplitude, Frequency, Phase': labs/11-sine-waves/index.md
+          - 'Lab 12: Adding Waves: Superposition and Beats': labs/12-superposition/index.md
+          - 'Lab 13: Correlation: Does My Signal Contain This Note?': labs/13-correlation/index.md
+          - 'Lab 14: Sweeping All Frequencies: You Just Built a DFT': labs/14-building-a-dft/index.md
+          - 'Lab 15: Validating Your DFT on a Known Signal': labs/15-validating/index.md
+          - 'Lab 16: Your DFT Is Too Slow': labs/16-too-slow/index.md
+      - Module 4 — The FFT:
+          - 'Lab 17: Divide and Conquer: From DFT to FFT': labs/17-divide-and-conquer/index.md
+          - 'Lab 18: Bit Reversal and Twiddle Factors': labs/18-bit-reversal-twiddles/index.md
+          - 'Lab 19: The Butterfly': labs/19-butterfly/index.md
+          - 'Lab 20: A Complete Python FFT': labs/20-complete-python-fft/index.md
+      - Module 5 — Real Spectra:
+          - 'Lab 21: Spectrum of a Real Sound': labs/21-real-spectrum/index.md
+          - 'Lab 22: Windowing and Spectral Leakage': labs/22-windowing/index.md
+          - 'Lab 23: Peak Detection: Build a Tuner': labs/23-tuner/index.md
+          - 'Lab 24: Real-Time Spectrum Analyzer': labs/24-realtime-analyzer/index.md
+      - Module 6 — Measuring Performance:
+          - 'Lab 25: How Long Did That Take?': labs/25-timing/index.md
+          - 'Lab 26: Benchmarking Methodology': labs/26-benchmarking/index.md
+          - 'Lab 27: The Abstraction Ladder': labs/27-abstraction-ladder/index.md
+      - Module 7 — Assembly Language:
+          - 'Lab 28: Does Your CPU Have an FPU?': labs/28-fpu-check/index.md
+          - 'Lab 29: Your First Assembly Function': labs/29-first-assembly/index.md
+          - 'Lab 30: Talking to the FPU': labs/30-fpu-assembly/index.md
+          - 'Lab 31: The Butterfly in Assembly': labs/31-assembly-fft/index.md
+      - Module 8 — Optimization and Capstone:
+          - 'Lab 32: Specialization and Branchless Code': labs/32-specialization/index.md
+          - 'Lab 33: Beyond the Assembler: Hand-Encoding': labs/33-hand-encoding/index.md
+          - 'Lab 34: Competing Variants: Predict, Measure, Explain': labs/34-variants/index.md
+          - 'Lab 35: Capstone': labs/35-capstone/index.md
   
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
   

@@ -10,6 +10,8 @@
 
 ## What You'll Build
 
+![](./blink-on-board-led.gif)
+
 A blinking LED. Yes, really. But stay with me: the moment your code changes a voltage on a pin
 is the moment a program stops being abstract. Every sensor, every display, every microphone in
 this course is that same idea with more wires.
@@ -76,6 +78,13 @@ Run it. The little green LED next to the USB connector starts flashing, once per
 Press **Ctrl-C** to stop. Notice the LED ends up *off* — that's the `except KeyboardInterrupt`
 block doing its job.
 
+!!! mascot-warning "Pico 2 or Pico 2 W? The LED moved"
+    ![Echo warning](../../img/mascot/warning.png){ class="mascot-admonition-img" }
+    On a plain **Pico 2** the onboard LED is GPIO 25. On a **Pico 2 W** it isn't a GPIO at
+    all — the wireless chip drives it, and you reach it by the name `"LED"`. The sneaky part:
+    `Pin(25)` is *accepted* on a W board and simply lights nothing. No error, no blink, no
+    clue. The code above tries `"LED"` first and falls back, so it works on both.
+
 ### Step 2 — Predict, then measure
 
 Before you change anything, write down your answer:
@@ -137,7 +146,8 @@ Stopped. LED off.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Nothing blinks | Wrong pin number | The Pico 2's onboard LED is GPIO **25** |
+| Nothing blinks, no error | You have a **Pico 2 W** and used `Pin(25)` | On W boards the LED belongs to the wireless chip: use `Pin("LED", Pin.OUT)`. The lab code tries this automatically |
+| Nothing blinks | Wrong pin number | On a plain Pico 2 the onboard LED is GPIO **25** |
 | `NameError: name 'Pin' is not defined` | Missing import | Add `from machine import Pin` at the top |
 | LED stays on after Ctrl-C | No cleanup handler | Add the `except KeyboardInterrupt` block |
 | Can't stop it | Focus isn't in the Shell | Click the Shell panel first, then Ctrl-C |

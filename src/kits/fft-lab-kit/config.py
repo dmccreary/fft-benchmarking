@@ -41,6 +41,16 @@ NO_FILL = 0
 FILL = 1
 
 
+def init_led():
+    # The onboard LED is GPIO 25 on a plain Pico 2, but on a Pico 2 W it is
+    # driven by the wireless chip and only reachable by the name "LED".
+    # Pin(25) is accepted on a W board but lights nothing, so try "LED" first.
+    try:
+        return Pin("LED", Pin.OUT)
+    except (ValueError, TypeError):
+        return Pin(25, Pin.OUT)
+
+
 def init_display():
     clock = Pin(SCL_PIN)
     data = Pin(SDA_PIN)

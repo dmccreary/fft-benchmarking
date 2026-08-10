@@ -40,10 +40,11 @@
     "network"
   ],
   "learningObjectives": [
-    "Understand the mathematical concept of learning graph viewer",
-    "Apply learning graph viewer to solve problems",
-    "Visualize and interpret learning graph viewer relationships",
-    "Experiment with parameters to observe their effects on learning graph viewer"
+    "Identify the 12 taxonomy categories of the FFT Benchmarking learning graph using the color-coded legend",
+    "Trace dependency chains from foundational concepts in Mathematical Foundations to advanced topics like Performance Optimization",
+    "Locate a specific concept with the type-ahead search and inspect its prerequisite edges in the network",
+    "Compare visible node and edge counts as taxonomy filters are toggled to gauge each category's share of the 200 concepts",
+    "Design a personal learning path by enabling foundational categories before their dependent categories"
   ],
   "pedagogical": {
     "pattern": "demonstration",

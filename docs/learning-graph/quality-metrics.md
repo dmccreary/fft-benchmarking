@@ -2,14 +2,14 @@
 
 ## Overview
 
-- **Total Concepts**: 200
-- **Foundational Concepts** (no dependencies): 10
-- **Concepts with Dependencies**: 190
-- **Average Dependencies per Concept**: 1.83
+- **Total Concepts**: 574
+- **Foundational Concepts** (no dependencies): 14
+- **Concepts with Dependencies**: 560
+- **Average Dependencies per Concept**: 1.56
 
 ## Graph Structure Validation
 
-- **Valid DAG Structure**: ❌ No
+- **Valid DAG Structure**: ✅ Yes
 - **Self-Dependencies**: None detected ✅
 - **Cycles Detected**: 0
 
@@ -27,10 +27,14 @@ These concepts have no prerequisites:
 - **114**: Python Language
 - **133**: Benchmarking
 - **177**: Data Visualization
+- **201**: Thonny IDE
+- **257**: MEMS Microphone
+- **290**: Productive Failure
+- **344**: Ground Truth
 
 ## Dependency Chain Analysis
 
-- **Maximum Dependency Chain Length**: 15
+- **Maximum Dependency Chain Length**: 30
 
 ### Longest Learning Path:
 
@@ -44,46 +48,79 @@ These concepts have no prerequisites:
 8. **DFT Definition** (ID: 37)
 9. **DFT Complexity** (ID: 38)
 10. **FFT Algorithm** (ID: 49)
-11. **FFT History** (ID: 50)
-12. **Cooley Tukey Algorithm** (ID: 51)
-13. **Radix-2 FFT** (ID: 52)
-14. **Radix-4 FFT** (ID: 53)
-15. **Split Radix FFT** (ID: 54)
+11. **FFT Complexity** (ID: 63)
+12. **FFT Size** (ID: 65)
+13. **Frame Duration** (ID: 359)
+14. **Processing Deadline** (ID: 360)
+15. **Motivation For Optimization** (ID: 362)
+16. **Divide And Conquer** (ID: 363)
+17. **Even Odd Split** (ID: 364)
+18. **Recursive Decomposition** (ID: 365)
+19. **Subproblem** (ID: 366)
+20. **Recombination Step** (ID: 367)
+21. **Butterfly Structure** (ID: 384)
+22. **Butterfly Pair** (ID: 387)
+23. **Stage Span** (ID: 388)
+24. **Stage Loop** (ID: 391)
+25. **Work Split Strategy** (ID: 525)
+26. **Hot Loop** (ID: 528)
+27. **Special Case Optimization** (ID: 529)
+28. **Optimization Attribution** (ID: 540)
+29. **Optimization Composition** (ID: 559)
+30. **Sub Linear Composition** (ID: 560)
 
 ## Orphaned Nodes Analysis
 
-- **Total Orphaned Nodes**: 76
+- **Total Orphaned Nodes**: 185
 
 Concepts that are not prerequisites for any other concept:
 
-- **11**: Complex Conjugate
-- **13**: Unit Circle
 - **14**: Hertz
-- **22**: Aliasing
-- **24**: Bit Depth
 - **25**: ADC Conversion
 - **27**: Signal To Noise Ratio
 - **30**: Band Pass Filter
-- **32**: Spectral Leakage
-- **43**: Power Spectrum
-- **48**: Orthogonality
 - **54**: Split Radix FFT
-- **57**: Twiddle Factors
-- **59**: In Place FFT
 - **60**: Decimation In Time
 - **61**: Decimation In Frequency
-- **62**: FFT Stages
-- **64**: O(N log N)
-- **66**: Power Of Two Sizes
 - **67**: Real FFT
+- **70**: IFFT Algorithm
+- **72**: FFT Scaling
+- **81**: RP2350 Chip
+- **83**: General Purpose CPU
+- **88**: Embedded Systems
+- **93**: Saturating Arithmetic
+- **100**: Q31 Format
+- **101**: Hardware Multiplier
+- **107**: GCC Compiler
+- **108**: ARM Compiler
+- **116**: SciPy FFT
+- **120**: Disassembly
 
-*...and 56 more*
+*...and 165 more*
 
 ## Connected Components
 
-- **Number of Connected Components**: 1
+- **Number of Connected Components**: 2
 
-✅ All concepts are connected in a single graph.
+⚠️ Multiple disconnected subgraphs detected:
+
+### Component 1 (573 concepts)
+
+- Complex Numbers
+- Imaginary Unit
+- Euler's Formula
+- Sine Wave
+- Cosine Wave
+- Amplitude
+- Frequency
+- Phase
+- Periodic Functions
+- Harmonics
+- *...and 563 more*
+
+### Component 2 (1 concepts)
+
+- Productive Failure
 
 ## Indegree Analysis
 
@@ -92,29 +129,32 @@ Top 10 concepts that are prerequisites for the most other concepts:
 | Rank | Concept ID | Concept Label | Indegree |
 |------|-----------|---------------|----------|
 | 1 | 49 | FFT Algorithm | 21 |
-| 2 | 7 | Frequency | 10 |
-| 3 | 16 | Frequency Domain | 9 |
-| 4 | 121 | FFT Libraries | 9 |
-| 5 | 4 | Sine Wave | 8 |
-| 6 | 17 | Analog Signals | 8 |
-| 7 | 52 | Radix-2 FFT | 8 |
-| 8 | 73 | Microcontroller | 8 |
-| 9 | 134 | Performance Metrics | 8 |
-| 10 | 1 | Complex Numbers | 7 |
+| 2 | 7 | Frequency | 13 |
+| 3 | 4 | Sine Wave | 10 |
+| 4 | 16 | Frequency Domain | 9 |
+| 5 | 73 | Microcontroller | 9 |
+| 6 | 121 | FFT Libraries | 9 |
+| 7 | 1 | Complex Numbers | 8 |
+| 8 | 17 | Analog Signals | 8 |
+| 9 | 52 | Radix-2 FFT | 8 |
+| 10 | 74 | ARM Architecture | 8 |
 
 ## Outdegree Distribution
 
 | Dependencies | Number of Concepts |
 |--------------|--------------------|
-| 0 | 10 |
-| 1 | 53 |
-| 2 | 118 |
+| 0 | 14 |
+| 1 | 267 |
+| 2 | 274 |
 | 3 | 17 |
 | 4 | 2 |
 
 ## Recommendations
 
-- ⚠️ **Many orphaned nodes** (76): Consider if these should be prerequisites for advanced concepts
+- ⚠️ **Connect disconnected components**: Add dependencies to link separate subgraphs
+- ⚠️ **Many orphaned nodes** (185): Consider if these should be prerequisites for advanced concepts
+- ✅ **DAG structure verified**: Graph supports valid learning progressions
+- ℹ️ **Long dependency chains** (30): Ensure students can follow extended learning paths
 
 ---
 

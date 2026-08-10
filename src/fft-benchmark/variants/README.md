@@ -84,6 +84,32 @@ They stack well because they attack different costs. They do not stack perfectly
 V7 overlap: V1 *deletes* the multiplications that V7 would have fused, so V7 has less left to
 improve.
 
+## A note on file naming
+
+These filenames use underscores while the kit labs
+([`../../kits/oled-2-buttons/`](../../kits/oled-2-buttons/)) use dashes. That split is
+deliberate, and the rule is simple:
+
+**Dashes for scripts that are run. Underscores for modules that are imported.**
+
+| Pattern | Examples | Why |
+|---|---|---|
+| `NN-name.py` | `02-get-info.py`, `05-asm-instruction-probe.py` | executed with `mpremote run`, never imported |
+| `name_with_underscores.py` | `v2_real_input.py`, `fft_asm.py`, `common.py` | imported as Python modules |
+
+Python module names cannot contain dashes. Both of these are `SyntaxError`:
+
+```python
+import v2-real-input
+from v2-real-input import Variant
+```
+
+Confirmed on this board: `__import__("v2-real-input")` *does* work, since it takes a string and
+never reaches the parser — which is why `compare.py` alone could have loaded dash-named files.
+But the variants import each other (`v9_combined` draws assembly routines from four siblings),
+and any student experimenting with a variant will reach for a normal `import` statement. So the
+importable code keeps underscores, per PEP 8, which recommends them for precisely this reason.
+
 ## Variant reference
 
 ### v0_baseline.py — the reference point

@@ -18,9 +18,10 @@ nav:
     - Concept Taxonomy: learning-graph/concept-taxonomy.md
     - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
     - Quality Metrics: learning-graph/quality-metrics.md
-  
+    - Mascot Style Guide: learning-graph/mascot-test.md
+
   - Hands-On Labs:
-      - List of Labs: tutorials/tutorial-1.md
+      - List of Labs: labs/index.md
   
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
   
@@ -71,11 +72,14 @@ markdown_extensions:
   - md_in_html
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.snippets:
+      check_paths: true
   - attr_list
   - pymdownx.highlight:
       linenums: true
 extra_css:
    - css/extra.css
+   - css/mascot.css
 #extra:
 #  analytics:
 #    provider: google

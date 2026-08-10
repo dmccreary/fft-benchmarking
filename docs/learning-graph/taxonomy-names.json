@@ -10,5 +10,10 @@
   "BNCH": "Benchmarking",
   "PERF": "Performance Optimization",
   "PIPE": "Signal Pipeline",
-  "VAPP": "Visualization and Applications"
+  "VAPP": "Visualization and Applications",
+  "TOOL": "Development Environment",
+  "MCIO": "Microcontroller I/O",
+  "AUDI": "Audio and Acoustics",
+  "ASMP": "Assembly Programming",
+  "LABM": "Laboratory Method"
 }

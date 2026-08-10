@@ -81,6 +81,10 @@ When adding or modifying documentation:
 - Update the `nav:` section in `mkdocs.yml` when adding new pages
 - Test locally with `mkdocs serve` before deploying
 
+Before generating content for the chapters, lesson plans, quizzes, FAQ or other student facing text,
+read the `CONTENT-GENERATION-GUIDE.md` file. Note that the teacher guide or instructor guide or
+other instructor facing content does not need to use the mascots described in the CONTENT-GENERATION-GUIDE.md
+
 ## Repository Context
 
 - Main branch: `main`

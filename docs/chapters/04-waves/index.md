@@ -105,7 +105,7 @@ Before the interactive explorer below, it's worth naming exactly what each of it
 
 #### Diagram: Sine Wave Parameter Explorer
 
-<iframe src="../../sims/sine-wave-parameter-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/sine-wave-parameter-explorer/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Sine Wave Parameter Explorer</summary>

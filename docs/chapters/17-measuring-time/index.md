@@ -356,7 +356,7 @@ it introduces no new concepts, only a side-by-side comparison of the ones just e
 
 #### Diagram: Performance Metrics Calculator
 
-<iframe src="../../sims/performance-metrics-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/performance-metrics-calculator/main.html" width="100%" height="492px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Performance Metrics Calculator</summary>

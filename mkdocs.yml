@@ -20,6 +20,36 @@ nav:
     - Quality Metrics: learning-graph/quality-metrics.md
     - Mascot Style Guide: learning-graph/mascot-test.md
 
+  - Chapters:
+    - List of Chapters: chapters/index.md
+    - '1. Hello World: Thonny, MicroPython, and Your First GPIO Program': chapters/01-hello-world/index.md
+    - '2. Know Your Board: ARM Cortex-M Architecture and the Pico 2': chapters/02-know-your-board/index.md
+    - '3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code': chapters/03-peripherals/index.md
+    - '4. Waves: Amplitude, Frequency, Phase, and Harmonics': chapters/04-waves/index.md
+    - '5. Capturing Real Audio: The I2S Microphone': chapters/05-capturing-real-audio/index.md
+    - '6. Sampling, Quantization, and Aliasing': chapters/06-sampling-quantization-and-aliasing/index.md
+    - '7. Complex Numbers and Wave Superposition': chapters/07-complex-numbers-and-wave-superposition/index.md
+    - '8. Correlation: Does My Signal Contain This Note?': chapters/08-correlation/index.md
+    - '9. Computing and Validating the DFT': chapters/09-computing-and-validating-the-dft/index.md
+    - '10. Why the DFT Is Too Slow': chapters/10-why-the-dft-is-too-slow/index.md
+    - '11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly': chapters/11-from-dft-to-fft/index.md
+    - '12. Building the FFT: A Complete Recursive Implementation': chapters/12-building-the-fft/index.md
+    - '13. FFT Variants, Complexity, and Correctness': chapters/13-fft-variants-complexity-and-correctness/index.md
+    - '14. Computing and Displaying a Real Spectrum': chapters/14-computing-and-displaying-a-real-spectrum/index.md
+    - '15. Windowing, Spectral Leakage, and Peak Detection': chapters/15-windowing-spectral-leakage-and-peak-detection/index.md
+    - '16. Building a Real-Time Spectrum Analyzer': chapters/16-building-a-real-time-spectrum-analyzer/index.md
+    - '17. Measuring Time: The DWT Cycle Counter': chapters/17-measuring-time/index.md
+    - '18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison': chapters/18-benchmarking-methodology/index.md
+    - '19. The Abstraction Ladder: Python, C, and Assembly Compared': chapters/19-the-abstraction-ladder/index.md
+    - '20. Does Your CPU Have an FPU?': chapters/20-does-your-cpu-have-an-fpu/index.md
+    - '21. Your First Assembly Function: Registers and Loops': chapters/21-your-first-assembly-function/index.md
+    - '22. Talking to the FPU: Floating-Point Assembly': chapters/22-talking-to-the-fpu/index.md
+    - '23. The Butterfly in Assembly: A Complete FFT and Production Libraries': chapters/23-the-butterfly-in-assembly/index.md
+    - '24. Specialization and Branchless Code': chapters/24-specialization-and-branchless-code/index.md
+    - '25. Beyond the Assembler: Hand-Encoding and Instruction Formats': chapters/25-beyond-the-assembler/index.md
+    - '26. Competing Variants: Predict, Measure, Explain': chapters/26-competing-variants/index.md
+    - '27. Capstone: Applications, Design, and Reporting': chapters/27-capstone/index.md
+
   - Hands-On Labs:
       - List of Labs: labs/index.md
       - Module 0 — Getting Started:

@@ -281,7 +281,7 @@ Before the deployment workflow diagram below, it is worth naming the order these
 
 #### Diagram: Standalone Deployment Workflow
 
-<iframe src="../../sims/standalone-deployment-workflow/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/standalone-deployment-workflow/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Standalone Deployment Workflow</summary>

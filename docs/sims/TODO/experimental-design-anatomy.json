@@ -1,0 +1,15 @@
+{
+  "sim_id": "experimental-design-anatomy",
+  "diagram_name": "Experimental Design Anatomy",
+  "chapter_number": 27,
+  "chapter_title": "\"Capstone: Applications, Design, and Reporting\"",
+  "chapter_dir": "27-capstone",
+  "chapter_rel_dir": "chapters/27-capstone",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — classify, construct",
+  "bloom_verb": null,
+  "learning_objective": "Classify the components of a stated research question into research question, independent variable, dependent variable, and controlled variables, and construct a benchmark suite around them.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** experimental-design-anatomy<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — classify, construct\nLearning objective: Classify the components of a stated research question into research question, independent variable, dependent variable, and controlled variables, and construct a benchmark suite around them.\n\nCanvas layout:\n- A worked example sentence at the top: \"Does Hann windowing improve peak-frequency accuracy versus no window, when detecting a 3.2 kHz tone in noisy audio, at 150 MHz on a Pico 2, with a fixed 512-point FFT size?\"\n- Below it, four labeled boxes the learner fills by dragging highlighted phrases from the sentence: Research Question, Independent Variable, Dependent Variable, Controlled Variables (multiple)\n\nVisual elements:\n- The example sentence with key phrases pre-highlighted in distinct colors matching the four target boxes\n- Drag targets clearly labeled and empty until filled\n\nInteractive controls:\n- Drag each highlighted phrase into its matching labeled box\n- Button: \"Check my answers\" — confirms correct placement or highlights a mismatch with a one-line hint\n- Button: \"Try a new example\" — cycles to a second worked sentence from a different application domain (e.g., vibration analysis) for additional practice\n\nBehavior:\n- Correct placement: \"Window type (Hann vs. none)\" → Independent Variable; \"Peak-frequency error\" → Dependent Variable; \"150 MHz, Pico 2, 512-point FFT\" → Controlled Variables\n- Incorrect placement gives a hint rather than the answer, e.g. \"This phrase describes what you're measuring as an outcome, not what you're deliberately changing — try Dependent Variable instead.\"\n\nInstructional Rationale: An Apply-level \"classify and construct\" objective calls for\ndirect manipulation — dragging phrases into categories requires the learner to actively\napply the definitions just given, rather than passively reading a labeled diagram.\n\nImplementation: p5.js, draggable text objects with drop-zone collision detection, a small library of 2-3 worked example sentences"
+}

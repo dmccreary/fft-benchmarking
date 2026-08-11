@@ -1,0 +1,15 @@
+{
+  "sim_id": "instruction-encoding-bit-builder",
+  "diagram_name": "Instruction Encoding Bit Field Builder",
+  "chapter_number": 25,
+  "chapter_title": "\"Beyond the Assembler: Hand-Encoding and Instruction Formats\"",
+  "chapter_dir": "25-beyond-the-assembler",
+  "chapter_rel_dir": "chapters/25-beyond-the-assembler",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — construct, calculate",
+  "bloom_verb": null,
+  "learning_objective": "Apply encoding-table bit-field positions to construct a correct 32-bit raw machine word for a chosen VFMA register combination, and verify it via a built-in disassembly check.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** instruction-encoding-bit-builder<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — construct, calculate\nLearning objective: Apply encoding-table bit-field positions to construct a correct 32-bit raw machine word for a chosen VFMA register combination, and verify it via a built-in disassembly check.\n\nCanvas layout:\n- Top (200px): A 32-bit grid (two rows of 16 bits each, representing the two halfwords of a Thumb-2 instruction), with labeled, color-coded regions for opcode, Sd, Sn, Sm bit fields\n- Middle (150px): Three register-selector dropdowns (destination, operand 1, operand 2), each choosing from s0-s7 for simplicity\n- Bottom (150px): Computed hex word output, plus a \"Disassemble\" button and its result\n\nVisual elements:\n- Bit grid updates live as each register selector changes, highlighting exactly which bits flip\n- Color legend matching the table in the chapter text (opcode / Sd / Sn / Sm)\n- Hex output field showing the assembled 32-bit word\n\nInteractive controls:\n- Three dropdowns: destination register, operand 1, operand 2\n- Button: \"Assemble word\" — computes and displays the hex value from current selections\n- Button: \"Disassemble\" — takes the current hex value and reports the mnemonic and operands it decodes back to, confirming (or, if the learner has manually edited a bit, contradicting) the original selections\n- Checkbox: \"Flip one random bit\" — demonstrates the warning from the text: flipping a single bit still disassembles to a valid-looking, but different, instruction\n\nInstructional Rationale: An Apply-level objective calling for construction and\ncalculation is best served by letting the learner directly build a word from register\nchoices and immediately verify it via disassembly — closing the loop between encoding and\nverification the way the chapter's own worked example does.\n\nImplementation: p5.js, bit grid as 32 individually colored rectangles, hex computed via bitwise shifts and ORs matching the real ARM encoding scheme"
+}

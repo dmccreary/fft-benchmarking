@@ -127,6 +127,7 @@ nav:
     - Experimental Design Anatomy: sims/experimental-design-anatomy/index.md
     - FFT Applications Map: sims/fft-applications-map/index.md
     - FFT History Timeline: sims/timeline/index.md
+    - FFT Microphone Spectrum Analyzer: sims/fft-mic/index.md
     - FFT Stage Architecture: sims/fft-stage-architecture/index.md
     - FPU Capability Probe: sims/fpu-capability-probe/index.md
     - Framebuffer Draw Refresh Pipeline: sims/framebuffer-draw-refresh-pipeline/index.md

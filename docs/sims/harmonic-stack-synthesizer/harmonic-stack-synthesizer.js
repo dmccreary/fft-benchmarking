@@ -1,11 +1,11 @@
 // Harmonic Stack Synthesizer MicroSim
-// CANVAS_HEIGHT: 555
+// CANVAS_HEIGHT: 585
 // Mixing overtones above a fixed 440 Hz fundamental changes the waveform's
 // shape (timbre) while leaving its repetition rate (pitch) untouched.
 
 let canvasWidth = 400;
 let drawHeight = 300;
-let controlHeight = 255;
+let controlHeight = 285;
 let canvasHeight = drawHeight + controlHeight;
 let containerWidth;
 let containerHeight = canvasHeight;
@@ -31,7 +31,17 @@ const PRESETS = {
 let sliders = [];
 let overlayCheckbox;
 let presetButtons = [];
+let playButton;
 let amplitudes = [100, 0, 0, 0, 0];
+
+// One sine oscillator per harmonic, built on demand when the sound is switched
+// on and disposed when it is switched off.
+let oscillators = [];
+let soundOn = false;
+const MASTER_AMP = 0.25;   // peak amplitude of the whole mix, not of one partial
+const FADE = 0.08;         // seconds; avoids a click on attack and release
+const GLIDE = 0.03;        // seconds; ramp when a slider or preset moves a level
+const PEAK_SAMPLES = 1200; // resolution of the peak search used to normalize
 
 function setup() {
   updateCanvasSize();
@@ -43,6 +53,9 @@ function setup() {
     const s = createSlider(0, 100, amplitudes[i], 1);
     s.position(sliderLeftMargin, drawHeight + 5 + i * 35);
     s.parent(document.querySelector('main'));
+    // Drive the audio from the slider's own event rather than from draw(), so
+    // levels track even when the frame loop is being throttled.
+    s.input(function () { readSliders(); updateSoundLevels(); });
     sliders.push(s);
   }
 
@@ -60,16 +73,109 @@ function setup() {
   overlayCheckbox.position(10, drawHeight + 220);
   overlayCheckbox.parent(document.querySelector('main'));
 
+  playButton = createButton('Play Sound');
+  playButton.position(10, drawHeight + 250);
+  playButton.mousePressed(toggleSound);
+  playButton.parent(document.querySelector('main'));
+
+  // A hidden tab throttles draw() to a standstill but leaves the audio thread
+  // running, so silence the mix rather than strand it playing out of sight.
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) switchSoundOff();
+  });
+
   resizeSliders();
 
   describe('A combined waveform built from a fixed 440 Hz fundamental plus four ' +
-    'overtones, with a slider per harmonic and instrument presets, showing that ' +
-    'timbre changes while the repetition rate stays fixed.', LABEL);
+    'overtones, with a slider per harmonic, instrument presets, and a play ' +
+    'button that sounds the mix, showing that timbre changes while the ' +
+    'repetition rate stays fixed.', LABEL);
+}
+
+// ---------------------------------------------------------------- sound ----
+
+function harmonicHz(n) {
+  return (n + 1) * FUNDAMENTAL_HZ;
+}
+
+// Largest excursion of the current mix, sampled over the displayed window.
+// Dividing by it keeps the loudness roughly constant: without it, stacking
+// five harmonics at full amplitude would be five times louder than the
+// fundamental alone and would clip.
+function peakOfMix() {
+  let peak = 0.001;
+  for (let i = 0; i <= PEAK_SAMPLES; i++) {
+    peak = Math.max(peak, Math.abs(combinedAt((i / PEAK_SAMPLES) * WINDOW_S)));
+  }
+  return peak;
+}
+
+function gainFor(n, peak) {
+  return MASTER_AMP * (amplitudes[n] / 100) / peak;
+}
+
+// p5's amp() schedules a ramp without clearing the automation already queued on
+// the gain, so a level change made during the attack fade would be overwritten
+// by that fade's own later endpoint. Clear the queue and ramp from wherever the
+// gain actually is right now.
+function rampGain(osc, target, seconds) {
+  const g = osc.output.gain;
+  const now = getAudioContext().currentTime;
+  g.cancelScheduledValues(now);
+  g.setValueAtTime(g.value, now);
+  g.linearRampToValueAtTime(target, now + seconds);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  if (soundOn) startSound(); else stopSound();
+  playButton.html(soundOn ? 'Stop Sound' : 'Play Sound');
+}
+
+// Silence the mix and leave the button showing the truth.
+function switchSoundOff() {
+  if (!soundOn) return;
+  toggleSound();
+}
+
+function startSound() {
+  // Browsers only start audio from a user gesture; this button press is one.
+  userStartAudio();
+  const peak = peakOfMix();
+  const now = getAudioContext().currentTime;
+  for (let n = 0; n < 5; n++) {
+    const o = new p5.Oscillator(harmonicHz(n), 'sine');
+    o.output.gain.setValueAtTime(0, now);   // p5 builds the node at 0.5
+    o.start();
+    rampGain(o, gainFor(n, peak), FADE);    // ramp up so the attack does not click
+    oscillators.push(o);
+  }
+}
+
+function stopSound() {
+  // Fade out, then tear the nodes down. Ramping the gain alone would leave
+  // five oscillators running, which is exactly how a tone gets stuck on.
+  const dying = oscillators;
+  oscillators = [];
+  for (const o of dying) rampGain(o, 0, FADE);
+  setTimeout(function () {
+    for (const o of dying) o.dispose();
+  }, (FADE + 0.05) * 1000);
+}
+
+function updateSoundLevels() {
+  if (!soundOn || oscillators.length !== 5) return;
+  const peak = peakOfMix();
+  for (let n = 0; n < 5; n++) rampGain(oscillators[n], gainFor(n, peak), GLIDE);
+}
+
+function readSliders() {
+  for (let i = 0; i < 5; i++) amplitudes[i] = sliders[i].value();
 }
 
 function draw() {
   updateCanvasSize();
-  for (let i = 0; i < 5; i++) amplitudes[i] = sliders[i].value();
+  readSliders();
 
   fill('aliceblue');
   stroke('silver');
@@ -116,13 +222,9 @@ function drawPlot() {
   if (right <= left) return;
 
   // Normalize to the largest excursion so shape stays visible at any mix.
-  // A uniform scale factor preserves the waveform's shape exactly.
-  let peak = 0.001;
-  for (let px = left; px <= right; px++) {
-    const t = map(px, left, right, 0, WINDOW_S);
-    peak = Math.max(peak, Math.abs(combinedAt(t)));
-  }
-  const yScale = (bottom - midY) / (peak * 1.1);
+  // A uniform scale factor preserves the waveform's shape exactly. The audio
+  // normalizes against the same peak, so what you see and what you hear agree.
+  const yScale = (bottom - midY) / (peakOfMix() * 1.1);
 
   stroke('lightgray');
   strokeWeight(1);
@@ -199,9 +301,16 @@ function drawControlLabels() {
   textAlign(LEFT, CENTER);
   for (let i = 0; i < 5; i++) {
     fill(HARMONIC_COLORS[i]);
-    text(HARMONIC_NAMES[i] + ' — ' + ((i + 1) * FUNDAMENTAL_HZ) + ' Hz: ' +
+    text(HARMONIC_NAMES[i] + ' — ' + harmonicHz(i) + ' Hz: ' +
          amplitudes[i] + '%', 10, drawHeight + 15 + i * 35);
   }
+
+  textSize(14);
+  fill(soundOn ? 'seagreen' : 'dimgray');
+  text(soundOn ? 'Sounding the mix — still 440 Hz whatever the sliders do'
+                : 'Hear the mix as well as see it',
+       115, drawHeight + 262);
+  textSize(defaultTextSize);
 }
 
 function applyPreset(name) {
@@ -210,6 +319,8 @@ function applyPreset(name) {
     sliders[i].value(values[i]);
     amplitudes[i] = values[i];
   }
+  // Setting a slider's value in code fires no input event, so drive the audio.
+  updateSoundLevels();
 }
 
 function resizeSliders() {

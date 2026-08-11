@@ -250,6 +250,48 @@ All of this machinery — capture, transform, magnitude, scaling, averaging, dis
 
 The **whistle test** is an end-to-end validation procedure in which a student whistles (or plays a tone) at a smoothly rising or falling pitch while watching the live spectrum display, confirming that the displayed peak visibly and immediately follows the pitch change in real time — a validation that exercises every single piece of this chapter's pipeline simultaneously, from microphone capture through the final drawn bar, using nothing but a human ear and eye as the reference.
 
+You do not have to wait for your hardware to try it. The MicroSim below runs the identical idea in this browser tab: it takes the audio from your computer's microphone, transforms it, computes magnitudes, and draws a live spectrum. Click **Start microphone**, whistle a rising note, and watch the peak climb. If you have no microphone, **Demo sweep** plays back a synthetic whistle that does the same thing.
+
+#### Diagram: The Whistle Test in Your Browser
+
+<iframe src="../../sims/fft-mic/main.html" width="100%" height="492px" scrolling="no"></iframe>
+
+<details markdown="1">
+<summary>FFT Microphone Spectrum Analyzer</summary>
+Type: microsim
+**sim-id:** fft-mic<br/>
+**Library:** p5.js (with p5.sound)<br/>
+**Status:** Implemented
+
+Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Apply, verify
+
+Learning objective: Let students run this chapter's whole post-processing pipeline against their own voice and verify, by ear and eye at the same time, that the displayed peak tracks a changing pitch in real time.
+
+Canvas layout:
+- Peak-trail strip across the top, recording the peak's position over roughly the last second
+- Main spectrum plot: frequency left to right, magnitude as bar height, bars colored blue at the low end of the displayed range through red at the high end
+- Readout panel below the plot with peak frequency, bin index, bin width, and the nearest musical note with a cents offset
+
+Interactive controls:
+- Button: "Start microphone" — requests microphone permission, then toggles between stop and resume
+- Button: "Demo sweep" — synthetic whistle glide for machines with no microphone or no permission
+- Checkbox: "decibel scale" — switches bar heights between linear magnitude and a -48 dB to 0 dB scale
+- Slider: Max frequency, 1 kHz to 12 kHz, default 4 kHz
+
+Behavior:
+- A whistle produces one dominant peak; a hum adds evenly spaced harmonics; "ssss" and "shhhh" produce broadband noise with no single peak
+- Gliding the pitch draws a comet tail in the peak-trail strip
+- The reported peak frequency steps by one bin width rather than sliding smoothly, which sets up Chapter 15's parabolic interpolation
+
+Instructional Rationale: An Apply-level pattern fits because the objective is to run a known pipeline against a novel, student-generated signal. Using the student's own voice as the input makes the validation self-evident in a way no precomputed dataset can.
+
+Implementation notes:
+- Uses p5.sound's AudioIn and FFT with 512 bins; audio is analyzed entirely in the browser and never routed to the speakers
+- Sample rate is read from the audio context so bin width is reported correctly on 48 kHz hardware
+- Adapted for this book from the [signal-processing](https://dmccreary.github.io/signal-processing/sims/fft-mic/) course MicroSim
+</details>
+
 !!! mascot-encourage "This is the test that makes it all feel real"
     <img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
     Every validation so far in this course has compared numbers against numbers — hand-computed DFTs, tolerance thresholds, cross-checks against NumPy. The whistle test is different: it's the first time the proof that your pipeline works is something you can *hear yourself doing* and watch happen on screen in real time. Nothing quite matches that moment.

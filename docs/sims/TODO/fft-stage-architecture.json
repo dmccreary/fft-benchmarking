@@ -1,0 +1,15 @@
+{
+  "sim_id": "fft-stage-architecture",
+  "diagram_name": "FFT Stage Architecture — Python and Assembly Boundary",
+  "chapter_number": 23,
+  "chapter_title": "\"The Butterfly in Assembly: A Complete FFT and Production Libraries\"",
+  "chapter_dir": "23-the-butterfly-in-assembly",
+  "chapter_rel_dir": "chapters/23-the-butterfly-in-assembly",
+  "library": "p5.js",
+  "bloom_level": "Analyze (L4) — differentiate, examine",
+  "bloom_verb": null,
+  "learning_objective": "Differentiate which parts of a full FFT run in Python versus hand-written assembly, and examine why the split falls where it does.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: workflow\n**sim-id:** fft-stage-architecture<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze (L4) — differentiate, examine\nLearning objective: Differentiate which parts of a full FFT run in Python versus hand-written assembly, and examine why the split falls where it does.\n\nCanvas layout:\n- Top band, labeled \"Python (runs once, or once per stage)\": three boxes — \"Compute twiddle table (once)\", \"Bit-reversal reorder (once)\", \"For each of 9 stages: build stage parameter block\"\n- Bottom band, labeled \"Assembly (the hot loop, runs 2,304 times per transform)\": one large box — \"run_stage_hotloop: butterfly × count\"\n- A single connecting arrow crossing from the Python band to the assembly band, labeled \"Python/assembly boundary\"\n\nVisual elements:\n- Clear visual separation (a horizontal divider) between the two bands\n- Boxes sized loosely proportional to how often that code actually executes (small boxes for once-only steps, one large box for the loop that runs thousands of times)\n- The connecting arrow highlighted distinctly, since it's the single most important line in the diagram\n\nInteractive controls:\n- Hover or click each box to reveal: what it does, how many times it runs for one 512-point FFT, and why it's placed on that side of the boundary\n- Click the boundary arrow itself to reveal: \"This is the stage parameter block — five addresses, one block, crossing once per stage.\"\n\nBehavior:\n- Clicking \"run_stage_hotloop\" reveals: \"Runs the eight-instruction butterfly pattern 2,304 times for a 512-point transform. This is the only code worth hand-optimizing, because it's the only code that runs enough times for the optimization to matter.\"\n- Clicking \"Compute twiddle table (once)\" reveals: \"Computed exactly once, ever, reused by every future transform — no speed benefit to writing this in assembly.\"\n\nInstructional Rationale: An Analyze-level objective calling for differentiation between\ntwo categories is best served by a clickable two-band workflow diagram — the visual\nseparation itself teaches the categorization, and the click-to-reveal execution counts\njustify *why* the split was drawn where it was, not just *that* it was drawn there.\n\nImplementation: p5.js, two colored bands with box objects, execution-count annotations stored per box, click detection via bounding boxes"
+}

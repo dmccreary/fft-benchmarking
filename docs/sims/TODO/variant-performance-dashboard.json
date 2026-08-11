@@ -1,0 +1,15 @@
+{
+  "sim_id": "variant-performance-dashboard",
+  "diagram_name": "Variant Performance Dashboard",
+  "chapter_number": 26,
+  "chapter_title": "\"Competing Variants: Predict, Measure, Explain\"",
+  "chapter_dir": "26-competing-variants",
+  "chapter_rel_dir": "chapters/26-competing-variants",
+  "library": "Chart.js",
+  "bloom_level": "Evaluate (L5) — assess, critique",
+  "bloom_verb": null,
+  "learning_objective": "Assess how a predicted ranking compares to a measured ranking across multiple metrics, and critique which metric best answers \"which variant should I actually ship?\"",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** variant-performance-dashboard<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Evaluate (L5) — assess, critique\nLearning objective: Assess how a predicted ranking compares to a measured ranking across multiple metrics, and critique which metric best answers \"which variant should I actually ship?\"\n\nChart type: Grouped bar chart with a metric selector\n\nPurpose: Let the learner switch between metrics (kernel time, total time, code size, memory) for the same five variants and observe that the \"winner\" can change depending on which metric is active\n\nX-axis: Variant (Plain Python, @native, @viper, Assembly, Specialized Assembly)\nY-axis: Value in the selected metric's units, rescaled per metric\n\nData series (illustrative, editable by the learner — see interactive elements):\n- Kernel time (μs): 21000, 9800, 3200, 850, 710\n- Total time (μs): 21050, 9900, 3350, 1100, 950\n- Code size (bytes): 400, 480, 620, 900, 1400\n- Memory usage (bytes): 2048, 2048, 1536, 512, 512\n\nInteractive elements:\n- Dropdown: select active metric, bars re-render with that metric's values and units\n- Toggle: \"Overlay my ranking prediction\" — lets the learner input their own predicted order (drag to reorder a small list) and see it displayed alongside the measured bars for direct visual comparison\n- Hover any bar for its exact value\n\nTitle: \"Same Five Variants, Four Different Rankings\"\nLegend: metric name shown as the active axis label\n\nImplementation: Chart.js bar chart, metric switch re-maps the underlying dataset, drag-to-reorder implemented as a simple sortable list overlay"
+}

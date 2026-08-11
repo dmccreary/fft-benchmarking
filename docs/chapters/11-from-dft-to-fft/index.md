@@ -220,7 +220,7 @@ The characteristic X-shaped diagram used to draw this operation gives it its nam
 
 #### Diagram: Butterfly Operation Visualizer
 
-<iframe src="../../sims/butterfly-operation-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/butterfly-operation-visualizer/main.html" width="100%" height="462px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Butterfly Operation Visualizer</summary>

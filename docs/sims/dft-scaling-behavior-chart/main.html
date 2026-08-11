@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>DFT Scaling Behavior Chart MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div class="chart-box">
+            <canvas id="scalingChart"></canvas>
+        </div>
+        <div class="controls">
+            <label class="check">
+                <input type="checkbox" id="logScale"> Logarithmic Y-axis
+            </label>
+            <label for="markerN">Marker at N = <strong id="markerValue">512</strong></label>
+            <input type="range" id="markerN" min="8" max="1024" step="8" value="512">
+        </div>
+        <div class="readout" id="readout"></div>
+    </main>
+    <script src="dft-scaling-behavior-chart.js"></script>
+</body>
+</html>

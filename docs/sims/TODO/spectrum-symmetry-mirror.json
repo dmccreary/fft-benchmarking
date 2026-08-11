@@ -1,0 +1,15 @@
+{
+  "sim_id": "spectrum-symmetry-mirror",
+  "diagram_name": "Spectrum Symmetry Mirror",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, interpret",
+  "learning_objective": "Let students interpret a full N-point DFT spectrum and explain why bins above the Nyquist bin mirror bins below it as complex conjugates, for a real-valued input signal.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** spectrum-symmetry-mirror<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, interpret\n\nLearning objective: Let students interpret a full N-point DFT spectrum and explain why bins above the Nyquist bin mirror bins below it as complex conjugates, for a real-valued input signal.\n\nCanvas layout:\n- A full-width horizontal bar of N bin boxes, indices 0 through N-1, laid out left to right\n- Infobox panel below, populated on click\n\nVisual elements:\n- Bin 0 highlighted distinctly and labeled \"DC bin\"\n- Bin N/2 highlighted distinctly and labeled \"Nyquist bin\"\n- Bins 1 through N/2-1 shaded blue, labeled \"Positive frequencies (unique, useful)\"\n- Bins N/2+1 through N-1 shaded gray with a dashed mirror-line back to their corresponding lower bin, labeled \"Negative frequencies (mirror / redundant for real input)\"\n- Connector arcs drawn between mirrored bin pairs (e.g., bin 5 and bin N-5) when either is clicked\n\nInteractive elements:\n- Clicking any bin in the blue (positive frequency) region draws a connecting arc to its mirror bin in the gray region and displays: \"Bin [k] and bin [N-k] are complex conjugates — same magnitude, opposite-signed imaginary part — because the input signal is real-valued.\"\n- Clicking the DC bin or Nyquist bin displays a note that these two bins are their own mirror (no separate partner)\n\nInstructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining a structural relationship (conjugate mirroring) between specific labeled parts of a static structure — click-triggered connector arcs make the abstract \"bin k mirrors bin N-k\" relationship spatially obvious rather than requiring students to compute it themselves.\n\nImplementation notes:\n- Use p5.js; draw N bin boxes proportioned to fit the container width, using a fixed example N (e.g., 16) for clarity regardless of the N used elsewhere in the chapter\n- Responsive width; bin boxes shrink proportionally, wrapping to a second row only below a minimum readable bin width"
+}

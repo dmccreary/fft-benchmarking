@@ -159,7 +159,7 @@ final butterfly implementation, is a typed array for exactly this reason.
 
 #### Diagram: Address and Byte Offset Explorer
 
-<iframe src="../../sims/address-byte-offset-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/address-byte-offset-explorer/main.html" width="100%" height="492px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Address and Byte Offset Explorer</summary>

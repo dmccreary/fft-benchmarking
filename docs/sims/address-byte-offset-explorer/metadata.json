@@ -1,0 +1,87 @@
+{
+  "title": "Address and Byte Offset Explorer",
+  "description": "A memory strip of eight four-byte float slots with an interactive calculator that converts an element index into a byte offset, a full address, and the VLDR instruction it produces.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Assembly Language", "Computer Architecture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "address-byte-offset-explorer",
+  "library": "p5.js",
+  "canvasHeight": 490,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 22,
+  "chapter_title": "Talking to the FPU: Floating-Point Assembly",
+  "chapter_dir": "22-talking-to-the-fpu",
+  "chapter_rel_dir": "chapters/22-talking-to-the-fpu",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Converting an array index into a byte offset for a floating-point load",
+    "learningObjectives": [
+      "Apply the formula offset = index x bytes per element",
+      "Write the VLDR instruction that loads a chosen array element",
+      "Recognize a misaligned or out-of-range byte offset"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": [
+      "An array is a contiguous block of memory",
+      "A 32-bit float occupies four bytes",
+      "Registers can hold addresses"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 490 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Element index", "range": "0 to 7", "purpose": "Select which array element to address" },
+      { "type": "click", "label": "Memory slot", "purpose": "Select an element directly from the strip" },
+      { "type": "text input", "label": "Check offset #", "purpose": "Test an arbitrary byte offset for alignment and range" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Address arithmetic calculator over a fixed eight-element float array",
+    "variables": ["element index", "byte offset", "base address", "manually entered offset"],
+    "equations": [
+      "offset = index * 4",
+      "address = base + offset",
+      "aligned = (offset mod 4 == 0)"
+    ],
+    "assumptions": [
+      "Elements are 32-bit floats, so the stride is exactly four bytes",
+      "The base address 0x20001000 lies in SRAM and is itself four-byte aligned"
+    ],
+    "limitations": [
+      "Only immediate-offset addressing is shown; register-offset and post-indexed forms are not modeled",
+      "The array is fixed at eight elements so the full strip stays readable"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Parallel display of index, offset, address, and instruction so the mapping between them is never hidden",
+    "keyQuestions": [
+      "Why does the offset grow by four and not by one?",
+      "What does the processor do with an offset of 14?"
+    ],
+    "commonMisconceptions": [
+      "That the offset in the instruction is an element index",
+      "That the hardware rejects an offset past the end of an array"
+    ],
+    "assessmentOpportunities": [
+      "Write the VLDR instruction for element 9 of a float array at a given base",
+      "Restate the formula for an int16 array"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Correlation vs Test Frequency Sweep MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <div class="chart-box">
+            <canvas id="sweepChart"></canvas>
+        </div>
+        <div class="controls">
+            <label for="sigFreq">Captured signal frequency:
+                <strong id="sigFreqValue">440 Hz</strong>
+            </label>
+            <input type="range" id="sigFreq" min="100" max="1000" step="5" value="440">
+        </div>
+    </main>
+    <script src="correlation-vs-test-frequency-sweep.js"></script>
+</body>
+</html>

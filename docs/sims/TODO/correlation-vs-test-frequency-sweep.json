@@ -1,0 +1,15 @@
+{
+  "sim_id": "correlation-vs-test-frequency-sweep",
+  "diagram_name": "Correlation vs. Test Frequency Sweep",
+  "chapter_number": 8,
+  "chapter_title": "'Correlation: Does My Signal Contain This Note?'",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "library": "Chart.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, distinguish",
+  "learning_objective": "Let students examine a plot of correlation magnitude against test frequency and distinguish the sharp peak at the signal's true frequency from the near-zero correlation at every orthogonal, non-matching frequency.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** correlation-vs-test-frequency-sweep<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, distinguish\n\nLearning objective: Let students examine a plot of correlation magnitude against test frequency and distinguish the sharp peak at the signal's true frequency from the near-zero correlation at every orthogonal, non-matching frequency.\n\nChart type: Line chart\n\nPurpose: Demonstrate that sweeping the test frequency and computing correlation at each point produces a sharp peak exactly at the frequency present in a fixed captured signal, and near-zero everywhere else — a direct visual proof of orthogonality's practical effect\n\nX-axis: Test frequency, 100-1000 Hz\nY-axis: Correlation magnitude (normalized 0-1)\n\nData series: correlation value computed live at each test frequency point for a captured signal fixed at a chosen frequency (default 440 Hz)\n\nInteractive elements:\n- Slider: \"Captured signal frequency\" (100-1000 Hz, default 440 Hz) — moving it slides the peak in the chart to a new position, recomputed live\n- Hovering any point on the line shows its exact test frequency and correlation value in a tooltip\n\nTitle: \"Correlation Magnitude vs. Test Frequency\"\nAnnotations: A dashed vertical line marking the true captured signal frequency, with a label \"Signal is actually here\"\n\nImplementation: Chart.js line chart, recomputing 200 correlation points across the swept range whenever the captured signal frequency slider changes"
+}

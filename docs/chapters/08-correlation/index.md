@@ -144,7 +144,7 @@ Before the chart below, it helps to see this orthogonality claim demonstrated di
 
 #### Diagram: Correlation vs. Test Frequency Sweep
 
-<iframe src="../../sims/correlation-vs-test-frequency-sweep/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/correlation-vs-test-frequency-sweep/main.html" width="100%" height="452px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Correlation vs. Test Frequency Sweep</summary>

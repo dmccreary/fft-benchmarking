@@ -1,0 +1,15 @@
+{
+  "sim_id": "variance-source-explorer",
+  "diagram_name": "Variance Source Explorer",
+  "chapter_number": 18,
+  "chapter_title": "\"Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison\"",
+  "chapter_dir": "18-benchmarking-methodology",
+  "chapter_rel_dir": "chapters/18-benchmarking-methodology",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — explain, interpret",
+  "bloom_verb": null,
+  "learning_objective": "Interpret a histogram of repeated timing measurements and explain how interrupt interference produces a right-skewed distribution rather than uniform noise.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** variance-source-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — explain, interpret\nLearning objective: Interpret a histogram of repeated timing measurements and explain how interrupt interference produces a right-skewed distribution rather than uniform noise.\n\nCanvas layout:\n- Left (400px): A live-updating histogram of 100 simulated FFT execution times\n- Right (200px): Controls and running statistics readout (mean, standard deviation, min)\n\nVisual elements:\n- Histogram bars, x-axis \"execution time (μs)\", y-axis \"count of runs\"\n- Most bars clustered tightly around a baseline value (e.g. 400 μs)\n- A smaller cluster of outlier bars further right, representing interrupt-interfered runs\n- Statistics panel showing live mean, standard deviation, and minimum as more samples are added\n\nInteractive controls:\n- Button: \"Run 1 more sample\" — adds one new simulated timing value to the histogram\n- Button: \"Run 20 more samples\"\n- Slider: \"Interrupt interference rate\" (0% to 30% of runs affected) — controls how often an outlier appears\n- Button: \"Reset\"\n\nDefault parameters:\n- Baseline execution time: 400 μs, small Gaussian jitter ± 5 μs\n- Interrupt interference rate: 8%, adding 50-150 μs to affected runs\n\nBehavior:\n- Each \"run\" adds one bar-contributing value to the histogram, drawn from the baseline distribution or, with the interference-rate probability, from the elevated outlier distribution\n- Mean and standard deviation update live and visibly shift as outliers accumulate\n- Minimum stays anchored near the baseline, visually demonstrating why the minimum resists interference while the mean does not\n\nInstructional Rationale: A live histogram with adjustable interference rate lets the\nlearner directly observe (Understand-level) how variance sources shape a distribution,\nrather than only being told that interrupts add noise.\n\nImplementation: p5.js, histogram as an array of bin counts, statistics recomputed on each new sample"
+}

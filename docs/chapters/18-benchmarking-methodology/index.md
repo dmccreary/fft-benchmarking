@@ -111,7 +111,7 @@ just the typical time, but how much to trust that number as representative.
 
 #### Diagram: Variance Source Explorer
 
-<iframe src="../../sims/variance-source-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/variance-source-explorer/main.html" width="100%" height="492px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Variance Source Explorer</summary>

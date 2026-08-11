@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Variant Performance Dashboard MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2 class="heading">Same Five Variants, Four Different Rankings <em>(illustrative)</em></h2>
+        <div class="chart-box">
+            <canvas id="variantChart"></canvas>
+        </div>
+        <div class="controls">
+            <label>Metric
+                <select id="metric">
+                    <option value="kernel">Kernel time (&micro;s)</option>
+                    <option value="total">Total time (&micro;s)</option>
+                    <option value="code">Code size (bytes)</option>
+                    <option value="memory">Memory usage (bytes)</option>
+                </select>
+            </label>
+            <label><input type="checkbox" id="overlay"> Overlay my ranking prediction</label>
+            <span class="hint">lower is better on every metric here</span>
+        </div>
+        <div class="predict" id="predict"></div>
+        <div class="infobox" id="infobox"></div>
+    </main>
+    <script src="variant-performance-dashboard.js"></script>
+</body>
+</html>

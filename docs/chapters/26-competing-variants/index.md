@@ -93,7 +93,7 @@ comparison matrix's data, not a separate measurement.
 
 #### Diagram: Variant Performance Dashboard
 
-<iframe src="../../sims/variant-performance-dashboard/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/variant-performance-dashboard/main.html" width="100%" height="566px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Variant Performance Dashboard</summary>

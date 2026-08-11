@@ -1,0 +1,101 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { font-family: Arial, Helvetica, sans-serif; background-color: aliceblue; }
+
+main { padding: 8px 12px; }
+
+.heading {
+    font-size: 17px;
+    text-align: center;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+.heading em { color: #757575; font-size: 14px; font-weight: normal; }
+
+.chart-box {
+    height: 222px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.controls {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 15px;
+    flex-wrap: wrap;
+}
+
+.controls label { cursor: pointer; white-space: nowrap; }
+.controls select { font-size: 14px; padding: 2px 4px; }
+.controls .hint { color: #757575; font-size: 13px; }
+
+.predict {
+    margin-top: 8px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    height: 150px;
+}
+
+.predict.off { color: #757575; display: flex; align-items: center; }
+
+.predict .row-label { color: #555; font-size: 12px; margin-bottom: 4px; }
+.predict .row-label b { color: #1a237e; }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+
+.chip {
+    border: 1px solid #90a4ae;
+    border-radius: 5px;
+    background-color: #eceff1;
+    padding: 3px 6px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: grab;
+    user-select: none;
+}
+
+.chip .rank { color: #757575; font-weight: bold; }
+.chip .nudge {
+    border: none;
+    background: #cfd8dc;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+.chip.dragging { opacity: 0.4; }
+.chip.measured { cursor: default; }
+.chip.hit { background-color: #e8f5e9; border-color: #2e7d32; }
+.chip.miss { background-color: #ffebee; border-color: #c62828; }
+
+.verdict { font-size: 12.5px; }
+.verdict b { font-size: 13.5px; }
+
+.infobox {
+    margin-top: 8px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 70px;
+}
+
+.infobox .name { font-weight: bold; font-size: 15px; color: #1a237e; }
+.infobox .win { color: #2e7d32; font-weight: bold; }

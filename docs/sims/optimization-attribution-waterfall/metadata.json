@@ -1,0 +1,91 @@
+{
+  "title": "Optimization Attribution Waterfall",
+  "description": "A waterfall chart connecting a baseline execution time to a final time through four individually measured optimization steps, switchable between microseconds and percentage of baseline.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Performance Engineering", "Benchmarking"],
+  "type": "Interactive Chart",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "optimization-attribution-waterfall",
+  "library": "Chart.js",
+  "canvasHeight": 516,
+  "bloomLevel": "Evaluate",
+  "bloomVerb": "Justify, assess",
+  "completion_status": "implemented",
+  "chapter_number": 24,
+  "chapter_title": "Specialization and Branchless Code",
+  "chapter_dir": "24-specialization-and-branchless-code",
+  "chapter_rel_dir": "chapters/24-specialization-and-branchless-code",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Attributing a total speedup to individual optimizations",
+    "learningObjectives": [
+      "Assess each optimization's contribution to a total speedup",
+      "Justify keeping or dropping a change from its measured share",
+      "Recognize that attribution depends on the order changes were applied"
+    ],
+    "bloomsTaxonomy": "Evaluate",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A repeatable benchmark harness",
+      "Familiarity with the four named optimizations",
+      "Speedup and percentage arithmetic"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 516 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "radio", "label": "Show as raw microseconds", "purpose": "Absolute execution time view" },
+      { "type": "radio", "label": "Show as percentage of baseline", "purpose": "Relative view that rescales every bar and label" },
+      { "type": "click", "label": "Bar", "purpose": "Show the change, its share of the speedup, and what it was" },
+      { "type": "hover", "label": "Bar", "purpose": "Tooltip with the exact delta and share" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Waterfall of cumulative one-change-at-a-time measurements",
+    "variables": ["baseline time", "per-step delta", "running level", "final time"],
+    "equations": [
+      "level[0] = 850 us",
+      "level[i+1] = level[i] + delta[i]",
+      "final = 710 us, total saved = 140 us, speedup = 1.20x",
+      "percentage view = 100 * value / baseline"
+    ],
+    "assumptions": [
+      "Values are illustrative, stated in the title and in a documentation admonition",
+      "Each step was measured with all earlier steps already applied",
+      "Every measurement came from the same harness on the same hardware"
+    ],
+    "limitations": [
+      "Attribution is order-dependent; a different application order gives different per-step numbers",
+      "Shows a single run per step, with no variance or confidence interval"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict-then-reveal allocation of a known total, followed by a decision under a stated requirement",
+    "keyQuestions": [
+      "Which change earned the most, and which one cost the most to write?",
+      "What would this chart look like if the steps were applied in a different order?"
+    ],
+    "commonMisconceptions": [
+      "That a before/after pair tells you which change worked",
+      "That the cleverest-sounding optimization is the most valuable",
+      "That per-step contributions are independent of ordering"
+    ],
+    "assessmentOpportunities": [
+      "Recommend keeping or dropping a 3% step and name the missing information",
+      "Decide which subset of changes meets a stated timing requirement"
+    ]
+  }
+}

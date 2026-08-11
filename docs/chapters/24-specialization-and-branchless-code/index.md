@@ -286,7 +286,7 @@ much" rather than crediting the whole gain to whichever change felt most clever.
 
 #### Diagram: Optimization Attribution Waterfall
 
-<iframe src="../../sims/optimization-attribution-waterfall/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/optimization-attribution-waterfall/main.html" width="100%" height="518px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Optimization Attribution Waterfall</summary>

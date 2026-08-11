@@ -1,0 +1,15 @@
+{
+  "sim_id": "window-function-comparison",
+  "diagram_name": "Window Function Comparison",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Compare, distinguish",
+  "learning_objective": "Let students compare the time-domain shape and resulting frequency-domain main lobe width and side lobe level of the rectangular, Hann, Hamming, and Blackman windows, distinguishing the specific tradeoff each one makes.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** window-function-comparison<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Compare, distinguish\n\nLearning objective: Let students compare the time-domain shape and resulting frequency-domain main lobe width and side lobe level of the rectangular, Hann, Hamming, and Blackman windows, distinguishing the specific tradeoff each one makes.\n\nCanvas layout:\n- Top (250px): the selected window's shape plotted in the time domain, over the frame duration\n- Bottom (250px): the resulting frequency response (main lobe and side lobes) for a single test tone processed with that window, on a decibel scale\n\nVisual elements:\n- Time-domain window shape curve\n- Frequency-domain response curve showing a central main lobe and several visible side lobes, with the side lobe level marked with a dashed horizontal reference line\n\nInteractive controls:\n- Radio buttons: \"Rectangular\" / \"Hann\" / \"Hamming\" / \"Blackman\"\n- Readout: \"Main lobe width: [value] bins | Highest side lobe: [value] dB below peak\"\n\nBehavior:\n- Selecting a different window redraws both the time-domain shape and the frequency-domain response, with the readout updating to show that window's specific main lobe width and side lobe level numbers\n- Switching between windows in sequence (Rectangular → Hann → Hamming → Blackman) visibly shows the main lobe widening while the side lobes shrink\n\nInstructional Rationale: An Analyze-level comparison pattern is appropriate because the objective is distinguishing the specific tradeoff each window makes — presenting all four windows through the identical dual-view layout, switchable with one click, makes their relative differences directly comparable rather than requiring memorized numbers.\n\nImplementation notes:\n- Use p5.js; compute each window's coefficients using its standard formula, and compute its frequency response via a small internal FFT\n- Responsive width; top and bottom panels stack vertically below 600px width"
+}

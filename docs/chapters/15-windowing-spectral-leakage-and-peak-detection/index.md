@@ -137,7 +137,7 @@ Three specific windowing functions are common enough, and different enough in th
 
 #### Diagram: Window Function Comparison
 
-<iframe src="../../sims/window-function-comparison/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/window-function-comparison/main.html" width="100%" height="471px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Window Function Comparison</summary>

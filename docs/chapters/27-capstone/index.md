@@ -167,7 +167,7 @@ to the independent variable alone.
 
 #### Diagram: Experimental Design Anatomy
 
-<iframe src="../../sims/experimental-design-anatomy/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/experimental-design-anatomy/main.html" width="100%" height="437px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Experimental Design Anatomy</summary>

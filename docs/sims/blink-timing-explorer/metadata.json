@@ -1,0 +1,84 @@
+{
+  "title": "Blink Timing Explorer",
+  "description": "Simulates the Pico 2 blink loop as a scrolling voltage-versus-time square wave so students can connect the sleep() argument to an observable blink rate.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Microcontrollers"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "blink-timing-explorer",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Demonstrate, calculate",
+  "completion_status": "implemented",
+  "chapter_number": 1,
+  "chapter_title": "Hello World",
+  "chapter_dir": "01-hello-world",
+  "chapter_rel_dir": "chapters/01-hello-world",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Digital output timing and blink frequency",
+    "learningObjectives": [
+      "Calculate blink frequency from a given sleep() delay argument",
+      "Explain why one blink cycle requires two pin toggles",
+      "Predict the square-wave shape produced by a chosen delay"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10 minutes",
+    "prerequisites": [
+      "Familiarity with while loops",
+      "Digital output pins have two voltage states"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Run / Pause", "purpose": "Start or stop the automatic toggle-and-delay loop" },
+      { "type": "button", "label": "Toggle Once", "purpose": "Pause and perform exactly one pin state flip" },
+      { "type": "checkbox", "label": "Show code", "purpose": "Reveal the simulated loop with the live delay value" },
+      { "type": "slider", "label": "Sleep delay", "min": 0.05, "max": 2.0, "default": 0.5, "step": 0.05, "units": "seconds" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Discrete-event timing model",
+    "variables": ["pin state", "sleep delay", "simulated time"],
+    "equations": ["blinks per second = 1 / (2 * delay)"],
+    "assumptions": [
+      "Pin transitions are instantaneous",
+      "Loop and toggle overhead are negligible compared to the sleep interval"
+    ],
+    "limitations": [
+      "Does not model interpreter overhead, which makes real MicroPython blink rates slightly slower than the ideal formula"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict-test-observe parameter exploration",
+    "keyQuestions": [
+      "Why does one blink require two toggles?",
+      "What delay produces exactly 5 blinks per second?"
+    ],
+    "commonMisconceptions": [
+      "That sleep(0.5) yields 2 blinks per second rather than 1"
+    ],
+    "assessmentOpportunities": [
+      "Predict blinks per second before moving the slider"
+    ]
+  }
+}

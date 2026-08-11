@@ -323,6 +323,8 @@ A 146× improvement that still finishes 3.5× too slow is not a failure of this 
     <img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo giving a warning">
     It's tempting, seeing 3.5× over budget, to start second-guessing the algorithm itself. Resist that. Cross-validation already proved this FFT computes the mathematically correct answer. Every millisecond of the remaining gap comes from *how* MicroPython executes this code, not from any flaw in the algorithm — and that distinction is exactly what the benchmarking and assembly modules later in this course are built to address.
 
+That distinction — correct algorithm, slow execution — is worth sitting with for a moment, because it reframes everything that follows. Nothing about the FFT itself needs to change from here on; every remaining chapter is about *how* this exact, already-proven algorithm gets executed faster, not about finding a better algorithm.
+
 !!! mascot-encourage "You just built the algorithm that changed computing"
     <img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
     Thirty-five concepts, two complete implementations, and a full cross-validation pass is a genuinely large amount of work for one chapter. Take a moment before moving on: the function you just wrote and proved correct is, in structure, the same algorithm running inside phones, WiFi chips, and MRI machines. You didn't just learn about the FFT — you built one.

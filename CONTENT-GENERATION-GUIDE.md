@@ -151,7 +151,7 @@ file** — MkDocs uses directory URLs, so count directories from the page to
 
 **Don't:**
 
-- Use Echo more than 5-6 times per chapter
+- Use Echo more than 7 times per chapter
 - Put mascot admonitions back-to-back
 - Use the mascot for purely decorative purposes
 - Change Echo's personality or speech patterns

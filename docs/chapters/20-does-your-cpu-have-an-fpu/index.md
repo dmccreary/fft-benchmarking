@@ -175,7 +175,7 @@ capability instead of controlling a counter.
 
 #### Diagram: FPU Capability Probe Simulator
 
-<iframe src="../../sims/fpu-capability-probe/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/fpu-capability-probe/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>FPU Capability Probe Simulator</summary>

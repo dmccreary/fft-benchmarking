@@ -1,0 +1,15 @@
+{
+  "sim_id": "fpu-capability-probe",
+  "diagram_name": "FPU Capability Probe Simulator",
+  "chapter_number": 20,
+  "chapter_title": "\"Does Your CPU Have an FPU?\"",
+  "chapter_dir": "20-does-your-cpu-have-an-fpu",
+  "chapter_rel_dir": "chapters/20-does-your-cpu-have-an-fpu",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — execute, demonstrate",
+  "bloom_verb": null,
+  "learning_objective": "Apply the MVFR0 bit-field check to determine FPU presence for several simulated chips, demonstrating that the same code correctly reports different verdicts on different hardware.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** fpu-capability-probe<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — execute, demonstrate\nLearning objective: Apply the MVFR0 bit-field check to determine FPU presence for several simulated chips, demonstrating that the same code correctly reports different verdicts on different hardware.\n\nCanvas layout:\n- Left (300px): A chip selector showing three labeled chip cards (Cortex-M0+, Cortex-M4, Cortex-M33)\n- Right (300px): A register-read panel showing the simulated MVFR0 value for the selected chip, the bitmask operation, and the resulting verdict\n\nVisual elements:\n- Each chip card shows its name, ISA generation, and a \"?\" placeholder for FPU status until probed\n- Register panel shows MVFR0 as a 32-bit hex value appropriate to the selected chip (e.g. `0x00000000` for Cortex-M0+, `0x10110021` for a Cortex-M4/M33 style value)\n- A visual AND-mask animation showing `value & 0xF` isolating the low nibble\n- Verdict readout: green checkmark + \"FPU detected\" or red X + \"No FPU\"\n\nInteractive controls:\n- Click a chip card to select it\n- Button: \"Run has_single_precision_fpu()\" — animates the mask operation and reveals the verdict for the selected chip\n- Button: \"Reset all\"\n\nDefault parameters:\n- Chip selected: Cortex-M33 (matches the reader's own Pico 2)\n\nBehavior:\n- Selecting Cortex-M0+ and running the probe always yields \"No FPU\" (bit field 0x0)\n- Selecting Cortex-M4 or Cortex-M33 always yields \"FPU detected\" (bit field 0x2)\n- The chip card's \"?\" placeholder updates to the verdict icon once probed, and stays until a different chip is selected\n\nInstructional Rationale: Apply-level objectives call for direct execution and\ndemonstration — letting the learner run the exact same probing function against multiple\nsimulated chips and see it produce different, correct verdicts each time reinforces that\nthe function is reading real hardware state, not returning a hardcoded answer.\n\nImplementation: p5.js, chip data as an array of {name, mvfr0_value} objects, bitmask math performed in JS matching the Python logic exactly"
+}

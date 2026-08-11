@@ -148,7 +148,7 @@ Because twiddle factors depend only on \( N \) and \( k \) — never on the actu
 
 #### Diagram: Roots of Unity on the Unit Circle
 
-<iframe src="../../sims/roots-of-unity-unit-circle/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/roots-of-unity-unit-circle/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Roots of Unity on the Unit Circle</summary>

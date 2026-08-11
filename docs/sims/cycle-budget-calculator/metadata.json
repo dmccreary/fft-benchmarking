@@ -1,0 +1,88 @@
+{
+  "title": "Cycle Budget Calculator",
+  "description": "An Apply-level calculator where students set clock speed and a real-time deadline to compute the available CPU-cycle budget, then compare it against a sample workload on a capacity bar.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Real-Time Computing"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "cycle-budget-calculator",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, apply",
+  "completion_status": "implemented",
+  "chapter_number": 2,
+  "chapter_title": "Know Your Board",
+  "chapter_dir": "02-know-your-board",
+  "chapter_rel_dir": "chapters/02-know-your-board",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Real-time cycle budgets",
+    "learningObjectives": [
+      "Calculate a cycle budget from clock speed and deadline",
+      "Judge whether a given workload fits within a budget",
+      "Explain the trade-off between clock speed and deadline"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-15 minutes",
+    "prerequisites": [
+      "A CPU executes a fixed number of cycles per second",
+      "Millisecond to second unit conversion"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Clock speed", "min": 1, "max": 200, "default": 150, "step": 1, "units": "MHz" },
+      { "type": "slider", "label": "Deadline", "min": 5, "max": 100, "default": 40, "step": 1, "units": "ms" },
+      { "type": "slider", "label": "Workload", "min": 100000, "max": 20000000, "default": 8000000, "step": 100000, "units": "cycles" },
+      { "type": "checkbox", "label": "Show formula", "purpose": "Reveal the general equation with units" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form arithmetic model",
+    "variables": ["clock speed", "deadline", "workload", "budget", "headroom"],
+    "equations": [
+      "budget = clock_speed_hz * deadline_seconds",
+      "headroom = budget - workload"
+    ],
+    "assumptions": [
+      "The CPU is fully available to this task for the whole deadline window",
+      "One instruction-cycle accounting unit; no stalls or interrupts modeled"
+    ],
+    "limitations": [
+      "Real systems lose cycles to interrupts, memory stalls, and DMA contention, so usable headroom is always smaller than the ideal figure shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict-then-check parameter exploration with a deliberately failing default",
+    "keyQuestions": [
+      "Why is the capacity bar fully red on load?",
+      "What is the minimum clock speed that fits the default workload?"
+    ],
+    "commonMisconceptions": [
+      "That a faster clock always solves a missed deadline regardless of power budget",
+      "Forgetting to convert milliseconds to seconds before multiplying"
+    ],
+    "assessmentOpportunities": [
+      "Compute the budget for 133 MHz with a 25 ms deadline and judge whether a 4,000,000-cycle workload fits"
+    ]
+  }
+}

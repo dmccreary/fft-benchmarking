@@ -118,7 +118,7 @@ Before the interactive explorer below, it helps to see all of these bin-related 
 
 #### Diagram: DFT Frequency Bin Explorer
 
-<iframe src="../../sims/dft-frequency-bin-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/dft-frequency-bin-explorer/main.html" width="100%" height="422px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>DFT Frequency Bin Explorer</summary>

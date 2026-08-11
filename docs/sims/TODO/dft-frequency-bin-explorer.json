@@ -1,0 +1,15 @@
+{
+  "sim_id": "dft-frequency-bin-explorer",
+  "diagram_name": "DFT Frequency Bin Explorer",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students adjust the number of samples (N) and the sampling rate and calculate the resulting bin width, frequency resolution, and each bin's center frequency, observing the tradeoff between frequency resolution and bin count directly.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** dft-frequency-bin-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students adjust the number of samples (N) and the sampling rate and calculate the resulting bin width, frequency resolution, and each bin's center frequency, observing the tradeoff between frequency resolution and bin count directly.\n\nCanvas layout:\n- Top (300px): a horizontal row of labeled bin boxes (bin 0 through bin N-1, or a scrollable/collapsed view for large N), each showing its bin index and center frequency\n- Bottom (200px): controls and a computed-values readout panel\n\nVisual elements:\n- Row of bin boxes, index and frequency labeled on each\n- Special highlight color on bin 0 (labeled \"DC\") and the middle bin (labeled \"Nyquist\")\n- Readout panel: \"Bin width = f_s / N = [value] Hz\", \"Frequency resolution = [value] Hz\", \"Number of bins = N = [value]\"\n\nInteractive controls:\n- Slider: N (number of samples), values 8, 16, 32, 64, 128, 256, 512, default 512\n- Slider: Sampling rate, range 4,000-16,000 Hz, default 16,000 Hz\n- Clicking any bin box highlights it and displays its exact center frequency and covered range in the readout panel\n\nBehavior:\n- Changing N or sampling rate immediately recalculates and redraws every bin's center frequency, along with the bin width and frequency resolution readouts\n- Increasing N visibly increases the number of bin boxes and shrinks the frequency gap between them, making the resolution/bin-count tradeoff directly visible\n\nInstructional Rationale: An Apply-level calculator with live parameter sliders is appropriate because the objective is computational — students should be able to predict how changing N or sampling rate changes bin width and resolution, then confirm that prediction by dragging a slider and watching every computed value update together.\n\nImplementation notes:\n- Use p5.js; recompute all bin center frequencies as k * sample_rate / N for k = 0 to N-1 whenever a slider changes\n- Responsive width; bin row becomes horizontally scrollable on narrow viewports rather than shrinking bins below a readable size"
+}

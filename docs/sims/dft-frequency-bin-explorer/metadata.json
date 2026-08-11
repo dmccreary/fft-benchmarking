@@ -1,0 +1,74 @@
+{
+  "title": "DFT Frequency Bin Explorer",
+  "description": "A live row of DFT bins with DC and Nyquist highlighted, recomputing every center frequency, the bin width, and the unique-bin count as N and the sampling rate change.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Frequency Analysis", "DFT"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "dft-frequency-bin-explorer",
+  "library": "p5.js",
+  "canvasHeight": 420,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "DFT bin width and frequency resolution",
+    "learningObjectives": [
+      "Calculate bin width from N and the sampling rate",
+      "Determine any bin's center frequency",
+      "Demonstrate the resolution versus bin-count tradeoff"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A DFT turns N samples into N frequency values", "Unit reasoning with Hz"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 420 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "N (samples)", "values": [8, 16, 32, 64, 128, 256, 512], "default": 512 },
+      { "type": "slider", "label": "Sampling rate", "min": 4000, "max": 16000, "default": 16000, "step": 500, "units": "Hz" },
+      { "type": "click", "label": "Any bin", "purpose": "Show its exact center frequency and covered range" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form bin arithmetic",
+    "variables": ["N", "sampling rate", "selected bin"],
+    "equations": [
+      "bin width = fs / N",
+      "center frequency of bin k = k * fs / N",
+      "unique bins for a real input = N/2 + 1"
+    ],
+    "assumptions": ["N is a power of two", "Real-valued input signal"],
+    "limitations": ["Shows bin geometry only; the actual response shape of a bin, including sidelobes, is covered elsewhere"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict-then-check computational exploration",
+    "keyQuestions": [
+      "What happens to bin width when N doubles?",
+      "What do you give up by halving the sampling rate to improve resolution?"
+    ],
+    "commonMisconceptions": [
+      "That resolution can be improved by computing harder on the same capture",
+      "That all N bins carry unique information for a real input"
+    ],
+    "assessmentOpportunities": ["Find the smallest N that resolves two tones 40 Hz apart at 16 kHz"]
+  }
+}

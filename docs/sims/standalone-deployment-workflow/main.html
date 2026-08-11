@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Standalone Deployment Workflow MicroSim using vis-network</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="network"></div>
+
+        <div class="title">Standalone Deployment Workflow</div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color color-software"></div>
+                <span><strong>Computer attached</strong> &mdash; steps 1-4</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-standalone"></div>
+                <span><strong>Standalone</strong> &mdash; steps 5-6</span>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="controls">
+                <button class="btn btn-primary" id="failure-btn">Common failures</button>
+                <button class="btn btn-secondary" id="reset-btn">Reset</button>
+            </div>
+
+            <div class="status-info">
+                <div class="status-title" id="status-title">Click a step</div>
+                <div class="status-text" id="status-text">
+                    Hover any step for a one-line summary, or click it for the command
+                    involved and the mistake most often made there. Press
+                    <strong>Common failures</strong> to flag the three steps that
+                    silently break standalone operation.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="standalone-deployment-workflow.js"></script>
+</body>
+</html>

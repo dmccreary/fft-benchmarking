@@ -1,0 +1,15 @@
+{
+  "sim_id": "standalone-deployment-workflow",
+  "diagram_name": "Standalone Deployment Workflow",
+  "chapter_number": 3,
+  "chapter_title": "'Peripherals: The OLED Display, Buttons, and Deploying Standalone Code'",
+  "chapter_dir": "03-peripherals",
+  "chapter_rel_dir": "chapters/03-peripherals",
+  "library": "vis-network",
+  "bloom_level": "Understand",
+  "bloom_verb": "Summarize, explain",
+  "learning_objective": "Help students summarize the correct order of steps required to move from \"code that only runs while Thonny is attached\" to \"code that runs standalone on power-up,\" and diagnose which step was skipped when standalone operation fails.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: workflow\n**sim-id:** standalone-deployment-workflow<br/>\n**Library:** vis-network<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Summarize, explain\n\nLearning objective: Help students summarize the correct order of steps required to move from \"code that only runs while Thonny is attached\" to \"code that runs standalone on power-up,\" and diagnose which step was skipped when standalone operation fails.\n\nPurpose: Turn the multi-step, easy-to-get-wrong deployment process into a checkable, clickable sequence.\n\nComponents to show (as a left-to-right or top-to-bottom sequence of nodes):\n1. \"Write and test in Thonny\" (editor pane, board attached)\n2. \"Copy driver libraries to /lib\" (via mpremote or Thonny Save, e.g. ssd1306.py)\n3. \"Copy config.py to device root\" (shared configuration module)\n4. \"Save your program as main.py in device root\" (NOT any other filename)\n5. \"Unplug from computer, connect to USB power only\"\n6. \"Board autoruns main.py — standalone operation confirmed\"\n\nConnections: simple linear arrows, node 1 → 2 → 3 → 4 → 5 → 6\n\nInteractive features:\n- Clicking any node opens an infobox with: what the step accomplishes, the specific MicroPython/mpremote command involved, and the most common mistake at that step (e.g., for node 4: \"Saving as blink.py instead of main.py — MicroPython only autoruns the exact filename main.py\")\n- A \"Common failure\" toggle button that, when active, adds small red warning icons to nodes 2-4 with a one-line note on what breaks if that step is skipped or done wrong\n- Hover over any node shows a one-line summary before clicking for the full infobox\n\nVisual style: Vertical or horizontal linear flowchart, numbered rounded-rectangle nodes, arrows between each\n\nColor scheme: Steps performed while still connected to a computer (1-4) in blue; the final standalone steps (5-6) in green\n\nImplementation: vis-network, responsive to container width, canvas height 500px"
+}

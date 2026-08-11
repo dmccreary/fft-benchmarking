@@ -1,0 +1,15 @@
+{
+  "sim_id": "mems-microphone-cross-section",
+  "diagram_name": "MEMS Microphone Cross-Section",
+  "chapter_number": 5,
+  "chapter_title": "'Capturing Real Audio: The I2S Microphone'",
+  "chapter_dir": "05-capturing-real-audio",
+  "chapter_rel_dir": "chapters/05-capturing-real-audio",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, describe",
+  "learning_objective": "Let students identify the internal parts of a MEMS microphone package and explain, in one sentence per part, what each part does to turn sound into a digital bitstream.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** mems-microphone-cross-section<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, describe\n\nLearning objective: Let students identify the internal parts of a MEMS microphone package and explain, in one sentence per part, what each part does to turn sound into a digital bitstream.\n\nCanvas layout:\n- Left (500px): a labeled cross-section illustration of the INMP441 package\n- Right (200px): infobox panel, empty until a part is clicked\n\nVisual elements:\n- Sound port: a small opening at the top of the package where air pressure waves enter\n- Diaphragm: a thin, flexible membrane suspended below the sound port that physically vibrates\n- Back plate: a fixed perforated plate near the diaphragm forming a capacitor with it\n- ASIC (application-specific integrated circuit): the small silicon chip that reads the capacitance change and performs analog-to-digital conversion\n- Output pins: labeled SD (serial data), WS (word select), SCK (bit clock), and L/R (channel select)\n- Arrows showing signal flow: sound pressure to diaphragm, diaphragm motion to ASIC, ASIC output to pins\n\nInteractive elements:\n- Clicking any labeled part (sound port, diaphragm, back plate, ASIC, each output pin) highlights it and displays its name and a one-sentence explanation in the right-hand infobox\n- Hovering briefly outlines the part before clicking\n\nData displayed on click (examples):\n- Diaphragm: \"Vibrates in response to sound pressure, changing its distance from the back plate.\"\n- ASIC: \"Measures the changing capacitance, then digitizes and encodes it as an I2S bitstream — this is why no separate ADC chip is needed.\"\n- SD pin: \"Carries the actual digitized audio bits, one bit per bit-clock pulse.\"\n\nInstructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining what each internal part does, not manipulating a live physical process — progressive disclosure through click-to-reveal keeps the diagram uncluttered while still letting students connect each label to its function at their own pace.\n\nImplementation notes:\n- Use p5.js; draw the cross-section as simple shapes (rectangles, a thin arc for the diaphragm) rather than a photorealistic image\n- Responsive width; cross-section and infobox both scale to container width on window resize, stacking vertically below 600px width"
+}

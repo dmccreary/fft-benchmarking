@@ -1,0 +1,79 @@
+{
+  "title": "Dynamic Range Ladder",
+  "description": "A clickable vertical amplitude ladder placing clipping, headroom, working range, noise floor, and silence on one continuous scale, with an add-a-bit toggle demonstrating the 6 dB per bit rule.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Audio Engineering", "Quantization"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "dynamic-range-ladder",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 6,
+  "chapter_title": "Sampling, Quantization, and Aliasing",
+  "chapter_dir": "06-sampling-quantization-and-aliasing",
+  "chapter_rel_dir": "chapters/06-sampling-quantization-and-aliasing",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Dynamic range, headroom, and the noise floor",
+    "learningObjectives": [
+      "Interpret the relative positions of full scale, headroom, signal, and noise floor",
+      "Explain what happens to a signal in each zone",
+      "Explain what an additional bit of depth changes and what it does not"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": [
+      "A sample is stored as a fixed-width integer",
+      "A decibel is a ratio"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any band", "purpose": "Show its definition and the consequence for a signal there" },
+      { "type": "checkbox", "label": "Add 1 bit of depth", "purpose": "Lower the noise floor about 6 dB and grow the usable range" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Proportional labeled scale",
+    "variables": ["bit depth", "selected zone"],
+    "equations": ["dynamic range (dB) ~= 6.02 * bits"],
+    "assumptions": [
+      "Band heights are illustrative rather than logarithmically to scale",
+      "The noise floor is treated as set by quantization alone"
+    ],
+    "limitations": [
+      "Real noise floors are dominated by analog and thermal noise well before the quantization limit is reached, so added bits stop helping at some point"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Single persistent spatial layout explored by click",
+    "keyQuestions": [
+      "Which boundary moves when you add a bit — full scale or the noise floor?",
+      "Why does headroom cost you signal-to-noise ratio?"
+    ],
+    "commonMisconceptions": [
+      "That more bits let you record louder signals",
+      "That clipping, headroom, and noise floor are unrelated concepts"
+    ],
+    "assessmentOpportunities": [
+      "Compare a 16-bit and 24-bit recording that clip identically"
+    ]
+  }
+}

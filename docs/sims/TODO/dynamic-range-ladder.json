@@ -1,0 +1,15 @@
+{
+  "sim_id": "dynamic-range-ladder",
+  "diagram_name": "Dynamic Range Ladder",
+  "chapter_number": 6,
+  "chapter_title": "'Sampling, Quantization, and Aliasing'",
+  "chapter_dir": "06-sampling-quantization-and-aliasing",
+  "chapter_rel_dir": "chapters/06-sampling-quantization-and-aliasing",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, interpret",
+  "learning_objective": "Let students interpret a vertical amplitude scale showing where full scale, headroom, typical signal level, noise floor, and the clipping zone sit relative to one another, and explain what happens to a signal at each zone.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** dynamic-range-ladder<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, interpret\n\nLearning objective: Let students interpret a vertical amplitude scale showing where full scale, headroom, typical signal level, noise floor, and the clipping zone sit relative to one another, and explain what happens to a signal at each zone.\n\nCanvas layout:\n- A single tall vertical bar (500px tall, 120px wide) representing the full amplitude range of a fixed bit depth, with labeled horizontal zone boundaries\n- Right side: infobox panel revealing details when a zone is clicked\n\nVisual elements, top (loudest) to bottom (quietest):\n- \"Clipping zone\" (red band) at the very top, above the full scale value\n- \"Full scale value\" boundary line\n- \"Headroom\" band (yellow) just below full scale\n- \"Typical signal level\" band (green), the main working range\n- \"Noise floor\" band (gray) near the bottom\n- \"Silence / below noise floor\" (dark gray) at the very bottom\n\nInteractive elements:\n- Clicking any labeled band highlights it and shows its definition and one consequence in the infobox (e.g., clicking \"Clipping zone\" shows: \"Signal amplitude here gets forced down to the full scale value — clipping distortion results.\")\n- A toggle: \"Add 1 bit of depth\" — animates the whole ladder's noise floor band shrinking and the usable green zone growing, demonstrating the roughly 6 dB per bit improvement\n\nInstructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining what each zone on a shared amplitude scale means and how it relates to the others — a single persistent spatial layout, explored via click, reinforces that headroom, clipping, dynamic range, and noise floor are all positions on one continuous scale rather than unrelated concepts.\n\nImplementation notes:\n- Use p5.js; draw the vertical bar as a stack of colored rectangles with clear boundary lines and labels\n- Responsive width; ladder and infobox stack vertically below 600px width"
+}

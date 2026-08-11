@@ -1,0 +1,82 @@
+{
+  "title": "Performance Metrics Calculator",
+  "description": "Three live conversions from a raw cycle count to execution time, throughput, and speedup factor, each showing its formula and substituted operands.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Performance Analysis"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "performance-metrics-calculator",
+  "library": "p5.js",
+  "canvasHeight": 490,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, use",
+  "completion_status": "implemented",
+  "chapter_number": 17,
+  "chapter_title": "Measuring Time",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Converting cycle counts to reportable metrics",
+    "learningObjectives": [
+      "Compute execution time from cycles and clock frequency",
+      "Compute throughput and speedup factor",
+      "Report a benchmark result reproducibly"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10 minutes",
+    "prerequisites": ["A cycle counter yields elapsed cycles", "Unit conversion"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 490 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Elapsed cycles", "min": 1000, "max": 30000000, "default": 21000000, "step": 1000 },
+      { "type": "slider", "label": "Clock frequency", "min": 50, "max": 250, "default": 150, "step": 1, "units": "MHz" },
+      { "type": "slider", "label": "Comparison time", "min": 1000, "max": 25000000, "default": 20500000, "step": 1000, "units": "microseconds" },
+      { "type": "button", "label": "Load Chapter 12 example", "purpose": "Reproduce the 140 ms FFT versus 20.5 s DFT comparison" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form unit conversion",
+    "variables": ["cycles", "clock frequency", "comparison time"],
+    "equations": [
+      "execution time (us) = cycles / frequency_MHz",
+      "throughput = 1e6 / execution time (us)",
+      "speedup = comparison time / execution time"
+    ],
+    "assumptions": [
+      "Clock frequency is constant during the measurement",
+      "The comparison baseline measured the same work"
+    ],
+    "limitations": [
+      "Assumes one operation per measured interval; batched measurements need division by the batch size first"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Live calculator with formulas and substituted operands shown",
+    "keyQuestions": [
+      "Which metrics change when only the clock changes?",
+      "What must accompany a speedup factor for it to be reproducible?"
+    ],
+    "commonMisconceptions": [
+      "That a speedup factor alone is a complete result",
+      "That raising the clock improves the algorithm"
+    ],
+    "assessmentOpportunities": [
+      "Identify what cannot be determined from a bare speedup claim"
+    ]
+  }
+}

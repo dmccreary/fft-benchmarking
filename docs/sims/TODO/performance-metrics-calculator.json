@@ -1,0 +1,15 @@
+{
+  "sim_id": "performance-metrics-calculator",
+  "diagram_name": "Performance Metrics Calculator",
+  "chapter_number": 17,
+  "chapter_title": "\"Measuring Time: The DWT Cycle Counter\"",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — calculate, use",
+  "bloom_verb": null,
+  "learning_objective": "Apply the conversion formulas to compute execution time, throughput, and speedup factor from a raw cycle count the learner controls.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** performance-metrics-calculator<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — calculate, use\nLearning objective: Apply the conversion formulas to compute execution time, throughput, and speedup factor from a raw cycle count the learner controls.\n\nCanvas layout:\n- Left (300px): Input controls\n- Right (300px): Live-computed output panel\n\nVisual elements:\n- Slider: \"Elapsed cycles\" (range 1,000 to 30,000,000, default 21,000 representing a fast operation)\n- Slider: \"Clock frequency (MHz)\" (range 50 to 250, default 150)\n- Slider: \"Comparison time (μs), for speedup\" (range 1 to 200,000, default 20,500 representing the brute-force DFT time from Chapter 16)\n- Output readout, updating live: Execution time (μs and ms), FFTs per second, Speedup factor vs. the comparison time\n\nInteractive controls:\n- All three sliders drag live, recalculating every field on the right instantly\n- Button: \"Load Chapter 12 example\" — sets sliders to reproduce the recursive-FFT-vs-DFT numbers already stated in the course (140 ms FFT vs. ~21,000 ms DFT)\n\nDefault parameters:\n- Elapsed cycles: 21,000,000 (representing 140 ms at 150 MHz)\n- Clock frequency: 150 MHz\n- Comparison time: 21,000,000 μs (21 seconds, the brute-force DFT time)\n\nBehavior:\n- Dragging any slider immediately recomputes and redraws all four output metrics\n- Speedup factor updates to reflect the live ratio, so the learner can watch the number ~146 emerge from real values rather than being told it\n\nInstructional Rationale: Apply-level objectives call for parameter exploration with a\ncalculator pattern rather than animation — the learner directly manipulates the inputs\nthat appear in the formulas just defined and immediately sees the four vocabulary terms\ncomputed from them, reinforcing the definitions through use.\n\nImplementation: p5.js, plain arithmetic on slider values, redraw() on every input event"
+}

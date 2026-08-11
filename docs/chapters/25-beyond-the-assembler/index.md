@@ -201,7 +201,7 @@ your own reasoning.
 
 #### Diagram: Instruction Encoding Bit Field Builder
 
-<iframe src="../../sims/instruction-encoding-bit-builder/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/instruction-encoding-bit-builder/main.html" width="100%" height="472px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Instruction Encoding Bit Field Builder</summary>

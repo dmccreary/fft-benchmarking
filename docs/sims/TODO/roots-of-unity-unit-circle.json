@@ -1,0 +1,15 @@
+{
+  "sim_id": "roots-of-unity-unit-circle",
+  "diagram_name": "Roots of Unity on the Unit Circle",
+  "chapter_number": 11,
+  "chapter_title": "'From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly'",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students adjust N and calculate the resulting set of twiddle factors, observing that they always land as N evenly spaced points on the unit circle from Chapter 7.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** roots-of-unity-unit-circle<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students adjust N and calculate the resulting set of twiddle factors, observing that they always land as N evenly spaced points on the unit circle from Chapter 7.\n\nCanvas layout:\n- Left (400px): the unit circle with all N roots of unity plotted as points, connected to the origin by thin lines\n- Right (300px): a table listing each root's index k, its angle, and its value as a + bi\n\nVisual elements:\n- Unit circle with N evenly spaced points marked\n- Point at k=0 always highlighted distinctly (this is always the value 1 + 0i)\n- Clicking any point highlights it on the circle and its corresponding row in the table\n\nInteractive controls:\n- Slider or dropdown: N (4, 8, 16, 32), default 8\n- Clicking a point on the circle (or a table row) highlights the matching entry in both views and shows the twiddle factor formula with that k substituted\n\nBehavior:\n- Changing N redraws the circle with the new number of evenly spaced points and regenerates the table\n- Each point's exact angle is 2*pi*k/N, and hovering shows this computation explicitly\n\nInstructional Rationale: An Apply-level parameter exploration with calculation display is appropriate because the objective is calculating specific twiddle factor values for a chosen N and confirming their geometric placement — pairing the visual circle with an exact numeric table lets students verify the formula rather than only see a picture.\n\nImplementation notes:\n- Use p5.js; compute each point as (cos(-2*pi*k/N), sin(-2*pi*k/N)) for k = 0 to N-1\n- Responsive width; circle and table stack vertically below 650px width"
+}

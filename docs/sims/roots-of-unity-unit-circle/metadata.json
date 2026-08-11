@@ -1,0 +1,74 @@
+{
+  "title": "Roots of Unity Unit Circle",
+  "description": "N twiddle factors plotted as evenly spaced points on the unit circle with a synchronized table of exact complex values, for N of 4, 8, 16, or 32.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Complex Analysis"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "roots-of-unity-unit-circle",
+  "library": "p5.js",
+  "canvasHeight": 475,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 11,
+  "chapter_title": "From DFT to FFT",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Mathematics",
+    "topic": "Roots of unity as FFT twiddle factors",
+    "learningObjectives": [
+      "Calculate twiddle factor values for a chosen N",
+      "Demonstrate that the roots are evenly spaced on the unit circle",
+      "Identify the roots requiring no general multiplication"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Euler's formula", "Complex numbers in rectangular form"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 475 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "N", "values": [4, 8, 16, 32], "default": 8 },
+      { "type": "click", "label": "Any point on the circle", "purpose": "Select that root and highlight its table row" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Direct evaluation of the roots of unity",
+    "variables": ["N", "selected k"],
+    "equations": [
+      "W_N^k = e^(-i*2*pi*k/N) = cos(-2 pi k / N) + i sin(-2 pi k / N)",
+      "angular spacing = 360/N degrees"
+    ],
+    "assumptions": ["Forward-transform sign convention, giving clockwise advance"],
+    "limitations": ["Shows the factors themselves; how they are indexed per FFT stage is covered in the stage sims"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Paired geometric and numeric views for verification",
+    "keyQuestions": [
+      "Why do the points advance clockwise rather than counterclockwise?",
+      "Which roots need no real multiplication?"
+    ],
+    "commonMisconceptions": [
+      "That twiddle factors are an exotic new kind of number",
+      "That the sign of the exponent does not matter because magnitudes are unaffected"
+    ],
+    "assessmentOpportunities": [
+      "State W_16^4 in rectangular form and describe its geometric action"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "title": "FFT Applications Map",
+  "description": "A two-by-three grid of six FFT application domains with icons; clicking a card reveals what the application does, which earlier chapter taught its underlying technique, and a capstone project idea in that domain.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Applications", "Capstone Projects"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "fft-applications-map",
+  "library": "p5.js",
+  "canvasHeight": 485,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Exemplify, connect",
+  "completion_status": "implemented",
+  "chapter_number": 27,
+  "chapter_title": "Capstone: Applications, Design, and Reporting",
+  "chapter_dir": "27-capstone",
+  "chapter_rel_dir": "chapters/27-capstone",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Real-world FFT applications and the course techniques behind them",
+    "learningObjectives": [
+      "Exemplify six domains where the FFT is central",
+      "Connect each domain to the chapter that taught its underlying technique",
+      "Identify a capstone project within a chosen domain"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10-12 minutes",
+    "prerequisites": [
+      "Chapters 6, 7, 8, 13, 15 and 16 completed",
+      "A working FFT on the target hardware"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 485 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "hover", "label": "Card", "purpose": "One-line preview tooltip" },
+      { "type": "click", "label": "Card", "purpose": "Reveal description, chapter link and capstone idea" },
+      { "type": "button", "label": "Clear selection", "purpose": "Return to the overview text" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Static content map with click-to-reveal detail",
+    "variables": ["selected domain", "hovered domain"],
+    "equations": [],
+    "assumptions": [
+      "Each domain is attributed to the single chapter it leans on most, not to every chapter it touches",
+      "Capstone ideas are scoped to what a Pico 2 and the course's existing code can do"
+    ],
+    "limitations": [
+      "Six domains out of many; medical imaging, seismology and astronomy are not shown",
+      "One chapter link per domain, which understates how many techniques each really combines"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict the chapter link before revealing it, then convert a chosen domain into a testable capstone question",
+    "keyQuestions": [
+      "Which chapter does each domain actually depend on?",
+      "Why is noise cancellation a phase problem rather than a magnitude problem?"
+    ],
+    "commonMisconceptions": [
+      "That these applications require techniques beyond the course",
+      "That noise cancellation is about amplitude matching",
+      "That radar is peak detection rather than correlation"
+    ],
+    "assessmentOpportunities": [
+      "Restate a capstone idea as a formal benchmark question",
+      "List what you would measure to know an implementation is correct rather than fast"
+    ]
+  }
+}

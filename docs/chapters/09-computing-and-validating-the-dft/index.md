@@ -322,7 +322,7 @@ Confirming a DFT implementation works correctly not just at one single frequency
 
 #### Diagram: DFT Validation Dashboard
 
-<iframe src="../../sims/dft-validation-dashboard/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/dft-validation-dashboard/main.html" width="100%" height="597px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>DFT Validation Dashboard</summary>

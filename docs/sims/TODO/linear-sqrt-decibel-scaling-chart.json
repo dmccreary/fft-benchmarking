@@ -1,0 +1,15 @@
+{
+  "sim_id": "linear-sqrt-decibel-scaling-chart",
+  "diagram_name": "Linear vs. Square-Root vs. Decibel Scaling Chart",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "library": "Chart.js",
+  "bloom_level": "Evaluate",
+  "bloom_verb": "Judge, compare",
+  "learning_objective": "Let students compare the same fixed example spectrum plotted under linear (power), square-root (magnitude), and decibel scaling, and judge which scaling choice best reveals quiet frequency content alongside a dominant peak.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** linear-sqrt-decibel-scaling-chart<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Evaluate\nBloom Taxonomy Verb: Judge, compare\n\nLearning objective: Let students compare the same fixed example spectrum plotted under linear (power), square-root (magnitude), and decibel scaling, and judge which scaling choice best reveals quiet frequency content alongside a dominant peak.\n\nChart type: Bar chart, with a toggle to switch scaling mode\n\nPurpose: Make the practical consequence of scaling choice visually unmistakable using one fixed, realistic example spectrum containing one dominant peak and several much quieter components\n\nX-axis: Frequency bin\nY-axis: Displayed value (rescales automatically with the selected mode)\n\nData series: A single fixed example spectrum (one dominant bin, several bins at roughly 1-5% of the dominant bin's power), redrawn under the selected scaling\n\nInteractive elements:\n- Radio buttons: \"Linear (power)\" / \"Square root (magnitude)\" / \"Decibel\"\n- Hovering any bar shows its raw value and its currently displayed (scaled) value in a tooltip\n\nTitle: \"The Same Spectrum, Three Different Scales\"\nAnnotations: A caption noting which quiet bins become visually indistinguishable from zero under each scaling choice\n\nImplementation: Chart.js bar chart, recomputing all bar heights from the fixed underlying data whenever the scaling mode changes"
+}

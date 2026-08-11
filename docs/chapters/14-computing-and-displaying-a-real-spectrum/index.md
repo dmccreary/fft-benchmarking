@@ -160,7 +160,7 @@ Before the chart below, it helps to see all three of these choices — linear, s
 
 #### Diagram: Linear vs. Square-Root vs. Decibel Scaling Chart
 
-<iframe src="../../sims/linear-sqrt-decibel-scaling-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/linear-sqrt-decibel-scaling-chart/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Linear vs. Square-Root vs. Decibel Scaling Chart</summary>

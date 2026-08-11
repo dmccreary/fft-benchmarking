@@ -1,0 +1,82 @@
+{
+  "title": "Iterative FFT Stage Loop Visualizer",
+  "description": "A live in-place iterative FFT on an 8-element array, stepped one stage at a time, with pairing arcs and a readout of stage, span, and butterfly count.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Algorithms"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "iterative-fft-stage-loop-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 445,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 12,
+  "chapter_title": "Building the FFT",
+  "chapter_dir": "12-building-the-fft",
+  "chapter_rel_dir": "chapters/12-building-the-fft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "In-place iterative FFT stage loop",
+    "learningObjectives": [
+      "Examine the iterative stage loop on a concrete array",
+      "Compare doubling span against constant butterfly count",
+      "Explain why bit-reversal must precede the stage loop"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12 minutes",
+    "prerequisites": ["The butterfly operation", "Bit-reversed ordering", "Nested loops"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 445 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Apply permutation", "purpose": "Bit-reverse the array before the stage loop" },
+      { "type": "button", "label": "Run next stage", "purpose": "Execute one pass of the outer loop in place" },
+      { "type": "button", "label": "Reset", "purpose": "Restore the original array" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "In-place radix-2 iterative FFT",
+    "variables": ["array values", "stage", "span"],
+    "equations": [
+      "m = 2^s, span = m/2",
+      "W(j,m) = e^(-i*2*pi*j/m)",
+      "total butterflies = (N/2) * log2(N)"
+    ],
+    "assumptions": [
+      "N = 8, a power of two",
+      "Real-valued input with zero imaginary parts",
+      "Exact floating-point arithmetic"
+    ],
+    "limitations": [
+      "Shows one worked example; fixed-point rounding and overflow behavior are covered in later chapters"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Stage-by-stage stepping with a verifiable end state",
+    "keyQuestions": [
+      "What changes between stages and what stays fixed?",
+      "Why must the permutation happen before the loop?"
+    ],
+    "commonMisconceptions": [
+      "That later stages do more work than earlier ones",
+      "That the FFT and DFT give different answers"
+    ],
+    "assessmentOpportunities": [
+      "Compute stage count and total butterflies for N = 1024"
+    ]
+  }
+}

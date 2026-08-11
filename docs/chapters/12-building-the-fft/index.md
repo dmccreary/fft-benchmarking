@@ -149,7 +149,7 @@ Before the diagram below, it helps to see the complete structure this section ju
 
 #### Diagram: Complete 8-Point FFT Data Flow Graph
 
-<iframe src="../../sims/complete-8-point-fft-flow-graph/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/complete-8-point-fft-flow-graph/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Complete 8-Point FFT Data Flow Graph</summary>

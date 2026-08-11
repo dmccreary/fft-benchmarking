@@ -1,0 +1,15 @@
+{
+  "sim_id": "complete-8-point-fft-flow-graph",
+  "diagram_name": "Complete 8-Point FFT Data Flow Graph",
+  "chapter_number": 12,
+  "chapter_title": "'Building the FFT: A Complete Recursive Implementation'",
+  "chapter_dir": "12-building-the-fft",
+  "chapter_rel_dir": "chapters/12-building-the-fft",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, distinguish",
+  "learning_objective": "Let students examine the complete 3-stage, 12-butterfly data flow graph of an 8-point FFT and distinguish how butterfly pairings change shape from stage to stage even though every stage performs exactly 4 butterflies.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: diagram\n**sim-id:** complete-8-point-fft-flow-graph<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, distinguish\n\nLearning objective: Let students examine the complete 3-stage, 12-butterfly data flow graph of an 8-point FFT and distinguish how butterfly pairings change shape from stage to stage even though every stage performs exactly 4 butterflies.\n\nCanvas layout:\n- Full-width diagram (900px wide equivalent, horizontally scrollable on narrow screens), three vertical column groups labeled \"Stage 1\", \"Stage 2\", \"Stage 3\", input column on the far left labeled with bit-reversed indices, output column on the far right in natural order\n\nVisual elements:\n- 8 input nodes on the left, labeled with their bit-reversed source index\n- 3 columns of 4 butterfly diagrams each (12 total), matching the classic radix-2 FFT flow-graph shape\n- Connecting lines showing exactly which nodes feed which butterfly at each stage\n- 8 output nodes on the right, labeled X[0] through X[7]\n- Twiddle factor label (e.g., W_8^0, W_8^1) on the appropriate line of each butterfly\n\nInteractive elements:\n- Clicking any single butterfly highlights its two inputs, its twiddle factor, and its two outputs, and displays in an infobox: \"Butterfly pair: inputs a=[node], b=[node], twiddle=W_8^[k]. Outputs: a+Wb and a−Wb.\"\n- Clicking a stage label (Stage 1/2/3) highlights all 4 butterflies in that stage simultaneously and displays: \"Stage [n]: 4 butterflies, span = [value]\"\n- A \"Trace one output\" mode: clicking an output node on the right highlights the complete path of butterflies and inputs that feed into it, back to the original samples\n\nInstructional Rationale: An Analyze-level examination pattern is appropriate because the objective requires distinguishing structural differences between stages (which inputs pair with which) despite each stage having an identical butterfly count — click-triggered highlighting isolates one relationship at a time within an otherwise dense diagram.\n\nImplementation notes:\n- Use p5.js; hardcode the classic 8-point radix-2 decimation-in-time flow graph topology, since it is a fixed, well-known structure\n- Responsive width; diagram scales down proportionally with a horizontal-scroll fallback below 700px width"
+}

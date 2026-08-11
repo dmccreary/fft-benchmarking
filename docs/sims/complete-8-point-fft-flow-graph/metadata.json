@@ -1,0 +1,77 @@
+{
+  "title": "Complete 8-Point FFT Flow Graph",
+  "description": "The full radix-2 decimation-in-time flow graph for N=8 with twelve labeled butterflies, click-to-highlight per butterfly or stage, and output path tracing.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Algorithms"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "complete-8-point-fft-flow-graph",
+  "library": "p5.js",
+  "canvasHeight": 475,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, distinguish",
+  "completion_status": "implemented",
+  "chapter_number": 12,
+  "chapter_title": "Building the FFT",
+  "chapter_dir": "12-building-the-fft",
+  "chapter_rel_dir": "chapters/12-building-the-fft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Radix-2 FFT data flow",
+    "learningObjectives": [
+      "Examine the complete three-stage butterfly structure",
+      "Distinguish how pairing span changes while butterfly count does not",
+      "Trace the inputs contributing to a single output"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": ["The butterfly operation", "Bit-reversed ordering"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 475 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any butterfly", "purpose": "Show its input rows, twiddle, and span" },
+      { "type": "click", "label": "Stage label", "purpose": "Highlight all four butterflies in that stage" },
+      { "type": "click", "label": "Output node", "purpose": "Trace every contributing butterfly and input" },
+      { "type": "button", "label": "Clear highlight", "purpose": "Return to the unhighlighted view" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Static data-flow graph with derived topology",
+    "variables": ["selected butterfly", "selected stage", "traced output"],
+    "equations": [
+      "stage s pairs rows (base+j, base+j+half) with half = 2^s",
+      "twiddle exponent k = j * N / (2*half)",
+      "total butterflies = (N/2) * log2(N)"
+    ],
+    "assumptions": ["N = 8, radix-2, decimation in time, in-place"],
+    "limitations": ["Shows structure and twiddles; sample values are not propagated through the graph"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Dense diagram with click-isolated relationships",
+    "keyQuestions": [
+      "What stays constant across stages and what changes?",
+      "How many inputs contribute to a single output?"
+    ],
+    "commonMisconceptions": [
+      "That later stages do more work than earlier ones",
+      "That an FFT output depends on only some of the inputs"
+    ],
+    "assessmentOpportunities": [
+      "State stage count, butterflies per stage, and final span for N = 16"
+    ]
+  }
+}

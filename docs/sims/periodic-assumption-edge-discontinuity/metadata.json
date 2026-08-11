@@ -1,0 +1,79 @@
+{
+  "title": "Periodic Assumption Edge Discontinuity",
+  "description": "Three repeated copies of a captured frame showing whether the signal joins at the boundaries, with the resulting clean or leaked spectrum below.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Spectral Leakage", "Windowing"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "periodic-assumption-edge-discontinuity",
+  "library": "p5.js",
+  "canvasHeight": 475,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Periodic extension and spectral leakage",
+    "learningObjectives": [
+      "Interpret the DFT's implicit periodic-repetition assumption",
+      "Explain why a fractional cycle count creates an edge discontinuity",
+      "Attribute leakage to the boundary rather than to the signal"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "12 minutes",
+    "prerequisites": ["The DFT operates on a finite frame", "A spectrum is magnitude per bin"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 475 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Cycles per frame", "min": 2, "max": 10, "default": 6.5, "step": 0.05 },
+      { "type": "button", "label": "Snap to whole cycles", "purpose": "Jump to the nearest integer cycle count" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Live 64-point DFT of a synthesized frame",
+    "variables": ["cycles per frame", "edge jump", "spectrum"],
+    "equations": [
+      "x[n] = sin(2*pi*cycles*n/N + pi/4)",
+      "edge jump = |sin(2*pi*cycles + phase) - sin(phase)|"
+    ],
+    "assumptions": [
+      "N = 64 with a single sinusoid and a fixed non-zero starting phase",
+      "Rectangular window (no tapering)"
+    ],
+    "limitations": [
+      "Shows the untapered case only; window functions are covered in the companion sim"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Make the hidden assumption visible, then show its consequence",
+    "keyQuestions": [
+      "Do the repeated copies join smoothly?",
+      "Did the signal change, or only where the frame cut it?"
+    ],
+    "commonMisconceptions": [
+      "That leakage is measurement noise",
+      "That leakage is a property of the signal rather than of the frame boundary"
+    ],
+    "assessmentOpportunities": [
+      "Give evidence that observed leakage is not noise"
+    ]
+  }
+}

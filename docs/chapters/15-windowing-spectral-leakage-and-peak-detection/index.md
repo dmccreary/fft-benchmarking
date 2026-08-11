@@ -76,7 +76,7 @@ That spreading has a name, and it is the central problem this chapter exists to 
 
 #### Diagram: The Periodic Assumption and Edge Discontinuity
 
-<iframe src="../../sims/periodic-assumption-edge-discontinuity/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/periodic-assumption-edge-discontinuity/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>The Periodic Assumption and Edge Discontinuity</summary>

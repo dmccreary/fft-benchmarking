@@ -1,0 +1,15 @@
+{
+  "sim_id": "benchmark-results-chart",
+  "diagram_name": "Benchmark Results Chart",
+  "chapter_number": 18,
+  "chapter_title": "\"Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison\"",
+  "chapter_dir": "18-benchmarking-methodology",
+  "chapter_rel_dir": "chapters/18-benchmarking-methodology",
+  "library": "Chart.js",
+  "bloom_level": "Analyze (L4) — compare, examine",
+  "bloom_verb": null,
+  "learning_objective": "Compare mean-with-error-bars against best-of-N across several implementations, and examine which comparison changes the apparent ranking.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** benchmark-results-chart<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze (L4) — compare, examine\nLearning objective: Compare mean-with-error-bars against best-of-N across several implementations, and examine which comparison changes the apparent ranking.\n\nChart type: Bar chart with error bars, plus a toggle overlay\n\nPurpose: Show the same three placeholder implementations (\"A\", \"B\", \"C\") under two different statistics, so learners see whether the ranking changes\n\nX-axis: Implementation (A, B, C)\nY-axis: Execution time (μs), linear scale\n\nData series (toggle between the two with a control, do not show both by default):\n1. Mean execution time with error bars showing ± 1 standard deviation\n   - A: mean 410 μs, std dev 35 μs\n   - B: mean 395 μs, std dev 60 μs\n   - C: mean 430 μs, std dev 12 μs\n2. Minimum sample (best of N)\n   - A: 380 μs\n   - B: 340 μs\n   - C: 415 μs\n\nInteractive elements:\n- Toggle switch: \"Mean ± std dev\" vs \"Best of N\"\n- Hover over any bar to see the exact value and, for the mean view, the standard deviation\n- Callout text below the chart that updates with the toggle: for the mean view, \"B has the lowest mean but the widest spread — B is inconsistent.\" For the best-of-N view, \"B is also fastest at its best — but note how differently 'B is best' reads once you know why.\"\n\nTitle: \"Same Three Implementations, Two Statistics\"\nLegend: top-right, labeling which statistic is active\n\nImplementation: Chart.js bar chart with a custom error-bar plugin, data array swapped on toggle"
+}

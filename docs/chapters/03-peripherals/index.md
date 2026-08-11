@@ -102,7 +102,7 @@ Before looking at the diagram below, it helps to name exactly what it will trace
 
 #### Diagram: Framebuffer Draw and Refresh Pipeline
 
-<iframe src="../../sims/framebuffer-draw-refresh-pipeline/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/framebuffer-draw-refresh-pipeline/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Framebuffer Draw and Refresh Pipeline</summary>

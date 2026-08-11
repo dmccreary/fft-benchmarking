@@ -1,0 +1,85 @@
+{
+  "title": "Framebuffer Draw Refresh Pipeline",
+  "description": "A six-stage stepped pipeline tracing a drawing call from user code into the RAM framebuffer and out over SPI to the physical OLED, making the show() commit point visible.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Displays"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "framebuffer-draw-refresh-pipeline",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, summarize",
+  "completion_status": "implemented",
+  "chapter_number": 3,
+  "chapter_title": "Peripherals",
+  "chapter_dir": "03-peripherals",
+  "chapter_rel_dir": "chapters/03-peripherals",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Framebuffers and display refresh",
+    "learningObjectives": [
+      "Explain why framebuffer changes are invisible until show() is called",
+      "Trace a text-rendering call through to lit pixels",
+      "Describe why multiple draws can share a single refresh"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10 minutes",
+    "prerequisites": [
+      "RAM holds data while a program runs",
+      "A display is a separate device connected by wires"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Step", "purpose": "Advance one pipeline stage, wrapping after the last" },
+      { "type": "button", "label": "Reset", "purpose": "Return to the opening state and clear the glass" },
+      { "type": "checkbox", "label": "Draw another line WITHOUT calling show()", "purpose": "Add a shape to the framebuffer only" },
+      { "type": "click", "label": "Any node", "purpose": "Show that stage's definition" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Staged pipeline state machine",
+    "variables": ["current stage", "framebuffer contents", "committed screen contents"],
+    "equations": [],
+    "assumptions": [
+      "The pixel grids are coarse mockups, not a true 128 x 64 rendering",
+      "SPI transfer is shown as a single atomic burst"
+    ],
+    "limitations": [
+      "Does not model partial-window updates, page addressing, or SSD1306 command framing"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Step-through with a deliberately misconception-revealing default state",
+    "keyQuestions": [
+      "Why does the framebuffer show Hi while the glass is blank?",
+      "At exactly which stage do the physical pixels change?"
+    ],
+    "commonMisconceptions": [
+      "That a drawing call updates the display immediately",
+      "That each drawing call causes its own screen refresh"
+    ],
+    "assessmentOpportunities": [
+      "Predict the screen contents after a sequence of draws with no show() call"
+    ]
+  }
+}

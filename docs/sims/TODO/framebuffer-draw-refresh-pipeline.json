@@ -1,0 +1,15 @@
+{
+  "sim_id": "framebuffer-draw-refresh-pipeline",
+  "diagram_name": "Framebuffer Draw and Refresh Pipeline",
+  "chapter_number": 3,
+  "chapter_title": "'Peripherals: The OLED Display, Buttons, and Deploying Standalone Code'",
+  "chapter_dir": "03-peripherals",
+  "chapter_rel_dir": "chapters/03-peripherals",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, summarize",
+  "learning_objective": "Help students explain why changes to a framebuffer are invisible until `.show()` is called, and trace how a text-rendering call becomes lit pixels on the physical screen.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: diagram\n**sim-id:** framebuffer-draw-refresh-pipeline<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, summarize\n\nLearning objective: Help students explain why changes to a framebuffer are invisible until `.show()` is called, and trace how a text-rendering call becomes lit pixels on the physical screen.\n\nPurpose: Make the two-step draw/refresh pattern (modify framebuffer in RAM, then send the whole buffer over SPI) concrete and visible, since it is easy to assume drawing calls update the screen immediately.\n\nComponents to show (left-to-right flow):\n- \"Your Code\" (e.g. `oled.text(\"Hi\", 0, 0)`) — leftmost node\n- \"Framebuffer (RAM)\" — a small 128x64 grid representation showing a few lit pixels forming letters, mid-left\n- \"oled.show()\" — a distinct trigger node, mid-right\n- \"SPI (Clock + Data + Chip Select)\" — connector node\n- \"SSD1306 Controller\" — receiving node\n- \"Physical OLED Pixels\" — rightmost node, showing the same lit-pixel pattern now \"on the glass\"\n\nConnections:\n- \"Your Code\" → \"Framebuffer (RAM)\" labeled \"writes bits, no visible change yet\"\n- \"Framebuffer (RAM)\" → \"oled.show()\" labeled \"read only when triggered\"\n- \"oled.show()\" → \"SPI\" → \"SSD1306 Controller\" → \"Physical OLED Pixels\" labeled \"entire buffer sent in one burst\"\n\nInteractive features:\n- A \"Step\" button that advances through the pipeline stage by stage, greying out not-yet-reached nodes and highlighting the active one\n- Clicking any node opens an infobox with that node's definition from this chapter's vocabulary (Framebuffer, Display Refresh, Serial Peripheral Interface, SSD1306 Controller)\n- A toggle: \"Draw another line WITHOUT calling show()\" — visually adds a second lit shape to the Framebuffer grid but explicitly does NOT propagate it to the Physical OLED Pixels node until Step reaches oled.show() again, reinforcing that multiple draws can accumulate before one refresh\n\nVisual style: Horizontal pipeline, rounded rectangle nodes, small pixel-grid mockups inside the Framebuffer and Physical OLED Pixels nodes\n\nColor scheme: Software-side nodes (Your Code, Framebuffer) in blue; the SPI connector in gray; hardware-side nodes (SSD1306 Controller, Physical OLED Pixels) in orange\n\nImplementation: p5.js, responsive width, step state stored so resizing the window does not reset progress"
+}

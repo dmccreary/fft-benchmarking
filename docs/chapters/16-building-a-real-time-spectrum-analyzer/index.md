@@ -222,7 +222,7 @@ A **spectrogram** is a two-dimensional visualization plotting frequency on one a
 
 #### Diagram: Spectrogram / Waterfall Display
 
-<iframe src="../../sims/spectrogram-waterfall-display/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/spectrogram-waterfall-display/main.html" width="100%" height="427px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Spectrogram / Waterfall Display</summary>

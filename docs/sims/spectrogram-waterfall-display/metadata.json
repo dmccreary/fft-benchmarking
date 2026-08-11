@@ -1,0 +1,76 @@
+{
+  "title": "Spectrogram Waterfall Display",
+  "description": "A scrolling colour-mapped frequency-versus-time display with four example sound sequences showing their characteristic signatures.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Time-Frequency Analysis", "Spectrum Display"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "spectrogram-waterfall-display",
+  "library": "p5.js",
+  "canvasHeight": 425,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Spectrograms and time-frequency signatures",
+    "learningObjectives": [
+      "Examine a scrolling waterfall spectrogram",
+      "Interpret a changing pitch as a moving trace",
+      "Explain why a transient appears as a vertical stripe"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A spectrum is magnitude per bin", "Frames and hop size"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 425 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "select", "label": "Sound", "options": ["Rising whistle", "Falling whistle", "Two-tone chord", "Silence then a clap"] },
+      { "type": "button", "label": "Play / Pause", "purpose": "Scroll the waterfall" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Precomputed sequence of synthetic spectra",
+    "variables": ["example sequence", "scroll position"],
+    "equations": ["column[k] = noise floor + peak(k, centre(frame))"],
+    "assumptions": [
+      "48 bins spanning 0 to 8 kHz, 180 precomputed frames per example",
+      "Deterministic broadband texture for the clap so captures are reproducible"
+    ],
+    "limitations": [
+      "Spectra are synthesized rather than computed from audio; the shapes are representative rather than measured"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Recognizable sounds paired with their visual signatures",
+    "keyQuestions": [
+      "Why is a clap a vertical stripe rather than a horizontal line?",
+      "What sets the thickness of the whistle's trace?"
+    ],
+    "commonMisconceptions": [
+      "That a transient has one frequency",
+      "That trace thickness indicates loudness rather than resolution"
+    ],
+    "assessmentOpportunities": [
+      "Identify a sound from a described set of horizontal traces"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "title": "Frequency To Musical Note Calculator",
+  "description": "A three-octave keyboard strip highlighting the key nearest a chosen frequency, with note name, octave, exact frequency, and cents error.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Music Technology", "Peak Detection"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "frequency-to-musical-note-calculator",
+  "library": "p5.js",
+  "canvasHeight": 385,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Frequency to note conversion and cents error",
+    "learningObjectives": [
+      "Calculate the nearest note and octave from a frequency",
+      "Compute cents deviation from the exact note frequency",
+      "Relate cents accuracy to required frequency resolution"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "8-10 minutes",
+    "prerequisites": ["Logarithms base 2", "A detected peak frequency"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 385 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Frequency", "min": 80, "max": 2000, "default": 440, "step": 1, "units": "Hz" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form pitch conversion",
+    "variables": ["frequency", "key number", "cents"],
+    "equations": [
+      "key = round(12 * log2(f/440) + 49)",
+      "exact = 440 * 2^((key-49)/12)",
+      "cents = 1200 * log2(f/exact)"
+    ],
+    "assumptions": ["12-tone equal temperament", "A4 = 440 Hz concert pitch"],
+    "limitations": [
+      "Keyboard shows C3 to B5; frequencies outside that range still compute correctly but highlight no key"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Formula plus familiar visual anchor",
+    "keyQuestions": [
+      "Why is a semitone a different number of Hertz at different pitches?",
+      "What frequency resolution does 5-cent accuracy require at A4?"
+    ],
+    "commonMisconceptions": [
+      "That notes are evenly spaced in Hertz",
+      "That identifying the nearest bin is accurate enough for tuning"
+    ],
+    "assessmentOpportunities": [
+      "Convert 329.0 Hz to a note and judge its acceptability"
+    ]
+  }
+}

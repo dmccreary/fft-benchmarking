@@ -295,7 +295,7 @@ Naming that frequency in musical terms uses a fixed, well-known mapping. **Music
 
 #### Diagram: Frequency-to-Musical-Note Calculator
 
-<iframe src="../../sims/frequency-to-musical-note-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/frequency-to-musical-note-calculator/main.html" width="100%" height="387px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Frequency-to-Musical-Note Calculator</summary>

@@ -192,7 +192,7 @@ Six million cycles sounds like a lot — until you remember that a single unopti
 
 #### Diagram: Cycle Budget Calculator
 
-<iframe src="../../sims/cycle-budget-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/cycle-budget-calculator/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Cycle Budget Calculator</summary>

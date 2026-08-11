@@ -1,0 +1,82 @@
+{
+  "title": "I2S Protocol Timing Explorer",
+  "description": "A logic-analyzer view of BCLK, WS, and SD on a shared time axis with bit-by-bit stepping, channel shading, and an assembled-word readout.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Embedded Systems", "Serial Protocols"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "i2s-protocol-timing-explorer",
+  "library": "p5.js",
+  "canvasHeight": 430,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, distinguish",
+  "completion_status": "implemented",
+  "chapter_number": 5,
+  "chapter_title": "Capturing Real Audio",
+  "chapter_dir": "05-capturing-real-audio",
+  "chapter_rel_dir": "chapters/05-capturing-real-audio",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "I2S serial audio timing",
+    "learningObjectives": [
+      "Examine the timing relationship between BCLK, WS, and SD",
+      "Distinguish left-channel bits from right-channel bits",
+      "Relate word length to the number of BCLK pulses per WS half-cycle"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A digital signal is high or low over time",
+      "Binary place value"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 430 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Bit back / Bit forward", "purpose": "Move the playhead one BCLK pulse" },
+      { "type": "button", "label": "Next word boundary", "purpose": "Jump directly to the next WS transition" },
+      { "type": "button", "label": "Play / Pause", "purpose": "Advance automatically about every 420 ms" },
+      { "type": "slider", "label": "Word length", "min": 16, "max": 24, "default": 16, "step": 8, "units": "bits" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Deterministic protocol timing model",
+    "variables": ["bit index", "word length", "channel"],
+    "equations": ["totalBits = 2 * wordLength"],
+    "assumptions": [
+      "Fixed example data words so the pattern is stable while stepping",
+      "Idealized edges with no setup/hold time or propagation delay",
+      "Standard I2S phase; left-justified and right-justified variants are not shown"
+    ],
+    "limitations": [
+      "Does not model the one-BCLK data delay of the original Philips frame format, nor multi-slot TDM modes"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Manual step-through of a multi-signal timing diagram",
+    "keyQuestions": [
+      "Is WS a pulse at the boundary, or a level held across the word?",
+      "How many BCLK pulses occur per WS half-cycle at 24-bit?"
+    ],
+    "commonMisconceptions": [
+      "That WS pulses briefly at each word boundary rather than holding a level",
+      "That SD alone is enough to decode the stream"
+    ],
+    "assessmentOpportunities": [
+      "Given a described trace, count the samples and total audio bits captured"
+    ]
+  }
+}

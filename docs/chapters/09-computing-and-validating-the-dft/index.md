@@ -169,7 +169,7 @@ For the microphone-captured, real-valued signals this course works with almost e
 
 #### Diagram: Spectrum Symmetry Mirror
 
-<iframe src="../../sims/spectrum-symmetry-mirror/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/spectrum-symmetry-mirror/main.html" width="100%" height="427px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Spectrum Symmetry Mirror</summary>

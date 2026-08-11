@@ -1,0 +1,80 @@
+{
+  "title": "Counter Wraparound Visualizer",
+  "description": "A circular counter dial with draggable start and end markers beside side-by-side naive and masked subtraction panels, on a 10-bit demo counter.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Embedded Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "counter-wraparound-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 555,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 17,
+  "chapter_title": "Measuring Time",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Cycle counter wraparound and masked subtraction",
+    "learningObjectives": [
+      "Apply masked subtraction to compute elapsed cycles across a wrap",
+      "Demonstrate why naive subtraction fails",
+      "Explain why the mask works only for power-of-two ranges"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Binary and bitwise AND", "Counters roll over"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 555 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Start value", "min": 0, "max": 1023, "default": 950, "step": 1 },
+      { "type": "slider", "label": "End value", "min": 0, "max": 1023, "default": 50, "step": 1 }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Modular arithmetic on a power-of-two range",
+    "variables": ["start", "end", "elapsed"],
+    "equations": [
+      "naive = end - start",
+      "masked = (end - start) & 0x3FF",
+      "the 32-bit equivalent is (end - start) & 0xFFFFFFFF"
+    ],
+    "assumptions": [
+      "10-bit demo counter standing in for 32-bit CYCCNT",
+      "At most one wrap between start and end"
+    ],
+    "limitations": [
+      "Cannot detect more than one wraparound; a measurement longer than the full counter period is ambiguous under any formula"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Side-by-side correct and incorrect computation",
+    "keyQuestions": [
+      "Why does the mask work only when the range is a power of two?",
+      "Why does C with uint32_t need no explicit mask but Python does?"
+    ],
+    "commonMisconceptions": [
+      "That a negative elapsed time indicates a broken counter",
+      "That naive subtraction is safe because it usually works"
+    ],
+    "assessmentOpportunities": [
+      "Recover the true elapsed count from a reported negative value"
+    ]
+  }
+}

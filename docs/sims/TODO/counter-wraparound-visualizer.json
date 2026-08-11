@@ -1,0 +1,15 @@
+{
+  "sim_id": "counter-wraparound-visualizer",
+  "diagram_name": "Counter Wraparound Visualizer",
+  "chapter_number": 17,
+  "chapter_title": "\"Measuring Time: The DWT Cycle Counter\"",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — calculate, demonstrate",
+  "bloom_verb": null,
+  "learning_objective": "Apply the masked-subtraction formula to correctly compute elapsed cycles across a wraparound event, and demonstrate why naive subtraction fails.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** counter-wraparound-visualizer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — calculate, demonstrate\nLearning objective: Apply the masked-subtraction formula to correctly compute elapsed cycles across a wraparound event, and demonstrate why naive subtraction fails.\n\nCanvas layout:\n- Top (250px): A circular clock face representing the 32-bit counter range (0 at top, wrapping clockwise back to 0), with a moving dot showing the current CYCCNT value\n- Bottom (250px): Two side-by-side calculator panels — \"Naive subtraction\" and \"Masked subtraction\" — each showing start value, end value, and computed elapsed time\n\nVisual elements:\n- Circular counter dial scaled to a compressed demo range (e.g. 0 to 1,000 \"demo cycles\") rather than the real 4.29 billion, so wraparound is visible within a few seconds of simulated time\n- A draggable \"start\" marker and \"end\" marker on the dial\n- Naive panel shows `end - start` including negative results in red when wraparound occurred\n- Masked panel shows `(end - start) & 0xFFFFFFFF` always producing a correct positive elapsed value, shown in green\n\nInteractive controls:\n- Slider: place the start marker anywhere on the dial\n- Slider: place the end marker anywhere on the dial (including past the wraparound point)\n- Checkbox: \"Force a wraparound between start and end\"\n- Button: \"Compute both ways\"\n\nDefault parameters:\n- Start marker: 950 (near the wraparound point on the compressed 0-1000 demo range)\n- End marker: 50 (just after wraparound)\n\nBehavior:\n- When start > end on the dial (wraparound occurred), the naive panel visibly produces a negative or nonsensical number\n- The masked panel always produces the correct short arc-length between start and end going clockwise\n- A short text explanation updates live: \"Naive subtraction fails here because the counter wrapped. Masked subtraction succeeds because it wraps the math to match the wrapped hardware.\"\n\nInstructional Rationale: A draggable dial with two live calculators lets the learner\ndirectly cause and observe the failure mode (Apply-level) rather than only reading about\nit, which matches the objective of being able to compute correct elapsed time under\nwraparound conditions.\n\nImplementation: p5.js, circular dial drawn with arc(), demo range 0-1000 mapped conceptually to the real 32-bit range in the text explanation"
+}

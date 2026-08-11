@@ -247,7 +247,7 @@ milliseconds even in the slowest pure-Python version.
 
 #### Diagram: Counter Wraparound Visualizer
 
-<iframe src="../../sims/counter-wraparound-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/counter-wraparound-visualizer/main.html" width="100%" height="557px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Counter Wraparound Visualizer</summary>

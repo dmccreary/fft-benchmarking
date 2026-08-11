@@ -228,7 +228,7 @@ A related, audible phenomenon happens when two waves have frequencies that are c
 
 #### Diagram: Wave Superposition and Beats Simulator
 
-<iframe src="../../sims/wave-superposition-beats-simulator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/wave-superposition-beats-simulator/main.html" width="100%" height="572px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Wave Superposition and Beats Simulator</summary>

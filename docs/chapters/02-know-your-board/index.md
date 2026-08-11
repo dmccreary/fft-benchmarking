@@ -135,7 +135,7 @@ Before looking at how all of these registers relate to each other spatially in t
 
 #### Diagram: Pico 2 Memory Map Explorer
 
-<iframe src="../../sims/pico2-memory-map-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/pico2-memory-map-explorer/main.html" width="100%" height="512px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Pico 2 Memory Map Explorer</summary>

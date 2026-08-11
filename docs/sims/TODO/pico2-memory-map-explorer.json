@@ -1,0 +1,15 @@
+{
+  "sim_id": "pico2-memory-map-explorer",
+  "diagram_name": "Pico 2 Memory Map Explorer",
+  "chapter_number": 2,
+  "chapter_title": "'Know Your Board: ARM Cortex-M Architecture and the Pico 2'",
+  "chapter_dir": "02-know-your-board",
+  "chapter_rel_dir": "chapters/02-know-your-board",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, classify",
+  "learning_objective": "Help students classify a given address or piece of data as belonging to RAM, flash, or the memory-mapped register block, and explain why reading a register address behaves differently from reading ordinary RAM.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: diagram\n**sim-id:** pico2-memory-map-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, classify\n\nLearning objective: Help students classify a given address or piece of data as belonging to RAM, flash, or the memory-mapped register block, and explain why reading a register address behaves differently from reading ordinary RAM.\n\nPurpose: Give a spatial, clickable mental model of the Pico 2's address space so \"memory-mapped register\" stops being an abstract phrase and becomes a specific labeled region students can point to.\n\nComponents to show:\n- A single tall vertical bar representing the full address space, divided into three labeled, differently colored horizontal bands (not to scale, but ordered top-to-bottom): \"Flash (program + saved files)\", \"RAM (running variables)\", \"Memory-Mapped Registers (hardware)\"\n- Within the \"Memory-Mapped Registers\" band, four smaller labeled sub-blocks: \"CPUID Register\", \"Unique Device ID\", \"Clock Control\", \"Peripheral Registers (SPI, GPIO, etc.)\"\n- A small \"You are here\" style pointer that moves to the relevant band when a code snippet is selected\n\nInteractive features:\n- Clicking any band or sub-block opens an infobox with: the term's definition (matching this chapter's prose), an example of what lives there, and whether it is volatile (lost on power-off) or non-volatile\n- A row of three buttons above the diagram, each labeled with a code snippet (`gc.mem_free()`, `machine.unique_id()`, `open(\"main.py\")`); clicking one highlights the memory band that snippet actually reads from, reinforcing which concept maps to which region\n- Hover over any band shows a one-line tooltip summary before the full infobox is opened by click\n\nVisual style: Simple vertical block diagram, flat colors, no 3D effects\n\nColor scheme: Flash in amber, RAM in blue, Memory-Mapped Registers in green with darker-green sub-blocks\n\nImplementation: p5.js, responsive width, fixed regions recalculated proportionally on window resize"
+}

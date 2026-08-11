@@ -1,0 +1,87 @@
+{
+  "title": "Experimental Design Anatomy",
+  "description": "A benchmark research question whose key phrases are draggable chips, sorted by the learner into research question, independent variable, dependent variable, and controlled variables, with hints on mismatch and three worked examples from different domains.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Research Methods"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "experimental-design-anatomy",
+  "library": "p5.js",
+  "canvasHeight": 435,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Classify, construct",
+  "completion_status": "implemented",
+  "chapter_number": 27,
+  "chapter_title": "Capstone: Applications, Design, and Reporting",
+  "chapter_dir": "27-capstone",
+  "chapter_rel_dir": "chapters/27-capstone",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Decomposing a benchmark question into its experimental variables",
+    "learningObjectives": [
+      "Classify phrases of a research question by experimental role",
+      "Distinguish an independent variable from a dependent variable",
+      "Construct a benchmark suite from a well-formed question"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": [
+      "An experiment compares outcomes under changed conditions",
+      "Familiarity with FFT size, window type, and sample rate"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 435 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "drag", "label": "Phrase chip", "purpose": "Move a phrase from the sentence into a category box" },
+      { "type": "button", "label": "Check my answers", "purpose": "Score the placements and give a hint on the first mismatch" },
+      { "type": "button", "label": "Try a new example", "purpose": "Cycle to a question from a different application domain" },
+      { "type": "button", "label": "Clear this one", "purpose": "Return every phrase to the sentence" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Drag-and-drop classification over an inline sentence flow with three worked examples",
+    "variables": ["active example", "phrase placement", "correct count"],
+    "equations": [
+      "correct = count of chips where placement equals the answer key",
+      "each example has exactly one research question, one independent variable, one dependent variable and three controlled variables"
+    ],
+    "assumptions": [
+      "Every question is written in the form: does A change B, holding C, D and E fixed",
+      "Exactly one independent variable per question, which is what makes the design interpretable"
+    ],
+    "limitations": [
+      "Does not cover factorial designs with more than one independent variable",
+      "Does not address replication, variance, or sample size"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Direct manipulation with category-level hints rather than answers, repeated across unrelated domains to force transfer",
+    "keyQuestions": [
+      "Which phrase is the thing you change, and which is the thing you read off?",
+      "How many benchmark runs does this question require?"
+    ],
+    "commonMisconceptions": [
+      "Confusing the independent and dependent variables",
+      "Treating the research question as a variable",
+      "Leaving controlled variables unstated because they seem obvious"
+    ],
+    "assessmentOpportunities": [
+      "Write a new research question in the same form and list the runs it implies",
+      "Explain why a second independent variable makes a result uninterpretable"
+    ]
+  }
+}

@@ -13,7 +13,7 @@ bloom_level: Apply
 
 # Frequency To Musical Note Calculator
 
-<iframe src="main.html" height="387px" width="100%" scrolling="no"></iframe>
+<iframe src="main.html" height="417px" width="100%" scrolling="no"></iframe>
 
 [Run the Frequency To Musical Note Calculator MicroSim Fullscreen](./main.html){ .md-button .md-button--primary }
 
@@ -21,7 +21,7 @@ You can include this MicroSim on your website using the following `iframe`:
 
 ```html
 <iframe src="https://dmccreary.github.io/fft-benchmarking/sims/frequency-to-musical-note-calculator/main.html"
-        height="387px" width="100%" scrolling="no"></iframe>
+        height="417px" width="100%" scrolling="no"></iframe>
 ```
 
 ## About This MicroSim
@@ -33,6 +33,11 @@ $$k = \text{round}\!\left(12 \log_2\!\frac{f}{440} + 49\right)$$
 
 where $k$ is the piano key number and key 49 is A4 = 440 Hz. Every semitone is a
 factor of $2^{1/12}$, so twelve of them double the frequency.
+
+Checking **Play tone** synthesizes a sine wave at the selected frequency, and
+clicking a key on the keyboard jumps to that note's exact pitch and sounds it.
+Hearing the tone while reading its cents error connects the number to the thing
+the number describes — the same sine wave your FFT would be analyzing.
 
 ## Cents Are What Matter for a Tuner
 
@@ -53,14 +58,22 @@ interpolation.
 ## How to Use
 
 1. At the default 440 Hz, confirm A4 with 0.0 cents error.
-2. Move the slider to 442 Hz. Still A4, but now about +8 cents sharp — audibly
-   out of tune to a trained ear.
-3. Find the frequency where the readout flips from A4 to A#4. It is halfway
+2. Check **Play tone** to hear a pure sine wave at whatever frequency the slider
+   is showing. Drag the slider and the pitch follows continuously.
+3. Click any key on the keyboard. The slider jumps to that note's *exact*
+   frequency, the readout confirms 0.0 cents, and the note sounds.
+4. Click anywhere off the keyboard — the readout panel, the background — to stop
+   the sound. The slider and the checkbox keep working normally.
+5. Move the slider to 442 Hz. Still A4, but now about +8 cents sharp — enough
+   that a trained ear would reject it.
+6. Find the frequency where the readout flips from A4 to A#4. It is halfway
    between them in *cents*, not in Hertz.
-4. Compare the Hz gap between A3 and A#3 against the gap between A5 and A#5. The
+7. Compare the Hz gap between A3 and A#3 against the gap between A5 and A#5. The
    cents are identical; the Hertz are not. That is what logarithmic pitch means.
-5. Set the slider to 880 Hz. One octave above A4, and exactly double the
-   frequency.
+8. Click A4, then click A5. One octave up, and exactly double the frequency.
+
+The slider spans exactly the keyboard that is drawn, C3 (130.8 Hz) to B5
+(987.8 Hz), in 0.1 Hz steps so that every key is reachable at its exact pitch.
 
 ## Lesson Plan
 

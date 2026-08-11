@@ -1,6 +1,6 @@
 {
   "title": "Frequency To Musical Note Calculator",
-  "description": "A three-octave keyboard strip highlighting the key nearest a chosen frequency, with note name, octave, exact frequency, and cents error.",
+  "description": "A three-octave keyboard strip highlighting the key nearest a chosen frequency, with note name, octave, exact frequency, and cents error. Keys are clickable and a sine oscillator sounds the selected frequency.",
   "creator": "Real-Time DSP on a $5 Microcontroller",
   "author": "Dan McCreary",
   "date": "2026-08-11",
@@ -11,7 +11,7 @@
   "rights": "CC BY-NC-SA 4.0",
   "identifier": "frequency-to-musical-note-calculator",
   "library": "p5.js",
-  "canvasHeight": 385,
+  "canvasHeight": 415,
   "bloomLevel": "Apply",
   "bloomVerb": "Calculate, demonstrate",
   "completion_status": "implemented",
@@ -36,14 +36,16 @@
   "technical": {
     "framework": "p5.js",
     "version": "1.0",
-    "canvasDimensions": { "width": "responsive", "height": 385 },
+    "canvasDimensions": { "width": "responsive", "height": 415 },
     "responsive": true,
-    "dependencies": ["p5.js 1.11.10 CDN"],
+    "dependencies": ["p5.js 1.11.10 CDN", "p5.sound 1.11.10 CDN"],
     "accessibility": { "hasAltText": true, "keyboardNavigable": false }
   },
   "userInterface": {
     "controls": [
-      { "type": "slider", "label": "Frequency", "min": 80, "max": 2000, "default": 440, "step": 1, "units": "Hz" }
+      { "type": "slider", "label": "Frequency", "min": 130.8, "max": 987.8, "default": 440, "step": 0.1, "units": "Hz" },
+      { "type": "checkbox", "label": "Play tone", "default": false },
+      { "type": "canvasClick", "label": "Piano keys", "action": "Click a key to jump to its exact frequency and sound it; click anywhere off the keyboard to stop the tone" }
     ]
   },
   "simulationModel": {
@@ -56,7 +58,9 @@
     ],
     "assumptions": ["12-tone equal temperament", "A4 = 440 Hz concert pitch"],
     "limitations": [
-      "Keyboard shows C3 to B5; frequencies outside that range still compute correctly but highlight no key"
+      "Frequency range is limited to the drawn keyboard, C3 (130.8 Hz) through B5 (987.8 Hz)",
+      "The tone is a pure sine wave with no harmonics, so it sounds unlike a real instrument at the same pitch",
+      "Audio requires a user gesture to start, per browser autoplay policy"
     ]
   },
   "pedagogical": {

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mkdocs",
+      "runtimeExecutable": "mkdocs",
+      "runtimeArgs": ["serve"],
+      "port": 8000
+    }
+  ]
+}

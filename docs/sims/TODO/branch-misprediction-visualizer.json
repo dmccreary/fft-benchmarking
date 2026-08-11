@@ -1,0 +1,15 @@
+{
+  "sim_id": "branch-misprediction-visualizer",
+  "diagram_name": "Branch Misprediction Visualizer",
+  "chapter_number": 24,
+  "chapter_title": "\"Specialization and Branchless Code\"",
+  "chapter_dir": "24-specialization-and-branchless-code",
+  "chapter_rel_dir": "chapters/24-specialization-and-branchless-code",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — explain, interpret",
+  "bloom_verb": null,
+  "learning_objective": "Explain why a predictable branch costs nearly nothing while an unpredictable branch repeatedly stalls the pipeline, by stepping through both cases with visible pipeline state.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** branch-misprediction-visualizer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — explain, interpret\nLearning objective: Explain why a predictable branch costs nearly nothing while an unpredictable branch repeatedly stalls the pipeline, by stepping through both cases with visible pipeline state.\n\nCanvas layout:\n- Top (250px): \"Predictable branch\" pipeline lane — a horizontal row of pipeline stage boxes (Fetch, Decode, Execute) showing instructions flowing through smoothly across several loop iterations\n- Bottom (250px): \"Unpredictable branch\" pipeline lane — same stage layout, but periodically shows a \"flush\" event (red flash, stages emptied) when a guess is wrong\n\nVisual elements:\n- Each lane processes a simulated sequence of 10 branch outcomes\n- Predictable lane: outcomes follow an obvious pattern (taken, taken, taken, ..., not-taken once at the end) — predictor guesses correctly every time after the first\n- Unpredictable lane: outcomes alternate unpredictably (simulating scattered trivial-twiddle positions) — predictor guesses wrong roughly half the time, each wrong guess shown as a pipeline flush with a small \"wasted cycles\" counter incrementing\n\nInteractive controls:\n- Button: \"Step\" — advances one branch outcome in both lanes simultaneously\n- Button: \"Run all 10\"\n- Running tally, per lane: \"Total wasted cycles from mispredictions\"\n- Button: \"Reset\"\n\nInstructional Rationale: Side-by-side pipeline lanes stepping through the same number of\nbranches let the learner directly compare (Understand-level) predictable versus\nunpredictable outcomes and see the wasted-cycle cost accumulate concretely, rather than\nbeing told the difference in the abstract.\n\nImplementation: p5.js, two pipeline lanes as arrays of stage-boxes, flush animation triggered on simulated mispredict events"
+}

@@ -6,7 +6,7 @@ quality_score: 97
 
 # Course Description
 
-**Title:** Benchmarking FFT — Real-Time Signal Processing on a $5 Microcontroller
+**Title:** Real-Time DSP on a $5 Microcontroller — Building and Benchmarking the FFT from Scratch
 **Course Length:** 10 weeks, or self-paced independent study
 **Audience:** College juniors and seniors curious about signal processing
 **Format:** Hands-on throughout — 35 laboratory exercises on physical hardware
@@ -17,9 +17,10 @@ This course teaches you to make a $5 microcontroller listen to the real world an
 in real time.
 
 You will build a Fast Fourier Transform from scratch — discovering the algorithm rather than
-being handed it — then make it fast enough for live audio by hand-writing ARM assembly. Along
+being handed it — then make it fast enough for live audio by hand-writing ARM assembly
+optimized to use advanced floating point and digital signal processing hardware. Along
 the way you will learn to benchmark honestly, which turns out to be a harder and rarer skill
-than writing the fast code itself.
+than writing the code itself.
 
 By the final week you will have taken a 512-point transform from **21 seconds** down to
 **0.59 milliseconds** on the same chip, measured every step yourself, and be able to explain

@@ -1,0 +1,15 @@
+{
+  "sim_id": "optimization-attribution-waterfall",
+  "diagram_name": "Optimization Attribution Waterfall",
+  "chapter_number": 24,
+  "chapter_title": "\"Specialization and Branchless Code\"",
+  "chapter_dir": "24-specialization-and-branchless-code",
+  "chapter_rel_dir": "chapters/24-specialization-and-branchless-code",
+  "library": "Chart.js",
+  "bloom_level": "Evaluate (L5) — justify, assess",
+  "bloom_verb": null,
+  "learning_objective": "Assess how much of a total speedup each individual optimization contributed, by inspecting a waterfall chart built from one-change-at-a-time measurements.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** optimization-attribution-waterfall<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Evaluate (L5) — justify, assess\nLearning objective: Assess how much of a total speedup each individual optimization contributed, by inspecting a waterfall chart built from one-change-at-a-time measurements.\n\nChart type: Waterfall (cumulative step) bar chart\n\nPurpose: Show a baseline execution time and four sequential, individually-measured optimizations, each narrowing the gap toward a final time — illustrative values, explicitly labeled as such\n\nX-axis categories, left to right:\n- \"Baseline (Chapter 23 assembly FFT)\": 850 μs\n- \"+ Trivial twiddle skip\": -60 μs step\n- \"+ Branchless butterfly select\": -15 μs step\n- \"+ Loop unrolling ×2\": -40 μs step\n- \"+ Cache-aware ordering\": -25 μs step\n- \"Final\": 710 μs\n\nY-axis: Execution time (μs)\n\nInteractive elements:\n- Hover any step bar to see the exact μs change and a one-line description of that specific change\n- Toggle: \"Show as percentage of baseline\" vs \"Show as raw μs\" recomputes bar heights and labels\n- Callout text: \"Each step was measured by re-running the full harness with only that one change added — this is optimization attribution in practice.\"\n\nTitle: \"Where the Speedup Actually Came From (illustrative)\"\nLegend: color-coded by whether a step decreased time (green) — all steps here do, but the chart type supports a red increase for a negative result\n\nImplementation: Chart.js waterfall-style bar chart (floating bars with connector lines), data array with per-step deltas"
+}

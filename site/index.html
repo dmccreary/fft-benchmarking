@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+        <meta name="description" content="A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
       
       
         <meta name="author" content="Dan McCreary">
@@ -24,7 +24,7 @@
     
     
       
-        <title>FFT Benchmarking</title>
+        <title>Real-Time DSP on a $5 Microcontroller</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-the-fft-benchmarking-site" class="md-skip">
+        <a href="#real-time-dsp-on-a-5-microcontroller" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="img/logo.png" alt="logo">
 
@@ -107,7 +107,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            FFT Benchmarking
+            Real-Time DSP on a $5 Microcontroller
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -203,12 +203,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="img/logo.png" alt="logo">
 
     </a>
-    FFT Benchmarking
+    Real-Time DSP on a $5 Microcontroller
   </label>
   
     <div class="md-nav__source">
@@ -312,6 +312,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -539,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="cornell-labs/pico-example/" class="md-nav__link">
+      <a href="cornell-labs/pico-example.md" class="md-nav__link">
         
   
   
@@ -565,6 +569,122 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -666,6 +786,77 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="glossary/" class="md-nav__link">
         
@@ -673,6 +864,28 @@
   
   <span class="md-ellipsis">
     Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
     
   </span>
   
@@ -812,8 +1025,10 @@
   
 
 
-<h1 id="welcome-to-the-fft-benchmarking-site">Welcome to the FFT Benchmarking Site</h1>
-<p>Our goal is to get the maximum performance doing FFT on microcontrollers such as the new powerful Raspberry Pi Pico 2 with updated floating point and DSP instructions.</p>
+<h1 id="real-time-dsp-on-a-5-microcontroller">Real-Time DSP on a $5 Microcontroller</h1>
+<p><em>Building and Benchmarking the FFT from Scratch</em></p>
+<p>Our goal is to get the maximum performance doing FFT on low-cost microcontrollers such as 
+the powerful Raspberry Pi Pico 2 with updated floating point and DSP instructions.</p>
 <p>Raspberry Pi Pico 2 comes with the RP2350 Pico 2 ARM Cortex-M33 processor.  It has custom hardware for doing signal processing.  However, very few libraries use this power.</p>
 
 

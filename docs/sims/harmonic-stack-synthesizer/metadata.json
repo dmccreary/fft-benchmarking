@@ -15,7 +15,7 @@
   "rights": "CC BY-NC-SA 4.0",
   "identifier": "harmonic-stack-synthesizer",
   "library": "p5.js",
-  "canvasHeight": 555,
+  "canvasHeight": 585,
   "bloomLevel": "Analyze",
   "bloomVerb": "Examine, differentiate",
   "completion_status": "implemented",
@@ -43,9 +43,9 @@
   "technical": {
     "framework": "p5.js",
     "version": "1.0",
-    "canvasDimensions": { "width": "responsive", "height": 555 },
+    "canvasDimensions": { "width": "responsive", "height": 585 },
     "responsive": true,
-    "dependencies": ["p5.js 1.11.10 CDN"],
+    "dependencies": ["p5.js 1.11.10 CDN", "p5.sound 1.11.10 CDN"],
     "accessibility": { "hasAltText": true, "keyboardNavigable": false }
   },
   "userInterface": {
@@ -56,7 +56,8 @@
       { "type": "slider", "label": "4th harmonic (1760 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
       { "type": "slider", "label": "5th harmonic (2200 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
       { "type": "button", "label": "Flute / Violin / Clarinet / Pure tone", "purpose": "Apply an instrument-like overtone mixture" },
-      { "type": "checkbox", "label": "Show individual harmonics overlay", "purpose": "Draw each component sine faintly under the sum" }
+      { "type": "checkbox", "label": "Show individual harmonics overlay", "purpose": "Draw each component sine faintly under the sum" },
+      { "type": "button", "label": "Play Sound / Stop Sound", "purpose": "Sound the current mix with one sine oscillator per harmonic" }
     ]
   },
   "simulationModel": {
@@ -68,10 +69,12 @@
     "assumptions": [
       "All harmonics are exactly in phase",
       "Only the first five harmonics are modeled",
-      "The plot is normalized to its own peak so shape stays visible at any mix"
+      "The plot is normalized to its own peak so shape stays visible at any mix",
+      "The audio is normalized against the same peak, so adding overtones changes timbre without changing loudness"
     ],
     "limitations": [
-      "Real instruments have inharmonic content, attack transients, and time-varying spectra; none of these are modeled"
+      "Real instruments have inharmonic content, attack transients, and time-varying spectra; none of these are modeled",
+      "The sustained tone has no attack or decay envelope, which is itself a large part of how a real instrument is recognized"
     ]
   },
   "pedagogical": {

@@ -1,0 +1,15 @@
+{
+  "sim_id": "address-byte-offset-explorer",
+  "diagram_name": "Address and Byte Offset Explorer",
+  "chapter_number": 22,
+  "chapter_title": "\"Talking to the FPU: Floating-Point Assembly\"",
+  "chapter_dir": "22-talking-to-the-fpu",
+  "chapter_rel_dir": "chapters/22-talking-to-the-fpu",
+  "library": "p5.js",
+  "bloom_level": "Apply (L3) — calculate, demonstrate",
+  "bloom_verb": null,
+  "learning_objective": "Apply the byte-offset formula to compute the correct VLDR offset for a chosen element index in a typed array of floats.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** address-byte-offset-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply (L3) — calculate, demonstrate\nLearning objective: Apply the byte-offset formula to compute the correct VLDR offset for a chosen element index in a typed array of floats.\n\nCanvas layout:\n- Top (200px): A horizontal memory strip showing 8 contiguous 4-byte float slots, each labeled with its element index (0-7) and its byte address, starting from a base address like 0x20001000\n- Bottom (300px): A calculator panel: element index input, computed byte offset, computed full address, and the resulting VLDR instruction text\n\nVisual elements:\n- Memory strip drawn as 8 equal-width boxes, each 4 bytes wide, with a running byte-address label under each box\n- Selected element highlighted in a distinct color\n- Calculator shows the formula `offset = index * 4` filled in with live numbers\n\nInteractive controls:\n- Slider or click-to-select: choose element index (0-7)\n- Base address input (default 0x20001000, editable)\n- Live output: \"VLDR s0, [r0, #<offset>]\" text, updating as the index changes\n\nBehavior:\n- Selecting element index 3 highlights the 4th box, shows offset = 12, full address = base + 12, and displays \"VLDR s0, [r0, #12]\"\n- An intentional wrong-answer check: entering a non-multiple-of-4 \"manual offset\" in an optional advanced field shows a warning that misaligned offsets do not correspond to any real element boundary\n\nInstructional Rationale: Apply-level objectives call for a parameter-driven calculator —\nletting the learner pick any element index and see the exact instruction text it produces\ndirectly exercises the byte-offset formula rather than just displaying it.\n\nImplementation: p5.js, memory strip drawn as rectangles with text labels, offset computed live from a numeric input"
+}

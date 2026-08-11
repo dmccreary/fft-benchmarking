@@ -26,7 +26,7 @@
     
     
       
-        <title>Course Description - FFT Benchmarking</title>
+        <title>Course Description - Real-Time DSP on a $5 Microcontroller</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href=".." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../img/logo.png" alt="logo">
 
@@ -109,7 +109,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            FFT Benchmarking
+            Real-Time DSP on a $5 Microcontroller
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -205,12 +205,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href=".." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../img/logo.png" alt="logo">
 
     </a>
-    FFT Benchmarking
+    Real-Time DSP on a $5 Microcontroller
   </label>
   
     <div class="md-nav__source">
@@ -615,6 +615,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -828,7 +832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../cornell-labs/pico-example/" class="md-nav__link">
+      <a href="../cornell-labs/pico-example.md" class="md-nav__link">
         
   
   
@@ -854,6 +858,122 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -955,6 +1075,77 @@
   
   
   
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../glossary/" class="md-nav__link">
         
@@ -962,6 +1153,28 @@
   
   <span class="md-ellipsis">
     Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
     
   </span>
   
@@ -1365,7 +1578,7 @@
 
 
 <h1 id="course-description">Course Description</h1>
-<p><strong>Title:</strong> Benchmarking FFT — Real-Time Signal Processing on a $5 Microcontroller
+<p><strong>Title:</strong> Real-Time DSP on a $5 Microcontroller — Building and Benchmarking the FFT from Scratch
 <strong>Course Length:</strong> 10 weeks, or self-paced independent study
 <strong>Audience:</strong> College juniors and seniors curious about signal processing
 <strong>Format:</strong> Hands-on throughout — 35 laboratory exercises on physical hardware</p>
@@ -1373,9 +1586,10 @@
 <p>This course teaches you to make a $5 microcontroller listen to the real world and understand it
 in real time.</p>
 <p>You will build a Fast Fourier Transform from scratch — discovering the algorithm rather than
-being handed it — then make it fast enough for live audio by hand-writing ARM assembly. Along
+being handed it — then make it fast enough for live audio by hand-writing ARM assembly
+optimized to use advanced floating point and digital signal processing hardware. Along
 the way you will learn to benchmark honestly, which turns out to be a harder and rarer skill
-than writing the fast code itself.</p>
+than writing the code itself.</p>
 <p>By the final week you will have taken a 512-point transform from <strong>21 seconds</strong> down to
 <strong>0.59 milliseconds</strong> on the same chip, measured every step yourself, and be able to explain
 precisely where each factor of improvement came from.</p>

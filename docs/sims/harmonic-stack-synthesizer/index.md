@@ -13,7 +13,7 @@ bloom_level: Analyze
 
 # Harmonic Stack Synthesizer
 
-<iframe src="main.html" height="557px" width="100%" scrolling="no"></iframe>
+<iframe src="main.html" height="587px" width="100%" scrolling="no"></iframe>
 
 [Run the Harmonic Stack Synthesizer MicroSim Fullscreen](./main.html){ .md-button .md-button--primary }
 
@@ -21,7 +21,7 @@ You can include this MicroSim on your website using the following `iframe`:
 
 ```html
 <iframe src="https://dmccreary.github.io/fft-benchmarking/sims/harmonic-stack-synthesizer/main.html"
-        height="557px" width="100%" scrolling="no"></iframe>
+        height="587px" width="100%" scrolling="no"></iframe>
 ```
 
 ## About This MicroSim
@@ -33,6 +33,11 @@ The fundamental is pinned at 440 Hz. The four sliders above it add overtones at
 exact integer multiples — 880, 1320, 1760, and 2200 Hz. As you raise them, the
 combined waveform's **shape** changes dramatically. What does not change is the
 dashed red spacing: the whole pattern still repeats every 1/440 second.
+
+Press **Play Sound** and you hear the same thing you are looking at: five sine
+oscillators, one per harmonic, at the amplitudes the sliders are set to. The
+mix is normalized to its own peak, so adding overtones changes the character of
+the sound without making it louder — the change you hear is timbre alone.
 
 That is the separation you are meant to see:
 
@@ -55,8 +60,11 @@ overtone mixture *is* the spectrum.
 4. Check **Show individual harmonics overlay** to see the component sine waves
    that are being summed. Count how many peaks the 3rd harmonic fits into one
    fundamental cycle. (Three.)
-5. Return to **Pure tone** and confirm the shape resets while the period never
-   budged through any of it.
+5. Press **Play Sound**, then step through the presets again with the sound on.
+   The character changes; the note does not. Leave the sound running while you
+   drag a single overtone slider to hear that one partial fade in and out.
+6. Return to **Pure tone** and confirm the shape resets while the period never
+   budged through any of it. Press **Stop Sound** when you are done.
 
 ## Presets
 

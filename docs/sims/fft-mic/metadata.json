@@ -1,0 +1,96 @@
+{
+  "title": "FFT Microphone Spectrum Analyzer",
+  "description": "A live FFT of the computer's microphone, with a peak marker, a fading peak trail, and a hertz-plus-musical-note readout for the browser version of the whistle test.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Spectral Analysis", "Audio Capture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "fft-mic",
+  "library": "p5.js",
+  "canvasHeight": 490,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Apply, verify",
+  "completion_status": "implemented",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "adapted_from": "https://dmccreary.github.io/signal-processing/sims/fft-mic/",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Live magnitude spectrum of real audio",
+    "learningObjectives": [
+      "Apply the magnitude spectrum to real captured audio",
+      "Verify that a displayed peak tracks a changing pitch in real time",
+      "Distinguish tonal, harmonic, and noise-like sounds by their spectra",
+      "Relate the readout's step size to the FFT bin width"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "15 minutes",
+    "prerequisites": [
+      "An FFT produces a magnitude per bin",
+      "Bin width equals sample rate divided by FFT size",
+      "Harmonics are integer multiples of a fundamental"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 490 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN", "p5.sound 1.11.10 CDN"],
+    "permissions": ["microphone"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Start microphone", "purpose": "Request microphone access and begin live analysis; toggles to stop and resume" },
+      { "type": "button", "label": "Demo sweep", "purpose": "Run a synthetic whistle glide for machines with no microphone or no permission" },
+      { "type": "checkbox", "label": "decibel scale", "default": false, "purpose": "Switch bar heights between linear magnitude and a -48 dB to 0 dB scale" },
+      { "type": "slider", "label": "Max frequency", "min": 1000, "max": 12000, "step": 500, "default": 4000, "units": "Hz" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Live 512-bin FFT of a microphone stream, with peak picking and note conversion",
+    "variables": ["displayed frequency range", "magnitude scale", "peak bin"],
+    "equations": [
+      "bin width = (sample rate / 2) / 512",
+      "peak frequency = peak bin index * bin width",
+      "dB = 20 * log10(magnitude / 255)",
+      "semitones from A4 = 12 * log2(f / 440)"
+    ],
+    "assumptions": [
+      "The strongest bin above a fixed threshold is the fundamental",
+      "Equal temperament with A4 = 440 Hz for the note readout",
+      "Sample rate is read from the audio context, defaulting to 44100 Hz"
+    ],
+    "limitations": [
+      "Peak frequency is quantized to one bin width; parabolic interpolation from Chapter 15 is deliberately omitted",
+      "The strongest bin is not always the perceived pitch for harmonically rich sounds",
+      "Microphone access requires a secure context and user permission"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Predict-then-verify with the student's own voice as the signal source",
+    "keyQuestions": [
+      "Why does a hum show harmonics but a whistle does not?",
+      "Why does the reported frequency step rather than slide?",
+      "What changes when the decibel scale is switched on, and what does not?"
+    ],
+    "commonMisconceptions": [
+      "That the tallest bar is always the perceived pitch",
+      "That switching to a decibel scale makes the quiet content louder rather than more visible",
+      "That a wider displayed frequency range improves frequency resolution"
+    ],
+    "assessmentOpportunities": [
+      "Bound the true frequency given a reported peak and the bin width",
+      "Classify a recorded sound as tonal, harmonic, or noise-like from its spectrum"
+    ]
+  }
+}

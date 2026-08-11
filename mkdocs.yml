@@ -106,7 +106,6 @@ nav:
     - Abstraction Ladder Diagram: sims/abstraction-ladder-diagram/index.md
     - Address and Byte Offset Explorer: sims/address-byte-offset-explorer/index.md
     - Aliasing Demonstrator: sims/aliasing-demonstrator/index.md
-    - Applications of Real-Time FFT: sims/fft-applications-map/index.md
     - Benchmark Results Chart: sims/benchmark-results-chart/index.md
     - Blink Timing Explorer: sims/blink-timing-explorer/index.md
     - Boxed vs Unboxed Memory Explorer: sims/boxed-unboxed-memory-explorer/index.md
@@ -126,16 +125,17 @@ nav:
     - Dynamic Range Ladder: sims/dynamic-range-ladder/index.md
     - Eight Point DFT By Hand Calculator: sims/eight-point-dft-by-hand-calculator/index.md
     - Experimental Design Anatomy: sims/experimental-design-anatomy/index.md
+    - FFT Applications Map: sims/fft-applications-map/index.md
     - FFT History Timeline: sims/timeline/index.md
-    - FFT Stage Architecture — Python and Assembly Boundary: sims/fft-stage-architecture/index.md
-    - FPU Capability Probe Simulator: sims/fpu-capability-probe/index.md
+    - FFT Stage Architecture: sims/fft-stage-architecture/index.md
+    - FPU Capability Probe: sims/fpu-capability-probe/index.md
     - Framebuffer Draw Refresh Pipeline: sims/framebuffer-draw-refresh-pipeline/index.md
     - Frequency To Musical Note Calculator: sims/frequency-to-musical-note-calculator/index.md
     - Harmonic Stack Synthesizer: sims/harmonic-stack-synthesizer/index.md
     - Hop Size Overlap Visualizer: sims/hop-size-overlap-visualizer/index.md
     - I2S Protocol Timing Explorer: sims/i2s-protocol-timing-explorer/index.md
     - In-Phase Quadrature Explorer: sims/in-phase-quadrature-explorer/index.md
-    - Instruction Encoding Bit Field Builder: sims/instruction-encoding-bit-builder/index.md
+    - Instruction Encoding Bit Builder: sims/instruction-encoding-bit-builder/index.md
     - Iterative FFT Stage Loop Visualizer: sims/iterative-fft-stage-loop-visualizer/index.md
     - Learning Graph Viewer: sims/graph-viewer/index.md
     - Linear Sqrt Decibel Scaling Chart: sims/linear-sqrt-decibel-scaling-chart/index.md
@@ -163,6 +163,8 @@ nav:
     - Variant Performance Dashboard: sims/variant-performance-dashboard/index.md
     - Wave Superposition Beats Simulator: sims/wave-superposition-beats-simulator/index.md
     - Window Function Comparison: sims/window-function-comparison/index.md
+
+
 
 
 

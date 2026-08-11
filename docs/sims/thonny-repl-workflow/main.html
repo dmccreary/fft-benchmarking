@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Thonny REPL Workflow MicroSim using vis-network</title>
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vis-network/styles/vis-network.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="network"></div>
+
+        <div class="title">Thonny REPL Workflow</div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color color-software"></div>
+                <span><strong>Software</strong> &mdash; runs on the laptop</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-hardware"></div>
+                <span><strong>Hardware</strong> &mdash; the Pico 2 board</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-link"></div>
+                <span><strong>Link</strong> &mdash; how they connect</span>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="controls">
+                <button class="btn btn-primary" id="script-btn">Script Path</button>
+                <button class="btn btn-primary" id="direct-btn">Direct REPL</button>
+                <button class="btn btn-secondary" id="reset-btn">Reset</button>
+            </div>
+
+            <div class="status-info">
+                <div class="status-title" id="status-title">Hover or click a node</div>
+                <div class="status-text" id="status-text">
+                    Hover any box for a one-sentence definition. Click
+                    <strong>Run Button / F5</strong> to trace what happens when you run a
+                    saved script, or <strong>Type directly here</strong> to trace what
+                    happens when you type straight into the Shell.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="thonny-repl-workflow.js"></script>
+</body>
+</html>

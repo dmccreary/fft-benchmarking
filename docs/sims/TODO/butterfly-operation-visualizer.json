@@ -1,0 +1,15 @@
+{
+  "sim_id": "butterfly-operation-visualizer",
+  "diagram_name": "Butterfly Operation Visualizer",
+  "chapter_number": 11,
+  "chapter_title": "'From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly'",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students set values for a, b, and a twiddle factor W, then calculate and observe the two butterfly outputs, confirming that output1 and output2 both derive from the single shared product W×b.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** butterfly-operation-visualizer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students set values for a, b, and a twiddle factor W, then calculate and observe the two butterfly outputs, confirming that output1 and output2 both derive from the single shared product W×b.\n\nCanvas layout:\n- Left (350px): the classic X-shaped butterfly diagram, with a and b entering on the left and output1/output2 exiting on the right\n- Right (300px): input controls and a step-by-step calculation readout\n\nVisual elements:\n- Two input nodes (a, b), two output nodes (output1, output2), crossing lines between them\n- The twiddle factor W marked on the line from b, feeding into the multiply\n- A \"+\" symbol at output1's combining point, a \"−\" symbol at output2's combining point\n- Live readout: \"W × b = [value]\", \"output1 = a + (W×b) = [value]\", \"output2 = a − (W×b) = [value]\"\n\nInteractive controls:\n- Numeric inputs (or small sliders): a (real, imaginary), b (real, imaginary)\n- Dropdown: W, selectable from a small set of common twiddle factor values (e.g., W_8^0, W_8^1, W_8^2)\n- Button: \"Compute\" — animates the multiply flowing along the line, then both additions/subtractions resolving at the outputs\n\nBehavior:\n- Changing any input immediately recalculates and redisplays every intermediate and final value\n- The shared W×b product is visually computed once and shown flowing into both output calculations, reinforcing that it is not recomputed\n\nInstructional Rationale: An Apply-level calculator with a data-flow visualization is appropriate because the objective is calculating specific butterfly outputs from chosen inputs — showing the single shared multiplication feeding both outputs directly addresses the \"why is this efficient\" question, not just \"what is the answer.\"\n\nImplementation notes:\n- Use p5.js; implement complex multiplication using the four multiply form shown in this chapter\n- Responsive width; diagram and controls stack vertically below 650px width"
+}

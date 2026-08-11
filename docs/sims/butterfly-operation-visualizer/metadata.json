@@ -1,0 +1,82 @@
+{
+  "title": "Butterfly Operation Visualizer",
+  "description": "An interactive butterfly with editable complex inputs and a selectable twiddle factor, showing the four-multiply complex product and how one shared W*b feeds both outputs.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Algorithms"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "butterfly-operation-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 460,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 11,
+  "chapter_title": "From DFT to FFT",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "The FFT butterfly operation",
+    "learningObjectives": [
+      "Calculate both butterfly outputs from chosen inputs and twiddle factor",
+      "Demonstrate that both outputs share a single product",
+      "Expand a complex multiply into four real multiplies"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "12 minutes",
+    "prerequisites": ["Complex arithmetic", "Twiddle factors on the unit circle"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 460 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "input", "label": "a real / a imaginary", "default": "1.0 / 0.5" },
+      { "type": "input", "label": "b real / b imaginary", "default": "2.0 / -1.0" },
+      { "type": "select", "label": "W", "options": ["W_8^0", "W_8^1", "W_8^2", "W_8^3"] },
+      { "type": "button", "label": "Compute", "purpose": "Animate the shared product travelling to both outputs" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Complex arithmetic evaluation",
+    "variables": ["a", "b", "W", "W*b", "output1", "output2"],
+    "equations": [
+      "(w_re + w_im i)(b_re + b_im i) = (w_re b_re - w_im b_im) + (w_re b_im + w_im b_re) i",
+      "output1 = a + W*b",
+      "output2 = a - W*b"
+    ],
+    "assumptions": [
+      "Twiddle factors drawn from an 8-point transform",
+      "Exact floating-point arithmetic; fixed-point effects are covered separately"
+    ],
+    "limitations": [
+      "Shows one butterfly in isolation; stage assembly and bit-reversal ordering appear in later sims"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Apply-level calculator with a data-flow visualization",
+    "keyQuestions": [
+      "How many real multiplies does one complex multiply require?",
+      "Which twiddle values need no general multiply at all?"
+    ],
+    "commonMisconceptions": [
+      "That each butterfly output needs its own twiddle multiply",
+      "That a complex multiply is a single machine operation"
+    ],
+    "assessmentOpportunities": [
+      "Count the complex multiplies saved by sharing across 512 butterflies"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sim_id": "complex-plane-euler-visualizer",
+  "diagram_name": "Complex Plane and Euler's Formula Visualizer",
+  "chapter_number": 7,
+  "chapter_title": "Complex Numbers and Wave Superposition",
+  "chapter_dir": "07-complex-numbers-and-wave-superposition",
+  "chapter_rel_dir": "chapters/07-complex-numbers-and-wave-superposition",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Demonstrate, calculate",
+  "learning_objective": "Let students manipulate the angle of a rotating complex number and demonstrate that its real and imaginary parts continuously match cos(theta) and sin(theta), connecting Euler's formula to the complex plane.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** complex-plane-euler-visualizer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Demonstrate, calculate\n\nLearning objective: Let students manipulate the angle of a rotating complex number and demonstrate that its real and imaginary parts continuously match cos(theta) and sin(theta), connecting Euler's formula to the complex plane.\n\nCanvas layout:\n- Left (400px): a complex plane (real axis horizontal, imaginary axis vertical) with a vector from the origin to the point e^(i*theta)\n- Right (300px): live numeric readout panel\n\nVisual elements:\n- Real and imaginary axes, labeled \"Re\" and \"Im\"\n- A vector (arrow) from the origin to the current point, with its magnitude always exactly 1 (since |e^(i*theta)| = 1)\n- Dashed projection lines onto both axes showing the real part (cos theta) and imaginary part (sin theta) separately\n- Live readout: \"e^(i × [theta]) = [cos value] + [sin value]i\" with numeric values substituted\n- Live readout of magnitude, always showing 1.00 regardless of angle\n\nInteractive controls:\n- Slider: theta, range 0 to 2π radians, default 0\n- Play/Pause button to animate continuous rotation\n\nBehavior:\n- Moving the theta slider rotates the vector and updates both the real/imaginary projections and the numeric readout live\n- The magnitude readout stays fixed at 1.00 no matter the angle, reinforcing that Euler's formula traces the unit circle exactly\n\nInstructional Rationale: An Apply-level parameter-exploration pattern is appropriate because the objective is calculating and confirming, for specific angle values, that the abstract formula e^(i*theta) = cos(theta) + i*sin(theta) produces the exact coordinates shown geometrically — direct manipulation with a live numeric readout lets students verify the equation rather than take it on faith.\n\nImplementation notes:\n- Use p5.js; compute point position directly from Math.cos(theta) and Math.sin(theta)\n- Responsive width; complex plane and readout panel stack vertically below 650px width"
+}

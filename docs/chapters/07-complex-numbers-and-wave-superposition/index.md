@@ -167,7 +167,7 @@ This single line is why complex numbers matter to this course at all: it lets an
 
 #### Diagram: Complex Plane and Euler's Formula Visualizer
 
-<iframe src="../../sims/complex-plane-euler-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/complex-plane-euler-visualizer/main.html" width="100%" height="452px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Complex Plane and Euler's Formula Visualizer</summary>

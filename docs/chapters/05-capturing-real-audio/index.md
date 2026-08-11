@@ -66,7 +66,7 @@ Because the INMP441 digitizes internally, what comes off its output pin is alrea
 
 #### Diagram: MEMS Microphone Cross-Section
 
-<iframe src="../../sims/mems-microphone-cross-section/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/mems-microphone-cross-section/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>MEMS Microphone Cross-Section</summary>

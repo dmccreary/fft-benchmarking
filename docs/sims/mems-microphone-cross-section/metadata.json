@@ -1,0 +1,79 @@
+{
+  "title": "MEMS Microphone Cross Section",
+  "description": "A clickable p5.js cut-away of the INMP441 MEMS microphone package, revealing one sentence per internal part on how sound becomes an I2S bitstream.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Sensors", "Embedded Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "mems-microphone-cross-section",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, describe",
+  "completion_status": "implemented",
+  "chapter_number": 5,
+  "chapter_title": "Capturing Real Audio",
+  "chapter_dir": "05-capturing-real-audio",
+  "chapter_rel_dir": "chapters/05-capturing-real-audio",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "MEMS microphone construction and digital output",
+    "learningObjectives": [
+      "Identify the internal parts of a MEMS microphone package",
+      "Explain in one sentence what each part contributes",
+      "Explain why no separate ADC chip is required"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": [
+      "Sound is a pressure wave in air",
+      "Capacitance depends on plate separation"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any part", "purpose": "Highlight it and show its name and function" },
+      { "type": "hover", "label": "Any part", "purpose": "Outline the part before clicking" },
+      { "type": "button", "label": "Clear selection", "purpose": "Return the panel to its prompt state" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Labeled clickable schematic",
+    "variables": ["selected part"],
+    "equations": [],
+    "assumptions": [
+      "Drawn as simple geometric shapes rather than to scale or photorealistically"
+    ],
+    "limitations": [
+      "Omits the charge pump, anti-aliasing filter, and package substrate; the real die layout differs substantially from this schematic view"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Progressive disclosure through click-to-reveal",
+    "keyQuestions": [
+      "Why does the back plate have holes in it?",
+      "At what point does the signal stop being analog?"
+    ],
+    "commonMisconceptions": [
+      "That a separate ADC chip is needed to read this microphone",
+      "That the back plate moves along with the diaphragm"
+    ],
+    "assessmentOpportunities": [
+      "Identify which component performs the analog-to-digital conversion"
+    ]
+  }
+}

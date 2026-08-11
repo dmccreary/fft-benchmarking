@@ -203,7 +203,7 @@ Two more terms name specific, familiar uses of this same display machinery. A **
 
 #### Diagram: Live Spectrum Display with Bin Averaging
 
-<iframe src="../../sims/live-spectrum-display-bin-averaging/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/live-spectrum-display-bin-averaging/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Live Spectrum Display with Bin Averaging</summary>

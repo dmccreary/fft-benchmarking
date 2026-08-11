@@ -1,0 +1,15 @@
+{
+  "sim_id": "live-spectrum-display-bin-averaging",
+  "diagram_name": "Live Spectrum Display with Bin Averaging",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, compare",
+  "learning_objective": "Let students adjust the number of displayed spectrum bars relative to the number of underlying FFT bins and analyze how bin averaging trades frequency detail for a display that fits a small screen.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** live-spectrum-display-bin-averaging<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, compare\n\nLearning objective: Let students adjust the number of displayed spectrum bars relative to the number of underlying FFT bins and analyze how bin averaging trades frequency detail for a display that fits a small screen.\n\nCanvas layout:\n- Top (200px): a simulated small OLED-style display area (128x64-style aspect ratio) showing the averaged, bar-style spectrum\n- Bottom (250px): the full underlying (unaveraged) 256-bin spectrum, shown as a thin-line plot for comparison, with shaded groupings showing which bins average into which displayed bar\n\nVisual elements:\n- Simulated OLED display with spectrum bars, updating on each simulated frame\n- Full-resolution reference plot below it, with vertical shaded bands grouping bins that combine into each displayed bar\n\nInteractive controls:\n- Slider: Number of displayed bars, range 8 to 256, default 32\n- Button: \"Next simulated frame\" — cycles through a small set of pre-defined example spectra (e.g., a single tone, a chord, white noise) to show averaging behavior across different signal shapes\n\nBehavior:\n- Reducing the number of displayed bars widens each shaded grouping band on the reference plot and visibly smooths / simplifies the OLED-style display above it\n- Setting the displayed bar count equal to the full bin count removes all averaging, and the OLED-style display exactly matches the reference plot's shape\n\nInstructional Rationale: An Analyze-level comparison pattern is appropriate because the objective requires examining the relationship between display resolution and underlying frequency detail — a synchronized dual view (simulated screen plus full-resolution reference) makes the averaging tradeoff directly observable rather than abstract.\n\nImplementation notes:\n- Use p5.js; precompute a small set of example 256-bin spectra and group-average them live based on the slider value\n- Responsive width; both panels scale to container width, stacking is not needed since both are already full-width"
+}

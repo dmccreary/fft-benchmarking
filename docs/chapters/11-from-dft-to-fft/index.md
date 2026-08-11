@@ -88,7 +88,7 @@ Before the diagram below, it's worth being explicit about why splitting helps at
 
 #### Diagram: Divide-and-Conquer Recursion Tree
 
-<iframe src="../../sims/divide-and-conquer-recursion-tree/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/divide-and-conquer-recursion-tree/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Divide-and-Conquer Recursion Tree</summary>

@@ -84,7 +84,7 @@ Before the interactive demonstration below, it helps to have a concrete intuitio
 
 #### Diagram: Multiply-and-Sum Correlator
 
-<iframe src="../../sims/multiply-and-sum-correlator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/multiply-and-sum-correlator/main.html" width="100%" height="542px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Multiply-and-Sum Correlator</summary>

@@ -1,0 +1,15 @@
+{
+  "sim_id": "multiply-and-sum-correlator",
+  "diagram_name": "Multiply-and-Sum Correlator",
+  "chapter_number": 8,
+  "chapter_title": "'Correlation: Does My Signal Contain This Note?'",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students step through a multiply-and-sum correlation calculation sample by sample and calculate how the running correlation total behaves differently for a matching versus a non-matching test frequency.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** multiply-and-sum-correlator<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students step through a multiply-and-sum correlation calculation sample by sample and calculate how the running correlation total behaves differently for a matching versus a non-matching test frequency.\n\nCanvas layout:\n- Top (150px): captured signal waveform, with the current sample index marked\n- Middle (150px): test frequency waveform, same time axis, current sample marked\n- Bottom (200px): a running bar showing the accumulated correlation sum, growing or shrinking with each step, plus numeric readout\n\nVisual elements:\n- Two aligned waveform plots (captured signal, test frequency) sharing a time axis\n- A vertical marker line showing the current sample index on both plots\n- At each step, a small popup showing \"x[n] × t[n] = [product]\" for the current sample\n- A running-total bar that grows (green) or shrinks (red) as each new product is added\n\nInteractive controls:\n- Dropdown: \"Captured signal frequency\" (matches test, or offset by a chosen amount)\n- Slider: Test frequency, range 200-800 Hz, default 440 Hz\n- Button: \"Step forward one sample\"\n- Button: \"Run to completion\" — animates through all samples automatically\n- Button: \"Reset\"\n\nDefault parameters:\n- Captured signal frequency: 440 Hz (set to match the test frequency by default)\n- Test frequency: 440 Hz\n\nData Visibility Requirements:\n  Stage 1: Show both waveforms at rest, running sum at zero\n  Stage 2 (each step): Show the current sample pair, their product, and the updated running sum\n  Final: Show the completed correlation value, large for matching frequencies, near zero for non-matching frequencies\n\nInstructional Rationale: An Apply-level step-through calculator is appropriate because the objective is calculating the correlation value directly, sample by sample, so students see exactly how the sum accumulates rather than only observing a final black-box number.\n\nImplementation notes:\n- Use p5.js; store both waveforms as precomputed sample arrays and index into them as the step controls advance\n- Responsive width; all three panels scale to container width on window resize"
+}

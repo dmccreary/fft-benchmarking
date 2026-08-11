@@ -192,7 +192,7 @@ Before the diagram below, it helps to see all four of these ideas — headroom, 
 
 #### Diagram: Dynamic Range Ladder
 
-<iframe src="../../sims/dynamic-range-ladder/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/dynamic-range-ladder/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Dynamic Range Ladder</summary>

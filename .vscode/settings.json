@@ -1,8 +1,11 @@
 {
     "cSpell.words": [
+        "Argmax",
         "ASIC",
         "Blackman",
+        "Bluestein's",
         "CMSIS",
+        "DTMF",
         "FFTW",
         "Hanning",
         "IFFT",
@@ -14,6 +17,7 @@
         "OLED",
         "Parseval's",
         "Pico",
+        "Precomputation",
         "Sidelobe",
         "Solderless",
         "Thonny",

@@ -1,633 +1,595 @@
 # Concept List
 
-This document contains 574 concepts for the Benchmarking FFT course.
-Each concept is numbered with a unique ConceptID for use in the learning graph.
+This document contains 550 concepts for the Benchmarking FFT course, regenerated from the
+current `docs/course-description.md` and the full 35-lab series in `docs/labs/`. Each concept
+is numbered with a unique ConceptID for use in the learning graph. This numbering also matches
+the taxonomy category blocks used in `concept-taxonomy.md` and `learning-graph.csv`.
 
-Concepts 1-200 come from the original course design. Concepts 201+ are introduced by the
-hands-on lab series and are numbered in **lab order**, so a higher ID is always taught later.
+Concepts are grouped into 12 categories that mirror the course's 8 lab modules plus 4
+cross-cutting themes (math foundations, benchmarking, ARM assembly, and course logistics).
 
-## Mathematical Foundations (MATH) — 31 concepts
+## Foundations & Tools (FOUND) — 45 concepts
 
-1. Complex Numbers
-2. Imaginary Unit
-3. Euler's Formula
-4. Sine Wave
-5. Cosine Wave
-6. Amplitude
-7. Frequency
-8. Phase
-9. Periodic Functions
-10. Harmonics
-11. Complex Conjugate
-12. Magnitude
-13. Unit Circle
-14. Hertz
-15. Time Domain
-16. Frequency Domain
-300. Radians
-301. Angular Frequency
-302. Period Of A Wave
-303. Phase Offset
-304. Sine Synthesis
-307. Peak Amplitude
-310. Superposition Principle
-311. Wave Addition
-312. Constructive Interference
-313. Destructive Interference
-322. Dot Product
-338. Complex Exponential
-339. Real And Imaginary Parts
-376. Roots Of Unity
-385. Complex Multiplication
+1. Microcontroller
+2. Thonny IDE
+3. MicroPython
+4. Read Eval Print Loop
+5. USB Serial Connection
+6. Interpreter Selection
+7. Device Filesystem
+8. File Transfer
+9. Script Execution
+10. Print Statement
+11. Keyboard Interrupt
+12. Soft Reset
+13. BOOTSEL Button
+14. Firmware
+15. Firmware Update
+16. Float Precision
+17. Integer Precision
+18. While Loop
+19. Try Except Block
+20. General Purpose IO
+21. GPIO Pin
+22. Pin Object
+23. Digital Output
+24. Digital Input
+25. Onboard LED
+26. Logic Level
+27. Pin Toggle
+28. Sleep Delay
+29. Pulse Width Modulation
+30. CPU Clock Frequency
+31. RAM
+32. Flash Memory
+33. Memory Mapped Register
+34. CPUID Register
+35. Bit Shift Operator
+36. Bit Mask
+37. CPU Cycle Budget
+38. Register Address
+39. Garbage Collection
+40. Free Memory Query
+41. Board Identification
+42. Silicon Revision
+43. Unique Device ID
+44. Prediction Before Measurement
+45. Mascot Pedagogical Device
 
-## Signal Processing (SIGP) — 40 concepts
+## Peripherals & Hardware I/O (HWIO) — 40 concepts
 
-17. Analog Signals
-18. Digital Signals
-19. Sampling
-20. Sampling Rate
-21. Nyquist Theorem
-22. Aliasing
-23. Quantization
-24. Bit Depth
-25. ADC Conversion
-26. Signal Noise
-27. Signal To Noise Ratio
-28. Bandwidth
-29. Low Pass Filter
-30. Band Pass Filter
-31. Windowing Functions
-32. Spectral Leakage
-280. Sample Period
-281. Sampling Theorem
-282. Nyquist Frequency
-283. Aliasing Artifact
-284. Frequency Folding
-285. Anti Aliasing Filter
-286. Undersampling
-288. Sample Rate Selection
-289. Sample Rate Selection Tradeoff
-296. Quantization Error
-305. Sample Index To Time
-308. DC Component
-309. Signal Synthesis
-411. Spectral Leakage Effect
-412. Rectangular Window
-413. Hanning Window
-414. Hamming Window
-415. Blackman Window
-416. Main Lobe Width
-417. Side Lobe Level
-418. Window Tradeoff
-419. Coherent Gain
-420. Edge Discontinuity
-421. Window Table
+46. Serial Peripheral Interface
+47. SPI Clock Line
+48. Chip Select Line
+49. Display Driver Chip
+50. SSD1306 Controller
+51. Framebuffer
+52. Monochrome Display
+53. Pixel Coordinate
+54. Text Rendering
+55. Display Refresh
+56. Data Command Pin
+57. Display Reset Pin
+58. Shared Configuration Module
+59. Draw Show Loop Pattern
+60. Coordinate System Origin
+61. Character Grid
+62. Digital Input Pin
+63. Pull Up Resistor
+64. Active Low Logic
+65. Switch Bounce
+66. Debouncing
+67. Polling Loop
+68. Edge Detection
+69. Event Loop
+70. Mode Switching
+71. Floating Pin
+72. Long Press Detection
+73. Tactile Switch
+74. mpremote Tool
+75. Library Directory
+76. Import Path
+77. Module Import
+78. Autorun Main Script
+79. Standalone Operation
+80. Code Organization
+81. Boot Script
+82. Board Recovery Procedure
+83. Escape Hatch Delay
+84. Deployment Workflow
+85. Untethered Operation
 
-## Fourier Theory (FOUR) — 38 concepts
+## Digital Audio & Sampling (AUDIO) — 50 concepts
 
-33. Jean Baptiste Fourier
-34. Fourier Series
-35. Continuous Fourier Transform
-36. Discrete Fourier Transform
-37. DFT Definition
-38. DFT Complexity
-39. Inverse DFT
-40. Frequency Bins
-41. Bin Resolution
-42. Spectral Analysis
-43. Power Spectrum
-44. Magnitude Spectrum
-45. Phase Spectrum
-46. Frequency Resolution
-47. Zero Padding
-48. Orthogonality
-320. Correlation
-321. Multiply And Sum
-323. Test Frequency
-324. Similarity Measure
-325. Orthogonal Functions
-326. In Phase Component
-327. Quadrature Component
-328. Phase Independence
-329. Correlation Magnitude
-330. Basis Function
-331. Projection Onto Basis
-332. Frequency Sweep
-333. Bin Index
-334. Bin Center Frequency
-335. Bin Width
-336. Spectrum Array
-337. Eight Point DFT By Hand
-340. Spectrum Symmetry
-341. Negative Frequencies
-342. DC Bin
-343. Nyquist Bin
-350. Bin Exact Frequency
+86. MEMS Microphone
+87. I2S Protocol
+88. Bit Clock
+89. Word Select Line
+90. I2S Serial Data
+91. Audio Buffer
+92. Buffered Read
+93. Sample Word Format
+94. Arithmetic Right Shift
+95. Binary Data Unpacking
+96. DC Offset
+97. DC Offset Removal
+98. Signed Integer Conversion
+99. Full Scale Value
+100. Channel Select Pin
+101. Root Mean Square
+102. Sound Level
+103. Loudness Perception
+104. Moving Average
+105. Exponential Smoothing
+106. Auto Calibration
+107. Bar Graph Display
+108. Decibel Scale
+109. Level Meter
+110. Noise Floor
+111. Peak Hold Marker
+112. Sample Period
+113. Sampling Theorem
+114. Nyquist Frequency
+115. Aliasing
+116. Frequency Folding
+117. Anti Aliasing Filter
+118. Undersampling
+119. Tone Generator
+120. Sample Rate Selection
+121. Productive Failure
+122. Zero Crossing Counting
+123. Dynamic Range
+124. Headroom
+125. Clipping
+126. Clipping Distortion
+127. Quantization Error
+128. Amplitude Normalization
+129. Integer Overflow
+130. Bit Depth
+131. 6 dB Per Bit Rule
+132. Flat Top Waveform
+133. Harmonic Distortion
+134. Live VU Meter
+135. Settling Time Discard
 
-## FFT Algorithm (FFTA) — 50 concepts
+## Waves & Signal Math Foundations (WAVE) — 45 concepts
 
-49. FFT Algorithm
-50. FFT History
-51. Cooley Tukey Algorithm
-52. Radix-2 FFT
-53. Radix-4 FFT
-54. Split Radix FFT
-55. Butterfly Operation
-56. Butterfly Diagram
-57. Twiddle Factors
-58. Bit Reversal
-59. In Place FFT
-60. Decimation In Time
-61. Decimation In Frequency
-62. FFT Stages
-63. FFT Complexity
-64. O(N log N)
-65. FFT Size
-66. Power Of Two Sizes
-67. Real FFT
-68. Complex FFT
-69. Inverse FFT
-70. IFFT Algorithm
-71. Normalization Factor
-72. FFT Scaling
-363. Divide And Conquer
-364. Even Odd Split
-365. Recursive Decomposition
-366. Subproblem
-367. Recombination Step
-368. Logarithmic Stages
-369. Complexity Reduction
-370. Power Of Two Constraint
-371. Redundant Computation
-372. Symmetry Exploitation
-373. Bit Reversal Permutation
-374. Index Reversal
-375. Permutation Table
-377. Twiddle Factor Table
-381. In Place Reordering
-382. Swap Operation
-384. Butterfly Structure
-386. Four Multiply Form
-387. Butterfly Pair
-388. Stage Span
-389. Data Flow Graph
-390. Butterfly Count
-391. Stage Loop
-392. Cross Add And Subtract
-393. Iterative FFT
-394. Algorithm Assembly
+136. Radians
+137. Angular Frequency
+138. Period Of A Wave
+139. Phase Offset
+140. Sine Wave
+141. Cosine Function
+142. Sine Synthesis
+143. Waveform Plotting
+144. Peak Amplitude
+145. DC Component
+146. Signal Synthesis
+147. Samples Per Cycle
+148. Superposition Principle
+149. Wave Addition
+150. Constructive Interference
+151. Destructive Interference
+152. Beat Frequency
+153. Amplitude Envelope
+154. Fundamental Frequency
+155. Overtone
+156. Timbre
+157. Additive Synthesis
+158. Square Wave
+159. Sawtooth Wave
+160. Complex Numbers
+161. Imaginary Unit
+162. Euler's Formula
+163. Complex Exponential
+164. Real Part
+165. Imaginary Part
+166. Magnitude Of A Complex Number
+167. Phase Angle
+168. Unit Circle
+169. Roots Of Unity
+170. Orthogonality
+171. Basis Function
+172. Projection Onto Basis
+173. Frequency Domain
+174. Time Domain
+175. Algebra Of Sine And Cosine
+176. Amplitude Parameter
+177. Frequency Parameter
+178. Wave Interference Pattern
+179. Harmonic Series
+180. Signal Envelope
 
-## Hardware Platforms (HARD) — 29 concepts
+## Correlation & the DFT (DFT) — 55 concepts
 
-73. Microcontroller
-74. ARM Architecture
-75. ARM Cortex M Series
-76. ARM Cortex M4
-77. ARM Cortex M33
-78. Raspberry Pi Pico
-79. Raspberry Pi Pico 2
-80. RP2040 Chip
-81. RP2350 Chip
-82. DSP Chip
-83. General Purpose CPU
-84. Clock Speed
-85. CPU Cycles
-86. Memory Architecture
-87. Cache Memory
-88. Embedded Systems
-221. CPU Clock Frequency
-222. RAM Versus Flash
-225. Memory Mapped Register
-226. CPUID Register
-227. Silicon Revision
-228. Unique Device ID
-447. Cycle Counter
-448. DWT Unit
-449. CYCCNT Register
-450. DEMCR Register
-451. Register Bit Manipulation
-482. Cortex M0 Plus
-533. Branch Prediction
+181. Correlation
+182. Multiply And Sum
+183. Dot Product
+184. Test Frequency
+185. Similarity Measure
+186. In Phase Component
+187. Quadrature Component
+188. Phase Independence
+189. Correlation Magnitude
+190. Hidden Frequency Detection
+191. Sine Only Detector Blind Spot
+192. Arctangent Phase Recovery
+193. Frequency Candidate Sweep
+194. Frequency Sweep
+195. Bin Index
+196. Bin Center Frequency
+197. Bin Width
+198. Spectrum Array
+199. 8-Point DFT Example
+200. Real And Imaginary Parts
+201. Spectrum Symmetry
+202. Negative Frequency
+203. DC Bin
+204. Nyquist Bin
+205. Two-Tone Signal
+206. Mirror Spectrum
+207. Forward Transform Convention
+208. Inverse Transform Convention
+209. Discrete Fourier Transform
+210. Fourier Transform
+211. Ground Truth Signal
+212. Known Signal Test
+213. Validation Before Trust
+214. Numerical Tolerance
+215. Absolute Error
+216. Relative Error
+217. Bin Exact Frequency
+218. Expected Peak
+219. Debugging By Bisection
+220. Test Signal Design
+221. Impulse Response Test
+222. Single Precision Float
+223. Parseval's Theorem
+224. Test Suite Blind Spot
+225. Sign Error
+226. Algorithmic Complexity
+227. Quadratic Complexity
+228. Operation Counting
+229. Scaling Behavior
+230. Real Time Budget
+231. Frame Duration
+232. Processing Deadline
+233. Performance Bottleneck
+234. Big O Notation
+235. Trigonometric Function Cost
 
-## DSP Instructions (DSPI) — 19 concepts
+## The FFT Algorithm (FFT) — 50 concepts
 
-89. DSP Instructions
-90. SIMD Instructions
-91. MAC Instruction
-92. Multiply Accumulate
-93. Saturating Arithmetic
-94. Fixed Point Arithmetic
-95. Floating Point Unit
-96. FPU Operations
-97. Single Precision Float
-98. Q Format Numbers
-99. Q15 Format
-100. Q31 Format
-101. Hardware Multiplier
-102. Pipelining
-103. Instruction Latency
-104. Real Time Constraints
-485. FPv5-SP Unit
-549. Fused Multiply Add
-551. Fused Rounding
+236. Fast Fourier Transform
+237. Divide And Conquer
+238. Even Odd Split
+239. Recursive Decomposition
+240. Subproblem
+241. Recombination Step
+242. Logarithmic Stages
+243. Complexity Reduction
+244. Power Of Two Constraint
+245. Redundant Computation
+246. Symmetry Exploitation
+247. Twiddle Factor
+248. Radix 2 Algorithm
+249. Mixed Radix FFT
+250. Cooley-Tukey Algorithm
+251. Bit Reversal Permutation
+252. Index Reversal
+253. Permutation Table
+254. Twiddle Factor Table
+255. Precomputation
+256. Lookup Table
+257. Loop Invariant Hoisting
+258. In Place Reordering
+259. Swap Operation
+260. Interleaved Storage
+261. Butterfly Operation
+262. Complex Multiplication
+263. Four Multiply Form
+264. Three Multiply Trick
+265. Butterfly Pair
+266. Stage Span
+267. Data Flow Graph
+268. Butterfly Count
+269. Stage Loop
+270. Cross Add And Subtract
+271. Iterative FFT
+272. Reference Implementation
+273. Cross Validation
+274. Speedup Factor
+275. Correctness Before Speed
+276. Function Decomposition
+277. Inverse FFT
+278. Table Hoisting Optimization
+279. FFT DFT Crossover Point
+280. In Place Computation
+281. O(N Log N) Complexity
+282. Real Input Transform
+283. Decimation In Time
+284. Bluestein's Algorithm
+285. Radix 4 FFT
 
-## Programming (PROG) — 28 concepts
+## Spectral Analysis & Real Spectra (SPEC) — 55 concepts
 
-105. C Language
-106. C Compiler
-107. GCC Compiler
-108. ARM Compiler
-109. Compiler Optimization
-110. Optimization Flags
-111. Assembly Language
-112. ARM Assembly
-113. Thumb Instructions
-114. Python Language
-115. NumPy Library
-116. SciPy FFT
-117. MicroPython
-118. Memory Management
-119. Reading Assembly Code
-120. Disassembly
-399. Function Decomposition
-467. Bytecode Interpretation
-468. Native Code Emitter
-469. Viper Code Emitter
-470. Boxed Values
-471. Unboxed Values
-472. Type Annotation
-473. Machine Types
-475. Language Tradeoff Analysis
-476. Calling C From MicroPython
-477. Library Over Handwritten Code
-515. Typed Array
+286. Magnitude Computation
+287. Fast Magnitude Approximation
+288. Power Versus Magnitude
+289. Bin Averaging
+290. Logarithmic Scaling
+291. Square Root Scaling
+292. Spectrum Bars
+293. Frame Capture
+294. Live Spectrum Display
+295. Whistle Test
+296. Half Spectrum Display
+297. Rumble Rejection
+298. Peak Ratio Threshold
+299. Resolution Speed Tradeoff
+300. Spectral Leakage
+301. Rectangular Window
+302. Hanning Window
+303. Hamming Window
+304. Blackman Window
+305. Main Lobe Width
+306. Side Lobe Level
+307. Window Tradeoff
+308. Coherent Gain
+309. Edge Discontinuity
+310. Window Table
+311. Periodic Extension Assumption
+312. On Bin Tone
+313. Off Bin Tone
+314. Argmax Search
+315. Peak Bin
+316. Bin To Frequency Mapping
+317. Frequency Resolution Limit
+318. Parabolic Interpolation
+319. Sub Bin Accuracy
+320. Local Maximum
+321. Threshold Rejection
+322. Pitch
+323. Musical Note Mapping
+324. Octave
+325. Cents Deviation
+326. Semitone Formula
+327. Chromatic Tuner
+328. Reference Pitch
+329. Frame Rate
+330. Stage Profiling
+331. Capture Time
+332. Compute Time
+333. Draw Time
+334. Overlap Processing
+335. Hop Size
+336. Buffer Swapping
+337. Processing Latency
+338. Bottleneck Identification
+339. Amdahl's Law
+340. Stage Percentage Breakdown
 
-## FFT Libraries (LIBS) — 12 concepts
+## Benchmarking & Measurement Methodology (BENCH) — 50 concepts
 
-121. FFT Libraries
-122. CMSIS DSP Library
-123. Kiss FFT
-124. FFTW Library
-125. Arm Math Library
-126. Pico SDK FFT
-127. Open Source FFT
-128. Library Licensing
-129. MIT License
-130. GPL License
-131. Library Integration
-132. API Documentation
+341. Millisecond Timer
+342. Microsecond Timer
+343. Timer Resolution
+344. Counter Wraparound
+345. Cycle Counter
+346. DWT Unit
+347. Cycle Count Register
+348. Debug Exception Register
+349. Register Bit Manipulation
+350. Cycles To Time Conversion
+351. Counter Verification
+352. Trace Enable Bit
+353. Cycle Count Enable Bit
+354. Nanosecond Resolution
+355. Overflow Masking
+356. Empty Loop Baseline
+357. Cold Start Effect
+358. Warm Up Discard
+359. Best Of N Sampling
+360. Minimum Sample Statistic
+361. Variance Sources
+362. Interrupt Interference
+363. Observer Effect
+364. Timing Overhead
+365. Measurement Discipline
+366. Honest Reporting
+367. Benchmark Exclusions
+368. Negative Result
+369. Benchmark Report Format
+370. Cold Start Baseline Mismatch
+371. Bytecode Interpretation
+372. Native Code Emitter
+373. Viper Code Emitter
+374. Boxed Value
+375. Unboxed Value
+376. Type Annotation
+377. Machine Type
+378. Abstraction Cost
+379. Language Tradeoff Analysis
+380. Calling C From MicroPython
+381. Library Over Handwritten Code
+382. Native Decorator
+383. Viper Decorator
+384. Typed Pointer
+385. Abstraction Ladder
+386. Reading Versus Writing Skill
+387. Benchmarking Methodology
+388. Fair Comparison
+389. Reproducibility
+390. Instrumentation Overhead
 
-## Benchmarking (BNCH) — 44 concepts
+## ARM Architecture & Assembly Language (ASM) — 55 concepts
 
-133. Benchmarking
-134. Performance Metrics
-135. Execution Time
-136. Clock Cycles
-137. Microseconds Per FFT
-138. FFTs Per Second
-139. Throughput Metric
-140. Latency Metric
-141. Memory Usage
-142. Code Size
-143. Test Harness
-144. Warm Up Runs
-145. Statistical Sampling
-146. Mean Execution Time
-147. Standard Deviation
-148. Reproducibility
-149. Fair Comparison
-150. Benchmarking Framework
-354. Algorithmic Complexity
-355. Quadratic Complexity
-356. Operation Counting
-357. Scaling Behavior
-361. Performance Bottleneck
-362. Motivation For Optimization
-397. Speedup Factor
-434. Stage Profiling
-435. Capture Time
-436. Compute Time
-437. Draw Time
-442. Bottleneck Identification
-443. Millisecond Timer
-444. Microsecond Timer
-445. Timer Resolution
-446. Counter Wraparound
-452. Cycles To Microseconds
-454. Cold Start Effect
-455. Warm Up Discard
-456. Best Of N
-457. Minimum Sample
-458. Variance Sources
-459. Interrupt Interference
-461. Timing Overhead
-555. Variant Comparison
-562. Kernel Versus Total Time
+391. Instruction Set Architecture
+392. ARMv6-M
+393. ARMv7-M
+394. ARMv8-M
+395. Cortex M0 Plus
+396. Cortex M33 Processor
+397. ARM Cortex M Architecture
+398. FPU Presence Detection
+399. Feature Register
+400. FPv5 Floating Point Unit
+401. Capability Probing
+402. Hardware Feature Gate
+403. Portability Constraint
+404. Failure Root Cause
+405. Inline Assembler
+406. Assembly Decorator
+407. CPU Register
+408. General Purpose Register
+409. Register Allocation
+410. Move Instruction
+411. Add Instruction
+412. Compare Instruction
+413. Conditional Branch
+414. Assembly Label
+415. Assembly Loop
+416. Argument Passing Convention
+417. Return Value Register
+418. Machine Code
+419. Instruction Mnemonic
+420. Core Register Set
+421. Array Sum Speedup
+422. Floating Point Register
+423. Register Bank
+424. Load Store Architecture
+425. VLDR Instruction
+426. VSTR Instruction
+427. VADD Instruction
+428. VSUB Instruction
+429. VMUL Instruction
+430. VNEG Instruction
+431. Memory Address
+432. Pointer Arithmetic
+433. Byte Offset
+434. Typed Array
+435. Address Of Buffer
+436. Assembly Butterfly
+437. Register Pressure
+438. Register Spilling
+439. Scratch Register
+440. Stage Parameter Block
+441. Python Assembly Boundary
+442. Work Split Strategy
+443. Assembly Debugging
+444. Bit For Bit Match
+445. Hot Loop
 
-## Performance Optimization (PERF) — 42 concepts
+## Optimization & Instruction Encoding (OPT) — 45 concepts
 
-151. Integer FFT
-152. Floating Point FFT
-153. Fixed Point FFT
-154. Precision Tradeoffs
-155. Speed Accuracy Tradeoff
-156. Cache Effects
-157. Memory Access Patterns
-158. Loop Unrolling
-159. Vectorization
-160. Real Time Processing
-161. Streaming FFT
-162. Block Processing
-163. Double Buffering
-164. Compiler Settings
-358. Real Time Budget
-359. Frame Duration
-360. Processing Deadline
-378. Precomputation
-379. Lookup Table
-380. Loop Invariant Hoisting
-383. Interleaved Storage
-433. Frame Rate
-438. Overlap Processing
-439. Hop Size
-440. Buffer Swapping
-441. Processing Latency
-474. Abstraction Cost
-528. Hot Loop
-529. Special Case Optimization
-530. Trivial Twiddle
-531. Multiply By One
-532. Multiply By i
-534. Unpredictable Branch
-535. Branchless Code
-536. Precomputed Swap List
-537. Code Size Tradeoff
-538. Loop Overhead
-539. Address Computation Cost
-559. Optimization Composition
-560. Sub Linear Composition
-561. Integration Cost
-563. Data Marshalling Cost
+446. Special Case Optimization
+447. Trivial Twiddle
+448. Multiply By One Shortcut
+449. Multiply By I Shortcut
+450. Branch Prediction
+451. Unpredictable Branch
+452. Branchless Code
+453. Precomputed Swap List
+454. Code Size Tradeoff
+455. Loop Overhead
+456. Address Computation Cost
+457. Optimization Attribution
+458. Heap Fragmentation
+459. Instruction Encoding
+460. Opcode
+461. Encoding Bit Field
+462. Encoding Table
+463. Halfword
+464. Thumb Instruction Set
+465. Thumb-2 Encoding
+466. Data Directive
+467. Raw Machine Word
+468. Fused Multiply Add
+469. Fused Rounding
+470. Assembler Limitation
+471. ISA Versus Toolchain
+472. Encoding Verification
+473. Instruction Reference Manual
+474. Variant Comparison
+475. Controlled Variable
+476. Comparison Matrix
+477. Ranking Prediction
+478. Optimization Composition
+479. Sub Linear Composition
+480. Integration Cost
+481. Kernel Versus Total Time
+482. Data Marshalling Cost
+483. Surprising Result
+484. 6-Way Variant Matrix
+485. Dual Core Processing
+486. Interleaved Layout Variant
+487. Fixed Point Q15 Arithmetic
+488. Instruction Encoding Error
+489. Calling Convention
+490. Stack Frame
 
-## Signal Pipeline (PIPE) — 23 concepts
+## Capstone, Experimental Design & Pedagogy (CAPS) — 35 concepts
 
-165. Signal Preprocessing
-166. DC Offset Removal
-167. Normalization
-168. Window Application
-169. Zero Padding Input
-170. Post Processing
-171. Magnitude Calculation
-172. Phase Calculation
-173. Decibel Conversion
-174. Peak Detection
-175. Frequency Estimation
-176. Dominant Frequency
-400. Magnitude Computation
-401. Fast Magnitude Approximation
-402. Power Versus Magnitude
-422. Argmax Search
-423. Peak Bin
-424. Bin To Frequency
-425. Frequency Resolution Limit
-426. Parabolic Interpolation
-427. Sub Bin Accuracy
-428. Local Maximum
-429. Threshold Rejection
+491. Experimental Design
+492. Research Question
+493. Independent Variable
+494. Dependent Variable
+495. Methodology Section
+496. Results Presentation
+497. Limitations Statement
+498. Conclusion Drawing
+499. Project Scoping
+500. Peer Review
+501. Hypothesis Statement
+502. Harness Noise Floor
+503. Capstone Track Selection
+504. Retrofitted Hypothesis Error
+505. Spectrogram Project
+506. DTMF Decoder Project
+507. Vibration Monitor Project
+508. Instrument Identifier Project
+509. Voice Activity Detector Project
+510. Bloom's Taxonomy
+511. Remember Level Outcome
+512. Understand Level Outcome
+513. Apply Level Outcome
+514. Analyze Level Outcome
+515. Evaluate Level Outcome
+516. Create Level Outcome
+517. Lab Demonstrated Outcome
+518. Engineered Productive Failure
+519. Predict Then Measure Pattern
+520. Optimistic Prediction Pattern
+521. Real Mistake As Teaching Tool
+522. Load Bearing Module
+523. 45-Minute Lab Format
+524. Self Paced Study Option
+525. Capstone Report
 
-## Visualization and Applications (VAPP) — 42 concepts
+## Course Logistics, Hardware Kit & Scope (KIT) — 25 concepts
 
-177. Data Visualization
-178. Spectrum Plot
-179. Spectrogram
-180. Waterfall Display
-181. Time Domain Plot
-182. Performance Charts
-183. Comparison Tables
-184. Performance Dashboard
-185. Benchmark Results
-186. Report Generation
-187. Audio Processing
-188. Music Analysis
-189. Voice Recognition
-190. Noise Cancellation
-191. Spectrum Analyzer
-192. Pitch Detection
-193. Vibration Analysis
-194. Machine Monitoring
-195. Radar Processing
-196. Communication Systems
-197. Software Defined Radio
-198. Sound Processing
-199. Capstone Project
-200. Benchmark Suite
-234. Framebuffer
-235. Monochrome Display
-236. Pixel Coordinates
-237. Text Rendering
-238. Display Refresh
-273. Thonny Plotter
-277. Bar Graph Display
-279. Level Meter
-306. Waveform Plotting
-403. Bin Averaging For Display
-404. Logarithmic Scaling
-405. Square Root Scaling
-406. Spectrum Bars
-408. Live Spectrum Display
-410. Half Spectrum Display
-557. Comparison Matrix
-569. Methodology Section
-570. Results Presentation
-
-## Development Environment (TOOL) — 22 concepts
-
-201. Thonny IDE
-202. MicroPython Firmware
-203. USB Serial Connection
-204. REPL
-205. Print Statement
-206. Script Execution
-207. Saving To Device
-208. Device Filesystem
-209. Keyboard Interrupt
-210. MicroPython vs CPython
-220. Firmware Version
-223. Free Memory Query
-224. Filesystem Statistics
-239. Shared Configuration Module
-249. File Transfer To Device
-250. mpremote Tool
-251. Library Directory
-252. Import Path
-253. Module Import
-254. Autorun main.py
-255. Standalone Operation
-256. Code Organization
-
-## Microcontroller I/O (MCIO) — 28 concepts
-
-211. General Purpose IO
-212. GPIO Pin
-213. Pin Object
-214. Digital Output
-215. Onboard LED
-216. Logic High And Low
-217. Pin Toggle
-218. Sleep Delay
-219. Infinite Loop
-229. Serial Peripheral Interface
-230. SPI Clock And Data
-231. Chip Select Line
-232. Display Driver Chip
-233. SSD1306 Controller
-240. Digital Input
-241. Pull Up Resistor
-242. Active Low Logic
-243. Switch Bounce
-244. Debouncing
-245. Polling Loop
-246. Edge Detection
-247. Event Loop
-248. Mode Switching
-260. I2S Protocol
-261. Bit Clock
-262. Word Select Line
-263. I2S Serial Data
-265. Buffered Read
-
-## Audio and Acoustics (AUDI) — 34 concepts
-
-257. MEMS Microphone
-258. INMP441 Microphone
-259. Digital Microphone Output
-264. Audio Buffer
-266. Sample Word Format
-267. Twenty Four Bit In Thirty Two
-268. Arithmetic Right Shift
-269. Unpacking Binary Data
-270. Root Mean Square
-271. Sound Level
-272. Loudness Perception
-274. Moving Average
-275. Exponential Smoothing
-276. Sensor Auto Calibration
-278. Decibel Scale
-287. Tone Generator
-291. Dynamic Range
-292. Full Scale Value
-293. Headroom
-294. Clipping
-295. Clipping Distortion
-297. Noise Floor
-298. Amplitude Normalization
-299. Integer Overflow
-314. Beat Frequency
-315. Amplitude Envelope
-316. Fundamental Frequency
-317. Overtones
-318. Timbre
-319. Additive Synthesis
-407. Frame Capture
-430. Pitch
-431. Musical Note Mapping
-432. Octave
-
-## Laboratory Method (LABM) — 40 concepts
-
-290. Productive Failure
-344. Ground Truth
-345. Known Signal Test
-346. Validation Before Trust
-347. Numerical Tolerance
-348. Absolute Error
-349. Relative Error
-351. Expected Peak
-352. Debugging By Bisection
-353. Test Signal Design
-395. Reference Implementation
-396. Cross Validation
-398. Correctness Before Speed
-409. Whistle Test
-453. Counter Verification
-460. Observer Effect
-462. Measurement Discipline
-463. Prediction Before Measurement
-464. Honest Reporting
-465. What A Benchmark Excludes
-466. Negative Result
-486. Capability Probing
-487. Hardware Feature Gate
-489. Failure Root Cause
-518. No Allocation In Timed Region
-526. Assembly Debugging
-527. Bit For Bit Match
-540. Optimization Attribution
-554. Encoding Verification
-556. Controlled Variable
-558. Ranking Prediction
-564. Surprising Result
-565. Experimental Design
-566. Research Question
-567. Independent Variable
-568. Dependent Variable
-571. Limitations Statement
-572. Conclusion Drawing
-573. Project Scoping
-574. Peer Review
-
-## Assembly Programming (ASMP) — 52 concepts
-
-478. Instruction Set Architecture
-479. ARMv6-M
-480. ARMv7-M
-481. ARMv8-M
-483. FPU Presence Detection
-484. MVFR0 Register
-488. Portability Constraint
-490. Inline Assembler
-491. asm_thumb Decorator
-492. CPU Register
-493. General Purpose Register
-494. Register Allocation
-495. Move Instruction
-496. Add Instruction
-497. Compare Instruction
-498. Conditional Branch
-499. Assembly Label
-500. Assembly Loop
-501. Argument Passing Convention
-502. Return Value Register
-503. Machine Code
-504. Instruction Mnemonic
-505. Floating Point Register
-506. Register Bank s0 to s31
-507. Load Store Architecture
-508. VLDR Instruction
-509. VSTR Instruction
-510. VADD Instruction
-511. VSUB Instruction
-512. VMUL Instruction
-513. Memory Address
-514. Address Of Buffer
-516. Pointer Arithmetic
-517. Byte Offset
-519. Assembly Butterfly
-520. Register Pressure
-521. Register Spilling
-522. Scratch Register
-523. Stage Parameter Block
-524. Python Assembly Boundary
-525. Work Split Strategy
-541. Instruction Encoding
-542. Opcode
-543. Encoding Bit Field
-544. Encoding Table
-545. Halfword
-546. Thumb-2 Encoding
-547. Data Directive
-548. Raw Machine Word
-550. VFMA Instruction
-552. Assembler Limitation
-553. ISA Versus Toolchain
-
+526. Raspberry Pi Pico 2
+527. Pico 2 W Variant
+528. Original Pico Incompatibility
+529. OLED Display Module
+530. Push Button Component
+531. INMP441 Microphone Module
+532. Breadboard
+533. Jumper Wire
+534. Hardware Kit Cost
+535. Software Toolchain
+536. No Compiler Required
+537. Non ARM Instruction Sets
+538. FPGA FFT Implementation
+539. ASIC FFT Implementation
+540. Multi Dimensional Transform
+541. Non Power Of Two Transform
+542. Filter Design Scope
+543. Midterm Assessment
+544. Laboratory Work Grading
+545. Homework And Quiz Grading
+546. Capstone Project Weight
+547. Final Exam Weight
+548. Grading Rubric
+549. Instructor's Guide
+550. Weekly Milestone Schedule

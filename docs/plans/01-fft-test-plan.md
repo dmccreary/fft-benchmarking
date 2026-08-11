@@ -101,7 +101,7 @@ Design constraints this imposes, all satisfied by the assembly design in §3:
 
 **Algorithm:** iterative radix-2 decimation-in-time (DIT) Cooley-Tukey, in-place,
 single-precision float, N = 512 (2⁹ → 9 stages). This matches the concepts already committed to
-in [`docs/chapters/03-fft-altorithm/index.md`](../chapters/03-fft-altorithm/index.md) (Radix-2,
+in [`docs/chapters/12-building-the-fft/index.md`](../chapters/12-building-the-fft/index.md) (Radix-2,
 Decimation In Time, Bit Reversal Permutation, Twiddle Factors, In-Place Computation) and the
 512-sample buffer size used by the [Cornell Labs reference](../cornell-labs/pico-example.md).
 
@@ -278,6 +278,6 @@ maintainer-facing artifact, not student-facing curriculum.
 
 - [ARM Cortex-M33 Devices Generic User Guide, r1p0](../../arm-programming-guide/arm-cortex-m33-r1p0-generic-user-guide.pdf) — matched to the confirmed CPU revision
 - [Cornell Labs: FFT/iFFT on the Pico 2](../cornell-labs/pico-example.md) — prior-art 512-sample real-time audio pipeline on the same chip
-- [`docs/chapters/03-fft-altorithm/index.md`](../chapters/03-fft-altorithm/index.md) — course concepts implemented here
+- [`docs/chapters/12-building-the-fft/index.md`](../chapters/12-building-the-fft/index.md) — course concepts implemented here
 - [`src/kits/oled-2-buttons/02-get-info.py`](../../src/kits/oled-2-buttons/02-get-info.py) — established the `machine.mem32` register-read technique reused for DWT
 - [`src/kits/oled-2-buttons/04-asm-thumb-probe.py`](../../src/kits/oled-2-buttons/04-asm-thumb-probe.py) — the probe that settled the architecture

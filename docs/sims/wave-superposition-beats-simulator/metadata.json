@@ -1,0 +1,84 @@
+{
+  "title": "Wave Superposition Beats Simulator",
+  "description": "Three stacked plots of two sine waves and their sum on a shared time axis, with constructive/destructive shading and a derived beat envelope when the frequencies differ.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Acoustics", "Signals and Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "wave-superposition-beats-simulator",
+  "library": "p5.js",
+  "canvasHeight": 570,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 7,
+  "chapter_title": "Complex Numbers and Wave Superposition",
+  "chapter_dir": "07-complex-numbers-and-wave-superposition",
+  "chapter_rel_dir": "chapters/07-complex-numbers-and-wave-superposition",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Physics",
+    "topic": "Superposition, interference, and beats",
+    "learningObjectives": [
+      "Examine the summed waveform of two sine waves",
+      "Compare constructive and destructive interference regions",
+      "Relate the beat frequency to the difference of the two frequencies"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A sine wave has frequency, amplitude, and phase",
+      "Waves add point by point"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 570 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Wave 1 frequency", "min": 200, "max": 500, "default": 300, "step": 1, "units": "Hz" },
+      { "type": "slider", "label": "Wave 2 frequency", "min": 200, "max": 500, "default": 300, "step": 1, "units": "Hz" },
+      { "type": "slider", "label": "Wave 2 phase offset", "min": 0, "max": 6.283, "default": 0, "step": 0.01, "units": "radians" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Point-by-point superposition with analytic envelope",
+    "variables": ["f1", "f2", "phase offset"],
+    "equations": [
+      "sum(t) = sin(2*pi*f1*t) + sin(2*pi*f2*t + phase)",
+      "envelope(t) = 2*cos(pi*(f1-f2)*t - phase/2)",
+      "beat frequency = |f1 - f2|"
+    ],
+    "assumptions": [
+      "Both waves have equal unit amplitude",
+      "A fixed 100 ms window is displayed at all frequency settings"
+    ],
+    "limitations": [
+      "Only two components; real interference involves many, and unequal amplitudes never cancel completely"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Three synchronized views for direct input-versus-result comparison",
+    "keyQuestions": [
+      "What changes about the inputs when the sum cancels?",
+      "How many beats appear in 100 ms at a 20 Hz difference?"
+    ],
+    "commonMisconceptions": [
+      "That destructive interference makes the input waves smaller",
+      "That beats are a third tone rather than an amplitude variation"
+    ],
+    "assessmentOpportunities": [
+      "Infer a frequency difference from a heard beat rate"
+    ]
+  }
+}

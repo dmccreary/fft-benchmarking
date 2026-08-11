@@ -103,12 +103,13 @@ nav:
   
   - MicroSims:
     - List of MicroSims: sims/index.md
+    - Abstraction Ladder Diagram: sims/abstraction-ladder-diagram/index.md
     - Address and Byte Offset Explorer: sims/address-byte-offset-explorer/index.md
     - Aliasing Demonstrator: sims/aliasing-demonstrator/index.md
     - Applications of Real-Time FFT: sims/fft-applications-map/index.md
     - Benchmark Results Chart: sims/benchmark-results-chart/index.md
     - Blink Timing Explorer: sims/blink-timing-explorer/index.md
-    - Boxed vs. Unboxed Memory Layout Explorer: sims/boxed-unboxed-memory-explorer/index.md
+    - Boxed vs Unboxed Memory Explorer: sims/boxed-unboxed-memory-explorer/index.md
     - Branch Misprediction Visualizer: sims/branch-misprediction-visualizer/index.md
     - Butterfly Operation Visualizer: sims/butterfly-operation-visualizer/index.md
     - Complete 8-Point FFT Flow Graph: sims/complete-8-point-fft-flow-graph/index.md
@@ -156,13 +157,14 @@ nav:
     - Stage Profiling Breakdown Chart: sims/stage-profiling-breakdown-chart/index.md
     - Standalone Deployment Workflow: sims/standalone-deployment-workflow/index.md
     - Switch Bounce Debounce Visualizer: sims/switch-bounce-debounce-visualizer/index.md
-    - The Abstraction Ladder: sims/abstraction-ladder-diagram/index.md
     - Thonny REPL Workflow: sims/thonny-repl-workflow/index.md
     - Unit Circle Radians Explorer: sims/unit-circle-radians-explorer/index.md
     - Variance Source Explorer: sims/variance-source-explorer/index.md
     - Variant Performance Dashboard: sims/variant-performance-dashboard/index.md
     - Wave Superposition Beats Simulator: sims/wave-superposition-beats-simulator/index.md
     - Window Function Comparison: sims/window-function-comparison/index.md
+
+
 
 
 

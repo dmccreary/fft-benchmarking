@@ -1,0 +1,83 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { font-family: Arial, Helvetica, sans-serif; background-color: aliceblue; }
+
+main { padding: 8px 12px; }
+
+.heading {
+    font-size: 17px;
+    text-align: center;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+.heading em { color: #757575; font-size: 14px; font-weight: normal; }
+
+.chart-box {
+    height: 274px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.controls {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 15px;
+    flex-wrap: wrap;
+}
+
+.controls label { cursor: pointer; white-space: nowrap; }
+
+.controls .key {
+    color: #757575;
+    font-size: 13px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.controls .sw {
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.controls .sw.down { background-color: #2e7d32; }
+.controls .sw.up { background-color: #c62828; }
+
+.infobox {
+    margin-top: 8px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 74px;
+}
+
+.infobox .name { font-weight: bold; font-size: 15px; color: #1a237e; }
+.infobox .delta { font-weight: bold; color: #2e7d32; }
+.infobox .share { color: #757575; }
+
+.callout {
+    margin-top: 8px;
+    background-color: #fff8e1;
+    border: 1px solid #ffb300;
+    border-left: 5px solid #ffb300;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #5d4037;
+}

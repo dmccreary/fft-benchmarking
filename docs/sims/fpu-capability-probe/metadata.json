@@ -1,0 +1,77 @@
+{
+  "title": "FPU Capability Probe",
+  "description": "Three simulated chips probed with the same MVFR0 bit-field check, showing the register value, the AND mask isolating the low nibble, and the resulting verdict.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Computer Architecture", "Embedded Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "fpu-capability-probe",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Execute, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 20,
+  "chapter_title": "Does Your CPU Have an FPU?",
+  "chapter_dir": "20-does-your-cpu-have-an-fpu",
+  "chapter_rel_dir": "chapters/20-does-your-cpu-have-an-fpu",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Runtime FPU capability detection",
+    "learningObjectives": [
+      "Apply the MVFR0 bit-field check to determine FPU presence",
+      "Demonstrate that one function gives correct answers on different hardware",
+      "Explain why a compile-time constant is unsafe"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10 minutes",
+    "prerequisites": ["Bitwise AND and hexadecimal", "Read-only registers"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any chip card", "purpose": "Select that chip" },
+      { "type": "button", "label": "Run has_single_precision_fpu()", "purpose": "Animate the mask and reveal the verdict" },
+      { "type": "button", "label": "Reset all", "purpose": "Clear every verdict" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Bit-field extraction against simulated register values",
+    "variables": ["selected chip", "MVFR0 value", "masked nibble"],
+    "equations": ["hasFPU = (MVFR0 & 0xF) != 0"],
+    "assumptions": [
+      "MVFR0 values are representative of each core family",
+      "Only the A_SIMD field in bits [3:0] is examined"
+    ],
+    "limitations": [
+      "Real capability detection may also check double-precision and DSP-extension fields elsewhere in MVFR0 and MVFR1"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "One function, several hardware targets",
+    "keyQuestions": [
+      "Why test != 0 rather than == a specific value?",
+      "What breaks if this is replaced by a compile-time constant?"
+    ],
+    "commonMisconceptions": [
+      "That FPU presence can be assumed from the board name",
+      "That missing an FPU causes a visible error rather than silent slowness"
+    ],
+    "assessmentOpportunities": [
+      "Diagnose an unexpectedly slow FFT on an unfamiliar board"
+    ]
+  }
+}

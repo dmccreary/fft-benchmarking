@@ -112,7 +112,7 @@ Before looking at how Thonny and the board's REPL fit together as a system, it h
 
 #### Diagram: Thonny and the Pico 2 Workflow
 
-<iframe src="../../sims/thonny-repl-workflow/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/thonny-repl-workflow/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Thonny and the Pico 2 Workflow</summary>

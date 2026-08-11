@@ -1,0 +1,15 @@
+{
+  "sim_id": "dwt-register-explorer",
+  "diagram_name": "DWT Register Explorer",
+  "chapter_number": 17,
+  "chapter_title": "\"Measuring Time: The DWT Cycle Counter\"",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — explain, interpret",
+  "bloom_verb": null,
+  "learning_objective": "Explain how the DEMCR and DWT.CTRL enable bits gate access to the CYCCNT counter, and interpret a 32-bit register as individually addressable bits.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** dwt-register-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — explain, interpret\nLearning objective: Explain how the DEMCR and DWT.CTRL enable bits gate access to the CYCCNT counter, and interpret a 32-bit register as individually addressable bits.\n\nCanvas layout:\n- Top (300px): Three register boxes drawn as 32-bit grids (DEMCR, DWT.CTRL, DWT.CYCCNT), each bit rendered as a small clickable square, MSB on the left\n- Bottom (150px): Step-through controls and a status readout\n\nVisual elements:\n- DEMCR register: only bit 24 (TRCENA) highlighted as interactive; all other bits shown grayed out and labeled \"reserved / not used here\"\n- DWT.CTRL register: only bit 0 (CYCCNTENA) highlighted as interactive\n- DWT.CYCCNT register: all 32 bits shown as a live binary readout of a running count, with a decimal value printed below\n\nData Visibility Requirements:\n  Stage 1: Show all three registers at power-on, every bit 0, CYCCNT frozen at 0\n  Stage 2: Learner clicks the TRCENA bit in DEMCR — it flips to 1, status readout says \"Trace subsystem enabled, DWT unit powered but cycle counter still off\"\n  Stage 3: Learner clicks CYCCNTENA in DWT.CTRL — it flips to 1, CYCCNT begins visibly incrementing in the display (simulated at a readable rate, not real 150 MHz)\n  Stage 4: Learner clicks CYCCNTENA off again — CYCCNT freezes at its current value, demonstrating the counter holds its value rather than resetting\n\nInteractive controls:\n- Clickable bit squares (only the two functional bits are clickable; others show a tooltip \"not used in this course\" on hover)\n- Button: \"Reset to power-on state\"\n- Toggle: \"Simulated speed\" (slow / medium) purely so the incrementing CYCCNT display is human-readable\n\nInstructional Rationale: Step-through with data visibility is appropriate because the\nUnderstand-level objective requires the learner to trace cause and effect between two\ngating bits and a running counter with concrete state at each stage, not a continuous\nanimation that would obscure which bit caused which change.\n\nImplementation: p5.js, register bits stored as an array of booleans per register, redraw on click"
+}

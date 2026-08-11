@@ -1,0 +1,78 @@
+{
+  "title": "DWT Register Explorer",
+  "description": "Three 32-bit registers drawn as clickable bit grids, where setting TRCENA then CYCCNTENA starts a live simulated cycle counter.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Computer Architecture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "dwt-register-explorer",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 17,
+  "chapter_title": "Measuring Time",
+  "chapter_dir": "17-measuring-time",
+  "chapter_rel_dir": "chapters/17-measuring-time",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "DWT cycle counter enable bits",
+    "learningObjectives": [
+      "Explain how TRCENA and CYCCNTENA gate the cycle counter",
+      "Interpret a 32-bit register as individually addressable bits",
+      "Explain why the counter holds rather than resets when disabled"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10 minutes",
+    "prerequisites": ["Binary representation", "Memory-mapped registers"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "DEMCR bit 24 (TRCENA)", "purpose": "Power the trace subsystem" },
+      { "type": "click", "label": "DWT.CTRL bit 0 (CYCCNTENA)", "purpose": "Start or freeze the cycle counter" },
+      { "type": "button", "label": "Reset to power-on state", "purpose": "Clear both bits and the counter" },
+      { "type": "slider", "label": "Simulated speed", "min": 1, "max": 40, "default": 8 }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Gated counter state machine",
+    "variables": ["TRCENA", "CYCCNTENA", "CYCCNT"],
+    "equations": ["CYCCNT advances only while TRCENA AND CYCCNTENA"],
+    "assumptions": [
+      "Counter rate slowed far below 150 MHz so individual bits are readable",
+      "Counter holds its value when disabled, matching the real register"
+    ],
+    "limitations": [
+      "Only the two functional bits are modeled; the other DEMCR and DWT.CTRL fields are shown greyed out"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Progressive enable with staged status feedback",
+    "keyQuestions": [
+      "What happens if you set CYCCNTENA before TRCENA?",
+      "Does disabling the counter reset it?"
+    ],
+    "commonMisconceptions": [
+      "That one enable bit is enough",
+      "That disabling the counter clears it"
+    ],
+    "assessmentOpportunities": [
+      "Diagnose a benchmark reporting 0 cycles for every operation"
+    ]
+  }
+}

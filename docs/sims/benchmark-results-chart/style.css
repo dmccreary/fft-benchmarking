@@ -1,0 +1,30 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; background-color: aliceblue; }
+main { padding: 8px 12px; }
+
+.heading { font-size: 17px; text-align: center; color: #444; margin-bottom: 6px; }
+
+.chart-box {
+    height: 286px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 6px;
+}
+
+.controls {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+    background-color: white; border: 1px solid silver; border-radius: 6px;
+    padding: 9px 12px; font-size: 15px;
+}
+.controls label { cursor: pointer; white-space: nowrap; }
+.controls .hint { color: #757575; font-size: 13px; }
+
+.callout {
+    margin-top: 8px;
+    background-color: white; border: 1px solid silver; border-radius: 6px;
+    padding: 9px 12px; font-size: 13px; line-height: 1.5; min-height: 62px;
+}
+.callout strong { color: #c62828; }
+.callout em { color: #2e7d32; font-style: normal; font-weight: bold; }

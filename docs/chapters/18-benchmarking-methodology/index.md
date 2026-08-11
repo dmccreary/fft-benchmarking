@@ -280,7 +280,7 @@ in this course from here forward.
 
 #### Diagram: Benchmark Results Chart
 
-<iframe src="../../sims/benchmark-results-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/benchmark-results-chart/main.html" width="100%" height="472px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Benchmark Results Chart</summary>

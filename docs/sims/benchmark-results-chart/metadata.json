@@ -1,0 +1,76 @@
+{
+  "title": "Benchmark Results Chart",
+  "description": "Three implementations charted under mean-with-error-bars and best-of-N on a shared axis, with a callout explaining what each statistic conceals.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Statistics"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "benchmark-results-chart",
+  "library": "Chart.js",
+  "canvasHeight": 470,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Compare, examine",
+  "completion_status": "implemented",
+  "chapter_number": 18,
+  "chapter_title": "Benchmarking Methodology",
+  "chapter_dir": "18-benchmarking-methodology",
+  "chapter_rel_dir": "chapters/18-benchmarking-methodology",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Benchmark statistics and reporting",
+    "learningObjectives": [
+      "Compare mean-with-spread against best-of-N",
+      "Examine what each statistic conceals",
+      "Choose a statistic appropriate to a real-time requirement"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Mean and standard deviation", "Reading error bars"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "4.4.0",
+    "canvasDimensions": { "width": "responsive", "height": 470 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "radio", "label": "Statistic", "options": ["Mean ± std dev", "Best of N"] },
+      { "type": "hover", "label": "Any bar", "purpose": "Exact value, std dev, and implied range" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Fixed benchmark dataset under two summary statistics",
+    "variables": ["selected statistic"],
+    "equations": ["error bar extent = mean ± 1 standard deviation"],
+    "assumptions": [
+      "Placeholder data for three implementations",
+      "Shared y-axis range across both views"
+    ],
+    "limitations": [
+      "Shows two statistics; percentile-based reporting such as p99 is often better for real-time work and is not shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Same data, two summaries, with the ranking deliberately unchanged",
+    "keyQuestions": [
+      "Does the ranking change between statistics?",
+      "Which implementation would you ship against a 440 microsecond deadline?"
+    ],
+    "commonMisconceptions": [
+      "That the lowest mean is the best choice",
+      "That best-of-N represents typical performance"
+    ],
+    "assessmentOpportunities": [
+      "Identify what a best-of-N-only report conceals"
+    ]
+  }
+}

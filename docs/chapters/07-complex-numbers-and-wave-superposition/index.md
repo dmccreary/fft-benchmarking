@@ -84,7 +84,7 @@ The geometric object that makes radians concrete is a specific circle you have l
 
 #### Diagram: Unit Circle and Radians Explorer
 
-<iframe src="../../sims/unit-circle-radians-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/unit-circle-radians-explorer/main.html" width="100%" height="462px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Unit Circle and Radians Explorer</summary>

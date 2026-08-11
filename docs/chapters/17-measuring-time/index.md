@@ -116,7 +116,7 @@ one does:
 
 #### Diagram: DWT Register Explorer
 
-<iframe src="../../sims/dwt-register-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/dwt-register-explorer/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>DWT Register Explorer</summary>

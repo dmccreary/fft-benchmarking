@@ -211,7 +211,7 @@ Before running this in the interactive timing explorer below, it's worth naming 
 
 #### Diagram: Blink Timing Explorer
 
-<iframe src="../../sims/blink-timing-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/blink-timing-explorer/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Blink Timing Explorer</summary>

@@ -1,0 +1,85 @@
+{
+  "title": "Aliasing Demonstrator",
+  "description": "A true sine wave with sample dots and a reconstructed curve that diverges into a slower ghost frequency, turning red the moment the Nyquist limit is crossed.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Sampling Theory", "Signals and Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "aliasing-demonstrator",
+  "library": "p5.js",
+  "canvasHeight": 465,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, distinguish",
+  "completion_status": "implemented",
+  "chapter_number": 6,
+  "chapter_title": "Sampling, Quantization, and Aliasing",
+  "chapter_dir": "06-sampling-quantization-and-aliasing",
+  "chapter_rel_dir": "chapters/06-sampling-quantization-and-aliasing",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Nyquist frequency and aliasing",
+    "learningObjectives": [
+      "Examine how sampling rate and true frequency determine the reconstruction",
+      "Distinguish correct sampling from aliased sampling",
+      "Compute the folded apparent frequency"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A sine wave has a frequency",
+      "Sampling records values at discrete instants"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 465 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "True signal frequency", "min": 100, "max": 15000, "default": 1000, "step": 100, "units": "Hz" },
+      { "type": "slider", "label": "Sampling rate", "min": 4000, "max": 16000, "default": 16000, "step": 500, "units": "Hz" },
+      { "type": "checkbox", "label": "Show reconstructed (aliased) curve", "purpose": "Draw the signal the samples actually describe" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Analytic sampling and frequency-folding model",
+    "variables": ["true frequency", "sampling rate", "apparent frequency"],
+    "equations": [
+      "f_signed = f_true - round(f_true / f_s) * f_s",
+      "f_apparent = |f_signed|",
+      "nyquist = f_s / 2"
+    ],
+    "assumptions": [
+      "Ideal instantaneous sampling with no aperture time or jitter",
+      "A single pure sinusoid with zero starting phase",
+      "No anti-aliasing filter is present"
+    ],
+    "limitations": [
+      "Real converters include an anti-aliasing filter that attenuates above-Nyquist content before it can fold"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Parameter exploration with a hard-boundary color state change",
+    "keyQuestions": [
+      "At what frequency does the readout turn red, and why exactly there?",
+      "Can the system tell from the samples alone that they are wrong?"
+    ],
+    "commonMisconceptions": [
+      "That aliasing degrades quality gradually rather than producing a specific wrong frequency",
+      "That aliasing can be filtered out after sampling"
+    ],
+    "assessmentOpportunities": [
+      "Compute the apparent frequency for a 5 kHz tone sampled at 8 kHz"
+    ]
+  }
+}

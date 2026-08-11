@@ -250,3 +250,5 @@ trusting any hardware-specific code path.
     datasheet, that your Pico 2's Cortex-M33 has exactly the floating-point hardware
     Module 7 needs. Chapter 21 puts that confirmed hardware to work — your very first
     hand-written ARM assembly function.
+
+[See Annotated References](./references.md)

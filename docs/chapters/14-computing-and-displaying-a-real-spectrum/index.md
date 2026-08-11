@@ -314,3 +314,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "Your own voice, turned into a spectrum, on your own screen"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Whistle a rising note and watch that peak climb the display — that's real-time frequency analysis, built by you, running on a five-dollar chip. Next chapter fixes a subtle blurriness you may have already noticed in that peak, and teaches your pipeline to pinpoint a frequency far more precisely than one bin width. Not bad for a $5 chip!
+
+[See Annotated References](./references.md)

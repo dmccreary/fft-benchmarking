@@ -337,3 +337,5 @@ Implementation: Chart.js waterfall-style bar chart (floating bars with connector
     performance nobody else's general-purpose code can claim. Chapter 25 goes one level
     deeper still: hand-encoding a machine instruction the assembler itself refuses to
     write.
+
+[See Annotated References](./references.md)

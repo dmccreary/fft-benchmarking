@@ -295,3 +295,5 @@ operation builds on directly.
     multiply-accumulate — that's every FPU instruction the butterfly operation needs.
     Chapter 23 assembles all of it, plus everything from Chapters 21 and 22, into a
     complete, working FFT written entirely in hand-crafted ARM assembly.
+
+[See Annotated References](./references.md)

@@ -262,3 +262,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "You can now describe any wave precisely"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Amplitude, frequency, phase, harmonics, timbre — that's the complete vocabulary this course uses to talk about sound from here forward, and you built it without touching a single wire. Next stop: capturing a real sound with the I²S microphone and watching these exact shapes appear in your own recorded audio. Time to transform!
+
+[See Annotated References](./references.md)

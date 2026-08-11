@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
+        <meta name="description" content="Build a Fast Fourier Transform from scratch on a $19 kit, then hand-write ARM assembly to make it 165x faster — real-time DSP in 35 hands-on labs.">
       
       
         <meta name="author" content="Dan McCreary">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Real-Time DSP on a $5 Microcontroller</title>
+        <title>Real-Time DSP on a $5 Microcontroller - Real-Time DSP on a $5 Microcontroller</title>
       
     
     
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Real-Time DSP on a $5 Microcontroller
             
           </span>
         </div>
@@ -194,6 +194,8 @@
           
             
               
+                
+              
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -241,6 +243,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -252,6 +267,79 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#we-hand-wrote-our-fft-in-arm-assembly-and-it-shows" class="md-nav__link">
+    <span class="md-ellipsis">
+      We hand-wrote our FFT in ARM assembly — and it shows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fun-labs-on-a-20-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fun labs on a $20 kit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-book-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      The book at a glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-this-book-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who this book is for
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-book" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use this book
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -312,6 +400,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -569,6 +663,8 @@
       
         
           
+        
+      
         
       
         
@@ -991,7 +1087,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1002,6 +1100,68 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#we-hand-wrote-our-fft-in-arm-assembly-and-it-shows" class="md-nav__link">
+    <span class="md-ellipsis">
+      We hand-wrote our FFT in ARM assembly — and it shows
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fun-labs-on-a-20-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fun labs on a $20 kit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-book-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      The book at a glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-this-book-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Who this book is for
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-book" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use this book
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting started
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1014,6 +1174,8 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
+
 
 
   
@@ -1027,9 +1189,155 @@
 
 <h1 id="real-time-dsp-on-a-5-microcontroller">Real-Time DSP on a $5 Microcontroller</h1>
 <p><em>Building and Benchmarking the FFT from Scratch</em></p>
-<p>Our goal is to get the maximum performance doing FFT on low-cost microcontrollers such as 
-the powerful Raspberry Pi Pico 2 with updated floating point and DSP instructions.</p>
-<p>Raspberry Pi Pico 2 comes with the RP2350 Pico 2 ARM Cortex-M33 processor.  It has custom hardware for doing signal processing.  However, very few libraries use this power.</p>
+<p><img alt="" src="img/cover.png" /></p>
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Hi, I'm Echo — let's transform some signals!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="img/mascot/welcome.png" />
+Echolocation is real-time signal processing with flippers, so trust me on this one:
+what you're about to build is a genuine superpower. <strong>Time to transform!</strong></p>
+</div>
+<p>Our goal is to squeeze the maximum performance out of the FFT on low-cost microcontrollers
+— chips like the Raspberry Pi Pico 2, with its updated hardware floating point and DSP
+instructions. Most FFT libraries still don't use that power. By the end of this book, yours
+will.</p>
+<h2 id="we-hand-wrote-our-fft-in-arm-assembly-and-it-shows">We hand-wrote our FFT in ARM assembly — and it shows</h2>
+<p>This isn't a course about calling a library. You build a Discrete Fourier Transform from
+correlation, watch it choke at <strong>21 seconds</strong> for a single 512-point transform, then rebuild it
+as a proper Fast Fourier Transform, and finally rewrite the butterfly by hand in ARM Cortex-M33
+assembly — talking directly to the chip's floating-point unit and DSP instructions.</p>
+<p>The payoff is a real number you measure yourself, on your own board:</p>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Time per 512-point FFT</th>
+<th>vs. 40 ms real-time budget</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brute-force DFT</td>
+<td>~21,000 ms</td>
+<td>530x over budget</td>
+</tr>
+<tr>
+<td>Pure-Python FFT</td>
+<td>140 ms</td>
+<td>3.5x over budget</td>
+</tr>
+<tr>
+<td>Hand-written assembly FFT</td>
+<td>0.85 ms</td>
+<td>2.1% of budget</td>
+</tr>
+<tr>
+<td>Best optimized variant</td>
+<td><strong>0.59 ms</strong></td>
+<td>1.5% of budget</td>
+</tr>
+</tbody>
+</table>
+<p>That's a <strong>35,000x</strong> speedup from first working code to final assembly, and the assembly
+version alone runs <strong>165x faster</strong> than its pure-Python counterpart — while agreeing with it
+bit for bit. Every millisecond above was clocked with the chip's own cycle counter, not taken
+from a spec sheet.</p>
+<h2 id="fun-labs-on-a-20-kit">Fun labs on a $20 kit</h2>
+<p>Everything here runs on hardware you can buy for about <strong>$19</strong> and solder-free wire onto a
+breadboard in an afternoon:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Approx. cost</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raspberry Pi Pico 2 (RP2350)</td>
+<td>$5</td>
+<td>Cortex-M33 core, 150 MHz, hardware FPU</td>
+</tr>
+<tr>
+<td>SSD1306 OLED, 128x64, SPI</td>
+<td>$5</td>
+<td>Live spectrum display</td>
+</tr>
+<tr>
+<td>Two momentary push buttons</td>
+<td>$1</td>
+<td>Mode switching</td>
+</tr>
+<tr>
+<td>INMP441 I2S MEMS microphone</td>
+<td>$3</td>
+<td>Real audio capture</td>
+</tr>
+<tr>
+<td>Breadboard and jumper wires</td>
+<td>$5</td>
+<td>Connections</td>
+</tr>
+</tbody>
+</table>
+<p>That kit carries you through <strong>35 hands-on labs</strong>, and they're built to be genuinely fun, not
+just correct:</p>
+<ul>
+<li><strong>Whistle at your own spectrum analyzer</strong> and watch the peak follow your pitch in real time.</li>
+<li><strong>Build a chromatic tuner</strong> accurate to 1.3 Hz — then tune an actual instrument with it.</li>
+<li><strong>Break things on purpose.</strong> Two labs are engineered "productive failures": you'll play a
+  tone above the Nyquist limit and watch your instrument confidently report the wrong
+  frequency, then clip audio and watch harmonics appear that were never in the room.</li>
+<li><strong>Hand-encode a raw ARM instruction</strong> the assembler itself refuses to write.</li>
+<li><strong>Race eight competing FFT variants</strong> against each other and explain, from your own
+  measurements, exactly where every factor of speedup came from.</li>
+</ul>
+<p>No compiler, no build system, no SDK — every lab runs on stock MicroPython through Thonny, and
+you need <strong>zero prior experience</strong> with FFTs, DSP, or assembly language to start Lab 1.</p>
+<h2 id="the-book-at-a-glance">The book at a glance</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>27</strong> chapters</td>
+<td><strong>35</strong> hands-on labs</td>
+</tr>
+<tr>
+<td><strong>61</strong> interactive MicroSims</td>
+<td><strong>550</strong> glossary terms</td>
+</tr>
+<tr>
+<td><strong>91</strong> FAQ answers</td>
+<td><strong>10 weeks</strong>, or self-paced</td>
+</tr>
+</tbody>
+</table>
+<h2 id="who-this-book-is-for">Who this book is for</h2>
+<p>College juniors and seniors curious about signal processing — no prior FFT, DSP, or assembly
+background required. If you can write a loop and a function, and you're willing to plug a few
+wires into a breadboard, you're ready.</p>
+<h2 id="how-to-use-this-book">How to use this book</h2>
+<ul>
+<li><strong><a href="course-description/">Course Description</a></strong> — full syllabus, learning outcomes, and the
+  hardware kit in detail</li>
+<li><strong><a href="chapters/">Chapters</a></strong> — the concepts, explained from first principles</li>
+<li><strong><a href="labs/">Hands-On Labs</a></strong> — all 35 labs, ready to run on your kit</li>
+<li><strong><a href="sims/">MicroSims</a></strong> — interactive simulations for butterflies, twiddle factors,
+  aliasing, and more</li>
+<li><strong><a href="learning-graph/">Learning Graph</a></strong> — how every concept connects to the next</li>
+<li><strong><a href="glossary/">Glossary</a></strong> and <strong><a href="faq/">FAQ</a></strong> — quick answers while you work</li>
+<li><strong><a href="instructors-guide/">Instructor's Guide</a></strong> — for anyone teaching this course</li>
+</ul>
+<h2 id="getting-started">Getting started</h2>
+<p>Start with <strong><a href="labs/01-hello-world/">Lab 1: Hello World with Thonny</a></strong> — or read
+<strong><a href="chapters/01-hello-world/">Chapter 1</a></strong> first if you'd rather understand before you
+solder. Either way, in about ten weeks you'll have a hand-written assembly FFT running in real
+time on a $5 chip, and the benchmarks to prove it.</p>
 
 
 
@@ -1037,8 +1345,13 @@ the powerful Raspberry Pi Pico 2 with updated floating point and DSP instruction
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
@@ -1061,6 +1374,8 @@ the powerful Raspberry Pi Pico 2 with updated floating point and DSP instruction
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         

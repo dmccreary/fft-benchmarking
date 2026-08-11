@@ -341,3 +341,5 @@ only looks rigorous.
     best-of-N, fair comparison, and stated exclusions — that's the full toolkit for
     telling a trustworthy result from a flattering one. Chapter 19 puts it straight to
     work, comparing MicroPython, C, and assembly on the very same computation.
+
+[See Annotated References](./references.md)

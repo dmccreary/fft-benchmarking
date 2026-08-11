@@ -53,7 +53,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/01-hello-world/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/01-hello-world/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/02-know-your-board/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/02-know-your-board/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/02-know-your-board/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -61,7 +77,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/03-peripherals/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/03-peripherals/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/04-waves/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/04-waves/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/04-waves/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -69,7 +101,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/05-capturing-real-audio/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/05-capturing-real-audio/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/06-sampling-quantization-and-aliasing/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/06-sampling-quantization-and-aliasing/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/06-sampling-quantization-and-aliasing/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -77,7 +125,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/07-complex-numbers-and-wave-superposition/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/07-complex-numbers-and-wave-superposition/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/08-correlation/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/08-correlation/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/08-correlation/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -85,7 +149,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/09-computing-and-validating-the-dft/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/09-computing-and-validating-the-dft/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/10-why-the-dft-is-too-slow/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/10-why-the-dft-is-too-slow/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/10-why-the-dft-is-too-slow/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -93,7 +173,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/11-from-dft-to-fft/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/11-from-dft-to-fft/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/12-building-the-fft/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/12-building-the-fft/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/12-building-the-fft/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -101,7 +197,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/13-fft-variants-complexity-and-correctness/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/13-fft-variants-complexity-and-correctness/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/14-computing-and-displaying-a-real-spectrum/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/14-computing-and-displaying-a-real-spectrum/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/14-computing-and-displaying-a-real-spectrum/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -109,7 +221,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/15-windowing-spectral-leakage-and-peak-detection/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/15-windowing-spectral-leakage-and-peak-detection/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/16-building-a-real-time-spectrum-analyzer/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/16-building-a-real-time-spectrum-analyzer/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/16-building-a-real-time-spectrum-analyzer/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -117,7 +245,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/17-measuring-time/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/17-measuring-time/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/18-benchmarking-methodology/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/18-benchmarking-methodology/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/18-benchmarking-methodology/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -125,7 +269,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/19-the-abstraction-ladder/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/19-the-abstraction-ladder/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/20-does-your-cpu-have-an-fpu/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/20-does-your-cpu-have-an-fpu/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/20-does-your-cpu-have-an-fpu/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -133,7 +293,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/21-your-first-assembly-function/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/21-your-first-assembly-function/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/22-talking-to-the-fpu/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/22-talking-to-the-fpu/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/22-talking-to-the-fpu/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -141,7 +317,23 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/23-the-butterfly-in-assembly/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/23-the-butterfly-in-assembly/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/24-specialization-and-branchless-code/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/24-specialization-and-branchless-code/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/24-specialization-and-branchless-code/references/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -149,11 +341,39 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/25-beyond-the-assembler/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/25-beyond-the-assembler/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/26-competing-variants/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/26-competing-variants/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/26-competing-variants/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/chapters/27-capstone/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/27-capstone/quiz/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/chapters/27-capstone/references/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/img/cover-image-prompt/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
@@ -369,6 +589,10 @@
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/quiz-generation-report/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/learning-graph/taxonomy-distribution/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
@@ -486,6 +710,10 @@
     </url>
     <url>
          <loc>https://dmccreary.github.io/fft-benchmarking/sims/fft-applications-map/</loc>
+         <lastmod>2026-08-11</lastmod>
+    </url>
+    <url>
+         <loc>https://dmccreary.github.io/fft-benchmarking/sims/fft-mic/</loc>
          <lastmod>2026-08-11</lastmod>
     </url>
     <url>

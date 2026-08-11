@@ -271,3 +271,5 @@ GPIO blink to whatever you build for this capstone.
     ever touch by hand. Whatever question you choose for your capstone, you already have
     every tool you need to answer it honestly. Time to transform — one more time, on your
     own terms.
+
+[See Annotated References](./references.md)

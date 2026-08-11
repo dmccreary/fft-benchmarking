@@ -279,3 +279,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "You can now predict exactly how digitizing fails"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Sampling rate, Nyquist frequency, aliasing, quantization, bit depth, clipping — that's the complete toolkit for reasoning about *why* a digitized signal looks the way it does, good or bad. Next up: the math language — complex numbers — that the rest of this course uses to actually pull frequencies back out of a signal like this. Now *that's* a superpower.
+
+[See Annotated References](./references.md)

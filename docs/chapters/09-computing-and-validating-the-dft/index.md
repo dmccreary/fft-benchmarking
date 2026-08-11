@@ -399,3 +399,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "A working, validated DFT — built entirely by hand"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     This is the milestone the whole first half of the course has been building toward: a Discrete Fourier Transform you built, understand completely, and have actually proven correct — not just trusted. There's just one problem left, and it's a big one: this implementation is astonishingly slow. The next chapter measures exactly how slow, and why. Not bad for a $5 chip — yet.
+
+[See Annotated References](./references.md)

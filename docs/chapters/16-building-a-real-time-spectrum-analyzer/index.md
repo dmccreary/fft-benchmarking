@@ -282,3 +282,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "A real-time spectrum analyzer, built entirely by you"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Capture, FFT, windowing, peak detection, and display, all running together, continuously, on your own five-dollar board — that's Module 5, complete. You've also found, with real measurements, exactly where the next module needs to focus: compute time. Time to go measure it properly. Time to transform!
+
+[See Annotated References](./references.md)

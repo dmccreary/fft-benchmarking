@@ -311,3 +311,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "You just built a one-frequency detector from scratch"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Multiply, sum, and combine in-phase with quadrature — that's the entire mechanism, and you now understand every piece of it. Next chapter takes this exact tool and sweeps it across every frequency bin at once, and you'll have a name for what you just built by hand: the Discrete Fourier Transform. Time to transform!
+
+[See Annotated References](./references.md)

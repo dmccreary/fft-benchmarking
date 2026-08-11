@@ -346,3 +346,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "Your board can see, listen, and stand on its own"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Screen wired, buttons debounced, code deployed to run without a laptop in sight — that's the complete hardware platform this entire course builds on. Everything from here forward is about what you choose to *show* on that screen and *compute* in response to those buttons. Time to transform!
+
+[See Annotated References](./references.md)

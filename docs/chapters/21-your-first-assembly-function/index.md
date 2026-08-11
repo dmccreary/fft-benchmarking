@@ -274,3 +274,5 @@ what each mnemonic does.
     with full control over every register. Chapter 22 extends this exact skill set to the
     FPU's own register bank, which is the last piece you need before hand-writing the
     FFT's butterfly operation itself.
+
+[See Annotated References](./references.md)

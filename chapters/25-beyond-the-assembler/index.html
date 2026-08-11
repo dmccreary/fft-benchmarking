@@ -1,0 +1,2231 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hand-encoding a machine instruction the assembler refuses to emit, plus fixed-point Q15/Q31 arithmetic as a scoped tradeoff this course discusses but does not implement">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/25-beyond-the-assembler/">
+      
+      
+        <link rel="prev" href="../24-specialization-and-branchless-code/">
+      
+      
+        <link rel="next" href="../26-competing-variants/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Beyond the Assembler: Hand-Encoding and Instruction Formats - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#beyond-the-assembler-hand-encoding-and-instruction-formats" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Beyond the Assembler: Hand-Encoding and Instruction Formats
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#an-instruction-the-assembler-wont-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      An Instruction the Assembler Won't Write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-bother-what-vfma-buys-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Bother: What VFMA Buys You
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isa-versus-toolchain-two-separate-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISA Versus Toolchain: Two Separate Things
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-an-instruction-becomes-bits-opcodes-and-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      How an Instruction Becomes Bits: Opcodes and Encoding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thumb-2-encoding-and-the-halfword" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thumb-2 Encoding and the Halfword
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hand-encoding-vfma-bit-field-by-bit-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hand-Encoding VFMA, Bit Field by Bit Field
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-what-you-just-encoded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying What You Just Encoded
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifying What You Just Encoded">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-instruction-encoding-bit-field-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Instruction Encoding Bit Field Builder
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-road-not-taken-fixed-point-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Road Not Taken: Fixed-Point Arithmetic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precision-tradeoffs-and-why-this-course-stops-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precision Tradeoffs, and Why This Course Stops Here
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#an-instruction-the-assembler-wont-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      An Instruction the Assembler Won't Write
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-bother-what-vfma-buys-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Bother: What VFMA Buys You
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isa-versus-toolchain-two-separate-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      ISA Versus Toolchain: Two Separate Things
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-an-instruction-becomes-bits-opcodes-and-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      How an Instruction Becomes Bits: Opcodes and Encoding
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thumb-2-encoding-and-the-halfword" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thumb-2 Encoding and the Halfword
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hand-encoding-vfma-bit-field-by-bit-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hand-Encoding VFMA, Bit Field by Bit Field
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verifying-what-you-just-encoded" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying What You Just Encoded
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verifying What You Just Encoded">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-instruction-encoding-bit-field-builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Instruction Encoding Bit Field Builder
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-road-not-taken-fixed-point-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Road Not Taken: Fixed-Point Arithmetic
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precision-tradeoffs-and-why-this-course-stops-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precision Tradeoffs, and Why This Course Stops Here
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/25-beyond-the-assembler/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="beyond-the-assembler-hand-encoding-and-instruction-formats">Beyond the Assembler: Hand-Encoding and Instruction Formats</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter goes one level below the assembler, hand-encoding a machine instruction the assembler itself refuses to emit, and covers opcode formats, bit fields, and Thumb-2 encoding along the way. It also discusses fixed-point Q15/Q31 arithmetic and why this course doesn't implement it, as a scoped tradeoff rather than an oversight. This is the deepest point in the book's abstraction ladder.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 23 concepts from the learning graph:</p>
+<ol>
+<li>Assembler Limitation</li>
+<li>Data Directive</li>
+<li>Disassembly</li>
+<li>Encoding Bit Field</li>
+<li>Encoding Table</li>
+<li>Encoding Verification</li>
+<li>Fixed Point Arithmetic</li>
+<li>Fixed Point FFT</li>
+<li>Fused Multiply Add</li>
+<li>Fused Rounding</li>
+<li>Halfword</li>
+<li>ISA Versus Toolchain</li>
+<li>Instruction Encoding</li>
+<li>Integer FFT</li>
+<li>Opcode</li>
+<li>Precision Tradeoffs</li>
+<li>Q Format Numbers</li>
+<li>Q15 Format</li>
+<li>Q31 Format</li>
+<li>Raw Machine Word</li>
+<li>Saturating Arithmetic</li>
+<li>Thumb-2 Encoding</li>
+<li>VFMA Instruction</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../20-does-your-cpu-have-an-fpu/">20. Does Your CPU Have an FPU?</a></li>
+<li><a href="../21-your-first-assembly-function/">21. Your First Assembly Function: Registers and Loops</a></li>
+<li><a href="../22-talking-to-the-fpu/">22. Talking to the FPU: Floating-Point Assembly</a></li>
+<li><a href="../24-specialization-and-branchless-code/">24. Specialization and Branchless Code</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — past the assembler itself!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+You've written assembly by hand. This chapter asks what happens when even the
+assembler can't help you anymore — when the instruction you want exists on your chip,
+but nothing in your toolchain knows how to write it for you.</p>
+</div>
+<h2 id="an-instruction-the-assembler-wont-write">An Instruction the Assembler Won't Write</h2>
+<p>MicroPython's <code>asm_thumb</code> inline assembler, faithful as it has been through three
+chapters, does not implement every instruction the Cortex-M33's FPU actually supports.
+One specific gap motivates this entire chapter: the <strong>VFMA instruction</strong> — vector fused
+multiply-add — has no mnemonic in <code>asm_thumb</code> at all. Write <code>vfma(s0, s1, s2)</code> in a
+MicroPython assembly function, and the assembler reports an error, not because the chip
+can't execute this instruction, but because nobody has taught this particular assembler
+how to translate that mnemonic into bits.</p>
+<p>This is an <strong>assembler limitation</strong>, not a hardware one, and the distinction matters
+enormously: it means the instruction is still available to you, just not through the
+normal mnemonic-based route. Getting it anyway is what the rest of this chapter teaches.</p>
+<h2 id="why-bother-what-vfma-buys-you">Why Bother: What VFMA Buys You</h2>
+<p>Before hand-encoding anything, it's worth being clear about why VFMA is worth the
+trouble at all, rather than just using Chapter 22's <code>VMLA</code>. Both are a <strong>fused multiply
+add</strong>: an operation that computes <code>d = d + (a × b)</code> as a single hardware step rather than
+a separate multiply followed by a separate add. The word "fused" refers specifically to
+rounding behavior. An ordinary multiply-then-add rounds the multiplication's result to
+fit single-precision format, <em>then</em> rounds again after the addition — two rounding
+events, two small opportunities to lose precision. A fused instruction computes the
+entire <code>(a × b) + d</code> expression at higher internal precision and rounds only once, at the
+very end — this single-rounding behavior is called <strong>fused rounding</strong>, and it is the
+entire reason chips bother implementing a fused variant instead of just relying on
+separate multiply and add instructions. Across the thousands of accumulations a full FFT
+performs, fused rounding's small per-operation precision gain can measurably improve the
+final result's accuracy — valuable enough that this chapter goes to the trouble of
+hand-encoding an instruction the assembler won't give you for free.</p>
+<h2 id="isa-versus-toolchain-two-separate-things">ISA Versus Toolchain: Two Separate Things</h2>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">The chip and the tool that talks to it are not the same thing</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+Chapter 20 taught you to distinguish what a chip's <em>instruction set architecture</em>
+actually supports from what a datasheet claims. This chapter draws a second, equally
+important line: what an ISA supports, and what a specific piece of <em>software</em> — an
+assembler, in this case — has been programmed to generate for you.</p>
+</div>
+<p><strong>ISA versus toolchain</strong> is the general principle behind the VFMA gap: a CPU's
+instruction set architecture defines the complete universe of instructions the silicon
+can execute, while a toolchain (an assembler, compiler, or IDE) is separate software that
+implements support for some subset of that universe, chosen by whoever wrote the tool.
+MicroPython's inline assembler is a small, deliberately lightweight tool — it was never
+meant to cover every corner of the ARMv8-M instruction set, and VFMA simply fell outside
+what its authors implemented. The ISA does not have this limitation; only the tool does.</p>
+<h2 id="how-an-instruction-becomes-bits-opcodes-and-encoding">How an Instruction Becomes Bits: Opcodes and Encoding</h2>
+<p>To write VFMA's bits yourself, you need to understand how <em>any</em> instruction becomes bits
+in the first place. Every machine instruction, once assembled, is a fixed-width binary
+pattern, and a specific portion of that pattern — the <strong>opcode</strong> — identifies which
+operation the instruction performs, distinguishing <code>VADD</code> from <code>VMUL</code> from <code>VFMA</code> at the
+hardware level. The complete scheme for how an instruction's meaning maps onto its binary
+representation is its <strong>instruction encoding</strong>: which bit positions hold the opcode,
+which hold register numbers, which hold immediate values or condition codes.</p>
+<p>ARM documents every instruction's encoding in an <strong>encoding table</strong> — a reference
+diagram, published in ARM's architecture reference manual, that shows exactly which bit
+range means what for a given instruction class. Reading VFMA's encoding table tells you,
+for instance, that bits 6, 12, and 22 together select which of the 32 floating-point
+registers is the destination, spread across the word in a pattern chosen for the
+hardware's convenience, not for human readability. Each such named bit range is called an
+<strong>encoding bit field</strong> — a specific, labeled subset of an instruction's bits carrying one
+piece of meaning (an opcode, a register number, a condition).</p>
+<h2 id="thumb-2-encoding-and-the-halfword">Thumb-2 Encoding and the Halfword</h2>
+<p>Not every Thumb instruction is the same width. Chapter 21 introduced Thumb instructions
+generally; <strong>Thumb-2 encoding</strong> specifically allows some instructions to be a single
+16-bit <strong>halfword</strong> — the natural unit Thumb instructions are measured in — while others,
+including VFMA, are 32 bits wide, built from two consecutive halfwords read together as
+one instruction. Recognizing which category an instruction falls into is the first thing
+its encoding table tells you, because it determines how many bits you'll ultimately need
+to compute.</p>
+<h2 id="hand-encoding-vfma-bit-field-by-bit-field">Hand-Encoding VFMA, Bit Field by Bit Field</h2>
+<p>With the encoding table in hand, hand-encoding VFMA means computing the exact 32-bit
+pattern for a specific instance of the instruction — say, <code>VFMA s2, s0, s1</code> — by placing
+the correct opcode bits and the correct register-number bits into their documented
+positions, then combining them:</p>
+<table>
+<thead>
+<tr>
+<th>Encoding bit field</th>
+<th>Purpose</th>
+<th>Example value for <code>VFMA s2, s0, s1</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opcode bits</td>
+<td>Identifies this as VFMA, not another FPU instruction</td>
+<td>fixed pattern from the encoding table</td>
+</tr>
+<tr>
+<td>Sd (destination register)</td>
+<td>Selects <code>s2</code> as the accumulator</td>
+<td>register-number bits for s2</td>
+</tr>
+<tr>
+<td>Sn (first operand)</td>
+<td>Selects <code>s0</code></td>
+<td>register-number bits for s0</td>
+</tr>
+<tr>
+<td>Sm (second operand)</td>
+<td>Selects <code>s1</code></td>
+<td>register-number bits for s1</td>
+</tr>
+</tbody>
+</table>
+<p>Combining these fields — shifting each into its documented bit position and OR-ing them
+together, the exact <strong>register bit manipulation</strong> technique from Chapter 17 — produces a
+single 32-bit <strong>raw machine word</strong>: the literal binary value the CPU will decode and
+execute, with no assembler mnemonic involved at any point.</p>
+<p>Because <code>asm_thumb</code> cannot generate this word from a mnemonic, it must be inserted
+directly into the instruction stream using a <strong>data directive</strong> — an assembler feature
+that places a literal, fixed value at a specific point in the compiled output, rather than
+encoding a mnemonic:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@micropython</span><span class="o">.</span><span class="n">asm_thumb</span>
+<span class="k">def</span> <span class="nf">butterfly_step</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">):</span>
+    <span class="c1"># ... ordinary asm_thumb instructions before and after ...</span>
+    <span class="n">data</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mh">0xEE621A00</span><span class="p">)</span>     <span class="c1"># hand-encoded VFMA s2, s0, s1 (illustrative bit pattern)</span>
+    <span class="c1"># ... continues ...</span>
+</code></pre></div></td></tr></table></div>
+<p><code>data(4, 0xEE621A00)</code> tells the assembler "place these exact 4 bytes here, unmodified" —
+the assembler trusts you completely at this point; it performs no validation that the
+word you supplied actually represents a legal or correct instruction. That trust is
+exactly why the next two sections matter so much.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">One wrong bit doesn't produce an error — it produces a different, valid instruction</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+Flip one bit in a hand-encoded word, and you very likely will not get a crash or an
+assembler complaint. You will get a <em>different, perfectly legal</em> instruction — maybe
+<code>VFMA</code> with the wrong operand register, maybe an entirely different FPU operation —
+executing silently and producing plausible-looking wrong answers. This is the single
+riskiest step in the entire course.</p>
+</div>
+<h2 id="verifying-what-you-just-encoded">Verifying What You Just Encoded</h2>
+<p><strong>Encoding verification</strong> is the non-negotiable follow-up step: confirming that a
+hand-encoded raw machine word actually behaves the way you intended, before trusting it
+anywhere near real data. The most direct check runs the routine on known inputs where you
+can compute the mathematically correct fused multiply-add result by hand, and compares —
+exactly the <strong>bit-for-bit match</strong> discipline from Chapter 23, now applied to a single
+hand-encoded instruction instead of a whole routine.</p>
+<p>A second, complementary check is <strong>disassembly</strong> — running your hand-encoded word through
+a disassembler, a tool that performs the reverse translation, taking raw machine code and
+producing the mnemonic and operands it represents. If disassembling <code>0xEE621A00</code> reports
+back <code>VFMA S2, S0, S1</code>, that is strong, independent confirmation that your bit-field
+arithmetic was correct — the disassembler has no idea what you <em>intended</em>, only what the
+bits actually say, which makes it a genuinely independent witness rather than a repeat of
+your own reasoning.</p>
+<h4 id="diagram-instruction-encoding-bit-field-builder">Diagram: Instruction Encoding Bit Field Builder</h4>
+<iframe src="../../sims/instruction-encoding-bit-builder/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Instruction Encoding Bit Field Builder</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> instruction-encoding-bit-builder<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — construct, calculate
+Learning objective: Apply encoding-table bit-field positions to construct a correct 32-bit raw machine word for a chosen VFMA register combination, and verify it via a built-in disassembly check.</p>
+<p>Canvas layout:
+- Top (200px): A 32-bit grid (two rows of 16 bits each, representing the two halfwords of a Thumb-2 instruction), with labeled, color-coded regions for opcode, Sd, Sn, Sm bit fields
+- Middle (150px): Three register-selector dropdowns (destination, operand 1, operand 2), each choosing from s0-s7 for simplicity
+- Bottom (150px): Computed hex word output, plus a "Disassemble" button and its result</p>
+<p>Visual elements:
+- Bit grid updates live as each register selector changes, highlighting exactly which bits flip
+- Color legend matching the table in the chapter text (opcode / Sd / Sn / Sm)
+- Hex output field showing the assembled 32-bit word</p>
+<p>Interactive controls:
+- Three dropdowns: destination register, operand 1, operand 2
+- Button: "Assemble word" — computes and displays the hex value from current selections
+- Button: "Disassemble" — takes the current hex value and reports the mnemonic and operands it decodes back to, confirming (or, if the learner has manually edited a bit, contradicting) the original selections
+- Checkbox: "Flip one random bit" — demonstrates the warning from the text: flipping a single bit still disassembles to a valid-looking, but different, instruction</p>
+<p>Instructional Rationale: An Apply-level objective calling for construction and
+calculation is best served by letting the learner directly build a word from register
+choices and immediately verify it via disassembly — closing the loop between encoding and
+verification the way the chapter's own worked example does.</p>
+<p>Implementation: p5.js, bit grid as 32 individually colored rectangles, hex computed via bitwise shifts and ORs matching the real ARM encoding scheme</p>
+</details>
+<h2 id="the-road-not-taken-fixed-point-arithmetic">The Road Not Taken: Fixed-Point Arithmetic</h2>
+<p>Hand-encoding VFMA is the deepest this course goes into floating-point assembly. A
+parallel universe of optimization exists that this course deliberately does not build:
+<strong>fixed point arithmetic</strong> — representing fractional values as scaled whole numbers
+instead of IEEE 754 floats, so that ordinary integer instructions (which every Cortex-M
+core has, with or without an FPU) can perform what amounts to fractional-value math.</p>
+<p>The standard notation for this is <strong>Q format numbers</strong>: a <code>QM.N</code> format uses <code>M</code> bits for
+the integer part and <code>N</code> bits for the fractional part of a fixed-point value, packed into
+one integer register. Two specific formats matter for ARM DSP work: <strong>Q15 format</strong>, a
+16-bit signed integer representing values in the range <span class="arithmatex">\([-1, 1)\)</span> using 15 fractional
+bits, and <strong>Q31 format</strong>, its 32-bit counterpart with 31 fractional bits, offering finer
+precision at the cost of twice the storage.</p>
+<p>Fixed-point arithmetic depends on a companion technique, <strong>saturating arithmetic</strong>:
+instead of silently wrapping around on overflow (the ordinary behavior of integer
+addition, and the exact bug pattern Chapter 17's counter-wraparound section covered),
+saturating operations clamp their result to the largest or smallest representable value
+when the true mathematical result would exceed the format's range. This matters
+enormously for audio: an ordinary integer overflow could flip a very loud sample from
+maximum-positive to maximum-negative in one wrapped step, producing a jarring pop;
+saturation instead clips cleanly at the format's ceiling, the far less harmful failure
+mode.</p>
+<p>Combining these ideas, an <strong>integer FFT</strong> — equivalently, a <strong>fixed point FFT</strong> — performs
+every butterfly using Q15 or Q31 saturating integer arithmetic rather than the
+single-precision floats this course's assembly module builds throughout. On hardware
+without an FPU (a Cortex-M0+, for instance), this is not an optional speedup — it is the
+<em>only</em> way to do a fast FFT at all, since floating-point would otherwise require slow
+software emulation.</p>
+<h2 id="precision-tradeoffs-and-why-this-course-stops-here">Precision Tradeoffs, and Why This Course Stops Here</h2>
+<p>Choosing between floating-point and fixed-point is a genuine set of <strong>precision
+tradeoffs</strong>, not a strictly-better-or-worse decision: floating point offers wide dynamic
+range and forgiving scaling (Chapter 19's FPU chapters never needed to worry about a
+value exceeding some fixed bound), at the cost of requiring FPU hardware. Fixed point
+runs on any core, integer-only included, but demands careful manual scaling at every
+stage of a computation to avoid saturating away real signal — get the scaling wrong, and
+saturation silently discards precision rather than raising any error.</p>
+<p>This course scopes fixed-point arithmetic deliberately as something to understand, not
+implement. As the course description states directly: MicroPython's inline assembler
+exposes none of the actual DSP saturating instructions a real Q15 implementation would
+need, so no working fixed-point FFT gets built here. A scoping study — analyzing what a
+Q15 FFT would require on this hardware, without necessarily completing a working
+implementation — remains an available capstone topic in Chapter 27, for exactly the
+students this gap leaves curious.</p>
+<details class="question">
+<summary>Why might a Q15 FFT be a bad choice for a signal with a very wide dynamic range — quiet passages and loud transients in the same recording? Click to check.</summary>
+<p>Q15's fixed 15 fractional bits give every value the same fixed precision regardless of
+magnitude, unlike floating point's exponent, which lets precision automatically track
+a value's size. A very quiet passage represented in Q15 uses only a small fraction of
+the format's range, losing relative precision, while a loud transient risks
+saturating near the format's ceiling — floating point handles both extremes
+gracefully in the same representation; fixed point requires you to choose (and
+potentially adjust) the scaling by hand.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You've reached the floor of the abstraction ladder</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Not bad for a $5 chip! You hand-encoded an instruction your own toolchain refused to
+write, verified it two independent ways, and can now explain precisely why this
+course stopped at floating point instead of chasing fixed point too. Chapter 26 pulls
+every variant you've built — from Chapter 12's Python FFT through today's hand-encoded
+instruction — into one honest, predicted-then-measured comparison.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../24-specialization-and-branchless-code/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 24. Specialization and Branchless Code">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                24. Specialization and Branchless Code
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../26-competing-variants/" class="md-footer__link md-footer__link--next" aria-label="Next: 26. Competing Variants: Predict, Measure, Explain">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                26. Competing Variants: Predict, Measure, Explain
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

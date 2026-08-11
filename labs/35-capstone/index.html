@@ -18,11 +18,11 @@
         <link rel="prev" href="../34-variants/">
       
       
-        <link rel="next" href="../../cornell-labs/pico-example/">
+        <link rel="next" href="../../sims/">
       
       
       <link rel="icon" href="../../img/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lab-35-capstone" class="md-skip">
+        <a href="#lab-35-capstone-design-benchmark-and-report" class="md-skip">
           Skip to content
         </a>
       
@@ -127,11 +127,13 @@
     
     
     
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -163,13 +165,14 @@
     </div>
   </div>
 </div>
+      
     
     
       <div class="md-header__source">
         <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub Repo
@@ -214,7 +217,7 @@
       <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub Repo
@@ -234,8 +237,10 @@
       <a href="../.." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Home
+    
   </span>
   
 
@@ -254,8 +259,10 @@
       <a href="../../about/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     About
+    
   </span>
   
 
@@ -274,8 +281,10 @@
       <a href="../../course-description/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Course Description
+    
   </span>
   
 
@@ -309,6 +318,11 @@
       
         
       
+        
+      
+        
+      
+    
     
     
     
@@ -322,11 +336,117 @@
         
   
   
+  
     <a href="../../learning-graph/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
   </span>
   
 
@@ -377,36 +497,38 @@
     
     
     
+    
       
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
-          
           
           <div class="md-nav__link md-nav__container">
             <a href="../" class="md-nav__link ">
               
   
+  
   <span class="md-ellipsis">
     Hands-On Labs
+    
   </span>
   
 
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Hands-On Labs
           </label>
@@ -428,13 +550,10 @@
         
       
         
-          
-        
       
         
-          
-        
       
+    
     
     
     
@@ -446,13 +565,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../01-hello-world/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 0 — Getting Started
+    
   </span>
   
 
@@ -482,13 +604,10 @@
         
       
         
-          
-        
       
         
-          
-        
       
+    
     
     
     
@@ -500,13 +619,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../04-oled-display/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 1 — Peripherals
+    
   </span>
   
 
@@ -536,17 +658,12 @@
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
+    
     
     
     
@@ -558,13 +675,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../07-first-sound/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 2 — Sound as Numbers
+    
   </span>
   
 
@@ -594,25 +714,16 @@
         
       
         
-          
+      
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
-        
-          
-        
-      
+    
     
     
     
@@ -624,13 +735,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../11-sine-waves/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 3 — Discovering Frequency
+    
   </span>
   
 
@@ -660,17 +774,12 @@
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
+    
     
     
     
@@ -682,13 +791,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../17-divide-and-conquer/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 4 — The FFT
+    
   </span>
   
 
@@ -718,17 +830,12 @@
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
+    
     
     
     
@@ -740,13 +847,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../21-real-spectrum/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 5 — Real Spectra
+    
   </span>
   
 
@@ -776,13 +886,10 @@
         
       
         
-          
-        
       
         
-          
-        
       
+    
     
     
     
@@ -794,13 +901,16 @@
     <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
       
         
+  
   
   
     <a href="../25-timing/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 6 — Measuring Performance
+    
   </span>
   
 
@@ -830,17 +940,12 @@
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
+    
     
     
     
@@ -854,11 +959,14 @@
         
   
   
+  
     <a href="../28-fpu-check/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Module 7 — Assembly Language
+    
   </span>
   
 
@@ -890,17 +998,12 @@
         
       
         
-          
+      
         
       
         
-          
-        
       
-        
-          
-        
-      
+    
     
     
     
@@ -910,30 +1013,31 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_10" checked>
         
-          
           
           <div class="md-nav__link md-nav__container">
             <a href="../32-specialization/" class="md-nav__link ">
               
   
+  
   <span class="md-ellipsis">
     Module 8 — Optimization and Capstone
+    
   </span>
   
 
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_6_10" id="__nav_6_10_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_10">
             <span class="md-nav__icon md-icon"></span>
             Module 8 — Optimization and Capstone
           </label>
@@ -951,8 +1055,10 @@
       <a href="../33-hand-encoding/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Lab 33: Beyond the Assembler: Hand-Encoding
+    
   </span>
   
 
@@ -972,8 +1078,10 @@
       <a href="../34-variants/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Lab 34: Competing Variants: Predict, Measure, Explain
+    
   </span>
   
 
@@ -1002,8 +1110,10 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
     Lab 35: Capstone
+    
   </span>
   
 
@@ -1013,8 +1123,10 @@
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
+  
   <span class="md-ellipsis">
     Lab 35: Capstone
+    
   </span>
   
 
@@ -1036,9 +1148,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-youll-build" class="md-nav__link">
+  <a href="#what-youll-deliver" class="md-nav__link">
     <span class="md-ellipsis">
-      What You'll Build
+      What You'll Deliver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Objectives
     </span>
   </a>
   
@@ -1048,6 +1169,153 @@
   <a href="#concepts-introduced" class="md-nav__link">
     <span class="md-ellipsis">
       Concepts Introduced
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Project
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing a Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#track-a-optimize-hardest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track A — Optimize (hardest)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-b-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track B — Apply
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-c-investigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track C — Investigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-d-replicate-and-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track D — Replicate and Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Required Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-question-and-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Question and hypothesis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Correctness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Discussion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-starter-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Starter Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assessment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-actually-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Actually Learned
     </span>
   </a>
   
@@ -1084,11 +1352,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
         
+  
   
   <span class="md-ellipsis">
     Cornel Labs FFT on the Pico
+    
   </span>
   
 
@@ -1111,13 +1381,10 @@
         
       
         
-          
-        
       
         
-          
-        
       
+    
     
     
     
@@ -1131,11 +1398,14 @@
         
   
   
+  
     <a href="../../sims/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     MicroSims
+    
   </span>
   
 
@@ -1170,6 +1440,7 @@
     
     
     
+    
       
         
         
@@ -1180,11 +1451,63 @@
         
   
   
+  
     <a href="../../plans/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
   </span>
   
 
@@ -1206,11 +1529,57 @@
   
   
     <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../glossary/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
   </span>
   
 
@@ -1229,8 +1598,10 @@
       <a href="../../how-we-built-this-site/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     How We Built This Site
+    
   </span>
   
 
@@ -1249,8 +1620,10 @@
       <a href="../../references/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     References
+    
   </span>
   
 
@@ -1269,8 +1642,10 @@
       <a href="../../license/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     License
+    
   </span>
   
 
@@ -1289,8 +1664,10 @@
       <a href="../../contact/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Contact
+    
   </span>
   
 
@@ -1326,9 +1703,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-youll-build" class="md-nav__link">
+  <a href="#what-youll-deliver" class="md-nav__link">
     <span class="md-ellipsis">
-      What You'll Build
+      What You'll Deliver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#learning-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Learning Objectives
     </span>
   </a>
   
@@ -1338,6 +1724,153 @@
   <a href="#concepts-introduced" class="md-nav__link">
     <span class="md-ellipsis">
       Concepts Introduced
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Project
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Choosing a Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#track-a-optimize-hardest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track A — Optimize (hardest)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-b-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track B — Apply
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-c-investigate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track C — Investigate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#track-d-replicate-and-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Track D — Replicate and Challenge
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Required Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-question-and-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Question and hypothesis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-correctness" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Correctness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Results
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-discussion" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Discussion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-starter-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Starter Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assessment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-actually-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Actually Learned
     </span>
   </a>
   
@@ -1357,6 +1890,7 @@
                 
                   
 
+
   
     <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/labs/35-capstone/index.md" title="Edit this page" class="md-content__button md-icon">
       
@@ -1366,81 +1900,614 @@
   
 
 
-<h1 id="lab-35-capstone">Lab 35: Capstone</h1>
-<div class="admonition mascot-encourage">
-<p class="admonition-title">This lab is still being written</p>
-<p><img alt="Echo encouraging" class="mascot-admonition-img" src="../../img/mascot/encouraging.png" />
-Echo's still drafting this one. The plan below is settled — the walkthrough and
-the code are on the way. Check <a href="../../plans/03-hands-on-labs/">the plan</a> for the
-full design.</p>
+<h1 id="lab-35-capstone-design-benchmark-and-report">Lab 35: Capstone — Design, Benchmark and Report</h1>
+<p><strong>Time:</strong> one to three weeks  |  <strong>Prerequisites:</strong> <a href="../34-variants/">Lab 34</a>  |  <strong>Hardware:</strong> Pico 2 + kit</p>
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Your turn</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Thirty-four labs ago you'd never opened Thonny. Now you can capture audio, transform it,
+hand-write the assembly that does the transforming, and — the part most engineers never
+learn — measure it honestly. Time to use all of it on a question nobody handed you.</p>
 </div>
-<p><strong>Status:</strong> planned, not yet written.</p>
-<h2 id="what-youll-build">What You'll Build</h2>
-<p>Your own variant, benchmarked and written up.</p>
+<h2 id="what-youll-deliver">What You'll Deliver</h2>
+<p>An experiment of your own: a question, a hypothesis written down <strong>before</strong> measuring, an
+implementation, measurements taken under the discipline of Lab 26, and a written report that
+states what your benchmark excludes.</p>
+<p>A negative result, honestly reported and explained, earns full marks. An unexplained positive
+one does not.</p>
+<h2 id="learning-objectives">Learning Objectives</h2>
+<ul>
+<li><strong>Formulate</strong> a research question with a measurable answer</li>
+<li><strong>Design</strong> an experiment with controls and a stated hypothesis</li>
+<li><strong>Implement</strong> a variant or application using the techniques from Modules 4–8</li>
+<li><strong>Measure</strong> with warm-up, best-of-N, and stated exclusions</li>
+<li><strong>Report</strong> results including limitations and negative findings</li>
+</ul>
 <h2 id="concepts-introduced">Concepts Introduced</h2>
 <table>
 <thead>
 <tr>
 <th>ID</th>
 <th>Concept</th>
-<th>Category</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>565</td>
+<td>478</td>
 <td>Experimental Design</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>566</td>
+<td>479</td>
 <td>Research Question</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>567</td>
+<td>480</td>
 <td>Independent Variable</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>568</td>
+<td>481</td>
 <td>Dependent Variable</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>569</td>
+<td>482</td>
 <td>Methodology Section</td>
-<td><code>VAPP</code></td>
 </tr>
 <tr>
-<td>570</td>
+<td>483</td>
 <td>Results Presentation</td>
-<td><code>VAPP</code></td>
 </tr>
 <tr>
-<td>571</td>
+<td>484</td>
 <td>Limitations Statement</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>572</td>
+<td>485</td>
 <td>Conclusion Drawing</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>573</td>
+<td>486</td>
 <td>Project Scoping</td>
-<td><code>LABM</code></td>
 </tr>
 <tr>
-<td>574</td>
+<td>487</td>
 <td>Peer Review</td>
-<td><code>LABM</code></td>
 </tr>
 </tbody>
 </table>
+<h2 id="choosing-a-project">Choosing a Project</h2>
+<p>Your instructor will select which of these tracks are available. They differ in difficulty, not
+in how much you'll learn.</p>
+<h3 id="track-a-optimize-hardest">Track A — Optimize (hardest)</h3>
+<p>Invent a new FFT variant and measure it against the six from Lab 34.</p>
+<table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>Why it's interesting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Radix-4</strong></td>
+<td>~25% fewer multiplies in theory. But it needs four complex values plus three twiddles live at once, and the baseline already spills registers. Does the saving survive the spill traffic? <strong>Genuinely open — nobody in this course has measured it.</strong></td>
+</tr>
+<tr>
+<td><strong>Dual-core</strong></td>
+<td>The RP2350 has two M33 cores and <code>_thread</code> is available. The transform is under a millisecond, so synchronization may cost more than it saves. Expected to disappoint, which makes it instructive.</td>
+</tr>
+<tr>
+<td><strong>Interleaved layout</strong></td>
+<td>Store <code>[re,im]</code> pairs to halve address arithmetic. Plan 02 measured the <em>kernel</em> at 1.28× — the fastest of any variant — but conversion cost destroyed it. Can you avoid the conversion?</td>
+</tr>
+<tr>
+<td><strong>Fixed-point Q15</strong></td>
+<td>Would need a C toolchain, since MicroPython's assembler exposes no DSP instructions (Lab 28 proves it). A scoping study is a legitimate deliverable.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="track-b-apply">Track B — Apply</h3>
+<p>Build something that uses the FFT for a real purpose.</p>
+<ul>
+<li>A <strong>spectrogram</strong> that scrolls, showing frequency over time</li>
+<li>A <strong>DTMF decoder</strong> that recognises phone keypad tones</li>
+<li>A <strong>vibration monitor</strong> that learns a machine's normal spectrum and flags changes</li>
+<li>A <strong>musical instrument identifier</strong> using harmonic ratios from Lab 12</li>
+<li>A <strong>voice-activity detector</strong> distinguishing speech from silence and noise</li>
+</ul>
+<p>Deliverable: a working device <em>plus</em> measurements showing it meets its real-time deadline.</p>
+<h3 id="track-c-investigate">Track C — Investigate</h3>
+<p>Answer a question with an experiment. No new FFT required.</p>
+<ul>
+<li>How does <strong>FFT size</strong> trade resolution against frame rate? Map the curve.</li>
+<li>Does <strong>clock speed</strong> scale performance linearly? Try 100–200 MHz.</li>
+<li>How much does <strong>window choice</strong> cost in cycles, and is Hanning always right?</li>
+<li>Does the <strong>Lab 24 stage profile</strong> change with N? At what size does drawing overtake the FFT?</li>
+<li>How accurate is the <strong>Lab 23 tuner</strong> against a reference source, across its range?</li>
+</ul>
+<h3 id="track-d-replicate-and-challenge">Track D — Replicate and Challenge</h3>
+<p>Take a result from these labs and try to break it.</p>
+<ul>
+<li>Lab 33 found VFMA worth ~0%. Under what conditions would it pay?</li>
+<li>Lab 32 found specialization worth 1.11×. Does that hold at N=128? N=2048?</li>
+<li>Lab 26 claims best-of-N beats mean. Construct a case where it misleads.</li>
+</ul>
+<p>Replication is real science and is treated as such here.</p>
+<h2 id="required-structure">Required Structure</h2>
+<h3 id="1-question-and-hypothesis">1. Question and hypothesis</h3>
+<p>State both <strong>before</strong> measuring. Include your reasoning — a hypothesis without a "because" is a
+guess.</p>
+<blockquote>
+<p><em>"Processing two frames per call should save 5–10%, because Lab 24 showed loop control is
+roughly 30% of the cost and this halves the per-frame setup."</em></p>
+</blockquote>
+<h3 id="2-method">2. Method</h3>
+<ul>
+<li>What varies (independent variable), what you measure (dependent variable)</li>
+<li>What you hold constant</li>
+<li>Test signals and why you chose them (Lab 15)</li>
+<li>Trials, warm-up, and the statistic you report (Lab 26)</li>
+</ul>
+<h3 id="3-correctness">3. Correctness</h3>
+<p>Speed numbers are meaningless until correctness is established. Show your variant agrees with a
+trusted reference on every test signal, with the tolerance you chose and why (Lab 15).</p>
+<h3 id="4-results">4. Results</h3>
+<p>Tables and, where useful, a chart. Report <strong>best, mean and spread</strong> — never a bare number.</p>
+<h3 id="5-discussion">5. Discussion</h3>
+<ul>
+<li>Did it match your hypothesis? By how much?</li>
+<li>If not, what does the gap reveal about the machine?</li>
+<li>What does your benchmark <strong>exclude</strong>?</li>
+<li>What would you measure next?</li>
+</ul>
+<h3 id="6-limitations">6. Limitations</h3>
+<p>At minimum: one board, one firmware, one temperature, one set of signals. Say so.</p>
+<h2 id="the-starter-template">The Starter Template</h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># Lab 35: Capstone Template</span>
+<span class="c1">#</span>
+<span class="c1"># A starting skeleton for your capstone experiment. It already does the</span>
+<span class="c1"># things that are easy to get wrong:</span>
+<span class="c1">#</span>
+<span class="c1">#   * builds every variant before measuring any of them   (Lab 32)</span>
+<span class="c1">#   * discards a warm-up run                              (Lab 26)</span>
+<span class="c1">#   * reports best, mean AND spread                       (Lab 26)</span>
+<span class="c1">#   * checks correctness before reporting speed           (Lab 15)</span>
+<span class="c1">#   * states its exclusions                               (Lab 26)</span>
+<span class="c1">#</span>
+<span class="c1"># Replace MyVariant with your own idea and fill in the write-up prompts at</span>
+<span class="c1"># the bottom.</span>
+
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">machine</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">v0_baseline</span>          <span class="c1"># the reference every claim is measured against</span>
+
+<span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="mh">0xE000EDFC</span><span class="p">]</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="mh">0xE000EDFC</span><span class="p">]</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="mh">0xE0001000</span><span class="p">]</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="mh">0xE0001000</span><span class="p">]</span> <span class="o">|</span> <span class="mi">1</span>
+<span class="n">FREQ</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">freq</span><span class="p">()</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">TRIALS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">12800</span>
+
+
+<span class="k">def</span> <span class="nf">rd</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="mh">0xE0001004</span><span class="p">]</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 1. Your research question</span>
+<span class="c1"># =========================================================================</span>
+<span class="n">RESEARCH_QUESTION</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>          <span class="c1"># e.g. &quot;Does processing two frames at</span>
+                                   <span class="c1"># once amortise the loop overhead?&quot;</span>
+<span class="n">HYPOTHESIS</span> <span class="o">=</span> <span class="s2">&quot;...&quot;</span>                 <span class="c1"># e.g. &quot;Expect 5-10%, because Lab 24</span>
+                                   <span class="c1"># showed loop control is ~30% of cost.&quot;</span>
+<span class="n">PREDICTION_WRITTEN_BEFORE_MEASURING</span> <span class="o">=</span> <span class="kc">True</span>    <span class="c1"># be honest about this</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 2. Test signals -- design them, do not just grab noise</span>
+<span class="c1"># =========================================================================</span>
+<span class="c1"># Each signal should test something specific (see Lab 15).</span>
+<span class="n">signals</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;single tone (bin-exact)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)],</span>
+    <span class="s2">&quot;two tones&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+                  <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">111</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)],</span>
+    <span class="s2">&quot;impulse (flat spectrum)&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)],</span>
+    <span class="s2">&quot;silence&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 3. Build everything BEFORE measuring anything  (Lab 32)</span>
+<span class="c1"># =========================================================================</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">v0_baseline</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="c1"># candidate = my_variant.Variant(N)</span>
+<span class="n">candidate</span> <span class="o">=</span> <span class="n">v0_baseline</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>      <span class="c1"># &lt;-- replace with your variant</span>
+<span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 4. The harness</span>
+<span class="c1"># =========================================================================</span>
+<span class="k">def</span> <span class="nf">bench</span><span class="p">(</span><span class="n">variant</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">trials</span><span class="o">=</span><span class="n">TRIALS</span><span class="p">):</span>
+    <span class="n">re</span><span class="p">,</span> <span class="n">im</span> <span class="o">=</span> <span class="n">variant</span><span class="o">.</span><span class="n">make_buffers</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">once</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">re</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">im</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">rd</span><span class="p">()</span>
+        <span class="n">variant</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">re</span><span class="p">,</span> <span class="n">im</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">rd</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+
+    <span class="n">once</span><span class="p">()</span>                                       <span class="c1"># warm-up, discarded</span>
+    <span class="n">runs</span> <span class="o">=</span> <span class="p">[</span><span class="n">once</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">trials</span><span class="p">)]</span>
+    <span class="n">lo</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">runs</span><span class="p">)</span>
+    <span class="n">sd</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">((</span><span class="n">r</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">runs</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="n">lo</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">sd</span><span class="p">,</span> <span class="n">re</span><span class="p">,</span> <span class="n">im</span>
+
+
+<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">variant</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return relative error against the baseline on this signal.&quot;&quot;&quot;</span>
+    <span class="n">bre</span><span class="p">,</span> <span class="n">bim</span> <span class="o">=</span> <span class="n">baseline</span><span class="o">.</span><span class="n">make_buffers</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">bre</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">bim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">baseline</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">bre</span><span class="p">,</span> <span class="n">bim</span><span class="p">)</span>
+    <span class="n">peak</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bre</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bim</span><span class="p">))</span> <span class="ow">or</span> <span class="mf">1.0</span>
+
+    <span class="n">cre</span><span class="p">,</span> <span class="n">cim</span> <span class="o">=</span> <span class="n">variant</span><span class="o">.</span><span class="n">make_buffers</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">cre</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">cim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">variant</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cre</span><span class="p">,</span> <span class="n">cim</span><span class="p">)</span>
+
+    <span class="n">worst</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">worst</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">worst</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cre</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bre</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bim</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">worst</span> <span class="o">/</span> <span class="n">peak</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 5. Correctness FIRST</span>
+<span class="c1"># =========================================================================</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Research question: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">RESEARCH_QUESTION</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hypothesis       : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">HYPOTHESIS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Correctness ===&quot;</span><span class="p">)</span>
+<span class="n">all_ok</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="n">err</span> <span class="o">&lt;</span> <span class="mf">1e-3</span>
+    <span class="n">all_ok</span> <span class="o">=</span> <span class="n">all_ok</span> <span class="ow">and</span> <span class="n">ok</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  </span><span class="si">%-26s</span><span class="s2"> rel err </span><span class="si">%.2e</span><span class="s2">  </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="s2">&quot;PASS&quot;</span> <span class="k">if</span> <span class="n">ok</span> <span class="k">else</span> <span class="s2">&quot;FAIL&quot;</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">all_ok</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correctness failed. Speed numbers below are meaningless until&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this is fixed. Stop here and debug (Lab 15: bisection).&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 6. Speed</span>
+<span class="c1"># =========================================================================</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Speed ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-26s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%8s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;signal&quot;</span><span class="p">,</span> <span class="s2">&quot;baseline&quot;</span><span class="p">,</span> <span class="s2">&quot;candidate&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;speedup&quot;</span><span class="p">,</span> <span class="s2">&quot;stddev&quot;</span><span class="p">))</span>
+<span class="n">speedups</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">sig</span> <span class="ow">in</span> <span class="n">signals</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">b_lo</span><span class="p">,</span> <span class="n">b_mean</span><span class="p">,</span> <span class="n">b_sd</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bench</span><span class="p">(</span><span class="n">baseline</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+    <span class="n">c_lo</span><span class="p">,</span> <span class="n">c_mean</span><span class="p">,</span> <span class="n">c_sd</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bench</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+    <span class="n">speedups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b_lo</span> <span class="o">/</span> <span class="n">c_lo</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-26s</span><span class="s2"> </span><span class="si">%10d</span><span class="s2"> </span><span class="si">%10d</span><span class="s2"> </span><span class="si">%7.3f</span><span class="s2">x </span><span class="si">%9.0f</span><span class="s2">&quot;</span>
+          <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">b_lo</span><span class="p">,</span> <span class="n">c_lo</span><span class="p">,</span> <span class="n">b_lo</span> <span class="o">/</span> <span class="n">c_lo</span><span class="p">,</span> <span class="n">c_sd</span><span class="p">))</span>
+
+<span class="n">avg</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">speedups</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">speedups</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean speedup across signals: </span><span class="si">%.3f</span><span class="s2">x&quot;</span> <span class="o">%</span> <span class="n">avg</span><span class="p">)</span>
+
+<span class="n">budget_us</span> <span class="o">=</span> <span class="n">N</span> <span class="o">/</span> <span class="n">SAMPLE_RATE</span> <span class="o">*</span> <span class="mf">1e6</span>
+<span class="n">c_lo</span><span class="p">,</span> <span class="n">c_mean</span><span class="p">,</span> <span class="n">c_sd</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">bench</span><span class="p">(</span><span class="n">candidate</span><span class="p">,</span> <span class="n">signals</span><span class="p">[</span><span class="s2">&quot;two tones&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;candidate: </span><span class="si">%.1f</span><span class="s2"> us = </span><span class="si">%.2f%%</span><span class="s2"> of the </span><span class="si">%.0f</span><span class="s2"> us frame budget&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">c_lo</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">FREQ</span><span class="p">,</span> <span class="n">c_lo</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="n">FREQ</span> <span class="o">/</span> <span class="n">budget_us</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">budget_us</span><span class="p">))</span>
+
+
+<span class="c1"># =========================================================================</span>
+<span class="c1"># 7. Report honestly</span>
+<span class="c1"># =========================================================================</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Report ===&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Trials per signal        : </span><span class="si">%d</span><span class="s2">, after one discarded warm-up&quot;</span> <span class="o">%</span> <span class="n">TRIALS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Statistic reported       : best-of-N, with mean and stddev&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excluded from the timing : table construction, buffer loading&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prediction written first : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">PREDICTION_WRITTEN_BEFORE_MEASURING</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Now answer these in your write-up:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  1. Did the result match your hypothesis? By how much?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  2. If it did not, what does the gap tell you about the machine?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  3. What does this benchmark EXCLUDE that a user would care about?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  4. What would you measure next, and why?&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A negative result, honestly reported and explained, is worth more&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;than a positive one you cannot account for.&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>It already handles the things that are easy to get wrong: allocating before measuring (Lab 32),
+discarding a warm-up (Lab 26), reporting spread, checking correctness first (Lab 15), and
+stating exclusions.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Establish your noise floor first</p>
+<p><img alt="Echo offering a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+Run the template unmodified — comparing the baseline against <em>itself</em>. It reports about
+<strong>0.996×</strong>, which tells you your harness has roughly ±0.4% of noise. Any effect smaller
+than that is not a result, it's weather. Measure this before you trust a small number.</p>
+</div>
+<h2 id="assessment">Assessment</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>What good looks like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Question</strong></td>
+<td>Specific, measurable, with a stated reason for expecting the answer</td>
+</tr>
+<tr>
+<td><strong>Method</strong></td>
+<td>Controlled, reproducible, exclusions stated</td>
+</tr>
+<tr>
+<td><strong>Correctness</strong></td>
+<td>Verified before speed, tolerance justified</td>
+</tr>
+<tr>
+<td><strong>Measurement</strong></td>
+<td>Warm-up, best-of-N, spread reported</td>
+</tr>
+<tr>
+<td><strong>Honesty</strong></td>
+<td>Negative results reported plainly; predictions not retro-fitted</td>
+</tr>
+<tr>
+<td><strong>Insight</strong></td>
+<td>Explains <em>why</em>, not just <em>what</em></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-warning">
+<p class="admonition-title">The one unforgivable error</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+Changing your hypothesis after seeing the data and presenting it as a prediction. Every
+engineer is tempted; it destroys the value of the measurement. If you were wrong, say you
+were wrong — that page is usually the most interesting one in the report.</p>
+</div>
+<h2 id="what-youve-actually-learned">What You've Actually Learned</h2>
+<p>Look back at the numbers you've measured yourself:</p>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Time per 512-point FFT</th>
+<th>vs. real-time budget</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brute-force DFT (Lab 16)</td>
+<td>~21,000 ms</td>
+<td>530× over</td>
+</tr>
+<tr>
+<td>Python FFT (Lab 20)</td>
+<td>140 ms</td>
+<td>3.5× over</td>
+</tr>
+<tr>
+<td>Assembly FFT (Lab 31)</td>
+<td>0.85 ms</td>
+<td><strong>2.1% of budget</strong></td>
+</tr>
+<tr>
+<td>Best variant (Lab 34)</td>
+<td>0.59 ms</td>
+<td><strong>1.5% of budget</strong></td>
+</tr>
+</tbody>
+</table>
+<p>A 35,000× improvement from your first working transform to your best one — on a chip that
+costs less than a sandwich.</p>
+<p>But the durable skill isn't the assembly. It's that you can now <strong>look at a performance claim
+and ask the right questions</strong>: what was excluded, was there a warm-up, is that best or mean, and
+does the fast version still compute the right answer?</p>
+<p>That transfers to every system you'll ever work on.</p>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You made it, signal hunter</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Thirty-five labs from "what's a Thonny?" to hand-encoded ARM instructions and a
+benchmark you can defend. You taught a $5 chip to listen to the world and understand
+it in real time. <strong>Now that's a superpower.</strong> Go build something with it.</p>
+</div>
 <hr />
-<p><strong>Next:</strong> <a href="../">Labs index</a>  |  <strong>Previous:</strong> <a href="../34-variants/">Lab 34</a></p>
+<p><strong>Previous:</strong> <a href="../34-variants/">Lab 34</a>  |  <a href="../">Back to all labs</a></p>
 
 
 
@@ -1493,13 +2560,13 @@ full design.</p>
         
         
           
-          <a href="../../cornell-labs/pico-example/" class="md-footer__link md-footer__link--next" aria-label="Next: Cornel Labs FFT on the Pico">
+          <a href="../../sims/" class="md-footer__link md-footer__link--next" aria-label="Next: MicroSims Overview">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Cornel Labs FFT on the Pico
+                MicroSims Overview
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1533,10 +2600,16 @@ full design.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

@@ -1,0 +1,2939 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A complete guide for instructors adopting FFT Benchmarking - features, classroom usage, hardware logistics, licensing, and customization.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/instructors-guide/">
+      
+      
+        <link rel="prev" href="../glossary/">
+      
+      
+        <link rel="next" href="../how-we-built-this-site/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Instructor's Guide - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+      <link rel="stylesheet" href="../css/mascot.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fft-benchmarking-instructors-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Instructor's Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../chapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-this-interactive-intelligent-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      About This Interactive Intelligent Textbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="About This Interactive Intelligent Textbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-intelligent-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an Intelligent Textbook?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-five-levels-of-intelligent-textbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Five Levels of Intelligent Textbooks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-makes-this-textbook-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes This Textbook Different
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#course-structure-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Course Structure at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-chapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Chapters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Chapters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chapter-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-chapter-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Chapter Contains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suggested-classroom-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested Classroom Use
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-hands-on-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Hands-On Labs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Hands-On Labs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Lab?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hardware-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Hardware Kit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-eight-lab-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Eight Lab Modules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-lab-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Lab Contains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classroom-logistics-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classroom Logistics Tips
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grading-hands-on-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grading Hands-On Labs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-microsims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the MicroSims
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the MicroSims">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-microsim" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a MicroSim?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-development-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Development Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tips-for-using-microsims-in-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips for Using MicroSims in Class
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Learning Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Learning Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Learning Graph?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-instructors-can-use-the-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Instructors Can Use the Learning Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Glossary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feedback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feedback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reporting-issues-and-suggestions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reporting Issues and Suggestions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-submit-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Submit Feedback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#types-of-feedback-welcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Feedback Welcome
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the License
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the License">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-creative-commons-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Creative Commons License?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-textbooks-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      This Textbook's License
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You CAN Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-cannot-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You CANNOT Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-your-own-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Your Own Textbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing Your Own Textbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-technical-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Technical Terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-a-github-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create a GitHub Account
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-fork-or-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Fork or Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-make-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Make Changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Make Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-title-and-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Title and Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Colors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-logo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Logo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-preview-your-changes-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Preview Your Changes Locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-publish-your-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Publish Your Version
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-your-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Your Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing Your Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-web-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Web Analytics?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-learn-from-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You Can Learn from Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xapi-monitoring-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      xAPI Monitoring (Advanced)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="xAPI Monitoring (Advanced)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-lrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an LRS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-regulatory-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important: Regulatory Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#echo-the-dolphin-your-pedagogical-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Echo the Dolphin: Your Pedagogical Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Echo the Dolphin: Your Pedagogical Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-pedagogical-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Pedagogical Agent?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meet-echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet Echo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-echo-appears" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Echo Appears
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tips-for-instructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips for Instructors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-microsim-shows-as-a-blank-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      A MicroSim shows as a blank box
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-students-board-wont-run-labs-3034" class="md-nav__link">
+    <span class="md-ellipsis">
+      A student's board won't run Labs 30–34
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-guide-feels-out-of-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      The guide feels out of date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-this-interactive-intelligent-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      About This Interactive Intelligent Textbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="About This Interactive Intelligent Textbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-intelligent-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an Intelligent Textbook?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-five-levels-of-intelligent-textbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Five Levels of Intelligent Textbooks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-makes-this-textbook-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes This Textbook Different
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#course-structure-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Course Structure at a Glance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-chapters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Chapters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Chapters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chapter-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-chapter-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Chapter Contains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suggested-classroom-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested Classroom Use
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-hands-on-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Hands-On Labs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Hands-On Labs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Lab?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-hardware-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Hardware Kit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-eight-lab-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Eight Lab Modules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-lab-contains" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Each Lab Contains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classroom-logistics-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classroom Logistics Tips
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grading-hands-on-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grading Hands-On Labs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-microsims" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the MicroSims
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the MicroSims">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-microsim" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a MicroSim?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-development-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Development Status
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tips-for-using-microsims-in-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips for Using MicroSims in Class
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Learning Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the Learning Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Learning Graph?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-instructors-can-use-the-learning-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Instructors Can Use the Learning Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Glossary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feedback
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feedback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reporting-issues-and-suggestions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reporting Issues and Suggestions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-submit-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Submit Feedback
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#types-of-feedback-welcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      Types of Feedback Welcome
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the License
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the License">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-creative-commons-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Creative Commons License?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#this-textbooks-license" class="md-nav__link">
+    <span class="md-ellipsis">
+      This Textbook's License
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You CAN Do
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-you-cannot-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You CANNOT Do
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-your-own-textbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Your Own Textbook
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing Your Own Textbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-technical-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Technical Terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-a-github-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Create a GitHub Account
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-fork-or-clone-the-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Fork or Clone the Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-make-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Make Changes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Make Changes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-title-and-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Title and Description
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-colors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Colors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-the-logo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Changing the Logo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-preview-your-changes-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Preview Your Changes Locally
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-publish-your-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Publish Your Version
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#customizing-your-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Your Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Customizing Your Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-web-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Web Analytics?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Google Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-can-learn-from-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You Can Learn from Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xapi-monitoring-advanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      xAPI Monitoring (Advanced)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="xAPI Monitoring (Advanced)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-an-lrs" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is an LRS?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#important-regulatory-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Important: Regulatory Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#echo-the-dolphin-your-pedagogical-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Echo the Dolphin: Your Pedagogical Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Echo the Dolphin: Your Pedagogical Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-pedagogical-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is a Pedagogical Agent?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meet-echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet Echo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-echo-appears" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Echo Appears
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tips-for-instructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips for Instructors
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-microsim-shows-as-a-blank-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      A MicroSim shows as a blank box
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-students-board-wont-run-labs-3034" class="md-nav__link">
+    <span class="md-ellipsis">
+      A student's board won't run Labs 30–34
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-guide-feels-out-of-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      The guide feels out of date
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#related-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Related Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/instructors-guide/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="fft-benchmarking-instructors-guide">FFT Benchmarking Instructor's Guide</h1>
+<p>Welcome to the instructor's guide for <em>FFT Benchmarking: Real-Time Signal Processing on a $5 Microcontroller</em>. This guide explains every feature of the textbook, how to run its 35 hands-on hardware labs in a classroom, and how to customize the site for your own course. No prior technical knowledge of the underlying web tools is assumed — every technical term is defined before it is used.</p>
+<div class="admonition info">
+<p class="admonition-title">Where this book stands today</p>
+<p>This is an actively developed textbook. As of this writing, all <strong>27 chapters</strong> and all <strong>35 hands-on labs</strong> have full text content, and the <strong>learning graph</strong> (574 concepts, 874 dependency relationships) is complete. The <strong>mascot</strong> (Echo the Dolphin) is fully illustrated and woven through every chapter and lab. The <strong>glossary</strong>, <strong>FAQ</strong>, <strong>per-chapter quizzes</strong>, and most of the <strong>58 specified MicroSims</strong> are still in progress — see <a href="#using-the-microsims">Using the MicroSims</a> and <a href="#using-the-glossary">Using the Glossary</a> below for what's live right now versus what's planned. If you're evaluating this book for an upcoming semester, read those two sections before committing to a start date.</p>
+</div>
+<h2 id="about-this-interactive-intelligent-textbook">About This Interactive Intelligent Textbook</h2>
+<h3 id="what-is-an-intelligent-textbook">What is an Intelligent Textbook?</h3>
+<p>An <strong>intelligent textbook</strong> is a digital textbook that goes beyond static text and images. It includes interactive simulations, a searchable glossary, and a structured map of how concepts relate to each other. The goal is to give students a richer, more engaging learning experience than a traditional printed textbook — and, in this book's case, to pair that digital content with real hardware students hold in their hands.</p>
+<h3 id="the-five-levels-of-intelligent-textbooks">The Five Levels of Intelligent Textbooks</h3>
+<p>Not all digital textbooks are created equal. We categorize intelligent textbooks into five levels based on how interactive and adaptive they are:</p>
+<iframe src="https://dmccreary.github.io/intelligent-textbooks/sims/book-levels/main.html" height="500px" scrolling="no"
+  style="overflow: hidden;"></iframe>
+
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Name</th>
+<th>Description</th>
+<th>Example Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Level 1</strong></td>
+<td>Static Digital</td>
+<td>A PDF or basic web version of a print textbook</td>
+<td>Text and images only, no interactivity</td>
+</tr>
+<tr>
+<td><strong>Level 2</strong></td>
+<td>Interactive</td>
+<td>Adds interactive elements like simulations and a searchable glossary</td>
+<td>MicroSims, self-check content, concept search</td>
+</tr>
+<tr>
+<td><strong>Level 3</strong></td>
+<td>Adaptive</td>
+<td>Adjusts content based on student performance</td>
+<td>Personalized learning paths, difficulty adjustment</td>
+</tr>
+<tr>
+<td><strong>Level 4</strong></td>
+<td>AI-Assisted</td>
+<td>Includes an AI tutor that can answer student questions</td>
+<td>Chatbot integration, automated feedback</td>
+</tr>
+<tr>
+<td><strong>Level 5</strong></td>
+<td>Fully Adaptive AI</td>
+<td>Continuously learns from student interactions and optimizes the experience</td>
+<td>Real-time content generation, predictive analytics</td>
+</tr>
+</tbody>
+</table>
+<p><strong>This textbook is a Level 2 Intelligent Textbook</strong>, with its MicroSim library still being built out chapter by chapter (see the development note above).</p>
+<h3 id="what-makes-this-textbook-different">What Makes This Textbook Different</h3>
+<ul>
+<li><strong>35 hands-on labs on real hardware</strong> — students don't just read about FFTs, they build one from scratch on a $5 Raspberry Pi Pico 2 and hand-write ARM assembly to make it fast</li>
+<li><strong>A concrete before/after result</strong> — students take a 512-point transform from roughly 21 seconds down to 0.59 milliseconds on the same chip, and can explain exactly where each factor of improvement came from</li>
+<li><strong>"Benchmark honestly" as the throughline</strong> — every chapter and lab reinforces measuring performance rigorously rather than eyeballing it, which the course description calls "a harder and rarer skill than writing the fast code itself"</li>
+<li><strong>Learning graph</strong> — a visual map showing how all 574 concepts connect and build on each other across 874 dependency relationships</li>
+<li><strong>Echo the Dolphin</strong> — a friendly mascot (a "pedagogical agent") who guides students through each chapter and lab with tips, encouragement, and key insights</li>
+<li><strong>Completely free and open source</strong> — licensed under Creative Commons for non-commercial use</li>
+</ul>
+<h2 id="course-structure-at-a-glance">Course Structure at a Glance</h2>
+<p>The course is designed for <strong>10 weeks</strong>, or self-paced independent study, for college juniors and seniors curious about signal processing. It has two parallel tracks that reference each other:</p>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>What It Is</th>
+<th>Where</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chapters</strong></td>
+<td>Conceptual explanations, diagrams, and worked examples</td>
+<td><code>docs/chapters/</code></td>
+<td>27</td>
+</tr>
+<tr>
+<td><strong>Hands-On Labs</strong></td>
+<td>Step-by-step procedures students run on physical hardware</td>
+<td><code>docs/labs/</code></td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+<p>No prior FFT, DSP, or assembly experience is assumed — Lab 1 assumes only that a student owns a computer. Everything else (microcontrollers, digital audio, sine waves, the Fourier transform, the FFT algorithm, benchmarking, ARM assembly, and instruction encoding) is taught from zero, in that order.</p>
+<h2 id="using-the-chapters">Using the Chapters</h2>
+<h3 id="chapter-structure">Chapter Structure</h3>
+<p>The textbook contains <strong>27 chapters</strong>, organized in a deliberate sequence that mirrors the lab progression. Students should work through them in order:</p>
+<table>
+<thead>
+<tr>
+<th>Chapters</th>
+<th>Topic Area</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–3</td>
+<td>Foundations (Thonny/MicroPython, the Pico 2's ARM Cortex-M architecture, peripherals)</td>
+</tr>
+<tr>
+<td>4–6</td>
+<td>Sound as numbers (waves, real audio capture, sampling/quantization/aliasing)</td>
+</tr>
+<tr>
+<td>7–10</td>
+<td>Discovering frequency (complex numbers, correlation, the DFT, why it's too slow)</td>
+</tr>
+<tr>
+<td>11–13</td>
+<td>The FFT algorithm (divide-and-conquer, a complete recursive implementation, variants)</td>
+</tr>
+<tr>
+<td>14–16</td>
+<td>Real spectra (displaying a spectrum, windowing and spectral leakage, a real-time analyzer)</td>
+</tr>
+<tr>
+<td>17–19</td>
+<td>Measuring performance (cycle-accurate timing, benchmarking methodology, Python/C/assembly compared)</td>
+</tr>
+<tr>
+<td>20–26</td>
+<td>Assembly and optimization (the FPU, first assembly function, hand-written FFT, branchless code, instruction encoding, comparing competing variants)</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Capstone (applications, design, and reporting)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-each-chapter-contains">What Each Chapter Contains</h3>
+<p>Every chapter follows a consistent structure:</p>
+<ol>
+<li><strong>YAML front matter</strong> — Metadata at the top of each chapter file (title, description, version). Students don't see this; it's used by search engines and the website builder.</li>
+<li><strong>Summary</strong> — A brief overview of what the chapter covers.</li>
+<li><strong>Concepts covered</strong> — A numbered list of the specific concepts addressed, drawn from the learning graph.</li>
+<li><strong>Prerequisites</strong> — Links to prior chapters that should be completed first.</li>
+<li><strong>Welcome from Echo</strong> — A mascot admonition that opens the chapter in Echo the Dolphin's voice.</li>
+<li><strong>Main content</strong> — The core instructional material, written for a college audience with real-world examples and, where a MicroSim has been specified, an embedded interactive diagram (see <a href="#using-the-microsims">Using the MicroSims</a>).</li>
+<li><strong>Mascot admonitions throughout</strong> — Echo appears several more times per chapter to flag key insights, offer tips, warn about common mistakes, and encourage students through harder material.</li>
+<li><strong>Chapter Summary</strong> — A closing recap, capped with a celebration from Echo.</li>
+</ol>
+<p>Chapters do not currently include separate practice-question or quiz sections — that role is filled by the paired hands-on lab (see below), which ends every lab with a <strong>Challenges</strong> section and a <strong>Check Your Understanding</strong> section.</p>
+<h3 id="suggested-classroom-use">Suggested Classroom Use</h3>
+<ul>
+<li><strong>Before class</strong>: Assign the chapter as reading. It sets up the concepts the paired lab will make concrete.</li>
+<li><strong>During class</strong>: Walk through any embedded diagrams together, then move into the corresponding lab so students apply the idea on real hardware immediately.</li>
+<li><strong>After class</strong>: The lab's Challenges and Check Your Understanding sections work well as a short homework wrap-up.</li>
+<li><strong>Pacing</strong>: With 27 chapters and 35 labs across 10 weeks, plan for roughly 2–3 chapter/lab pairs per week; the Assembly and Optimization block (Chapters 20–26 / Labs 28–34) is the densest and may need extra time.</li>
+</ul>
+<h2 id="using-the-hands-on-labs">Using the Hands-On Labs</h2>
+<p>This is the part of the course that sets it apart from a typical intelligent textbook: students aren't just reading about signal processing, they're capturing real audio and benchmarking real code on a physical chip.</p>
+<h3 id="what-is-a-lab">What is a Lab?</h3>
+<p>Each of the <strong>35 labs</strong> takes about 45 minutes and walks a student through a specific, hands-on task — wiring a button, capturing a sound sample, hand-writing an ARM assembly function — using <strong>Thonny</strong> (a beginner-friendly Python IDE) and stock <strong>MicroPython</strong> running directly on the board. There is no compiler or SDK to install; all lab code ships pre-loaded on the board.</p>
+<h3 id="the-hardware-kit">The Hardware Kit</h3>
+<p>Every student needs one kit, at roughly <strong>$19</strong> total:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Approx. cost</th>
+<th>First used</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raspberry Pi Pico 2 (RP2350)</td>
+<td>$5</td>
+<td>Lab 1</td>
+<td>Cortex-M33, 150 MHz, hardware FPU</td>
+</tr>
+<tr>
+<td>SSD1306 OLED, 128×64, SPI</td>
+<td>$5</td>
+<td>Lab 4</td>
+<td>Live spectrum display</td>
+</tr>
+<tr>
+<td>Two momentary push buttons</td>
+<td>$1</td>
+<td>Lab 5</td>
+<td>Mode switching</td>
+</tr>
+<tr>
+<td>INMP441 I²S MEMS microphone</td>
+<td>$3</td>
+<td>Lab 7</td>
+<td>Real audio capture</td>
+</tr>
+<tr>
+<td>Breadboard and jumper wires</td>
+<td>$5</td>
+<td>Lab 4</td>
+<td>Connections</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Order the Pico 2, not the original Pico</p>
+<p>A Pico 2 <strong>W</strong> works identically for every lab. The original Pico (RP2040) does <strong>not</strong> — its Cortex-M0+ core has no floating-point unit, so Labs 30–34 (the ARM assembly and FPU labs) cannot run on it. Double-check this when ordering kits for a class; Lab 28 teaches students to detect the problem themselves by reading the CPU's own registers, but by then it's too late to swap hardware mid-semester.</p>
+</div>
+<p>No soldering is required — every component connects via breadboard and jumper wires.</p>
+<h3 id="the-eight-lab-modules">The Eight Lab Modules</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Labs</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 — Getting Started</td>
+<td>1–3</td>
+<td>Thonny, MicroPython, GPIO, reading the chip's own identification registers</td>
+</tr>
+<tr>
+<td>1 — Peripherals</td>
+<td>4–6</td>
+<td>OLED display, buttons, deploying standalone code</td>
+</tr>
+<tr>
+<td>2 — Sound as Numbers</td>
+<td>7–10</td>
+<td>Real audio capture, RMS/VU metering, sampling rate, aliasing, bit depth</td>
+</tr>
+<tr>
+<td>3 — Discovering Frequency</td>
+<td>11–16</td>
+<td>Sine waves, superposition, correlation, building and validating a DFT by hand</td>
+</tr>
+<tr>
+<td>4 — The FFT</td>
+<td>17–20</td>
+<td>Divide-and-conquer, bit reversal, twiddle factors, a complete Python FFT</td>
+</tr>
+<tr>
+<td>5 — Real Spectra</td>
+<td>21–24</td>
+<td>Real spectrum display, windowing, peak detection (a tuner), a live spectrum analyzer</td>
+</tr>
+<tr>
+<td>6 — Measuring Performance</td>
+<td>25–27</td>
+<td>Cycle-accurate timing, benchmarking methodology, the Python/C/assembly abstraction ladder</td>
+</tr>
+<tr>
+<td>7 — Assembly Language</td>
+<td>28–31</td>
+<td>FPU detection, first assembly function, floating-point assembly, a hand-written assembly FFT</td>
+</tr>
+<tr>
+<td>8 — Optimization and Capstone</td>
+<td>32–35</td>
+<td>Specialization, branchless code, hand-encoding, competing-variant analysis, capstone</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-each-lab-contains">What Each Lab Contains</h3>
+<p>Every lab follows the same structure, which is worth knowing before you assign one:</p>
+<ol>
+<li><strong>Mascot welcome</strong> from Echo, setting up the lab's goal.</li>
+<li><strong>What You'll Build</strong> — a one-line statement of the deliverable.</li>
+<li><strong>Learning Objectives</strong> and <strong>Concepts Introduced</strong>.</li>
+<li><strong>Background</strong> — just enough theory to attempt the procedure.</li>
+<li><strong>Procedure</strong> — numbered, copy-pasteable steps, with mascot tips and warnings inline at the points where students commonly get stuck.</li>
+<li><strong>Expected Output</strong> — what a correct run looks or sounds like, so students can self-verify.</li>
+<li><strong>Troubleshooting</strong> — a table of common failure symptoms and fixes.</li>
+<li><strong>Challenges</strong> — optional extensions for students who finish early.</li>
+<li><strong>Check Your Understanding</strong> — short reflection or short-answer questions.</li>
+<li><strong>Celebration</strong> from Echo, closing the lab.</li>
+</ol>
+<h3 id="classroom-logistics-tips">Classroom Logistics Tips</h3>
+<ul>
+<li><strong>Order kits at least two weeks ahead.</strong> The INMP441 microphone and SSD1306 OLED are common but not always in-stock everywhere; a class-wide bulk order is more reliable than asking students to source parts individually.</li>
+<li><strong>One shared pin-mapping file.</strong> Every lab imports pin numbers from a single <code>config.py</code>, set up once in Lab 4. If a student's wiring doesn't match <code>config.py</code>, that's the first thing to check.</li>
+<li><strong>Pair students for Labs 28–34.</strong> The ARM assembly labs are the most conceptually dense in the course; pairing helps students debug register-level mistakes together.</li>
+<li><strong>Keep a few spare boards on hand.</strong> A Pico 2 that won't mount as a USB drive is almost always a bad MicroPython flash, not a dead board — re-flashing (covered in Lab 1) fixes the vast majority of "my board is broken" reports.</li>
+<li><strong>The Cornell Labs reference page</strong> (in the main navigation) demonstrates a complete real-time FFT/iFFT implementation on the Pico 2 and is a useful instructor reference when a student's implementation diverges from the expected approach.</li>
+</ul>
+<h3 id="grading-hands-on-labs">Grading Hands-On Labs</h3>
+<p>Because labs are not auto-graded, most instructors use a light-touch approach:</p>
+<ul>
+<li><strong>Completion-based credit</strong> for Labs 1–19 (foundational skills), checked via the Expected Output section.</li>
+<li><strong>Rubric-based credit</strong> for Labs 20–35 (assembly and optimization), where the Check Your Understanding answers and benchmark numbers a student reports are the evidence of understanding.</li>
+<li><strong>Capstone (Lab 35 / Chapter 27)</strong> as the summative project — students choose an application, design their FFT pipeline, and report benchmark results with justification.</li>
+</ul>
+<h2 id="using-the-microsims">Using the MicroSims</h2>
+<h3 id="what-is-a-microsim">What is a MicroSim?</h3>
+<p>A <strong>MicroSim</strong> (short for "micro-simulation") is a small, interactive simulation that runs directly in a web browser. Students don't need to install any software — MicroSims work on any device with a modern web browser.</p>
+<h3 id="current-development-status">Current Development Status</h3>
+<p>This book currently has <strong>2 fully built MicroSims</strong>, both live in the main navigation under <strong>MicroSims</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What It's Good For</th>
+<th>Example MicroSims</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>vis-network</strong></td>
+<td>Interactive graph diagrams</td>
+<td>Learning Graph Viewer</td>
+</tr>
+<tr>
+<td><strong>Timeline</strong></td>
+<td>Chronological event exploration</td>
+<td>FFT History Timeline</td>
+</tr>
+</tbody>
+</table>
+<p>Beyond those two, <strong>58 additional MicroSims have been fully specified inside the chapters</strong> — each with a documented learning objective, Bloom's Taxonomy level, canvas layout, and interactive controls — but their code has not been written yet, so the <code>&lt;iframe&gt;</code> embeds for those will not render until they're built. Of the 58 specified, 49 are planned as p5.js simulations (sliders and live animation), 7 as Chart.js visualizations, and 2 as vis-network diagrams. If you spot a blank space where a diagram should be while previewing a chapter, that's a specified-but-not-yet-built MicroSim, not a bug in your local setup.</p>
+<h3 id="tips-for-using-microsims-in-class">Tips for Using MicroSims in Class</h3>
+<ol>
+<li><strong>Project them on a screen</strong> — MicroSims are designed to be visible on a projector. Have students call out predictions before you move a slider.</li>
+<li><strong>Let students explore independently</strong> — After a demonstration, give students 5–10 minutes to experiment on their own devices.</li>
+<li><strong>Connect to the text</strong> — Each MicroSim is placed near the concept it illustrates. After exploring the sim, have students re-read the surrounding text.</li>
+<li><strong>Check what's live before class</strong> — Since the MicroSim library is still growing, skim the chapter you're about to teach ahead of time to confirm which embedded sims currently render.</li>
+</ol>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Echo's Tip: Embed MicroSims Anywhere!</p>
+<p><img src="../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+You can add any of the currently-built MicroSims to <strong>any web page</strong> — a Google Site, a WordPress blog, an LMS like Canvas or Schoology, or even a plain HTML file. Just paste a single line of HTML:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://dmccreary.github.io/fft-benchmarking/sims/graph-viewer/main.html&quot;</span>
+    <span class="na">width</span><span class="o">=</span><span class="s">&quot;100%&quot;</span> <span class="na">height</span><span class="o">=</span><span class="s">&quot;450px&quot;</span>
+    <span class="na">scrolling</span><span class="o">=</span><span class="s">&quot;no&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+</code></pre></div></td></tr></table></div>
+<p>Swap <code>graph-viewer</code> for <code>timeline</code> (or for any newly built MicroSim's directory name) to embed a different one. That's it — one line of code and your students have an interactive simulation on any page you control.</p>
+</div>
+<h2 id="using-the-learning-graph">Using the Learning Graph</h2>
+<h3 id="what-is-a-learning-graph">What is a Learning Graph?</h3>
+<p>A <strong>learning graph</strong> is a visual map showing how concepts in the textbook depend on each other. It is structured as a <strong>DAG</strong> (Directed Acyclic Graph) — a diagram where arrows show which concepts must be understood before others. This book's learning graph contains <strong>574 concepts</strong> connected by <strong>874 dependency relationships</strong>, spanning both the conceptual chapters and the hands-on labs.</p>
+<h3 id="how-instructors-can-use-the-learning-graph">How Instructors Can Use the Learning Graph</h3>
+<ul>
+<li><strong>Prerequisite checking</strong> — Before teaching a concept, verify that students have covered its prerequisites.</li>
+<li><strong>Remediation</strong> — If a student struggles with a concept (say, twiddle factors), trace back through the graph to find the specific prerequisite gap (complex number multiplication, perhaps).</li>
+<li><strong>Curriculum mapping</strong> — Compare the learning graph to your existing syllabus to identify coverage gaps if you're adapting this book alongside other material.</li>
+<li><strong>Enrichment</strong> — Advanced students can explore concepts ahead of the current chapter by following the graph forward.</li>
+</ul>
+<p>The interactive <strong>Learning Graph Viewer</strong> is available in the "Learning Graph" section of the left navigation, alongside the underlying concept list, taxonomy, and quality metrics reports.</p>
+<h2 id="using-the-glossary">Using the Glossary</h2>
+<p>The book has a <strong>glossary</strong> page in the navigation, but as of this writing it contains only the template scaffold (the ISO 11179 definition-quality criteria and one placeholder entry) rather than real terms. Don't assign it as a study resource yet — check back once the glossary has been generated from the concept list, or generate it yourself (see "Customizing Your Own Textbook" below; the project's <code>glossary-generator</code> skill builds it from the same learning graph described above).</p>
+<h2 id="feedback">Feedback</h2>
+<h3 id="reporting-issues-and-suggestions">Reporting Issues and Suggestions</h3>
+<p>This textbook is an open-source project hosted on <strong>GitHub</strong>, a website where software and content projects are developed collaboratively. You don't need to understand programming to report a problem or suggest an improvement.</p>
+<h3 id="how-to-submit-feedback">How to Submit Feedback</h3>
+<ol>
+<li>Go to the textbook's GitHub repository: <a href="https://github.com/dmccreary/fft-benchmarking">dmccreary/fft-benchmarking</a></li>
+<li>Click the <strong>"Issues"</strong> tab at the top of the page</li>
+<li>Click the green <strong>"New issue"</strong> button</li>
+<li>Give your issue a clear title (e.g., "Lab 14 wiring diagram doesn't match config.py" or "Suggestion: add MicroSim for bit-reversal")</li>
+<li>In the description, provide as much detail as possible: which page or lab has the problem, what you expected versus what you saw, and your browser/device if relevant</li>
+<li>Click <strong>"Submit new issue"</strong></li>
+</ol>
+<p>You will need a free GitHub account to submit issues. If you prefer not to create an account, use the contact page to reach the author directly.</p>
+<h3 id="types-of-feedback-welcome">Types of Feedback Welcome</h3>
+<ul>
+<li><strong>Typos and errors</strong> — factual mistakes, spelling errors, broken formatting</li>
+<li><strong>Broken links or wiring diagrams that don't match <code>config.py</code></strong></li>
+<li><strong>MicroSim bugs</strong> — simulations that don't load or behave unexpectedly</li>
+<li><strong>Content suggestions</strong> — topics that should be covered, examples that could be improved</li>
+<li><strong>Accessibility issues</strong> — content that is difficult to read or navigate for students with disabilities</li>
+</ul>
+<h2 id="understanding-the-license">Understanding the License</h2>
+<h3 id="what-is-a-creative-commons-license">What is a Creative Commons License?</h3>
+<p>A <strong>license</strong> is a legal document that explains what others are allowed to do with a piece of work. A <strong>Creative Commons (CC) license</strong> is a standardized, easy-to-understand license used for educational and creative content. It tells you exactly what permissions you have without needing a lawyer.</p>
+<h3 id="this-textbooks-license">This Textbook's License</h3>
+<p>This textbook uses the <strong>CC BY-NC-SA 4.0</strong> license. Here's what each part means:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Full Name</th>
+<th>What It Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CC</strong></td>
+<td>Creative Commons</td>
+<td>A standard open license</td>
+</tr>
+<tr>
+<td><strong>BY</strong></td>
+<td>Attribution</td>
+<td>You must give credit to the original author</td>
+</tr>
+<tr>
+<td><strong>NC</strong></td>
+<td>Non-Commercial</td>
+<td>You cannot use the material to make money</td>
+</tr>
+<tr>
+<td><strong>SA</strong></td>
+<td>Share-Alike</td>
+<td>If you modify the material, you must share it under the same license</td>
+</tr>
+<tr>
+<td><strong>4.0</strong></td>
+<td>Version 4.0</td>
+<td>The version of the license (the current standard)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-you-can-do">What You CAN Do</h3>
+<ul>
+<li><strong>Copy</strong> the entire textbook or individual chapters/labs for your students</li>
+<li><strong>Share</strong> the textbook link with other instructors, students, or colleagues</li>
+<li><strong>Print</strong> chapters or lab procedures for classroom use</li>
+<li><strong>Modify</strong> the content — add your own examples, remove sections, change the order</li>
+<li><strong>Translate</strong> the content into other languages</li>
+<li><strong>Create derivative works</strong> — build your own version of the textbook based on this one</li>
+</ul>
+<h3 id="what-you-cannot-do">What You CANNOT Do</h3>
+<ul>
+<li><strong>Sell</strong> the textbook or charge students for access</li>
+<li><strong>Remove attribution</strong> — you must credit the original author (Dan McCreary)</li>
+<li><strong>Use a different license</strong> — if you modify and share, it must remain CC BY-NC-SA 4.0</li>
+<li><strong>Claim it as your own work</strong> — the attribution requirement means you must acknowledge the original source</li>
+</ul>
+<p>For the full legal text, see the <a href="../license/">License</a> page.</p>
+<h2 id="customizing-your-own-textbook">Customizing Your Own Textbook</h2>
+<p>One of the most powerful features of this textbook is that you can create your own customized version. This section explains how, step by step.</p>
+<h3 id="key-technical-terms">Key Technical Terms</h3>
+<ul>
+<li><strong>Repository (repo)</strong> — A folder on GitHub that contains all the files for a project. Think of it as the project's home directory.</li>
+<li><strong>Git</strong> — A version control tool that tracks changes to files. It lets you see what changed, when, and by whom.</li>
+<li><strong>Clone</strong> — Making a complete copy of a repository on your own computer.</li>
+<li><strong>Fork</strong> — Making a complete copy of a repository on your own GitHub account (stays on GitHub, not your computer).</li>
+<li><strong>MkDocs</strong> — The software that converts the textbook's markdown files into a website. You don't need to learn MkDocs deeply — just enough to make basic changes.</li>
+<li><strong>Markdown</strong> — A simple text formatting language. If you can write an email, you can write Markdown. <code>**bold**</code> makes <strong>bold</strong>, <code># Heading</code> makes a heading, and <code>-</code> makes a bullet point.</li>
+<li><strong>mkdocs.yml</strong> — The main configuration file for the textbook website. It controls the site title, navigation structure, colors, and which features are enabled.</li>
+</ul>
+<h3 id="step-1-create-a-github-account">Step 1: Create a GitHub Account</h3>
+<p>If you don't already have one, go to <a href="https://github.com">github.com</a> and create a free account.</p>
+<h3 id="step-2-fork-or-clone-the-repository">Step 2: Fork or Clone the Repository</h3>
+<p><strong>Option A: Fork (easier, stays on GitHub)</strong></p>
+<ol>
+<li>Go to <a href="https://github.com/dmccreary/fft-benchmarking">dmccreary/fft-benchmarking</a></li>
+<li>Click the <strong>"Fork"</strong> button in the upper-right corner</li>
+<li>This creates a copy in your own GitHub account that you can edit</li>
+</ol>
+<p><strong>Option B: Clone (more control, works on your computer)</strong></p>
+<ol>
+<li>Install Git on your computer (<a href="https://git-scm.com/">git-scm.com</a>)</li>
+<li>Open a terminal (Command Prompt on Windows, Terminal on Mac)</li>
+<li>Run this command:</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/dmccreary/fft-benchmarking.git
+</code></pre></div></td></tr></table></div>
+<p>This downloads the entire textbook to your computer.</p>
+<h3 id="step-3-make-changes">Step 3: Make Changes</h3>
+<p>All content files are in the <code>docs/</code> folder. They are written in <strong>Markdown</strong> (<code>.md</code> files) — plain text files with simple formatting. You can edit them with any text editor.</p>
+<h4 id="changing-the-title-and-description">Changing the Title and Description</h4>
+<p>Open <code>mkdocs.yml</code> and edit these lines:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">Custom</span><span class="nv"> </span><span class="s">Textbook</span><span class="nv"> </span><span class="s">Title&quot;</span>
+<span class="nt">site_description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">description</span><span class="nv"> </span><span class="s">here&quot;</span>
+<span class="nt">site_author</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">Name&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="changing-the-colors">Changing the Colors</h4>
+<p>In <code>mkdocs.yml</code>, find the <code>palette</code> section:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">palette</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;blue&#39;</span><span class="w">    </span><span class="c1"># Change to: blue, red, purple, teal, etc.</span>
+<span class="w">    </span><span class="nt">accent</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;orange&#39;</span><span class="w">   </span><span class="c1"># Change the accent color</span>
+</code></pre></div></td></tr></table></div>
+<p>MkDocs Material supports these primary colors: red, pink, purple, deep purple, indigo, blue, light blue, cyan, teal, green, light green, lime, yellow, amber, orange, deep orange, brown, grey, blue grey.</p>
+<h4 id="changing-the-logo">Changing the Logo</h4>
+<p>Replace the file <code>docs/img/logo.png</code> with your own logo image (PNG format, approximately 128x128 pixels).</p>
+<h3 id="step-4-preview-your-changes-locally">Step 4: Preview Your Changes Locally</h3>
+<ol>
+<li>Install Python (version 3.8 or newer) from <a href="https://python.org">python.org</a></li>
+<li>Install MkDocs and the Material theme:</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mkdocs<span class="w"> </span><span class="s2">&quot;mkdocs-material[imaging]&quot;</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Navigate to the project folder and start the preview server:</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>fft-benchmarking
+mkdocs<span class="w"> </span>serve
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Open your browser to <code>http://127.0.0.1:8000/fft-benchmarking/</code> to see your customized version</li>
+</ol>
+<p>The preview server watches for file changes. When you edit and save a Markdown file, the page automatically refreshes in your browser.</p>
+<h3 id="step-5-publish-your-version">Step 5: Publish Your Version</h3>
+<p>To publish your customized textbook as a free website using GitHub Pages:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>mkdocs<span class="w"> </span>gh-deploy
+</code></pre></div></td></tr></table></div>
+<p>This command builds the website and publishes it to <code>https://YOUR-USERNAME.github.io/fft-benchmarking/</code>. The process takes about 1–2 minutes.</p>
+<h2 id="customizing-your-analytics">Customizing Your Analytics</h2>
+<h3 id="what-is-web-analytics">What is Web Analytics?</h3>
+<p><strong>Web analytics</strong> is the process of measuring how visitors use a website — which pages they visit, how long they stay, and where they come from. For an educational textbook, analytics can help you understand which chapters or labs students spend the most time on, and where they might be struggling.</p>
+<h3 id="google-analytics">Google Analytics</h3>
+<p>This textbook does <strong>not</strong> currently have Google Analytics configured (the <code>extra.analytics</code> block in <code>mkdocs.yml</code> is present but commented out). If you'd like to track visits to your own fork:</p>
+<ol>
+<li>Go to <a href="https://analytics.google.com/">analytics.google.com</a> and sign in with a Google account</li>
+<li>Create a new <strong>property</strong> (Google's term for a tracked website)</li>
+<li>Google will give you a <strong>Measurement ID</strong> — a code that looks like <code>G-XXXXXXXXXX</code></li>
+<li>In your <code>mkdocs.yml</code>, uncomment and update this section:</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nt">extra</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">analytics</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">google</span>
+<span class="w">    </span><span class="nt">property</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">G-YOUR-MEASUREMENT-ID</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Rebuild and deploy your site. Analytics data will start appearing within 24–48 hours.</li>
+</ol>
+<h4 id="what-you-can-learn-from-analytics">What You Can Learn from Analytics</h4>
+<ul>
+<li><strong>Which chapters or labs are most/least visited</strong> — helps you identify where students might be skipping content</li>
+<li><strong>Average time on page</strong> — longer times may indicate engagement or confusion</li>
+<li><strong>Device breakdown</strong> — what percentage of students use phones vs. computers</li>
+<li><strong>Search terms</strong> — what students search for on your site</li>
+</ul>
+<h3 id="xapi-monitoring-advanced">xAPI Monitoring (Advanced)</h3>
+<p><strong>xAPI</strong> (Experience API, also called "Tin Can API") is an advanced standard for tracking detailed learning activities — not just page views, but specific interactions like "student completed Lab 17" or "student's benchmark result for Lab 26."</p>
+<h4 id="what-is-an-lrs">What is an LRS?</h4>
+<p>An <strong>LRS</strong> (Learning Record Store) is a database that stores xAPI learning records. Think of it as a specialized analytics system designed specifically for education.</p>
+<h4 id="important-regulatory-considerations">Important: Regulatory Considerations</h4>
+<p>Before collecting student-specific learning data, be aware of these regulations:</p>
+<ul>
+<li><strong>FERPA</strong> (Family Educational Rights and Privacy Act) — U.S. federal law that protects student education records. If you collect data that can identify individual students, you must comply with FERPA.</li>
+<li><strong>State laws</strong> — Many U.S. states have additional student privacy laws.</li>
+<li><strong>GDPR</strong> (General Data Protection Regulation) — European Union law that applies if any of your students are in the EU.</li>
+</ul>
+<p><strong>Recommendation</strong>: The Google Analytics setup described above is anonymous by default — it tracks aggregate page views, not individual students. This is the safest approach. If you want individual student tracking via xAPI, consult your institution's data privacy officer before proceeding.</p>
+<h2 id="echo-the-dolphin-your-pedagogical-agent">Echo the Dolphin: Your Pedagogical Agent</h2>
+<h3 id="what-is-a-pedagogical-agent">What is a Pedagogical Agent?</h3>
+<p>A <strong>pedagogical agent</strong> is a character that appears throughout a textbook to guide students. Research shows that pedagogical agents improve student engagement and perception of learning — a phenomenon called the <strong>persona effect</strong>.</p>
+<h3 id="meet-echo">Meet Echo</h3>
+<p>Echo is a friendly, ocean-blue dolphin with orange over-ear headphones and a maroon waveform-patterned wristband — a nod to the book's signature colors and its "listening for signals" theme. Echo's catchphrase, <strong>"Time to transform!"</strong>, ties directly to the book's central topic: transforming raw signals into the frequency domain. Echo is patient and encouraging, never condescending about assembly language or DSP math, and leans on sound/wave metaphors ("let's tune into this," "that's the right frequency of thinking").</p>
+<h3 id="how-echo-appears">How Echo Appears</h3>
+<p>Echo shows up as colored callout boxes (called <strong>admonitions</strong>) throughout each chapter and lab. There are seven pose/type combinations:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Purpose</th>
+<th>Where You'll See It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Welcome</td>
+<td>Introduces the chapter or lab</td>
+<td>Every chapter and lab opening</td>
+</tr>
+<tr>
+<td>Thinking</td>
+<td>Highlights a key insight</td>
+<td>1–2 per chapter/lab</td>
+</tr>
+<tr>
+<td>Tip</td>
+<td>Shares practical advice</td>
+<td>As needed</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>Alerts to common mistakes</td>
+<td>Points where students commonly get stuck (e.g., wiring, board selection)</td>
+</tr>
+<tr>
+<td>Encourage</td>
+<td>Supports students through harder concepts</td>
+<td>Near dense material, especially assembly language</td>
+</tr>
+<tr>
+<td>Celebration</td>
+<td>Celebrates progress</td>
+<td>Every chapter and lab ending</td>
+</tr>
+<tr>
+<td>Neutral</td>
+<td>General notes</td>
+<td>As needed</td>
+</tr>
+</tbody>
+</table>
+<p>Echo appears no more than 5–6 times per chapter or lab to avoid overuse, and is never placed in back-to-back admonitions.</p>
+<h3 id="tips-for-instructors">Tips for Instructors</h3>
+<ul>
+<li><strong>Read Echo's tips aloud</strong> — they're written in a conversational tone that works well when spoken in class.</li>
+<li><strong>Use "thinking" admonitions as discussion prompts</strong> — they highlight the most important insight in each chapter or lab.</li>
+<li><strong>Point struggling students to "encourage" admonitions</strong> — they're placed exactly where students tend to get stuck, particularly in the assembly-language labs.</li>
+<li><strong>Treat "warning" admonitions as a checklist</strong> — many flag the exact mistakes (wrong board revision, mismatched pin config) that generate the most support requests.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="a-microsim-shows-as-a-blank-box">A MicroSim shows as a blank box</h3>
+<p>Check the <a href="#current-development-status">Current Development Status</a> table above — most chapters reference MicroSims that are specified but not yet built. This is expected for now, not a broken install.</p>
+<h3 id="a-students-board-wont-run-labs-3034">A student's board won't run Labs 30–34</h3>
+<p>Confirm they have a <strong>Pico 2 (RP2350)</strong>, not the original Pico (RP2040). The original board has no floating-point unit and cannot run the assembly/FPU labs. Lab 28 walks students through self-diagnosing this.</p>
+<h3 id="the-guide-feels-out-of-date">The guide feels out of date</h3>
+<p>This guide reflects the project state as generated. If you've since added the glossary, FAQ, quizzes, or additional MicroSims, consider regenerating this guide or manually updating the relevant sections above.</p>
+<h2 id="related-resources">Related Resources</h2>
+<ul>
+<li><a href="../course-description/">Course Description</a> — full details on audience, prerequisites, and the hardware kit</li>
+<li><a href="../learning-graph/">Learning Graph</a> — the 574-concept dependency map underlying every chapter and lab</li>
+<li><a href="../cornell-labs/pico-example.md">Cornell Labs FFT on the Pico</a> — a complete real-time FFT/iFFT reference implementation</li>
+<li><a href="../about/">About This Course</a> — the motivation behind the book</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../glossary/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Glossary">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Glossary
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../how-we-built-this-site/" class="md-footer__link md-footer__link--next" aria-label="Next: How We Built This Site">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                How We Built This Site
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

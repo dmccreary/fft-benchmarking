@@ -1,0 +1,2011 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A lighter survey of FFT variants beyond radix-2 — decimation in frequency, radix-4, split-radix, real FFT, the inverse transform, and scaling conventions — calibrated against NumPy and SciPy.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/13-fft-variants-complexity-and-correctness/">
+      
+      
+        <link rel="prev" href="../12-building-the-fft/">
+      
+      
+        <link rel="next" href="../14-computing-and-displaying-a-real-spectrum/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>FFT Variants, Complexity, and Correctness - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fft-variants-complexity-and-correctness" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FFT Variants, Complexity, and Correctness
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-ways-to-split-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Ways to Split the Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-input-deserves-a-specialized-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Input Deserves a Specialized Transform
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-transform-backward-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the Transform Backward, Fast
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the Transform Backward, Fast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-normalization-factor-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Normalization Factor Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrating-against-the-professionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrating Against the Professionals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-ways-to-split-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Other Ways to Split the Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-input-deserves-a-specialized-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real Input Deserves a Specialized Transform
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-transform-backward-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running the Transform Backward, Fast
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running the Transform Backward, Fast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-normalization-factor-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Normalization Factor Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrating-against-the-professionals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrating Against the Professionals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/13-fft-variants-complexity-and-correctness/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="fft-variants-complexity-and-correctness">FFT Variants, Complexity, and Correctness</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter surveys FFT variants beyond the radix-2 case built in the previous chapter — radix-4, split-radix, real-input, and inverse transforms — along with the normalization and scaling conventions that differ between libraries. It briefly compares the from-scratch implementation against NumPy and SciPy's FFT to calibrate expectations before the course moves on to real audio spectra. This is a deliberately lighter wrap-up chapter after the heavy construction work that precedes it.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 11 concepts from the learning graph:</p>
+<ol>
+<li>Complex FFT</li>
+<li>Decimation In Frequency</li>
+<li>FFT Scaling</li>
+<li>IFFT Algorithm</li>
+<li>Inverse FFT</li>
+<li>Normalization Factor</li>
+<li>NumPy Library</li>
+<li>Radix-4 FFT</li>
+<li>Real FFT</li>
+<li>SciPy FFT</li>
+<li>Split Radix FFT</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../12-building-the-fft/">12. Building the FFT: A Complete Recursive Implementation</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">A breather before real audio</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+You built and proved a real FFT — that was the hard part. This chapter is a shorter, calmer survey: other ways people split the problem, what "inverse" means for a fast transform, and why comparing your numbers against a library like NumPy needs one small caveat first. Let's tune in.</p>
+</div>
+<h2 id="other-ways-to-split-the-problem">Other Ways to Split the Problem</h2>
+<p>The radix-2 FFT from the previous two chapters always splits by even and odd sample <em>index</em>, in the time domain, before recursing — a choice with its own name once a second option exists to contrast it against. <strong>Decimation in frequency</strong> is an alternative Cooley-Tukey strategy that splits the problem by <em>output</em> frequency bin instead of input sample index — performing a butterfly-like combination step first, then recursing on the two resulting halves, effectively running the same operations as decimation in time in a different order. Both approaches compute the identical, mathematically correct result at the identical O(N log N) complexity; they differ only in exactly where the butterfly step falls relative to the recursive splits, and in decimation in frequency's case, the bit-reversal permutation lands on the <em>output</em> instead of the input.</p>
+<p>Radix-2 splitting is not the only way to divide a problem, either. A <strong>radix-4 FFT</strong> splits each stage into four sub-transforms instead of two, requiring only <span class="arithmatex">\( \log_4 N \)</span> stages rather than <span class="arithmatex">\( \log_2 N \)</span> — fewer stages, at the cost of a larger, more complex combination step within each one. Pushing further, a <strong>split-radix FFT</strong> is a hybrid technique that mixes radix-2 and radix-4 splitting within the same transform, specifically chosen to minimize the total number of multiplications — among the lowest multiplication counts known for power-of-two FFT sizes, achieved at the cost of noticeably more intricate implementation code than the straightforward radix-2 version this course built.</p>
+<p>Before the table below, it's worth being clear about the actual tradeoff these variants represent: none of them changes the O(N log N) complexity class established in the previous chapter — they only change the <em>constant factor</em> multiplying that complexity, trading implementation simplicity for a modest additional speedup.</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Stages</th>
+<th>Multiplications (relative)</th>
+<th>Implementation complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Radix-2 (this course)</td>
+<td><span class="arithmatex">\( \log_2 N \)</span></td>
+<td>Baseline</td>
+<td>Simple, uniform butterfly structure</td>
+</tr>
+<tr>
+<td>Radix-4</td>
+<td><span class="arithmatex">\( \log_4 N \)</span></td>
+<td>Somewhat fewer</td>
+<td>Larger per-stage combination step</td>
+</tr>
+<tr>
+<td>Split-radix</td>
+<td>Mixed</td>
+<td>Fewest known for power-of-two N</td>
+<td>Most intricate; mixed butterfly shapes</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Every variant is still the same idea underneath</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+It's easy to see a new name — radix-4, split-radix, decimation in frequency — and assume it's a different algorithm. It isn't. Every one of these is still divide-and-conquer with twiddle factors and butterflies; they only disagree about exactly how and when to split. The radix-2 version you built is a completely legitimate, correct FFT — these variants are refinements, not replacements.</p>
+</div>
+<h2 id="real-input-deserves-a-specialized-transform">Real Input Deserves a Specialized Transform</h2>
+<p>The FFT built across the previous two chapters accepts input samples with both a real and an imaginary part, making it a general-purpose tool. A <strong>complex FFT</strong> is an FFT implementation designed to accept input samples that may have a nonzero imaginary part, computing a full, general-purpose complex-to-complex transform — exactly the <code>fft_recursive</code> and <code>fft_iterative</code> functions from the previous chapter, which work correctly even though this course's captured audio samples happen to always have an imaginary part of exactly zero.</p>
+<p>That last detail is not wasted information — it is an optimization opportunity. Recall spectrum symmetry from Chapter 9: for a real-valued input, the upper half of the output spectrum is always the complex conjugate of the lower half, meaning roughly half the transform's computed values are redundant before the computation even starts. A <strong>real FFT</strong> is an FFT variant specifically optimized for real-valued (not complex-valued) input, exploiting spectrum symmetry to skip computing the redundant upper half of the spectrum directly, typically running roughly twice as fast as a general complex FFT on the same real-valued input. Every microphone-captured signal in this course is a real FFT's ideal use case — a detail worth remembering when later chapters discuss further speed improvements.</p>
+<h2 id="running-the-transform-backward-fast">Running the Transform Backward, Fast</h2>
+<p>Chapter 9 defined the inverse DFT and noted that this course does not build extensive applications on top of it — but the same divide-and-conquer speedup that turned the DFT into the FFT applies equally well in reverse, and it is worth naming precisely before moving on.</p>
+<p>The <strong>IFFT algorithm</strong> is the fast, divide-and-conquer counterpart to the inverse DFT — it reuses the identical recursive structure, twiddle factors, and butterfly operations as the forward FFT, with two small, specific changes: the sign inside the twiddle factor's exponent flips from negative to positive, and the final result is divided by <span class="arithmatex">\( N \)</span>. Running the IFFT algorithm on a spectrum produces the <strong>inverse FFT</strong>: the specific reconstructed time-domain signal that results from applying the IFFT algorithm to a frequency-domain spectrum, computed in O(N log N) time rather than the inverse DFT's O(N²).</p>
+<p>That final division by <span class="arithmatex">\( N \)</span>, mentioned almost in passing above, is actually the source of a common, entirely avoidable source of confusion when comparing results across different tools. A <strong>normalization factor</strong> is the specific numeric multiplier — commonly <span class="arithmatex">\( \frac{1}{N} \)</span>, <span class="arithmatex">\( \frac{1}{\sqrt{N}} \)</span>, or sometimes no factor at all — applied to a transform's output to control its overall amplitude scale. Different libraries make different, equally valid choices about exactly where that factor gets applied, and that choice has its own name worth knowing before comparing any two implementations' raw output numbers directly. <strong>FFT scaling</strong> is the convention a given library or implementation adopts for where and how much normalization it applies across the forward and inverse transform pair — some libraries apply no scaling on the forward transform and a full <span class="arithmatex">\( \frac{1}{N} \)</span> on the inverse; others split the scaling evenly, applying <span class="arithmatex">\( \frac{1}{\sqrt{N}} \)</span> to both directions.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Two correct FFTs can still disagree in raw numbers</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo giving a warning">
+If you ever compare your FFT's raw output magnitude against another library's and the numbers don't match, don't assume a bug before checking scaling convention first. A factor-of-N (or square-root-of-N) mismatch between two mathematically correct implementations is one of the most common false alarms in signal processing — always check each library's documented normalization convention before concluding anything is actually wrong.</p>
+</div>
+<h4 id="diagram-normalization-factor-explorer">Diagram: Normalization Factor Explorer</h4>
+<iframe src="../../sims/normalization-factor-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Normalization Factor Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> normalization-factor-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Demonstrate, calculate</p>
+<p>Learning objective: Let students select different FFT scaling conventions and calculate how the same underlying spectrum's displayed magnitude values change purely due to normalization choice, not due to any actual difference in the signal.</p>
+<p>Canvas layout:
+- Top (300px): a fixed example spectrum bar chart, magnitude by bin
+- Bottom (150px): scaling convention selector and a readout showing the applied normalization factor</p>
+<p>Visual elements:
+- Bar chart of a fixed example spectrum's magnitude values
+- Readout: "Forward scaling: [value] | Inverse scaling: [value] | Round-trip scaling: [value]"</p>
+<p>Interactive controls:
+- Radio buttons: "No forward scaling, 1/N inverse" / "1/sqrt(N) both directions (unitary)" / "1/N forward, no inverse scaling"
+- N selector: 8, 512, 1024</p>
+<p>Behavior:
+- Selecting a different scaling convention rescales every bar in the chart according to that convention's forward-transform factor, while a small annotation confirms that a full forward-then-inverse round trip always reconstructs the original signal exactly, regardless of which convention is chosen</p>
+<p>Instructional Rationale: An Apply-level calculator is appropriate because the objective is calculating how a chosen scaling convention changes displayed numbers — direct, immediate recalculation on selection lets students confirm that scaling is a display/convention choice, not a correctness issue.</p>
+<p>Implementation notes:
+- Use p5.js; use a single fixed example spectrum's unscaled values as the source of truth, multiplying by the selected convention's factor for display only
+- Responsive width; chart and controls stack vertically below 600px width</p>
+</details>
+<h2 id="calibrating-against-the-professionals">Calibrating Against the Professionals</h2>
+<p>Before trusting this course's from-scratch FFT for the real-audio work ahead, it helps to see how it compares against the industry-standard tools most working engineers reach for first — not to replace the from-scratch implementation, but to calibrate expectations about what "fast" really means once dedicated engineering effort goes into an implementation.</p>
+<p>The <strong>NumPy library</strong> is the standard Python library for numerical computing, providing, among many other tools, a highly optimized <code>numpy.fft.fft()</code> function written in compiled C code rather than plain Python. A closely related library offers a similar, sometimes more specialized, alternative: <strong>SciPy FFT</strong> refers to <code>scipy.fft</code>, an FFT implementation in the SciPy scientific computing library that includes additional specialized variants — including a dedicated real-FFT function — beyond what NumPy's FFT module provides on its own.</p>
+<p>Neither library runs on the Pico 2 itself — MicroPython does not include NumPy or SciPy, and this course's actual hardware implementation stays pure MicroPython throughout, deliberately, as stated back in the course description. NumPy and SciPy appear here strictly as a desktop-only reference point: running the exact same 512-sample test signal through <code>numpy.fft.fft()</code> on a laptop, and comparing its output against this course's from-scratch FFT (after accounting for each library's normalization factor), is one more cross-validation check — now against a professionally engineered, independently written implementation rather than only against the from-scratch DFT built in Chapter 9.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Agreement with NumPy is the strongest validation you'll get</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+Your Chapter 9 DFT and your Chapter 12 FFT agreeing with each other is good evidence. Both of <em>those</em> independently agreeing with NumPy — a library used and trusted by millions of engineers and scientists — is about as strong a correctness signal as a self-taught implementation can ever get.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now know the landscape of FFT variants beyond radix-2, how the inverse transform reuses the same fast machinery, and why raw magnitude numbers can differ across libraries without either one being wrong.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li><strong>Decimation in frequency</strong> splits by output bin instead of input index; <strong>radix-4 FFT</strong> and <strong>split-radix FFT</strong> split into more than two pieces per stage — all remain O(N log N), differing only in constant factors and implementation complexity.</li>
+<li>A <strong>complex FFT</strong> handles general input; a <strong>real FFT</strong> exploits spectrum symmetry to run roughly twice as fast on the real-valued signals this course actually captures.</li>
+<li>The <strong>IFFT algorithm</strong> reuses the forward FFT's machinery to compute the <strong>inverse FFT</strong> in O(N log N); its <strong>normalization factor</strong> and a library's overall <strong>FFT scaling</strong> convention explain why two correct implementations can still show different raw numbers.</li>
+<li>The <strong>NumPy library</strong> and <strong>SciPy FFT</strong> provide professionally engineered, desktop-only reference implementations used here purely to calibrate and cross-check this course's from-scratch work.</li>
+</ul>
+<details class="note">
+<summary>Quick check: your FFT and a NumPy FFT are run on the same signal, but the magnitude values don't match — NumPy's are consistently N times larger. Is one of them wrong? — Click to expand</summary>
+<p>Not necessarily. This is the classic signature of an FFT scaling mismatch — the two implementations likely apply their normalization factor at different points (for example, one divides by N on the inverse transform only, while the other doesn't apply any factor at all on the forward transform). Check each library's documented scaling convention before concluding either implementation has a bug.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now navigate the whole FFT family, not just one variant</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Radix-2, radix-4, split-radix, real, complex, forward, inverse — you now know where your own implementation sits in the much larger FFT landscape, and you've calibrated it against the professionals. Next up: pointing this transform at real, live captured sound and watching an actual spectrum appear on your OLED. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../12-building-the-fft/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 12. Building the FFT: A Complete Recursive Implementation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                12. Building the FFT: A Complete Recursive Implementation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-footer__link md-footer__link--next" aria-label="Next: 14. Computing and Displaying a Real Spectrum">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                14. Computing and Displaying a Real Spectrum
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

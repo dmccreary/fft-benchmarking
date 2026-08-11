@@ -1,0 +1,2240 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The FPU's own register bank and instruction set — load, store, add, multiply, subtract, and multiply-accumulate on single-precision floats, plus the pointer arithmetic to address a buffer from assembly">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/22-talking-to-the-fpu/">
+      
+      
+        <link rel="prev" href="../21-your-first-assembly-function/">
+      
+      
+        <link rel="next" href="../23-the-butterfly-in-assembly/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Talking to the FPU: Floating-Point Assembly - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#talking-to-the-fpu-floating-point-assembly" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Talking to the FPU: Floating-Point Assembly
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-store-architecture-registers-do-the-work-memory-just-holds-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load-Store Architecture: Registers Do the Work, Memory Just Holds Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-second-register-file-just-for-floats" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Second Register File, Just for Floats
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpu-operations-load-store-add-multiply-subtract" class="md-nav__link">
+    <span class="md-ellipsis">
+      FPU Operations: Load, Store, Add, Multiply, Subtract
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finding-a-buffers-address-pointers-and-byte-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Finding a Buffer's Address: Pointers and Byte Offsets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typed-arrays-buffers-with-a-predictable-stride" class="md-nav__link">
+    <span class="md-ellipsis">
+      Typed Arrays: Buffers With a Predictable Stride
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Typed Arrays: Buffers With a Predictable Stride">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-address-and-byte-offset-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Address and Byte Offset Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-multiplier-and-the-multiply-accumulate-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware Multiplier and the Multiply-Accumulate Instruction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simd-instructions-a-preview-not-a-detour" class="md-nav__link">
+    <span class="md-ellipsis">
+      SIMD Instructions: A Preview, Not a Detour
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-allocation-in-the-timed-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Allocation in the Timed Region
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-the-pieces-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting the Pieces Together
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-store-architecture-registers-do-the-work-memory-just-holds-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load-Store Architecture: Registers Do the Work, Memory Just Holds Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-second-register-file-just-for-floats" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Second Register File, Just for Floats
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpu-operations-load-store-add-multiply-subtract" class="md-nav__link">
+    <span class="md-ellipsis">
+      FPU Operations: Load, Store, Add, Multiply, Subtract
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#finding-a-buffers-address-pointers-and-byte-offsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Finding a Buffer's Address: Pointers and Byte Offsets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typed-arrays-buffers-with-a-predictable-stride" class="md-nav__link">
+    <span class="md-ellipsis">
+      Typed Arrays: Buffers With a Predictable Stride
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Typed Arrays: Buffers With a Predictable Stride">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-address-and-byte-offset-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Address and Byte Offset Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-multiplier-and-the-multiply-accumulate-instruction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware Multiplier and the Multiply-Accumulate Instruction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simd-instructions-a-preview-not-a-detour" class="md-nav__link">
+    <span class="md-ellipsis">
+      SIMD Instructions: A Preview, Not a Detour
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-allocation-in-the-timed-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Allocation in the Timed Region
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-the-pieces-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting the Pieces Together
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/22-talking-to-the-fpu/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="talking-to-the-fpu-floating-point-assembly">Talking to the FPU: Floating-Point Assembly</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter extends the assembly skills from the previous chapter to the floating-point register bank and the FPU instruction set — load, store, add, multiply, and subtract on single-precision floats — along with pointer arithmetic for addressing a buffer from assembly. It covers the multiply-accumulate instruction that makes fused operations possible. These are exactly the instructions the assembly FFT butterfly needs.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 20 concepts from the learning graph:</p>
+<ol>
+<li>Address Of Buffer</li>
+<li>Byte Offset</li>
+<li>FPU Operations</li>
+<li>Floating Point Register</li>
+<li>Hardware Multiplier</li>
+<li>Load Store Architecture</li>
+<li>MAC Instruction</li>
+<li>Memory Address</li>
+<li>Multiply Accumulate</li>
+<li>No Allocation In Timed Region</li>
+<li>Pointer Arithmetic</li>
+<li>Register Bank s0 to s31</li>
+<li>SIMD Instructions</li>
+<li>Single Precision Float</li>
+<li>Typed Array</li>
+<li>VADD Instruction</li>
+<li>VLDR Instruction</li>
+<li>VMUL Instruction</li>
+<li>VSTR Instruction</li>
+<li>VSUB Instruction</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../20-does-your-cpu-have-an-fpu/">20. Does Your CPU Have an FPU?</a></li>
+<li><a href="../21-your-first-assembly-function/">21. Your First Assembly Function: Registers and Loops</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — into floating-point fluency!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Chapter 21 gave you integers and loops. The FFT butterfly needs floating-point
+multiplication and addition, running on real audio data sitting in memory. Both of
+those need a skill you haven't used yet — talking directly to the FPU.</p>
+</div>
+<h2 id="load-store-architecture-registers-do-the-work-memory-just-holds-data">Load-Store Architecture: Registers Do the Work, Memory Just Holds Data</h2>
+<p>Before touching a single FPU instruction, one architectural rule from Chapter 21 needs to
+be made explicit, because everything in this chapter depends on it. ARM cores use a
+<strong>load-store architecture</strong>: arithmetic instructions like <code>ADD</code> or <code>VMUL</code> can only operate
+on values already sitting in registers — never directly on a value still in memory. To
+work on a number stored in RAM, you must first explicitly <em>load</em> it into a register,
+compute with it there, and then explicitly <em>store</em> the result back to memory when you're
+done. This is a deliberate design choice, not a limitation — keeping arithmetic
+instructions register-only lets each one execute in a single, predictable cycle, with all
+the slower memory-access work concentrated into two clearly named instruction types.</p>
+<h2 id="a-second-register-file-just-for-floats">A Second Register File, Just for Floats</h2>
+<p>Chapter 21's general-purpose registers, <code>r0</code> through <code>r12</code>, hold integers and memory
+addresses, but they cannot hold floating-point values directly in a form the FPU can
+compute on. The FPU has its own, completely separate set of storage: the <strong>register bank
+s0 to s31</strong>, thirty-two dedicated <strong>floating point registers</strong> named <code>s0</code> through <code>s31</code>,
+each one exactly wide enough to hold one <strong>single precision float</strong> — a 32-bit IEEE 754
+value, the same format Chapter 19 introduced when comparing boxed and unboxed
+representations. Just as <code>r0</code>-<code>r12</code> are the FPU's counterpart on the integer side,
+<code>s0</code>-<code>s31</code> exist purely for floating-point work, and general-purpose instructions like
+<code>ADD</code> cannot touch them at all — floating-point work requires floating-point
+instructions, described next.</p>
+<h2 id="fpu-operations-load-store-add-multiply-subtract">FPU Operations: Load, Store, Add, Multiply, Subtract</h2>
+<p>The FPU's instruction set — its <strong>FPU operations</strong> — mirrors the load-store pattern from
+general-purpose registers, with a <code>V</code> prefix marking each one as an FPU instruction
+(short for "Vector," from ARM's broader vector floating-point architecture, even though
+this chapter uses only single scalar values per instruction).</p>
+<p>The <strong>VLDR instruction</strong> ("vector load register") loads one single-precision float from a
+memory address into an <code>s</code> register. The <strong>VSTR instruction</strong> ("vector store register")
+does the reverse — writes the value in an <code>s</code> register out to a memory address. Both
+require a general-purpose register holding the actual address to read from or write to,
+which is exactly why Chapter 21's integer-register skills remain essential here.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>VLDR s0, [r0]        ; load a float from the address in r0 into s0
+VLDR s1, [r0, #4]     ; load a float from 4 bytes past that address into s1
+VSTR s2, [r1]          ; store the float in s2 to the address in r1
+</code></pre></div></td></tr></table></div>
+<p>Once values are in <code>s</code> registers, three arithmetic instructions cover this chapter's
+needs: the <strong>VADD instruction</strong> adds two floating-point registers, the <strong>VSUB
+instruction</strong> subtracts one from another, and the <strong>VMUL instruction</strong> multiplies two
+together — each writing its result into a third <code>s</code> register:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>VADD s3, s0, s1        ; s3 = s0 + s1
+VSUB s4, s0, s1         ; s4 = s0 - s1
+VMUL s5, s0, s1          ; s5 = s0 * s1
+</code></pre></div></td></tr></table></div>
+<p>Now that each instruction has been introduced individually, the table below simply
+organizes what you already know, for quick reference while writing your own routines:</p>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Operation</th>
+<th>Operand location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VLDR sD, [rN]</code></td>
+<td>Load a float from memory into <code>sD</code></td>
+<td>Memory → register</td>
+</tr>
+<tr>
+<td><code>VSTR sD, [rN]</code></td>
+<td>Store the float in <code>sD</code> to memory</td>
+<td>Register → memory</td>
+</tr>
+<tr>
+<td><code>VADD sD, sN, sM</code></td>
+<td><code>sD = sN + sM</code></td>
+<td>Register → register</td>
+</tr>
+<tr>
+<td><code>VSUB sD, sN, sM</code></td>
+<td><code>sD = sN - sM</code></td>
+<td>Register → register</td>
+</tr>
+<tr>
+<td><code>VMUL sD, sN, sM</code></td>
+<td><code>sD = sN * sM</code></td>
+<td>Register → register</td>
+</tr>
+</tbody>
+</table>
+<h2 id="finding-a-buffers-address-pointers-and-byte-offsets">Finding a Buffer's Address: Pointers and Byte Offsets</h2>
+<p><code>VLDR s0, [r0]</code> only works once <code>r0</code> actually holds a valid <strong>memory address</strong> — the
+numeric location in RAM where a value lives. Getting that starting address is the job of
+the <strong>address of buffer</strong> operation: MicroPython exposes the underlying memory location
+of an array-like object, which you pass into your <code>asm_thumb</code> function as an ordinary
+integer argument, arriving in <code>r0</code> per Chapter 21's calling convention.</p>
+<p>Reading a single float at that starting address is easy — but reading the <em>second</em> float
+in a buffer of many requires <strong>pointer arithmetic</strong>: computing a new address by adding to
+the base address, rather than starting from scratch. Because each single-precision float
+occupies exactly 4 bytes, the address of element <code>i</code> in a buffer is <code>base_address + i × 4</code>
+— that multiple of 4 is a <strong>byte offset</strong>, the distance in bytes (not elements) you must
+add to a base address to reach a specific array element. <code>VLDR s1, [r0, #4]</code> in the
+example above is exactly this: "load the float sitting 4 bytes past whatever address is
+in <code>r0</code>" — element index 1, in a buffer of 4-byte floats.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Why does the offset have to be in bytes, not array positions?</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+Memory addresses always count individual bytes, regardless of what data type lives
+there — the hardware has no concept of "the third float." It only knows "the byte at
+this address." Software (a compiler, or you, writing assembly by hand) is entirely
+responsible for converting "element 3" into "byte offset 12," by multiplying the
+element index by the size of one element.</p>
+</div>
+<h2 id="typed-arrays-buffers-with-a-predictable-stride">Typed Arrays: Buffers With a Predictable Stride</h2>
+<p>That byte-offset arithmetic only works if you know exactly how many bytes separate one
+element from the next — and that is precisely what a plain Python list does <em>not</em>
+guarantee, since a list holds boxed values scattered across the heap with no fixed
+distance between them. A <strong>typed array</strong> — created with <code>array.array('f', ...)</code> in
+MicroPython, using the <code>'f'</code> type code for 32-bit single-precision floats — instead
+stores its values contiguously, back to back in memory, each one exactly 4 bytes wide with
+no wrapper. That fixed, predictable stride is what makes <code>base_address + i × 4</code> a valid
+formula at all. Every buffer this course's assembly routines touch, from here through the
+final butterfly implementation, is a typed array for exactly this reason.</p>
+<h4 id="diagram-address-and-byte-offset-explorer">Diagram: Address and Byte Offset Explorer</h4>
+<iframe src="../../sims/address-byte-offset-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Address and Byte Offset Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> address-byte-offset-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — calculate, demonstrate
+Learning objective: Apply the byte-offset formula to compute the correct VLDR offset for a chosen element index in a typed array of floats.</p>
+<p>Canvas layout:
+- Top (200px): A horizontal memory strip showing 8 contiguous 4-byte float slots, each labeled with its element index (0-7) and its byte address, starting from a base address like 0x20001000
+- Bottom (300px): A calculator panel: element index input, computed byte offset, computed full address, and the resulting VLDR instruction text</p>
+<p>Visual elements:
+- Memory strip drawn as 8 equal-width boxes, each 4 bytes wide, with a running byte-address label under each box
+- Selected element highlighted in a distinct color
+- Calculator shows the formula <code>offset = index * 4</code> filled in with live numbers</p>
+<p>Interactive controls:
+- Slider or click-to-select: choose element index (0-7)
+- Base address input (default 0x20001000, editable)
+- Live output: "VLDR s0, [r0, #<offset>]" text, updating as the index changes</p>
+<p>Behavior:
+- Selecting element index 3 highlights the 4th box, shows offset = 12, full address = base + 12, and displays "VLDR s0, [r0, #12]"
+- An intentional wrong-answer check: entering a non-multiple-of-4 "manual offset" in an optional advanced field shows a warning that misaligned offsets do not correspond to any real element boundary</p>
+<p>Instructional Rationale: Apply-level objectives call for a parameter-driven calculator —
+letting the learner pick any element index and see the exact instruction text it produces
+directly exercises the byte-offset formula rather than just displaying it.</p>
+<p>Implementation: p5.js, memory strip drawn as rectangles with text labels, offset computed live from a numeric input</p>
+</details>
+<h2 id="hardware-multiplier-and-the-multiply-accumulate-instruction">Hardware Multiplier and the Multiply-Accumulate Instruction</h2>
+<p>Underneath <code>VMUL</code>, the FPU contains a dedicated <strong>hardware multiplier</strong> — a piece of
+silicon built specifically to multiply two floating-point values in a small, fixed number
+of cycles, rather than emulating multiplication through repeated addition in software.
+That same hardware multiplier also powers a more specialized instruction: <strong>multiply
+accumulate</strong>, computed by a <strong>MAC instruction</strong> (on this FPU, <code>VMLA</code> — vector multiply
+accumulate), which performs <code>d = d + (a × b)</code> as a single fused operation rather than a
+separate multiply followed by a separate add.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>VMLA s2, s0, s1        ; s2 = s2 + (s0 * s1), in one instruction
+</code></pre></div></td></tr></table></div>
+<p>Fusing the multiply and the add saves a cycle compared to issuing <code>VMUL</code> then <code>VADD</code>
+separately, and — more subtly — it avoids rounding the intermediate multiplication result
+before adding, which is slightly more numerically accurate than two separate operations.
+This exact instruction pattern is the arithmetic heart of correlation and the FFT: every
+butterfly operation in Chapter 23 is fundamentally a handful of multiply-accumulate steps
+combining a sample with a twiddle factor.</p>
+<h2 id="simd-instructions-a-preview-not-a-detour">SIMD Instructions: A Preview, Not a Detour</h2>
+<p>You may notice that so far, every instruction here operates on exactly one float at a
+time. Some ARM cores also support <strong>SIMD instructions</strong> — Single Instruction, Multiple
+Data — which pack several values into one register and operate on all of them with a
+single instruction, processing multiple data points per cycle instead of one. That
+technique, called vectorization, is a genuinely more advanced optimization this course
+returns to directly in Chapter 24, once the scalar (one-value-at-a-time) version you're
+building now is working and validated. Naming it here is deliberate: knowing a faster
+path exists, and choosing not to reach for it yet, is itself part of writing correct code
+before writing fast code.</p>
+<h2 id="no-allocation-in-the-timed-region">No Allocation in the Timed Region</h2>
+<div class="admonition mascot-warning">
+<p class="admonition-title">The one rule that protects every benchmark from here forward</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+MicroPython's automatic memory manager, from Chapter 19, can pause your program at
+unpredictable moments to reclaim memory — a garbage-collection pause. If one of those
+pauses lands inside code you are timing, it silently inflates your measurement with
+cycles that have nothing to do with your algorithm.</p>
+</div>
+<p><strong>No allocation in timed region</strong> is the discipline of guaranteeing that nothing inside a
+block of code you are about to benchmark ever triggers a new memory allocation — no new
+list, no new typed array, no new object of any kind — because MicroPython's garbage
+collector can only run in response to allocations, and a collector pause inside your
+timed loop is exactly the kind of hidden variance source Chapter 18 warned about. The
+concrete practice this chapter establishes: allocate every typed array your routine needs
+<em>before</em> you start the timer, pass in only pre-allocated buffers, and let your assembly
+routine touch nothing but <code>VLDR</code>/<code>VSTR</code> against memory that already exists. Every assembly
+example for the rest of this course follows this rule without exception.</p>
+<h2 id="putting-the-pieces-together">Putting the Pieces Together</h2>
+<p>The routine below combines everything above — general-purpose registers holding
+addresses (Chapter 21), floating-point registers holding values, byte-offset pointer
+arithmetic, and a fused multiply-accumulate — to multiply two typed-array buffers
+element-by-element and accumulate the total into a single result, entirely in assembly:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@micropython</span><span class="o">.</span><span class="n">asm_thumb</span>
+<span class="k">def</span> <span class="nf">dot_product_fpu</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">):</span>
+    <span class="c1"># r0 = address of buffer a, r1 = address of buffer b, r2 = element count</span>
+    <span class="n">vldr</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">vsub</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span>          <span class="c1"># s2 = 0.0, our running accumulator</span>
+
+<span class="n">loop_body</span><span class="p">:</span>
+    <span class="n">vldr</span><span class="p">(</span><span class="n">s0</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>          <span class="c1"># load a[i]</span>
+    <span class="n">vldr</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>           <span class="c1"># load b[i]</span>
+    <span class="n">vmla</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span><span class="p">)</span>             <span class="c1"># s2 += a[i] * b[i]</span>
+    <span class="n">add</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>                 <span class="c1"># advance pointer a by one float (4 bytes)</span>
+    <span class="n">add</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>                  <span class="c1"># advance pointer b by one float</span>
+    <span class="n">sub</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                    <span class="c1"># decrement remaining count</span>
+    <span class="n">cmp</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">bgt</span><span class="p">(</span><span class="n">loop_body</span><span class="p">)</span>
+
+    <span class="n">vstr</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>            <span class="c1"># placeholder store; real routines return via r0/s0 convention</span>
+</code></pre></div></td></tr></table></div>
+<p><code>dot_product_fpu</code> receives two buffer addresses and a count in <code>r0</code>, <code>r1</code>, and <code>r2</code> — the
+same argument-passing convention from Chapter 21. Each iteration loads one float from
+each buffer, multiply-accumulates their product into <code>s2</code>, and advances both pointers by
+4 bytes before checking the loop condition — the exact structure Chapter 23's butterfly
+operation builds on directly.</p>
+<details class="question">
+<summary>If <code>add(r0, r0, 4)</code> were changed to <code>add(r0, r0, 1)</code>, what would go wrong? Click to check.</summary>
+<p>Every <code>VLDR</code> after the first would read from the <em>wrong</em> address — advancing the
+pointer by only 1 byte instead of 4 means each load would land in the middle of a
+float's byte representation rather than at the start of the next one, producing
+garbage values. This is the byte-offset arithmetic from earlier in the chapter,
+applied incrementally: the pointer's step size must match the element size, every
+time it advances.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now move real numbers between memory and the FPU</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+You're right on frequency! Load, store, add, subtract, multiply, and the fused
+multiply-accumulate — that's every FPU instruction the butterfly operation needs.
+Chapter 23 assembles all of it, plus everything from Chapters 21 and 22, into a
+complete, working FFT written entirely in hand-crafted ARM assembly.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../21-your-first-assembly-function/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 21. Your First Assembly Function: Registers and Loops">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                21. Your First Assembly Function: Registers and Loops
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../23-the-butterfly-in-assembly/" class="md-footer__link md-footer__link--next" aria-label="Next: 23. The Butterfly in Assembly: A Complete FFT and Production Libraries">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

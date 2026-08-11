@@ -1,0 +1,2400 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How the ARM DWT cycle counter measures execution time at 6.7-nanosecond resolution, and the vocabulary used for every benchmark in the rest of the course">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/17-measuring-time/">
+      
+      
+        <link rel="prev" href="../16-building-a-real-time-spectrum-analyzer/">
+      
+      
+        <link rel="next" href="../18-benchmarking-methodology/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Measuring Time: The DWT Cycle Counter - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#measuring-time-the-dwt-cycle-counter" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Measuring Time: The DWT Cycle Counter
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-unit-underneath-every-measurement-clock-cycles" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Unit Underneath Every Measurement: Clock Cycles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dwt-unit-a-free-running-hardware-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      The DWT Unit: A Free-Running Hardware Counter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The DWT Unit: A Free-Running Hardware Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dwt-register-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DWT Register Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-bit-manipulation-turning-the-counter-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register Bit Manipulation: Turning the Counter On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counter-verification-trust-but-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter Verification: Trust, but Check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counter-wraparound-what-happens-after-286-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter Wraparound: What Happens After 28.6 Seconds
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Counter Wraparound: What Happens After 28.6 Seconds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-counter-wraparound-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Counter Wraparound Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-cycles-to-time-cycles-to-microseconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Cycles to Time: Cycles to Microseconds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-vocabulary-of-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Vocabulary of Performance Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Vocabulary of Performance Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-performance-metrics-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Performance Metrics Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-your-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking Your Understanding
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-unit-underneath-every-measurement-clock-cycles" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Unit Underneath Every Measurement: Clock Cycles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dwt-unit-a-free-running-hardware-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      The DWT Unit: A Free-Running Hardware Counter
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The DWT Unit: A Free-Running Hardware Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dwt-register-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DWT Register Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-bit-manipulation-turning-the-counter-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register Bit Manipulation: Turning the Counter On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counter-verification-trust-but-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter Verification: Trust, but Check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#counter-wraparound-what-happens-after-286-seconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Counter Wraparound: What Happens After 28.6 Seconds
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Counter Wraparound: What Happens After 28.6 Seconds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-counter-wraparound-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Counter Wraparound Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-cycles-to-time-cycles-to-microseconds" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Cycles to Time: Cycles to Microseconds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-vocabulary-of-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Vocabulary of Performance Metrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Vocabulary of Performance Metrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-performance-metrics-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Performance Metrics Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checking-your-understanding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checking Your Understanding
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/17-measuring-time/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="measuring-time-the-dwt-cycle-counter">Measuring Time: The DWT Cycle Counter</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter introduces the ARM DWT cycle counter as a 6.7-nanosecond-resolution timing tool, covering the registers involved, wraparound handling, and the conversion from raw cycle counts to microseconds. It establishes execution time, throughput, and speedup factor as the vocabulary used for every performance comparison in the rest of the course. This is the instrument the rest of the benchmarking module depends on.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 18 concepts from the learning graph:</p>
+<ol>
+<li>Benchmarking</li>
+<li>CYCCNT Register</li>
+<li>Clock Cycles</li>
+<li>Counter Verification</li>
+<li>Counter Wraparound</li>
+<li>Cycle Counter</li>
+<li>Cycles To Microseconds</li>
+<li>DEMCR Register</li>
+<li>DWT Unit</li>
+<li>Execution Time</li>
+<li>FFTs Per Second</li>
+<li>Microsecond Timer</li>
+<li>Microseconds Per FFT</li>
+<li>Millisecond Timer</li>
+<li>Performance Metrics</li>
+<li>Register Bit Manipulation</li>
+<li>Speedup Factor</li>
+<li>Timer Resolution</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+<li><a href="../12-building-the-fft/">12. Building the FFT: A Complete Recursive Implementation</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — into a benchmarking instrument!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+You have a working FFT. You even have a rough sense that it feels faster than the DFT
+from Module 3. "Feels faster" is where most benchmarking goes wrong — so before you
+compare a single number, you need an instrument you can trust down to the nanosecond.
+Let's build it.</p>
+</div>
+<p>You already know your FFT is correct — Chapter 12 validated every output against the DFT
+you proved correct in Chapter 9. Correctness answers <em>what</em> the algorithm computes.
+<strong>Benchmarking</strong> answers a different question entirely: <em>how long does it take, measured
+in a way another person could reproduce and trust?</em> Benchmarking is the disciplined
+practice of measuring a program's performance under controlled, repeatable conditions,
+rather than eyeballing a stopwatch or trusting a gut feeling about which version "seems
+snappier." Every claim this course makes from here forward — 146× faster, 3.5× over
+budget, 0.59 milliseconds — rests on the instrument this chapter builds.</p>
+<h2 id="the-unit-underneath-every-measurement-clock-cycles">The Unit Underneath Every Measurement: Clock Cycles</h2>
+<p>A microcontroller does not have a built-in sense of "seconds." It has a crystal oscillator
+ticking at a fixed rate, and every instruction the CPU executes takes some whole number of
+those ticks. Each tick is called a <strong>clock cycle</strong> — the smallest unit of time the
+processor's digital logic advances by. The Pico 2's Cortex-M33 core runs at 150 MHz by
+default, meaning 150 million clock cycles occur every second. One clock cycle therefore
+lasts:</p>
+<div class="arithmatex">\[
+\frac{1}{150{,}000{,}000 \text{ Hz}} = 6.67 \text{ nanoseconds}
+\]</div>
+<p>That 6.67-nanosecond figure is not a marketing number — it is the <strong>timer resolution</strong>
+you get for free the moment you can count cycles directly, instead of relying on a
+software clock that only updates every millisecond. A millisecond-resolution timer cannot
+distinguish between an operation that takes 100 microseconds and one that takes 200 —
+both would round to "0 ms" or "1 ms." Measuring in cycles is the difference between a
+ruler with millimeter marks and one with no marks at all.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Why not just use <code>time.ticks_ms()</code>?</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+MicroPython's built-in millisecond timer is perfect for timing a whole animation loop.
+But a single 512-point FFT on this chip finishes in well under a millisecond once
+you're deep into the course — timing it with a millisecond clock is like timing a
+sprinter with a sundial. You need something that ticks 150 million times a second, not
+once every 1,000.</p>
+</div>
+<h2 id="the-dwt-unit-a-free-running-hardware-counter">The DWT Unit: A Free-Running Hardware Counter</h2>
+<p>Fortunately, the Cortex-M33 already contains exactly this instrument, and it costs nothing
+extra to use. The <strong>DWT unit</strong> — short for Data Watchpoint and Trace — is a block of
+debug-and-trace hardware built into every Cortex-M3, M4, and M33 core, originally designed
+to support breakpoints and instruction tracing. Buried inside it is a 32-bit hardware
+<strong>cycle counter</strong>: a register that increments by exactly one, every single clock cycle,
+with zero software overhead, for as long as it is enabled.</p>
+<p>Two memory-mapped registers control this counter. The first is the <strong>DEMCR register</strong>
+(Debug Exception and Monitor Control Register), which holds a master switch for the whole
+debug-and-trace subsystem — bit 24, named <code>TRCENA</code>, must be set to <code>1</code> before the DWT
+unit will do anything at all. The second is the <strong>CYCCNT register</strong>, the 32-bit counter
+itself, which lives inside the DWT unit and only starts counting once its own enable bit
+(<code>CYCCNTENA</code>, bit 0 of the DWT control register) is also set to <code>1</code>.</p>
+<p>The following table summarizes the three registers involved, now that you know what each
+one does:</p>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Address</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEMCR</td>
+<td>0xE000EDFC</td>
+<td>Master enable (<code>TRCENA</code>, bit 24) for the debug/trace subsystem</td>
+</tr>
+<tr>
+<td>DWT.CTRL</td>
+<td>0xE0001000</td>
+<td>Enables the cycle counter itself (<code>CYCCNTENA</code>, bit 0)</td>
+</tr>
+<tr>
+<td>DWT.CYCCNT</td>
+<td>0xE0001004</td>
+<td>The 32-bit free-running cycle counter you read</td>
+</tr>
+</tbody>
+</table>
+<h4 id="diagram-dwt-register-explorer">Diagram: DWT Register Explorer</h4>
+<iframe src="../../sims/dwt-register-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>DWT Register Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> dwt-register-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — explain, interpret
+Learning objective: Explain how the DEMCR and DWT.CTRL enable bits gate access to the CYCCNT counter, and interpret a 32-bit register as individually addressable bits.</p>
+<p>Canvas layout:
+- Top (300px): Three register boxes drawn as 32-bit grids (DEMCR, DWT.CTRL, DWT.CYCCNT), each bit rendered as a small clickable square, MSB on the left
+- Bottom (150px): Step-through controls and a status readout</p>
+<p>Visual elements:
+- DEMCR register: only bit 24 (TRCENA) highlighted as interactive; all other bits shown grayed out and labeled "reserved / not used here"
+- DWT.CTRL register: only bit 0 (CYCCNTENA) highlighted as interactive
+- DWT.CYCCNT register: all 32 bits shown as a live binary readout of a running count, with a decimal value printed below</p>
+<p>Data Visibility Requirements:
+  Stage 1: Show all three registers at power-on, every bit 0, CYCCNT frozen at 0
+  Stage 2: Learner clicks the TRCENA bit in DEMCR — it flips to 1, status readout says "Trace subsystem enabled, DWT unit powered but cycle counter still off"
+  Stage 3: Learner clicks CYCCNTENA in DWT.CTRL — it flips to 1, CYCCNT begins visibly incrementing in the display (simulated at a readable rate, not real 150 MHz)
+  Stage 4: Learner clicks CYCCNTENA off again — CYCCNT freezes at its current value, demonstrating the counter holds its value rather than resetting</p>
+<p>Interactive controls:
+- Clickable bit squares (only the two functional bits are clickable; others show a tooltip "not used in this course" on hover)
+- Button: "Reset to power-on state"
+- Toggle: "Simulated speed" (slow / medium) purely so the incrementing CYCCNT display is human-readable</p>
+<p>Instructional Rationale: Step-through with data visibility is appropriate because the
+Understand-level objective requires the learner to trace cause and effect between two
+gating bits and a running counter with concrete state at each stage, not a continuous
+animation that would obscure which bit caused which change.</p>
+<p>Implementation: p5.js, register bits stored as an array of booleans per register, redraw on click</p>
+</details>
+<h2 id="register-bit-manipulation-turning-the-counter-on">Register Bit Manipulation: Turning the Counter On</h2>
+<p>Both enable bits live inside 32-bit registers alongside other bits you must not disturb,
+so enabling the DWT unit is an exercise in <strong>register bit manipulation</strong> — reading or
+writing individual bits of a register without touching the rest. The standard technique
+uses a <em>bitmask</em>: a value with a <code>1</code> in exactly the position you care about and <code>0</code>
+everywhere else, combined with the OR operator to set a bit without changing its
+neighbors.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Reading the code below</p>
+<p><img alt="Echo giving a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+<code>machine.mem32[address]</code> in MicroPython reads or writes a 32-bit value directly at a
+memory address — this is how you talk to hardware registers that have no Python
+wrapper. The <code>|=</code> operator is "read the current value, OR in this bit, write it back,"
+which sets one bit to <code>1</code> while leaving every other bit exactly as it was.</p>
+</div>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="n">DEMCR</span>    <span class="o">=</span> <span class="mh">0xE000EDFC</span>
+<span class="n">DWT_CTRL</span> <span class="o">=</span> <span class="mh">0xE0001000</span>
+<span class="n">DWT_CYCCNT</span> <span class="o">=</span> <span class="mh">0xE0001004</span>
+
+<span class="n">TRCENA</span>     <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span>   <span class="c1"># bit 24 of DEMCR</span>
+<span class="n">CYCCNTENA</span>  <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span>    <span class="c1"># bit 0 of DWT.CTRL</span>
+
+<span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DEMCR</span><span class="p">]</span> <span class="o">|=</span> <span class="n">TRCENA</span>          <span class="c1"># enable the trace/debug subsystem</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CTRL</span><span class="p">]</span> <span class="o">|=</span> <span class="n">CYCCNTENA</span>    <span class="c1"># start the cycle counter</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CYCCNT</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># reset the counter to a known value</span>
+</code></pre></div></td></tr></table></div>
+<p>With those three lines run once at startup, <code>machine.mem32[DWT_CYCCNT]</code> now returns the
+current cycle count on every read, incrementing once per clock cycle with no further setup.</p>
+<h2 id="counter-verification-trust-but-check">Counter Verification: Trust, but Check</h2>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Never trust a clock you haven't checked</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+A typo in a register address, a board running at an unexpected clock speed, or a
+counter that silently never got enabled can all produce numbers that <em>look</em>
+plausible and are completely wrong. Before you time anything real, verify the
+instrument.</p>
+</div>
+<p><strong>Counter verification</strong> means confirming the cycle counter actually advances at the rate
+you expect, before trusting a single measurement it produces. The most direct check
+compares CYCCNT against a timer you already trust: read CYCCNT, sleep for exactly 100
+milliseconds using MicroPython's built-in <strong>millisecond timer</strong>, read CYCCNT again, and
+check that the difference is close to <code>150,000,000 × 0.1 = 15,000,000</code> cycles. If your
+board runs at 150 MHz and the counter is wired up correctly, the measured cycle delta
+should land within a fraction of a percent of that prediction — any larger gap means
+something upstream is wrong, and it is far better to find that out now than after you've
+recorded a table of "results."</p>
+<h2 id="counter-wraparound-what-happens-after-286-seconds">Counter Wraparound: What Happens After 28.6 Seconds</h2>
+<p>CYCCNT is only 32 bits wide, which means it can count from 0 up to <span class="arithmatex">\(2^{32} - 1 =
+4{,}294{,}967{,}295\)</span> before it runs out of room. At 150 MHz, that ceiling arrives after:</p>
+<div class="arithmatex">\[
+\frac{4{,}294{,}967{,}295}{150{,}000{,}000 \text{ Hz}} \approx 28.6 \text{ seconds}
+\]</div>
+<p>At that point the counter does not stop or raise an error — it silently rolls back over
+to 0 and keeps counting. This behavior, called <strong>counter wraparound</strong>, is completely
+normal and by design, but it breaks the naive way of computing elapsed time if you are not
+careful.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">This trips up experienced programmers too</p>
+<p><img alt="Echo encouraging" class="mascot-admonition-img" src="../../img/mascot/encouraging.png" />
+If subtracting two register values to get "elapsed time" and getting a negative or
+absurdly large number feels confusing at first, you're in good company — wraparound
+bugs have shipped in real production firmware. The fix below is a pattern worth
+memorizing, not just for this course.</p>
+</div>
+<p>Suppose you read <code>start = 4,294,960,000</code> right before wraparound, do some work, and read
+<code>end = 5,000</code> right after. A naive <code>end - start</code> gives a large negative number, which is
+nonsense for an elapsed time. The reliable fix is to compute the difference using
+unsigned 32-bit arithmetic, which makes the wraparound cancel out automatically:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">elapsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+</code></pre></div></td></tr></table></div>
+<p>Masking the subtraction with <code>&amp; 0xFFFFFFFF</code> keeps only the low 32 bits of the result,
+which is exactly the correct wrapped-around elapsed cycle count as long as the <em>true</em>
+elapsed time was less than one full wraparound period (28.6 seconds) — comfortably true
+for every measurement in this course, since a single FFT takes at most a few hundred
+milliseconds even in the slowest pure-Python version.</p>
+<h4 id="diagram-counter-wraparound-visualizer">Diagram: Counter Wraparound Visualizer</h4>
+<iframe src="../../sims/counter-wraparound-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Counter Wraparound Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> counter-wraparound-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — calculate, demonstrate
+Learning objective: Apply the masked-subtraction formula to correctly compute elapsed cycles across a wraparound event, and demonstrate why naive subtraction fails.</p>
+<p>Canvas layout:
+- Top (250px): A circular clock face representing the 32-bit counter range (0 at top, wrapping clockwise back to 0), with a moving dot showing the current CYCCNT value
+- Bottom (250px): Two side-by-side calculator panels — "Naive subtraction" and "Masked subtraction" — each showing start value, end value, and computed elapsed time</p>
+<p>Visual elements:
+- Circular counter dial scaled to a compressed demo range (e.g. 0 to 1,000 "demo cycles") rather than the real 4.29 billion, so wraparound is visible within a few seconds of simulated time
+- A draggable "start" marker and "end" marker on the dial
+- Naive panel shows <code>end - start</code> including negative results in red when wraparound occurred
+- Masked panel shows <code>(end - start) &amp; 0xFFFFFFFF</code> always producing a correct positive elapsed value, shown in green</p>
+<p>Interactive controls:
+- Slider: place the start marker anywhere on the dial
+- Slider: place the end marker anywhere on the dial (including past the wraparound point)
+- Checkbox: "Force a wraparound between start and end"
+- Button: "Compute both ways"</p>
+<p>Default parameters:
+- Start marker: 950 (near the wraparound point on the compressed 0-1000 demo range)
+- End marker: 50 (just after wraparound)</p>
+<p>Behavior:
+- When start &gt; end on the dial (wraparound occurred), the naive panel visibly produces a negative or nonsensical number
+- The masked panel always produces the correct short arc-length between start and end going clockwise
+- A short text explanation updates live: "Naive subtraction fails here because the counter wrapped. Masked subtraction succeeds because it wraps the math to match the wrapped hardware."</p>
+<p>Instructional Rationale: A draggable dial with two live calculators lets the learner
+directly cause and observe the failure mode (Apply-level) rather than only reading about
+it, which matches the objective of being able to compute correct elapsed time under
+wraparound conditions.</p>
+<p>Implementation: p5.js, circular dial drawn with arc(), demo range 0-1000 mapped conceptually to the real 32-bit range in the text explanation</p>
+</details>
+<h2 id="from-cycles-to-time-cycles-to-microseconds">From Cycles to Time: Cycles to Microseconds</h2>
+<p>A raw cycle count is precise but not intuitive — nobody thinks in cycles when comparing
+implementations. The conversion <strong>cycles to microseconds</strong> turns that raw count into a
+human-readable duration, using the clock frequency as the conversion factor:</p>
+<div class="arithmatex">\[
+\text{microseconds} = \frac{\text{elapsed cycles}}{\text{clock frequency in MHz}}
+\]</div>
+<p>At 150 MHz, dividing an elapsed cycle count by 150 gives elapsed microseconds directly.
+A <strong>microsecond timer</strong> wraps this conversion into a single reusable function, and a
+<strong>millisecond timer</strong> simply divides that result by 1,000 again for the rare
+long-running operation you want to describe in coarser units:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">elapsed_us</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">clock_mhz</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+    <span class="n">cycles</span> <span class="o">=</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span>
+    <span class="k">return</span> <span class="n">cycles</span> <span class="o">/</span> <span class="n">clock_mhz</span>
+
+<span class="k">def</span> <span class="nf">elapsed_ms</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">clock_mhz</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">elapsed_us</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">clock_mhz</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+</code></pre></div></td></tr></table></div>
+<p>From here forward, every timing measurement in this course goes through a function that
+looks like <code>elapsed_us</code> — read CYCCNT before, read it after, mask the subtraction, divide
+by the clock frequency. That is the entire measurement discipline this chapter exists to
+teach.</p>
+<h2 id="the-vocabulary-of-performance-metrics">The Vocabulary of Performance Metrics</h2>
+<p>With a working timer in hand, you need a shared vocabulary for talking about what it
+measures — a small set of <strong>performance metrics</strong> used consistently for the rest of the
+course.</p>
+<p>Before comparing them, let's define each term precisely, since the next several chapters
+use all four without re-explaining them:</p>
+<ul>
+<li><strong>Execution time</strong> — the elapsed time, in microseconds or milliseconds, for one
+  specific run of a specific operation. This is the direct output of <code>elapsed_us</code>.</li>
+<li><strong>Throughput</strong> — how much <em>work</em> completes per unit of time, rather than how long one
+  unit of work takes. For this course, the natural throughput metric is <strong>FFTs per
+  second</strong>: how many complete 512-point transforms the chip could compute if it ran back
+  to back, computed as <span class="arithmatex">\(1{,}000{,}000 / \text{microseconds per FFT}\)</span>.</li>
+<li><strong>Microseconds per FFT</strong> — the execution time of one complete FFT, specifically —
+  the number this course reports most often, because it maps directly onto the real-time
+  frame budget from Module 2.</li>
+<li><strong>Speedup factor</strong> — a ratio comparing two execution times for the <em>same</em> task:
+  <span class="arithmatex">\(\text{old time} / \text{new time}\)</span>. A speedup factor of 146 means the new version
+  finishes in 1/146th of the time the old version took — this is exactly the number
+  Chapter 12 reported for the recursive FFT versus the brute-force DFT.</li>
+</ul>
+<p>Now that each term has a precise definition, the table below simply organizes them —
+it introduces no new concepts, only a side-by-side comparison of the ones just explained:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Answers</th>
+<th>Units</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Execution time</td>
+<td>How long did <em>this one run</em> take?</td>
+<td>microseconds (μs)</td>
+<td><code>elapsed_us(start, end)</code></td>
+</tr>
+<tr>
+<td>Microseconds per FFT</td>
+<td>Execution time, specifically for one FFT</td>
+<td>μs</td>
+<td>same as execution time, applied to an FFT call</td>
+</tr>
+<tr>
+<td>FFTs per second</td>
+<td>How much throughput does this give me?</td>
+<td>FFTs/sec</td>
+<td><span class="arithmatex">\(1{,}000{,}000 / \mu s\text{ per FFT}\)</span></td>
+</tr>
+<tr>
+<td>Speedup factor</td>
+<td>How many times faster is version B than version A?</td>
+<td>unitless ratio</td>
+<td><span class="arithmatex">\(\text{time}_A / \text{time}_B\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="diagram-performance-metrics-calculator">Diagram: Performance Metrics Calculator</h4>
+<iframe src="../../sims/performance-metrics-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Performance Metrics Calculator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> performance-metrics-calculator<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — calculate, use
+Learning objective: Apply the conversion formulas to compute execution time, throughput, and speedup factor from a raw cycle count the learner controls.</p>
+<p>Canvas layout:
+- Left (300px): Input controls
+- Right (300px): Live-computed output panel</p>
+<p>Visual elements:
+- Slider: "Elapsed cycles" (range 1,000 to 30,000,000, default 21,000 representing a fast operation)
+- Slider: "Clock frequency (MHz)" (range 50 to 250, default 150)
+- Slider: "Comparison time (μs), for speedup" (range 1 to 200,000, default 20,500 representing the brute-force DFT time from Chapter 16)
+- Output readout, updating live: Execution time (μs and ms), FFTs per second, Speedup factor vs. the comparison time</p>
+<p>Interactive controls:
+- All three sliders drag live, recalculating every field on the right instantly
+- Button: "Load Chapter 12 example" — sets sliders to reproduce the recursive-FFT-vs-DFT numbers already stated in the course (140 ms FFT vs. ~21,000 ms DFT)</p>
+<p>Default parameters:
+- Elapsed cycles: 21,000,000 (representing 140 ms at 150 MHz)
+- Clock frequency: 150 MHz
+- Comparison time: 21,000,000 μs (21 seconds, the brute-force DFT time)</p>
+<p>Behavior:
+- Dragging any slider immediately recomputes and redraws all four output metrics
+- Speedup factor updates to reflect the live ratio, so the learner can watch the number ~146 emerge from real values rather than being told it</p>
+<p>Instructional Rationale: Apply-level objectives call for parameter exploration with a
+calculator pattern rather than animation — the learner directly manipulates the inputs
+that appear in the formulas just defined and immediately sees the four vocabulary terms
+computed from them, reinforcing the definitions through use.</p>
+<p>Implementation: p5.js, plain arithmetic on slider values, redraw() on every input event</p>
+</details>
+<h2 id="checking-your-understanding">Checking Your Understanding</h2>
+<p>Before moving on to Chapter 18, make sure the wraparound arithmetic is second nature —
+it will not be re-explained.</p>
+<details class="question">
+<summary>If <code>start = 4,294,965,000</code> and <code>end = 3,000</code>, what is the correctly masked elapsed cycle count? Click to check.</summary>
+<p>Using <code>(end - start) &amp; 0xFFFFFFFF</code>: <code>3,000 - 4,294,965,000 = -4,294,962,000</code>.
+Masking to 32 bits wraps this to <code>4,296 - 1 =</code> … more directly: the true elapsed
+distance is <code>(2^32 - 4,294,965,000) + 3,000 = 2,295 + 3,000 = 5,295</code> cycles. At
+150 MHz that's about <strong>35 nanoseconds</strong> — a perfectly ordinary, small elapsed time
+that a naive subtraction would have reported as a huge negative number instead.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You built the instrument</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Not bad for a $5 chip! You can now measure any operation on this board down to 6.7
+nanoseconds, handle the one edge case that trips up most first attempts, and speak
+the same performance vocabulary the rest of this course uses. Chapter 18 puts this
+instrument to work — and shows you all the ways a careless benchmark can lie even
+with a perfectly good timer in hand.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 16. Building a Real-Time Spectrum Analyzer">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                16. Building a Real-Time Spectrum Analyzer
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../18-benchmarking-methodology/" class="md-footer__link md-footer__link--next" aria-label="Next: 18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

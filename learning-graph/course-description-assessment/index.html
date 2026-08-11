@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+        <meta name="description" content="Quality assessment of docs/course-description.md prior to learning graph generation">
       
       
         <meta name="author" content="Dan McCreary">
@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../../img/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -127,11 +127,13 @@
     
     
     
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -163,13 +165,14 @@
     </div>
   </div>
 </div>
+      
     
     
       <div class="md-header__source">
         <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub Repo
@@ -214,7 +217,7 @@
       <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub Repo
@@ -234,8 +237,10 @@
       <a href="../.." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Home
+    
   </span>
   
 
@@ -254,8 +259,10 @@
       <a href="../../about/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     About
+    
   </span>
   
 
@@ -274,8 +281,10 @@
       <a href="../../course-description/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Course Description
+    
   </span>
   
 
@@ -311,6 +320,11 @@
       
         
       
+        
+      
+        
+      
+    
     
     
     
@@ -323,13 +337,14 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          
           <div class="md-nav__link md-nav__container">
             <a href="../" class="md-nav__link ">
               
   
+  
   <span class="md-ellipsis">
     Learning Graph
+    
   </span>
   
 
@@ -370,8 +385,10 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
     Course Description Assessment
+    
   </span>
   
 
@@ -381,8 +398,10 @@
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
+  
   <span class="md-ellipsis">
     Course Description Assessment
+    
   </span>
   
 
@@ -404,27 +423,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scoring-summary" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Scoring Summary
+      Summary
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#elements-found" class="md-nav__link">
+  <a href="#rubric-scoring" class="md-nav__link">
     <span class="md-ellipsis">
-      Elements Found
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#estimated-concept-count" class="md-nav__link">
-    <span class="md-ellipsis">
-      Estimated Concept Count
+      Rubric Scoring
     </span>
   </a>
   
@@ -440,18 +450,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#areas-for-minor-improvement" class="md-nav__link">
+  <a href="#gaps" class="md-nav__link">
     <span class="md-ellipsis">
-      Areas for Minor Improvement
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quality-assessment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quality Assessment
+      Gaps
     </span>
   </a>
   
@@ -485,8 +486,10 @@
       <a href="../concept-list/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Concept List
+    
   </span>
   
 
@@ -506,8 +509,10 @@
       <a href="../concept-taxonomy/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Concept Taxonomy
+    
   </span>
   
 
@@ -527,8 +532,10 @@
       <a href="../taxonomy-distribution/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Taxonomy Distribution
+    
   </span>
   
 
@@ -548,8 +555,10 @@
       <a href="../quality-metrics/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Quality Metrics
+    
   </span>
   
 
@@ -569,8 +578,56 @@
       <a href="../mascot-test/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Mascot Style Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq-quality-report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ Quality Report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq-coverage-gaps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ Coverage Gaps
+    
   </span>
   
 
@@ -618,6 +675,43 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
     
     
     
@@ -631,11 +725,81 @@
         
   
   
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
     <a href="../../labs/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Hands-On Labs
+    
   </span>
   
 
@@ -657,11 +821,13 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cornell-labs/pico-example/" class="md-nav__link">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
         
+  
   
   <span class="md-ellipsis">
     Cornel Labs FFT on the Pico
+    
   </span>
   
 
@@ -684,13 +850,10 @@
         
       
         
-          
-        
       
         
-          
-        
       
+    
     
     
     
@@ -704,11 +867,14 @@
         
   
   
+  
     <a href="../../sims/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     MicroSims
+    
   </span>
   
 
@@ -743,6 +909,7 @@
     
     
     
+    
       
         
         
@@ -753,11 +920,63 @@
         
   
   
+  
     <a href="../../plans/" class="md-nav__link">
       
   
+  
   <span class="md-ellipsis">
     Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
   </span>
   
 
@@ -779,11 +998,57 @@
   
   
     <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../glossary/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
   </span>
   
 
@@ -802,8 +1067,10 @@
       <a href="../../how-we-built-this-site/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     How We Built This Site
+    
   </span>
   
 
@@ -822,8 +1089,10 @@
       <a href="../../references/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     References
+    
   </span>
   
 
@@ -842,8 +1111,10 @@
       <a href="../../license/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     License
+    
   </span>
   
 
@@ -862,8 +1133,10 @@
       <a href="../../contact/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Contact
+    
   </span>
   
 
@@ -899,27 +1172,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scoring-summary" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Scoring Summary
+      Summary
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#elements-found" class="md-nav__link">
+  <a href="#rubric-scoring" class="md-nav__link">
     <span class="md-ellipsis">
-      Elements Found
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#estimated-concept-count" class="md-nav__link">
-    <span class="md-ellipsis">
-      Estimated Concept Count
+      Rubric Scoring
     </span>
   </a>
   
@@ -935,18 +1199,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#areas-for-minor-improvement" class="md-nav__link">
+  <a href="#gaps" class="md-nav__link">
     <span class="md-ellipsis">
-      Areas for Minor Improvement
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quality-assessment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quality Assessment
+      Gaps
     </span>
   </a>
   
@@ -975,6 +1230,7 @@
                 
                   
 
+
   
     <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/learning-graph/course-description-assessment.md" title="Edit this page" class="md-content__button md-icon">
       
@@ -985,159 +1241,128 @@
 
 
 <h1 id="course-description-quality-assessment">Course Description Quality Assessment</h1>
-<p><strong>Course:</strong> Benchmarking FFT
-<strong>Assessment Date:</strong> 2025-12-13
-<strong>Generator Version:</strong> Learning Graph Generator v0.03</p>
-<h2 id="scoring-summary">Scoring Summary</h2>
+<h2 id="summary">Summary</h2>
+<p>The current <code>docs/course-description.md</code> (rewritten since the last learning-graph generation) is an unusually complete and specific course description. It documents 35 hands-on labs across 8 modules, a $19 hardware kit, exact measured performance numbers students will reproduce, a full weekly schedule, a grading breakdown, and Bloom's-Taxonomy-organized outcomes with lab-verified items flagged <code>(lab)</code>.</p>
+<p><strong>Estimated concept yield:</strong> 500–600 distinct, pedagogically meaningful concepts. This is well above the 200-concept minimum and supports the requested ~550-concept target, because the course description is backed by 35 individually detailed lab pages (<code>docs/labs/01-*</code> … <code>docs/labs/35-*</code>), each with its own learning objectives and (for several labs) explicit "Concepts Introduced" lists. Comparable 10-week, lab-driven embedded/DSP courses typically yield 300–450 concepts from the syllabus alone; the addition of full lab-level detail here is what pushes the ceiling toward 550.</p>
+<h2 id="rubric-scoring">Rubric Scoring</h2>
 <table>
 <thead>
 <tr>
 <th>Element</th>
-<th>Points</th>
-<th>Max</th>
+<th>Points Possible</th>
+<th>Points Awarded</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Title</strong></td>
+<td>Title</td>
 <td>5</td>
 <td>5</td>
-<td>Clear, descriptive: "Benchmarking FFT"</td>
+<td>Clear and descriptive: "Benchmarking FFT — Real-Time Signal Processing on a $5 Microcontroller"</td>
 </tr>
 <tr>
-<td><strong>Target Audience</strong></td>
+<td>Target Audience</td>
 <td>5</td>
 <td>5</td>
-<td>Specific: "College juniors or seniors with a curiosity in signal processing"</td>
+<td>"College juniors and seniors curious about signal processing"</td>
 </tr>
 <tr>
-<td><strong>Prerequisites</strong></td>
-<td>3</td>
-<td>5</td>
-<td>Implied through audience description but not explicitly listed</td>
-</tr>
-<tr>
-<td><strong>Main Topics Covered</strong></td>
-<td>10</td>
-<td>10</td>
-<td>Comprehensive list of 32 topics</td>
-</tr>
-<tr>
-<td><strong>Topics Excluded</strong></td>
+<td>Prerequisites</td>
 <td>5</td>
 <td>5</td>
-<td>Clear boundaries: non-ARM assembly, FPGAs, ASIC design</td>
+<td>Explicit "no prior experience required," plus a table mapping every from-zero topic to the lab that first teaches it</td>
 </tr>
 <tr>
-<td><strong>Learning Outcomes Header</strong></td>
+<td>Main Topics Covered</td>
+<td>10</td>
+<td>10</td>
+<td>"Content Covered" section spans 7 sub-areas (math/signal foundations, digital audio, FFT algorithm, hardware, programming/assembly, benchmarking, language comparison)</td>
+</tr>
+<tr>
+<td>Topics Excluded</td>
 <td>5</td>
 <td>5</td>
-<td>"After this course a student will"</td>
+<td>"Concepts Not Covered" section with 5 explicit boundary items and rationale</td>
 </tr>
 <tr>
-<td><strong>Remember Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific, actionable outcomes</td>
-</tr>
-<tr>
-<td><strong>Understand Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific, actionable outcomes</td>
-</tr>
-<tr>
-<td><strong>Apply Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific, actionable outcomes</td>
-</tr>
-<tr>
-<td><strong>Analyze Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific, actionable outcomes</td>
-</tr>
-<tr>
-<td><strong>Evaluate Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific, actionable outcomes</td>
-</tr>
-<tr>
-<td><strong>Create Level</strong></td>
-<td>10</td>
-<td>10</td>
-<td>5 specific outcomes including capstone project</td>
-</tr>
-<tr>
-<td><strong>Descriptive Context</strong></td>
+<td>Learning Outcomes Header</td>
 <td>5</td>
 <td>5</td>
-<td>Excellent "Why This Course" section with historical context</td>
+<td>"## Learning Outcomes — Organized by Bloom's Taxonomy"</td>
+</tr>
+<tr>
+<td>Remember Level</td>
+<td>10</td>
+<td>10</td>
+<td>6 specific outcomes</td>
+</tr>
+<tr>
+<td>Understand Level</td>
+<td>10</td>
+<td>10</td>
+<td>7 specific outcomes</td>
+</tr>
+<tr>
+<td>Apply Level</td>
+<td>10</td>
+<td>10</td>
+<td>7 specific outcomes, most lab-verified</td>
+</tr>
+<tr>
+<td>Analyze Level</td>
+<td>10</td>
+<td>10</td>
+<td>6 specific outcomes</td>
+</tr>
+<tr>
+<td>Evaluate Level</td>
+<td>10</td>
+<td>10</td>
+<td>6 specific outcomes</td>
+</tr>
+<tr>
+<td>Create Level</td>
+<td>10</td>
+<td>10</td>
+<td>5 outcomes including capstone design/build/report</td>
+</tr>
+<tr>
+<td>Descriptive Context</td>
+<td>5</td>
+<td>5</td>
+<td>"Why This Course Exists" plus hardware history/motivation</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+<td><strong>97</strong></td>
+<td>Rounded down slightly — outcomes are strong but a handful (e.g. "Assess whether an optimization justifies its cost") could specify the measurable artifact more precisely</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Total Score: 98/100</strong></p>
-<h2 id="elements-found">Elements Found</h2>
-<ul>
-<li><strong>Title:</strong> Benchmarking FFT</li>
-<li><strong>Course Length:</strong> 10-weeks or independent study</li>
-<li><strong>Target Audience:</strong> College juniors or seniors with a curiosity in signal processing</li>
-<li><strong>Summary:</strong> Comprehensive description of benchmarking FFT algorithms on microcontrollers and CPUs</li>
-<li><strong>Why This Course:</strong> Historical context explaining DSP evolution and affordability</li>
-<li><strong>Content Topics:</strong> 32 distinct topics covering FFT fundamentals through applications</li>
-<li><strong>Topics Not Covered:</strong> 3 clear exclusions defined</li>
-<li><strong>Bloom's Taxonomy Outcomes:</strong> All 6 levels with 5 specific outcomes each (30 total)</li>
-<li><strong>Grading:</strong> Clear breakdown (25% each: homework, midterm, capstone, final)</li>
-</ul>
-<h2 id="estimated-concept-count">Estimated Concept Count</h2>
-<p>Based on the course description, I estimate we can derive <strong>180-220 distinct concepts</strong>:</p>
-<ul>
-<li>Math/Signal Foundations: ~25 concepts</li>
-<li>FFT Algorithm Fundamentals: ~35 concepts</li>
-<li>Hardware &amp; DSP: ~30 concepts</li>
-<li>Programming &amp; Libraries: ~35 concepts</li>
-<li>Benchmarking Framework: ~30 concepts</li>
-<li>Performance Analysis: ~25 concepts</li>
-<li>Applications &amp; Projects: ~20 concepts</li>
-</ul>
-<p>This aligns well with similar college-level signal processing courses.</p>
 <h2 id="strengths">Strengths</h2>
-<ol>
-<li><strong>Excellent Bloom's Taxonomy Coverage:</strong> All 6 cognitive levels have specific, measurable outcomes</li>
-<li><strong>Strong Historical Context:</strong> The "Why This Course" section provides motivation and relevance</li>
-<li><strong>Clear Scope Definition:</strong> Both included and excluded topics are well-defined</li>
-<li><strong>Practical Focus:</strong> Emphasizes real hardware (RP2350, ARM Cortex-M33/M4) and practical applications</li>
-<li><strong>Balanced Content:</strong> Good mix of theory (FFT algorithm) and practice (benchmarking, optimization)</li>
-<li><strong>Modern Relevance:</strong> References current hardware (Raspberry Pi Pico 2, August 2024)</li>
-</ol>
-<h2 id="areas-for-minor-improvement">Areas for Minor Improvement</h2>
-<ol>
-<li><strong>Prerequisites:</strong> Consider adding explicit prerequisites such as:</li>
-<li>Basic calculus (understanding of complex numbers, integrals)</li>
-<li>Programming experience (C or Python)</li>
-<li>
-<p>Basic electronics/microcontroller familiarity</p>
-</li>
-<li>
-<p><strong>Could expand slightly:</strong></p>
-</li>
-<li>Specific FFT libraries to be covered (CMSIS-DSP, kiss_fft, etc.)</li>
-<li>Types of signals to be analyzed (audio, RF, sensor data)</li>
-</ol>
-<h2 id="quality-assessment">Quality Assessment</h2>
-<p><strong>Overall Score: 98/100 - EXCELLENT</strong></p>
-<p>This course description is exceptionally well-structured and comprehensive. It exceeds the minimum threshold of 70 and is well above the recommended 80 for proceeding with learning graph generation.</p>
+<ul>
+<li>Every module (0–8) and all 35 labs are individually described, giving concept-level granularity far beyond a typical syllabus.</li>
+<li>Concrete, student-reproduced measurements (21 s → 0.59 ms, 530× DFT overrun, 165× assembly speedup, 6.7 ns cycle resolution) give the graph many benchmarking/methodology concepts with real pedagogical weight, not just abstract terms.</li>
+<li>The prerequisite table and "Concepts Not Covered" section make scope boundaries unambiguous, which keeps the concept list from sprawling into out-of-scope territory (e.g., FPGA/ASIC FFT, Q15 fixed-point implementation).</li>
+<li>Hardware kit, software toolchain, grading, and weekly schedule are all specified, giving natural taxonomy categories beyond pure DSP/algorithm content (hardware/embedded, tooling, benchmarking methodology, assessment/pedagogy).</li>
+</ul>
+<h2 id="gaps">Gaps</h2>
+<ul>
+<li>None material. The description does not need improvement to proceed.</li>
+</ul>
 <h2 id="recommendation">Recommendation</h2>
-<p><strong>PROCEED</strong> with learning graph generation. This course description provides excellent foundation for generating 200 high-quality concepts with meaningful dependencies.</p>
+<p>Score is well above the 70-point proceed threshold (97/100). Proceeding directly to concept list generation, sourced from both <code>course-description.md</code> and the 35 lab <code>index.md</code> files for full fidelity.</p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -1224,10 +1449,16 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>

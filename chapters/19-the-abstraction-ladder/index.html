@@ -1,0 +1,2500 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Comparing MicroPython's native and viper emitters, C, and assembly on the same computation, and the honest-reporting discipline that makes the comparison trustworthy">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/19-the-abstraction-ladder/">
+      
+      
+        <link rel="prev" href="../18-benchmarking-methodology/">
+      
+      
+        <link rel="next" href="../20-does-your-cpu-have-an-fpu/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>The Abstraction Ladder: Python, C, and Assembly Compared - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-abstraction-ladder-python-c-and-assembly-compared" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The Abstraction Ladder: Python, C, and Assembly Compared
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predicting-before-measuring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Predicting Before Measuring
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#six-rungs-one-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Six Rungs, One Ladder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-default-bytecode-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Default: Bytecode Interpretation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boxed-values-the-deeper-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boxed Values: The Deeper Cost
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boxed Values: The Deeper Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-boxed-vs-unboxed-memory-layout-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Boxed vs. Unboxed Memory Layout Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-code-emitter-skip-the-interpreter-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Native Code Emitter: Skip the Interpreter Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viper-code-emitter-unboxed-on-purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viper Code Emitter: Unboxed, On Purpose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-rung-lower-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      One Rung Lower: C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiler-optimization-same-source-different-machine-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiler Optimization: Same Source, Different Machine Code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-bottom-rung-assembly-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bottom Rung: Assembly Language
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Bottom Rung: Assembly Language">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-the-abstraction-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: The Abstraction Ladder
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measurement-discipline-applied" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measurement Discipline Applied
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-tables-and-honest-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Tables and Honest Reporting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-tradeoff-analysis-putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Language Tradeoff Analysis: Putting It All Together
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predicting-before-measuring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Predicting Before Measuring
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#six-rungs-one-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Six Rungs, One Ladder
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-default-bytecode-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Default: Bytecode Interpretation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boxed-values-the-deeper-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boxed Values: The Deeper Cost
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Boxed Values: The Deeper Cost">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-boxed-vs-unboxed-memory-layout-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Boxed vs. Unboxed Memory Layout Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-code-emitter-skip-the-interpreter-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Native Code Emitter: Skip the Interpreter Loop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viper-code-emitter-unboxed-on-purpose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viper Code Emitter: Unboxed, On Purpose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-rung-lower-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      One Rung Lower: C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiler-optimization-same-source-different-machine-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compiler Optimization: Same Source, Different Machine Code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-bottom-rung-assembly-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Bottom Rung: Assembly Language
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Bottom Rung: Assembly Language">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-the-abstraction-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: The Abstraction Ladder
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measurement-discipline-applied" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measurement Discipline Applied
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-tables-and-honest-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison Tables and Honest Reporting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-tradeoff-analysis-putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Language Tradeoff Analysis: Putting It All Together
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/19-the-abstraction-ladder/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="the-abstraction-ladder-python-c-and-assembly-compared">The Abstraction Ladder: Python, C, and Assembly Compared</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter compares the same computation across MicroPython's native and viper code emitters, C, and assembly, introducing boxed versus unboxed values and compiler optimization as the reasons for the resulting spread in performance. It also covers the discipline of honest reporting — measurement caveats, cold-start effects, and stating what a benchmark excludes — using two real mistakes made while building this course as case studies. This chapter sets the stage for the assembly-language module that follows.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 30 concepts from the learning graph:</p>
+<ol>
+<li>ARM Compiler</li>
+<li>Abstraction Cost</li>
+<li>Assembly Language</li>
+<li>Boxed Values</li>
+<li>Bytecode Interpretation</li>
+<li>C Compiler</li>
+<li>C Language</li>
+<li>Cache Memory</li>
+<li>Calling C From MicroPython</li>
+<li>Code Size</li>
+<li>Cold Start Effect</li>
+<li>Comparison Tables</li>
+<li>Compiler Optimization</li>
+<li>Compiler Settings</li>
+<li>GCC Compiler</li>
+<li>Honest Reporting</li>
+<li>Language Tradeoff Analysis</li>
+<li>Machine Types</li>
+<li>Measurement Discipline</li>
+<li>Memory Management</li>
+<li>Native Code Emitter</li>
+<li>Negative Result</li>
+<li>Optimization Flags</li>
+<li>Prediction Before Measurement</li>
+<li>Type Annotation</li>
+<li>Unboxed Values</li>
+<li>Viper Code Emitter</li>
+<li>Warm Up Discard</li>
+<li>Warm Up Runs</li>
+<li>What A Benchmark Excludes</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../17-measuring-time/">17. Measuring Time: The DWT Cycle Counter</a></li>
+<li><a href="../18-benchmarking-methodology/">18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — the same code into five different speeds!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+You now have an accurate timer and the statistical discipline to trust what it tells
+you. Let's point both at the biggest question of this half of the course: what does
+the <em>language</em> you write in actually cost you, in cycles?</p>
+</div>
+<h2 id="predicting-before-measuring">Predicting Before Measuring</h2>
+<p>Before reading any further, write down a guess: if you run the exact same numeric loop as
+plain MicroPython, as MicroPython's <code>@native</code> decorator, as MicroPython's <code>@viper</code>
+decorator, as C, and as hand-written assembly, which order do you expect from slowest to
+fastest — and roughly how many times faster do you think the fastest is than the slowest?</p>
+<p>This is <strong>prediction before measurement</strong>: committing to a guess in writing <em>before</em>
+running the benchmark, so you cannot quietly revise your expectations after seeing the
+data and call it foresight. This course uses the pattern deliberately and repeatedly,
+because almost every prediction made while building it turned out to be optimistic — and
+that miscalibration is itself something worth discovering firsthand, not being told about.</p>
+<h2 id="six-rungs-one-ladder">Six Rungs, One Ladder</h2>
+<p>The five approaches above form what this chapter calls the <strong>abstraction cost</strong> ladder —
+the idea that every layer of convenience a language adds between you and the raw CPU
+instructions has a price, paid in cycles, and that price can be measured directly rather
+than guessed at. From top (most convenient, most abstracted) to bottom (least convenient,
+closest to the hardware):</p>
+<ol>
+<li>Plain MicroPython — <strong>bytecode interpretation</strong></li>
+<li>MicroPython with <code>@micropython.native</code></li>
+<li>MicroPython with <code>@micropython.viper</code></li>
+<li><strong>C language</strong>, compiled ahead of time</li>
+<li><strong>Assembly language</strong>, written by hand (Module 7, starting next chapter)</li>
+</ol>
+<p>Each rung down removes a layer of runtime convenience and, typically, gains speed. The
+rest of this chapter explains <em>why</em> — what each layer is actually doing differently under
+the hood — before Chapter 20 begins the descent into assembly itself.</p>
+<h2 id="the-default-bytecode-interpretation">The Default: Bytecode Interpretation</h2>
+<p>When Thonny runs an ordinary <code>.py</code> file, MicroPython first compiles your source text into
+<strong>bytecode</strong> — a compact, portable set of low-level instructions that is not the same
+thing as ARM machine code. At runtime, MicroPython's virtual machine walks through that
+bytecode one instruction at a time in a loop, decoding each instruction and carrying out
+the corresponding operation. This process, <strong>bytecode interpretation</strong>, is what makes
+MicroPython portable across wildly different chips with no recompilation — the same
+bytecode can run on an ARM Cortex-M33 or a completely different processor, because the
+interpreter loop, not the bytecode, is what talks to the actual hardware. That portability
+is also exactly where the overhead comes from: every operation pays the cost of being
+decoded and dispatched by the interpreter loop, every single time it runs, even inside a
+tight loop that executes the same instruction thousands of times.</p>
+<h2 id="boxed-values-the-deeper-cost">Boxed Values: The Deeper Cost</h2>
+<p>The interpreter loop is only half the story. The other half is <em>how Python represents a
+number in memory</em> — and this is where <strong>boxed values</strong> enter the picture.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">What does 'boxing' a number actually mean?</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+In C, a <code>float</code> is just four bytes sitting in memory or a register — nothing else. In
+plain Python, even the number <code>3.14</code> is wrapped in a small heap-allocated object that
+also carries a pointer to its type, a reference count for garbage collection, and only
+then the actual bytes of the value. That wrapper is the "box."</p>
+</div>
+<p>A <strong>boxed value</strong> is a value stored inside this heap-allocated wrapper object rather than
+directly as raw bits. Boxing is what gives Python its flexibility — a variable can hold an
+integer, then a float, then a string, because the box, not the raw memory location,
+carries the type information. It is also expensive: every arithmetic operation on boxed
+values means following a pointer to the box, checking its type, unwrapping the value,
+computing, and allocating a brand-new box for the result. An <strong>unboxed value</strong>, by
+contrast, is the raw machine representation — the same four bytes a C <code>float</code> or ARM FPU
+register would hold, with no wrapper, no pointer chase, and no allocation.</p>
+<h4 id="diagram-boxed-vs-unboxed-memory-layout-explorer">Diagram: Boxed vs. Unboxed Memory Layout Explorer</h4>
+<iframe src="../../sims/boxed-unboxed-memory-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Boxed vs. Unboxed Memory Layout Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> boxed-unboxed-memory-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — explain, compare
+Learning objective: Explain why arithmetic on a boxed value requires more memory accesses than the same arithmetic on an unboxed value, by comparing their memory layouts step by step.</p>
+<p>Canvas layout:
+- Top (250px): "Boxed" memory diagram — a variable slot pointing (arrow) to a heap object containing [type tag][refcount][value bytes]
+- Bottom (250px): "Unboxed" memory diagram — a variable slot containing the value bytes directly, no arrow, no separate object</p>
+<p>Visual elements:
+- Both diagrams represent computing <code>a + b</code> where a and b are floats
+- Boxed diagram shows: variable → pointer → heap box (3 labeled fields) for both a and b, then a NEW heap box allocated for the result
+- Unboxed diagram shows: variable slots holding raw bytes directly, an ADD operation writing straight into a result slot, no allocation</p>
+<p>Data Visibility Requirements:
+  Stage 1: Show both starting states (a and b represented each way) side by side
+  Stage 2 (Boxed path): highlight pointer-follow step, then type-check step, then value-extraction step, then new-allocation step, counting each as "1 memory operation" in a running tally
+  Stage 3 (Unboxed path): highlight the single direct ADD step, tally stays at 1
+  Final: Show final tallies side by side — Boxed: 7 operations, Unboxed: 1 operation (illustrative counts, not a precise cycle count)</p>
+<p>Interactive controls:
+- Button: "Step forward" / "Step back" through both paths in lockstep
+- Button: "Run both to completion"
+- Toggle: "Show operation tally"</p>
+<p>Instructional Rationale: Step-through with an explicit operation tally is appropriate for
+this Understand-level objective because it makes the abstract idea of "pointer chasing has
+a cost" concrete and countable, rather than relying on an animation that would obscure
+exactly which steps are extra.</p>
+<p>Implementation: p5.js, two parallel diagrams drawn as boxes and arrows, tally counter updates per step</p>
+</details>
+<h2 id="native-code-emitter-skip-the-interpreter-loop">Native Code Emitter: Skip the Interpreter Loop</h2>
+<p>MicroPython offers a way to opt out of the interpreter loop for a specific function
+without leaving Python syntax at all. Adding the <code>@micropython.native</code> decorator marks a
+function to use the <strong>native code emitter</strong>, which compiles that function directly into
+ARM machine code ahead of time, once, rather than re-interpreting its bytecode on every
+call.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@micropython</span><span class="o">.</span><span class="n">native</span>
+<span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">total</span>
+</code></pre></div></td></tr></table></div>
+<p>The <code>@micropython.native</code> line above the function is the entire change required — no new
+syntax inside the function body. This removes the interpreter's per-instruction decode
+overhead, but the native emitter still uses <strong>boxed values</strong> for every number, so it does
+not remove the pointer-chasing and allocation cost described above. Native code is
+typically noticeably faster than interpreted bytecode, but it is not yet close to what C
+or assembly can do.</p>
+<h2 id="viper-code-emitter-unboxed-on-purpose">Viper Code Emitter: Unboxed, On Purpose</h2>
+<p>The <strong>viper code emitter</strong>, enabled with <code>@micropython.viper</code>, goes a step further: it
+lets you declare the actual machine type of a variable explicitly, and once declared,
+viper stores and operates on that variable as a genuinely <strong>unboxed value</strong> — raw bytes,
+no wrapper, no allocation.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@micropython</span><span class="o">.</span><span class="n">viper</span>
+<span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">ptr32</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">ptr32</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">total</span>
+</code></pre></div></td></tr></table></div>
+<p>The <code>a: ptr32</code> and <code>n: int</code> annotations after each parameter name are <strong>type
+annotations</strong> — they tell the viper compiler "treat this as a raw 32-bit pointer" or "a
+raw machine integer," rather than a general Python object. <code>ptr32</code>, <code>int</code>, and similar
+viper types are what this chapter calls <strong>machine types</strong>: representations that map
+directly onto the CPU's own registers and memory words, in contrast to Python's dynamic
+object types which carry extra bookkeeping. Once every value in a hot loop is a machine
+type, viper-compiled code can approach hand-written C in speed — at a real cost, covered
+next.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Viper trades away Python's safety net</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+Outside a viper function, MicroPython's automatic <strong>memory management</strong> — reference
+counting and a garbage collector that tracks every boxed object and frees it once
+nothing points to it anymore — protects you from most memory bugs. Inside a viper
+function operating on raw pointers, that safety net is gone. A wrong pointer
+arithmetic mistake in viper code can corrupt memory the same way it could in C. Speed
+and safety are genuinely in tension here, not just in theory.</p>
+</div>
+<p>Now that all three MicroPython execution modes have been explained individually, the
+table below simply organizes what you already know — it introduces no new ideas, only a
+side-by-side view:</p>
+<table>
+<thead>
+<tr>
+<th>Emitter</th>
+<th>Value representation</th>
+<th>Type declared?</th>
+<th>Typical relative speed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plain (bytecode)</td>
+<td>Boxed</td>
+<td>No</td>
+<td>Baseline (1×)</td>
+</tr>
+<tr>
+<td><code>@micropython.native</code></td>
+<td>Boxed</td>
+<td>No</td>
+<td>Faster — skips interpreter dispatch</td>
+</tr>
+<tr>
+<td><code>@micropython.viper</code></td>
+<td>Unboxed (for annotated types)</td>
+<td>Yes, via type annotations</td>
+<td>Fastest of the three — skips dispatch <em>and</em> boxing</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Measure your own hardware — don't trust a table of multipliers</p>
+<p><img alt="Echo giving a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+The exact speedup from <code>@native</code> and <code>@viper</code> depends heavily on what the code
+actually does — a function dominated by floating-point math benefits differently than
+one dominated by array indexing. Treat any number you read (including in this
+chapter) as a starting guess, and let your own Chapter 18 test harness give you the
+real answer for your own code.</p>
+</div>
+<h2 id="one-rung-lower-c">One Rung Lower: C</h2>
+<p>Below all three MicroPython modes sits the <strong>C language</strong> — a statically typed, compiled
+language with no interpreter and no automatic memory management at runtime; a C program
+manages its own memory explicitly. This course studies C at the level of <strong>language
+tradeoff analysis and reading code</strong>, not by building and flashing C programs — every lab
+runs on stock MicroPython with inline assembly, precisely so no toolchain installation
+ever blocks a student from finishing a lab.</p>
+<p>A C source file is translated to ARM machine code ahead of time by a <strong>C compiler</strong> —
+software that performs this translation once, before the program ever runs, unlike
+MicroPython's interpreter which translates (or partially translates) on the fly. Two C
+compilers are common in the ARM embedded world: the <strong>GCC compiler</strong> (<code>arm-none-eabi-gcc</code>,
+free and open source, the de facto standard for hobbyist and open-source embedded work)
+and the <strong>ARM compiler</strong> (<code>armclang</code>, a commercial toolchain from ARM itself, often used
+in professional embedded development for its diagnostics and certification support). Both
+compile the same C language to the same Cortex-M33 instruction set; they differ mainly in
+tooling, licensing, and how aggressively their optimizers work by default.</p>
+<p>It is technically possible to combine the two worlds — <strong>calling C from MicroPython</strong>, by
+compiling a C function into a precompiled native module that MicroPython's firmware loads
+and calls into directly, bypassing the interpreter entirely for that function. Production
+systems that need C-level speed with Python-level convenience for the rest of the program
+often do exactly this. Building that bridge is outside this course's scope, but knowing
+it exists — and why a team would reach for it — is part of the tradeoff analysis this
+chapter is building toward.</p>
+<h2 id="compiler-optimization-same-source-different-machine-code">Compiler Optimization: Same Source, Different Machine Code</h2>
+<p>Unlike MicroPython's viper emitter, which you control by writing type annotations by
+hand, a C compiler decides <em>for itself</em> how to translate your source into fast machine
+code, through <strong>compiler optimization</strong> — automated transformations like reordering
+instructions, keeping values in registers instead of memory, and eliminating redundant
+computation, all while preserving the program's observable behavior. How aggressively the
+compiler optimizes is controlled by <strong>optimization flags</strong> passed as <strong>compiler
+settings</strong> on the command line — <code>-O0</code> (no optimization, fastest to compile, easiest to
+debug), up through <code>-O2</code> or <code>-O3</code> (aggressive optimization, often several times faster at
+runtime), or <code>-Os</code> (optimize for smaller code rather than raw speed).</p>
+<p>That last option points at a genuine tradeoff: aggressive optimization for speed can
+increase <strong>code size</strong> — the number of bytes the compiled program occupies in flash
+memory — sometimes substantially, because techniques like loop unrolling and function
+inlining duplicate instructions to avoid the overhead of jumps and function calls. On a
+memory-constrained microcontroller, larger code size is not free; it competes for the same
+flash and can even hurt speed if the resulting code no longer fits comfortably in the
+chip's <strong>cache memory</strong> — a small, very fast on-chip memory that holds recently used
+instructions and data so the CPU doesn't have to wait on slower main memory. Code that
+overflows the cache can run <em>slower</em> despite being "more optimized," which is why
+optimization level, code size, and cache behavior are usually discussed together rather
+than in isolation.</p>
+<h2 id="the-bottom-rung-assembly-language">The Bottom Rung: Assembly Language</h2>
+<p><strong>Assembly language</strong> is source code written in the CPU's own instruction mnemonics —
+one line, roughly, per actual machine instruction — with no compiler translating your
+intent into instructions on your behalf. There is nothing left to abstract away below
+assembly except the literal bit patterns the CPU decodes, which Chapter 25 explores
+directly. Writing assembly by hand means you control exactly which instructions execute,
+in exactly what order, using exactly which registers — the same control a C compiler's
+optimizer exercises automatically, except every decision is now yours. Module 7, starting
+with the next chapter, teaches this skill from zero.</p>
+<h4 id="diagram-the-abstraction-ladder">Diagram: The Abstraction Ladder</h4>
+<iframe src="../../sims/abstraction-ladder-diagram/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>The Abstraction Ladder</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> abstraction-ladder-diagram<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze (L4) — organize, differentiate
+Learning objective: Organize the five approaches into a ranked ladder and differentiate what each rung gives up in exchange for speed.</p>
+<p>Canvas layout:
+- Full canvas: five horizontal rungs stacked vertically, labeled top to bottom: "MicroPython (bytecode)", "MicroPython @native", "MicroPython @viper", "C", "Assembly"
+- Right margin: a details panel that fills in when a rung is clicked</p>
+<p>Visual elements:
+- Each rung drawn as a horizontal bar, width proportional to illustrative relative execution time (longest bar for bytecode, shortest for assembly) — labeled "illustrative, not measured" in small text
+- Each rung colored on a gradient from cool (interpreted) to warm (hand-written machine code)
+- A small icon per rung: interpreter loop icon, gear icon, wrench icon, compiler icon, chip icon</p>
+<p>Interactive controls:
+- Click any rung to open its details panel with: what runs the code (interpreter / compiler / you), value representation (boxed / unboxed), and one sentence on what you give up moving to this rung from the one above
+- Hover any rung for a one-line tooltip summary</p>
+<p>Behavior:
+- Clicking "MicroPython @viper" for example reveals: "Values are unboxed machine types you declare yourself. You give up automatic memory safety for values you've annotated."
+- Clicking "Assembly" reveals: "You write every instruction. You give up the compiler entirely — every optimization decision is now yours."</p>
+<p>Instructional Rationale: A clickable ranked ladder matches the Analyze-level objective of
+organizing five approaches and differentiating their tradeoffs; requiring a click to
+reveal each tradeoff (rather than showing all text at once) encourages the learner to
+engage with each rung individually before moving to the next.</p>
+<p>Implementation: p5.js, rungs as an array of rectangle objects with associated detail text, click detection via mouseX/mouseY bounds</p>
+</details>
+<h2 id="measurement-discipline-applied">Measurement Discipline Applied</h2>
+<p>Comparing five approaches fairly demands applying every habit from Chapter 18 at once —
+what this chapter calls <strong>measurement discipline</strong>: the same input, the same board, the
+same statistic (best-of-N, since the question here is raw algorithmic speed), and the
+same number of samples, for every one of the five rungs.</p>
+<p>One new wrinkle appears specifically when timing native and viper functions: the <strong>cold
+start effect</strong>. The very first call to a <code>@native</code> or <code>@viper</code> function can be slower
+than every subsequent call, because MicroPython performs some one-time setup work
+(finalizing the compiled machine code, populating certain internal tables) on that first
+invocation only. If that first call lands inside your timed sample, it inflates the
+result in a way that has nothing to do with the function's steady-state speed.</p>
+<p>The fix is a set of <strong>warm-up runs</strong>: calling the function a handful of times <em>before</em>
+starting the timed sample, specifically to get past any one-time setup cost. Practicing
+<strong>warm-up discard</strong> means explicitly not recording those warm-up calls in your statistics
+at all — they exist only to put the system into a representative, steady state before
+the real measurement begins.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_harness_with_warmup</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">warmup</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">warmup</span><span class="p">):</span>        <span class="c1"># warm-up discard: these calls are not recorded</span>
+        <span class="n">func</span><span class="p">()</span>
+
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CYCCNT</span><span class="p">]</span>
+        <span class="n">func</span><span class="p">()</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CYCCNT</span><span class="p">]</span>
+        <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elapsed_us</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;min_us&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">times</span><span class="p">),</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">&quot;warmup&quot;</span><span class="p">:</span> <span class="n">warmup</span><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>This is Chapter 18's <code>run_harness</code> from before, extended with a <code>warmup</code> loop that runs
+and discards <code>func()</code> five times before any timed sample begins — the only change needed
+to make cold-start effects stop contaminating the result.</p>
+<h2 id="comparison-tables-and-honest-reporting">Comparison Tables and Honest Reporting</h2>
+<p>The standard way this course presents a multi-way result like "bytecode vs. native vs.
+viper vs. C vs. assembly" is a <strong>comparison table</strong> — a table with implementations as
+rows and consistent metrics (execution time, code size, memory usage) as columns, built
+directly from the harness output above rather than from memory or intuition.</p>
+<p>Building one honestly requires <strong>honest reporting</strong>: stating the sample size, the
+statistic used, the board and clock speed, and — critically — <strong>what a benchmark
+excludes</strong>. For a language comparison specifically, that usually means disclosing whether
+compile time or one-time setup cost was included, whether warm-up runs were discarded,
+and whether code size was measured at all. Leaving any of these unstated, even
+accidentally, can make one implementation look better than a full accounting would
+support.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Thirty concepts in one chapter — that's the density talking, not you</p>
+<p><img alt="Echo encouraging" class="mascot-admonition-img" src="../../img/mascot/encouraging.png" />
+This chapter packs in more named terms than any other so far, because comparing five
+execution models honestly touches nearly every idea from the last two chapters at
+once. You don't need to memorize <code>armclang</code> versus <code>arm-none-eabi-gcc</code> by heart —
+what matters is the pattern: name each rung, measure it fairly, report what you left
+out.</p>
+</div>
+<p>Not every optimization pays off, and that is worth stating plainly rather than quietly
+adjusting the comparison until it looks better. A <strong>negative result</strong> — a case where
+<code>@micropython.viper</code> turns out no faster than <code>@micropython.native</code> for a particular
+function, say, because the function was never bottlenecked on boxing to begin with — is a
+completely legitimate, reportable finding. This course's grading philosophy treats a
+negative result, honestly explained, as equal in value to a positive one; the single
+unacceptable move is deciding after the fact which result to keep quiet about.</p>
+<h2 id="language-tradeoff-analysis-putting-it-all-together">Language Tradeoff Analysis: Putting It All Together</h2>
+<p>With every rung defined, a full <strong>language tradeoff analysis</strong> weighs speed against the
+other things that matter in a real project — development effort, portability, and safety:</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Relative speed</th>
+<th>Development effort</th>
+<th>Portability</th>
+<th>Memory safety</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MicroPython (bytecode)</td>
+<td>Slowest</td>
+<td>Lowest</td>
+<td>Highest</td>
+<td>Full (automatic)</td>
+</tr>
+<tr>
+<td><code>@micropython.native</code></td>
+<td>Faster</td>
+<td>Low (one decorator)</td>
+<td>High</td>
+<td>Full (automatic)</td>
+</tr>
+<tr>
+<td><code>@micropython.viper</code></td>
+<td>Fast</td>
+<td>Medium (type annotations required)</td>
+<td>Medium</td>
+<td>Partial (only for boxed values still in play)</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Very fast</td>
+<td>High (manual memory, toolchain setup)</td>
+<td>Medium (recompile per target)</td>
+<td>None (manual)</td>
+</tr>
+<tr>
+<td>Assembly</td>
+<td>Fastest</td>
+<td>Highest</td>
+<td>Lowest (chip-specific)</td>
+<td>None (manual)</td>
+</tr>
+</tbody>
+</table>
+<p>No row in this table is simply "the best" — a research prototype iterated on daily has
+different needs than a certified medical device's signal-processing core, and this
+table's real job is making that tradeoff visible rather than picking a winner for you.</p>
+<details class="question">
+<summary>Your harness reports <code>@micropython.viper</code> running only 5% faster than <code>@micropython.native</code> for a specific function. Is this a bad benchmark result? Click to check.</summary>
+<p>Not necessarily — it may be an honest <strong>negative result</strong>. If the function's time was
+already dominated by something viper can't help with (waiting on a peripheral,
+memory access patterns, or <code>n</code> being too small to amortize any setup cost), then a
+small gap is the correct answer, not a sign the benchmark is broken. The next step is
+to check measurement discipline (warm-up discarded? same sample size? same input?)
+before concluding the gap itself is meaningful — and then to report the small gap
+honestly rather than searching for a way to make it look bigger.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You just climbed most of the ladder</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Now <em>that's</em> a superpower — being able to explain, in cycles, exactly what Python's
+convenience costs you, and exactly what each layer of optimization buys back.
+Chapter 20 asks the one question that decides whether you can even take the next step
+down this ladder on your own board: does your chip's CPU actually have the hardware
+to run the assembly you're about to write?</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../18-benchmarking-methodology/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../20-does-your-cpu-have-an-fpu/" class="md-footer__link md-footer__link--next" aria-label="Next: 20. Does Your CPU Have an FPU?">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                20. Does Your CPU Have an FPU?
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

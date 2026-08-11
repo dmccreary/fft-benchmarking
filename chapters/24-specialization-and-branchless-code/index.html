@@ -1,0 +1,2259 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Exploiting trivial twiddle factors, avoiding branch misprediction, loop unrolling, and cache-aware memory access patterns to speed up an already-correct assembly FFT">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/24-specialization-and-branchless-code/">
+      
+      
+        <link rel="prev" href="../23-the-butterfly-in-assembly/">
+      
+      
+        <link rel="next" href="../25-beyond-the-assembler/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Specialization and Branchless Code - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#specialization-and-branchless-code" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Specialization and Branchless Code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivial-twiddles-when-multiplication-isnt-needed-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trivial Twiddles: When Multiplication Isn't Needed at All
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precomputed-swap-list-removing-the-branch-not-just-the-multiply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precomputed Swap List: Removing the Branch, Not Just the Multiply
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#branch-prediction-and-why-some-branches-are-expensive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branch Prediction and Why Some Branches Are Expensive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Prediction and Why Some Branches Are Expensive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-branch-misprediction-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Branch Misprediction Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#branchless-code-removing-the-guess-entirely" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branchless Code: Removing the Guess Entirely
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loop-overhead-and-loop-unrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Overhead and Loop Unrolling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-access-patterns-and-cache-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Access Patterns and Cache Effects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectorization-a-preview-worth-repeating" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vectorization: A Preview Worth Repeating
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimization-attribution-crediting-the-right-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimization Attribution: Crediting the Right Change
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optimization Attribution: Crediting the Right Change">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-optimization-attribution-waterfall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Optimization Attribution Waterfall
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trivial-twiddles-when-multiplication-isnt-needed-at-all" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trivial Twiddles: When Multiplication Isn't Needed at All
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#precomputed-swap-list-removing-the-branch-not-just-the-multiply" class="md-nav__link">
+    <span class="md-ellipsis">
+      Precomputed Swap List: Removing the Branch, Not Just the Multiply
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#branch-prediction-and-why-some-branches-are-expensive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branch Prediction and Why Some Branches Are Expensive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Branch Prediction and Why Some Branches Are Expensive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-branch-misprediction-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Branch Misprediction Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#branchless-code-removing-the-guess-entirely" class="md-nav__link">
+    <span class="md-ellipsis">
+      Branchless Code: Removing the Guess Entirely
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loop-overhead-and-loop-unrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Overhead and Loop Unrolling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-access-patterns-and-cache-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Access Patterns and Cache Effects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectorization-a-preview-worth-repeating" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vectorization: A Preview Worth Repeating
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimization-attribution-crediting-the-right-change" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optimization Attribution: Crediting the Right Change
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Optimization Attribution: Crediting the Right Change">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-optimization-attribution-waterfall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Optimization Attribution Waterfall
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/24-specialization-and-branchless-code/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="specialization-and-branchless-code">Specialization and Branchless Code</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter covers optimization techniques that exploit specific, known properties of a computation: recognizing trivial twiddle factors (multiply by one or by i), branchless code to avoid unpredictable-branch penalties, and loop unrolling. It also covers cache effects and memory access patterns as a second, independent source of performance difference from the algorithmic gains covered earlier. These techniques set up the instruction-encoding chapter that follows.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 17 concepts from the learning graph:</p>
+<ol>
+<li>Address Computation Cost</li>
+<li>Branch Prediction</li>
+<li>Branchless Code</li>
+<li>Cache Effects</li>
+<li>Code Size Tradeoff</li>
+<li>Floating Point FFT</li>
+<li>Loop Overhead</li>
+<li>Loop Unrolling</li>
+<li>Memory Access Patterns</li>
+<li>Multiply By One</li>
+<li>Multiply By i</li>
+<li>Optimization Attribution</li>
+<li>Precomputed Swap List</li>
+<li>Special Case Optimization</li>
+<li>Trivial Twiddle</li>
+<li>Unpredictable Branch</li>
+<li>Vectorization</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../12-building-the-fft/">12. Building the FFT: A Complete Recursive Implementation</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../20-does-your-cpu-have-an-fpu/">20. Does Your CPU Have an FPU?</a></li>
+<li><a href="../21-your-first-assembly-function/">21. Your First Assembly Function: Registers and Loops</a></li>
+<li><a href="../22-talking-to-the-fpu/">22. Talking to the FPU: Floating-Point Assembly</a></li>
+<li><a href="../23-the-butterfly-in-assembly/">23. The Butterfly in Assembly: A Complete FFT and Production Libraries</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — a correct FFT into a faster one!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Your assembly FFT from Chapter 23 is correct, bit for bit. It is not yet as fast as
+it can be. This chapter is about looking at <em>this exact computation</em> — not FFTs in
+general — and finding the specific shortcuts only this one supports.</p>
+</div>
+<p>Every optimization in this chapter applies to the <strong>floating point FFT</strong> you built in
+Chapter 23 — the single-precision, <code>s</code>-register implementation, as distinct from the
+fixed-point alternative Chapter 25 discusses as a scoped tradeoff rather than something
+this course builds. Floating-point is the version these techniques target directly.</p>
+<h2 id="trivial-twiddles-when-multiplication-isnt-needed-at-all">Trivial Twiddles: When Multiplication Isn't Needed at All</h2>
+<p>Look closely at the twiddle factors a small FFT actually uses, and a pattern jumps out:
+several of them are not "ordinary" complex numbers at all, but the special values 1, -1,
+i, and -i. A twiddle factor equal to one of these four values is called a <strong>trivial
+twiddle</strong>, and multiplying by one requires no real arithmetic whatsoever.</p>
+<p><strong>Multiply by one</strong> is the simplest case: for any complex number <span class="arithmatex">\(z\)</span>, <span class="arithmatex">\(z \times 1 =
+z\)</span> — the twiddle-multiplied odd value is <em>already</em> the odd value, unchanged. The
+butterfly's four multiply-accumulate instructions from Chapter 23 can be skipped entirely
+for this butterfly; the output is simply the even value plus or minus the odd value,
+directly.</p>
+<p><strong>Multiply by i</strong> is only slightly less trivial. Multiplying a complex number <span class="arithmatex">\(z =
+a + bi\)</span> by <span class="arithmatex">\(i\)</span> gives <span class="arithmatex">\(ai + bi^2 = -b + ai\)</span> — the real and imaginary parts swap
+places, and the new real part is negated. No multiplication instruction is required at
+all, only a register swap and a sign flip.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Free speed, hiding in plain sight</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+A general-purpose FFT routine has no way to know, ahead of time, which twiddle factors
+will turn out to be trivial for a specific size — but <em>you</em> do, because you compute
+the twiddle table yourself in Python before the hot loop ever runs. That's the whole
+opportunity: information the general algorithm doesn't have, but you do.</p>
+</div>
+<p>Recognizing and exploiting this is an instance of a broader technique, <strong>special case
+optimization</strong>: identifying a known, recurring pattern in a specific computation's inputs
+and writing a faster, narrower code path for exactly that pattern, alongside (or instead
+of) the general-purpose path that handles everything else correctly but slower.</p>
+<h2 id="precomputed-swap-list-removing-the-branch-not-just-the-multiply">Precomputed Swap List: Removing the Branch, Not Just the Multiply</h2>
+<p>The most naive way to exploit trivial twiddles would check, inside the hot loop, whether
+each butterfly's twiddle factor happens to equal 1 or i, and branch to a shortcut if so.
+But that check is itself a cost — and worse, it is exactly the kind of runtime branch the
+next section explains you want to avoid inside a hot loop.</p>
+<p>The fix is to move the <em>decision</em> out of the hot loop entirely. Because the twiddle table
+is fixed and known before the FFT ever runs, Python can compute, once, a <strong>precomputed
+swap list</strong> — the exact list of butterfly positions whose twiddle factor is trivial,
+determined ahead of time during table setup, not discovered at runtime. With that list in
+hand, the assembly code splits into two separate loops: one hot loop that runs only over
+the positions on the precomputed list, using the free trivial-twiddle shortcut with no
+comparison at all, and a second hot loop for every remaining position, using the full
+butterfly from Chapter 23. Neither loop contains a single conditional branch checking
+"is this one trivial?" — the classification already happened, once, in Python, well
+before either loop starts.</p>
+<h2 id="branch-prediction-and-why-some-branches-are-expensive">Branch Prediction and Why Some Branches Are Expensive</h2>
+<p>To see why avoiding that runtime check matters, you need to understand what a branch
+costs a modern CPU pipeline in the first place. The Cortex-M33 uses <strong>branch
+prediction</strong>: rather than stall and wait to find out which way a conditional branch will
+go, the CPU guesses — based on the branch's recent history — and starts fetching and
+decoding instructions down the predicted path <em>before</em> the branch actually resolves. When
+the guess is right, this costs nothing extra. When the guess is wrong, the CPU must
+discard everything it speculatively started and restart from the correct path, a real
+cycle penalty called a misprediction stall.</p>
+<p>A branch whose outcome is highly regular — like the loop-closing <code>BGT</code> from Chapter 21,
+which is "taken" every single iteration except the very last — predicts almost perfectly,
+because recent history is a near-perfect guide to what happens next. An <strong>unpredictable
+branch</strong> is one whose outcome varies in a way the predictor cannot learn — exactly what a
+runtime "is this twiddle trivial?" check would be, if the trivial and non-trivial
+positions were scattered through the butterfly sequence with no exploitable pattern. Every
+misprediction on that check would cost real cycles, potentially eating into or even
+erasing the savings the trivial-twiddle shortcut was supposed to provide.</p>
+<h4 id="diagram-branch-misprediction-visualizer">Diagram: Branch Misprediction Visualizer</h4>
+<iframe src="../../sims/branch-misprediction-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Branch Misprediction Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> branch-misprediction-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — explain, interpret
+Learning objective: Explain why a predictable branch costs nearly nothing while an unpredictable branch repeatedly stalls the pipeline, by stepping through both cases with visible pipeline state.</p>
+<p>Canvas layout:
+- Top (250px): "Predictable branch" pipeline lane — a horizontal row of pipeline stage boxes (Fetch, Decode, Execute) showing instructions flowing through smoothly across several loop iterations
+- Bottom (250px): "Unpredictable branch" pipeline lane — same stage layout, but periodically shows a "flush" event (red flash, stages emptied) when a guess is wrong</p>
+<p>Visual elements:
+- Each lane processes a simulated sequence of 10 branch outcomes
+- Predictable lane: outcomes follow an obvious pattern (taken, taken, taken, ..., not-taken once at the end) — predictor guesses correctly every time after the first
+- Unpredictable lane: outcomes alternate unpredictably (simulating scattered trivial-twiddle positions) — predictor guesses wrong roughly half the time, each wrong guess shown as a pipeline flush with a small "wasted cycles" counter incrementing</p>
+<p>Interactive controls:
+- Button: "Step" — advances one branch outcome in both lanes simultaneously
+- Button: "Run all 10"
+- Running tally, per lane: "Total wasted cycles from mispredictions"
+- Button: "Reset"</p>
+<p>Instructional Rationale: Side-by-side pipeline lanes stepping through the same number of
+branches let the learner directly compare (Understand-level) predictable versus
+unpredictable outcomes and see the wasted-cycle cost accumulate concretely, rather than
+being told the difference in the abstract.</p>
+<p>Implementation: p5.js, two pipeline lanes as arrays of stage-boxes, flush animation triggered on simulated mispredict events</p>
+</details>
+<h2 id="branchless-code-removing-the-guess-entirely">Branchless Code: Removing the Guess Entirely</h2>
+<p><strong>Branchless code</strong> takes the idea one step further: instead of writing a conditional
+branch at all, rewrite the logic as arithmetic or bitwise operations whose result is
+computed unconditionally, with no guess for the predictor to get wrong in the first
+place. A classic tiny example — selecting the larger of two values without a branch —
+shows the pattern:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code>; branch version: compare, then branch to pick the max
+CMP r0, r1
+BGE use_r0
+MOV r2, r1
+B done
+use_r0:
+MOV r2, r0
+done:
+
+; branchless version: compute both possibilities, select without branching
+; (conceptual — ARM&#39;s conditional-select style instructions do this in hardware)
+CMP r0, r1
+MOVGE r2, r0     ; conditionally executed instruction, not a branch
+MOVLT r2, r1
+</code></pre></div></td></tr></table></div>
+<p><code>MOVGE</code> and <code>MOVLT</code> are conditionally <em>executed</em> instructions — the CPU still fetches and
+decodes both, but only commits the one whose condition matches, with no separate branch
+instruction and therefore nothing for the predictor to guess about. The precomputed swap
+list from earlier achieves the same goal by a different route: rather than making any
+single instruction conditional, it removes the decision from the hot loop's control flow
+altogether, which is the stronger and more broadly applicable version of the same idea.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Branchless code trades readability for speed — spend that trade carefully</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+A branchless routine is almost always harder to read than its branching equivalent —
+the control flow that used to be visible in the code's structure is now hidden inside
+arithmetic tricks. Reach for it only after profiling shows the branch actually costs
+something measurable; branchless code applied to a branch that already predicts well
+is added complexity with no benefit at all.</p>
+</div>
+<h2 id="loop-overhead-and-loop-unrolling">Loop Overhead and Loop Unrolling</h2>
+<p>Every pass through the hot loop from Chapter 23 pays for more than just one butterfly's
+arithmetic — it also pays <strong>loop overhead</strong>: the <code>ADD</code>, <code>SUB</code>, <code>CMP</code>, and <code>BGT</code>
+instructions that advance pointers, decrement a counter, and check whether to loop again.
+For a loop body as short as a single butterfly, that bookkeeping can be a genuinely large
+fraction of the total instructions executed per iteration.</p>
+<p><strong>Loop unrolling</strong> amortizes that fixed cost across more real work: instead of looping
+once per butterfly, the loop body is manually duplicated — two, four, or more butterflies
+processed per iteration — so the pointer-advance-and-branch overhead is paid once for
+every several butterflies computed, rather than once per single butterfly.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>; unrolled ×2: two butterflies&#39; worth of work per loop iteration,
+; one shared pointer-advance-and-branch at the end
+loop_body:
+    ; ... butterfly instructions for pair 1 ...
+    ; ... butterfly instructions for pair 2 ...
+    add(r0, r0, 8)      ; advance by two floats&#39; worth
+    sub(r2, r2, 2)        ; decrement count by two butterflies
+    cmp(r2, 0)
+    bgt(loop_body)
+</code></pre></div></td></tr></table></div>
+<p>This is a direct <strong>code size tradeoff</strong>, the same one Chapter 19 introduced for compiler
+optimization flags: unrolling duplicates instructions in the compiled routine, trading
+larger code size for fewer loop-overhead instructions executed overall. On a chip with
+limited flash and a small instruction cache, unrolling too aggressively can backfire —
+exactly the same cache-capacity concern Chapter 19 raised about <code>-O3</code> compiler flags,
+now showing up in hand-written assembly instead of compiler output.</p>
+<p>Unrolling also touches the <strong>address computation cost</strong> paid every time a pointer is
+advanced by a byte offset — the <code>ADD</code> instructions from Chapter 22's pointer arithmetic.
+An unrolled loop can sometimes compute several element addresses from one base pointer
+using fixed offsets (<code>[r0]</code>, <code>[r0, #4]</code>, <code>[r0, #8]</code>) rather than re-adding to the pointer
+before every single access, trimming a real, if small, per-butterfly cost.</p>
+<h2 id="memory-access-patterns-and-cache-effects">Memory Access Patterns and Cache Effects</h2>
+<p>The optimizations so far all target <em>instructions</em> — fewer branches, fewer multiplies,
+less loop overhead. A second, entirely independent source of speed difference comes from
+<strong>memory access patterns</strong>: the order in which a routine actually reads and writes
+memory addresses, which determines how well that traffic is served by the chip's fast
+on-chip <strong>cache memory</strong> from Chapter 19, versus falling through to slower main memory.</p>
+<p><strong>Cache effects</strong> are performance differences that come purely from this pattern, with no
+change to the algorithm's instruction count at all. Chapter 11's bit-reversal permutation
+is a concrete example: it reorders array elements according to the bit-reversed value of
+their index, which means consecutive steps of the reordering touch memory addresses that
+jump around unpredictably, rather than marching through memory in a straight line.
+Sequential access tends to be cache-friendly — the cache can fetch a whole nearby block
+in one trip and serve several subsequent accesses from it — while scrambled,
+bit-reversed access defeats that advantage, potentially costing real cycles that have
+nothing to do with the arithmetic being performed.</p>
+<h2 id="vectorization-a-preview-worth-repeating">Vectorization: A Preview Worth Repeating</h2>
+<p>Chapter 22 introduced <strong>vectorization</strong> — using SIMD instructions to process several
+values in a single instruction — as a technique this course names but does not implement.
+It belongs in this chapter's catalog for a specific reason: like cache effects, it is a
+source of speedup <em>independent</em> of the algorithmic and branch-related techniques above.
+Production libraries like CMSIS-DSP lean heavily on vectorization precisely because it
+compounds with, rather than replaces, everything in this chapter — a vectorized,
+cache-aware, trivial-twiddle-exploiting routine stacks all four gains at once, which is
+part of why a hand-tuned vendor library can outrun even a careful hand-written routine
+that only reaches for some of them.</p>
+<h2 id="optimization-attribution-crediting-the-right-change">Optimization Attribution: Crediting the Right Change</h2>
+<p>Stack trivial-twiddle skipping, branchless selection, loop unrolling, and a cache-aware
+access order all into one routine, and a single before-and-after benchmark can no longer
+tell you <em>which</em> change earned how much of the total improvement. <strong>Optimization
+attribution</strong> is the practice of changing exactly one thing at a time and re-measuring
+with the full Chapter 18 harness after each change, so that the final report can honestly
+say "trivial-twiddle skipping accounted for roughly this much, loop unrolling for that
+much" rather than crediting the whole gain to whichever change felt most clever.</p>
+<h4 id="diagram-optimization-attribution-waterfall">Diagram: Optimization Attribution Waterfall</h4>
+<iframe src="../../sims/optimization-attribution-waterfall/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Optimization Attribution Waterfall</summary>
+<p>Type: chart
+<strong>sim-id:</strong> optimization-attribution-waterfall<br/>
+<strong>Library:</strong> Chart.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Evaluate (L5) — justify, assess
+Learning objective: Assess how much of a total speedup each individual optimization contributed, by inspecting a waterfall chart built from one-change-at-a-time measurements.</p>
+<p>Chart type: Waterfall (cumulative step) bar chart</p>
+<p>Purpose: Show a baseline execution time and four sequential, individually-measured optimizations, each narrowing the gap toward a final time — illustrative values, explicitly labeled as such</p>
+<p>X-axis categories, left to right:
+- "Baseline (Chapter 23 assembly FFT)": 850 μs
+- "+ Trivial twiddle skip": -60 μs step
+- "+ Branchless butterfly select": -15 μs step
+- "+ Loop unrolling ×2": -40 μs step
+- "+ Cache-aware ordering": -25 μs step
+- "Final": 710 μs</p>
+<p>Y-axis: Execution time (μs)</p>
+<p>Interactive elements:
+- Hover any step bar to see the exact μs change and a one-line description of that specific change
+- Toggle: "Show as percentage of baseline" vs "Show as raw μs" recomputes bar heights and labels
+- Callout text: "Each step was measured by re-running the full harness with only that one change added — this is optimization attribution in practice."</p>
+<p>Title: "Where the Speedup Actually Came From (illustrative)"
+Legend: color-coded by whether a step decreased time (green) — all steps here do, but the chart type supports a red increase for a negative result</p>
+<p>Implementation: Chart.js waterfall-style bar chart (floating bars with connector lines), data array with per-step deltas</p>
+</details>
+<details class="question">
+<summary>After adding all four optimizations, total speedup is smaller than the sum of each optimization's individually-measured gain. Is your attribution benchmark broken? Click to check.</summary>
+<p>Not necessarily — this is a preview of <strong>sub-linear composition</strong>, which Chapter 26
+covers in depth: combined optimizations frequently don't add up to their sum, because
+they can compete for the same resource (register pressure, instruction cache space)
+or overlap in what they're each trying to save. Attribution still did its job here —
+it told you honestly how much each <em>individual</em> change was worth; it never promised
+those numbers would add up perfectly once combined.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You've squeezed real speed out of what you already knew</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Now <em>that's</em> a superpower — turning knowledge of this exact computation into free
+performance nobody else's general-purpose code can claim. Chapter 25 goes one level
+deeper still: hand-encoding a machine instruction the assembler itself refuses to
+write.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../23-the-butterfly-in-assembly/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 23. The Butterfly in Assembly: A Complete FFT and Production Libraries">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../25-beyond-the-assembler/" class="md-footer__link md-footer__link--next" aria-label="Next: 25. Beyond the Assembler: Hand-Encoding and Instruction Formats">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2169 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Real-world FFT applications as capstone inspiration, plus the experimental design and reporting discipline that turns a project into rigorous, honest evidence">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/27-capstone/">
+      
+      
+        <link rel="prev" href="../26-competing-variants/">
+      
+      
+        <link rel="next" href="../../labs/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Capstone: Applications, Design, and Reporting - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capstone-applications-design-and-reporting" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Capstone: Applications, Design, and Reporting
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-real-time-ffts-actually-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Real-Time FFTs Actually Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where Real-Time FFTs Actually Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-applications-of-real-time-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Applications of Real-Time FFT
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-inspiration-to-a-scoped-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Inspiration to a Scoped Project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designing-a-rigorous-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Designing a Rigorous Experiment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Designing a Rigorous Experiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-experimental-design-anatomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Experimental Design Anatomy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing the Report
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-more-set-of-eyes-peer-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      One More Set of Eyes: Peer Review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-standard-this-whole-course-has-held" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Standard This Whole Course Has Held
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-real-time-ffts-actually-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where Real-Time FFTs Actually Work
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where Real-Time FFTs Actually Work">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-applications-of-real-time-fft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Applications of Real-Time FFT
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-inspiration-to-a-scoped-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Inspiration to a Scoped Project
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#designing-a-rigorous-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Designing a Rigorous Experiment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Designing a Rigorous Experiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-experimental-design-anatomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Experimental Design Anatomy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-the-report" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing the Report
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-more-set-of-eyes-peer-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      One More Set of Eyes: Peer Review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-standard-this-whole-course-has-held" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Standard This Whole Course Has Held
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/27-capstone/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="capstone-applications-design-and-reporting">Capstone: Applications, Design, and Reporting</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter surveys real-world applications of FFT-based signal processing — music analysis, radar, vibration monitoring, software-defined radio, and biomedical signals — as inspiration for an independent capstone project. It covers experimental design: research questions, independent and dependent variables, and the methodology and limitations sections a rigorous report needs. It closes the course with the same standard applied throughout: a negative result, honestly reported, is a successful outcome.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 20 concepts from the learning graph:</p>
+<ol>
+<li>Benchmark Suite</li>
+<li>Capstone Project</li>
+<li>Communication Systems</li>
+<li>Conclusion Drawing</li>
+<li>Dependent Variable</li>
+<li>Experimental Design</li>
+<li>Independent Variable</li>
+<li>Limitations Statement</li>
+<li>Machine Monitoring</li>
+<li>Methodology Section</li>
+<li>Noise Cancellation</li>
+<li>Peer Review</li>
+<li>Project Scoping</li>
+<li>Radar Processing</li>
+<li>Report Generation</li>
+<li>Research Question</li>
+<li>Results Presentation</li>
+<li>Software Defined Radio</li>
+<li>Vibration Analysis</li>
+<li>Voice Recognition</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../08-correlation/">8. Correlation: Does My Signal Contain This Note?</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../14-computing-and-displaying-a-real-spectrum/">14. Computing and Displaying a Real Spectrum</a></li>
+<li><a href="../15-windowing-spectral-leakage-and-peak-detection/">15. Windowing, Spectral Leakage, and Peak Detection</a></li>
+<li><a href="../18-benchmarking-methodology/">18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../26-competing-variants/">26. Competing Variants: Predict, Measure, Explain</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — everything you've built into something entirely your own!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Every chapter until now handed you a specific problem to solve. This one hands you the
+steering wheel. You've earned it — from a 21-second brute-force DFT down to a
+sub-millisecond hand-tuned assembly FFT, you now have every tool this course has to
+give. Let's point it somewhere real.</p>
+</div>
+<h2 id="where-real-time-ffts-actually-work">Where Real-Time FFTs Actually Work</h2>
+<p>The techniques this course built — capture, transform, window, benchmark, optimize — are
+not academic exercises confined to a $5 board. They are the same techniques running,
+right now, inside a wide range of real systems. Six application domains, each already
+connected to something you've built, are worth knowing as capstone inspiration.</p>
+<p><strong>Voice recognition</strong> systems extract frequency-domain features from short windows of
+speech as their very first processing step — the same windowing and spectral analysis
+from Chapter 15, applied to human speech instead of a single whistled tone. <strong>Noise
+cancellation</strong> works by analyzing incoming sound in the frequency domain, identifying an
+unwanted periodic component, and generating an inverted version to cancel it — a direct
+extension of the spectral leakage and peak-detection skills from Chapter 15. <strong>Machine
+monitoring</strong>, often called <strong>vibration analysis</strong> in industrial contexts, applies the FFT
+to accelerometer data from rotating machinery: specific frequencies in the spectrum
+correspond to specific mechanical faults — bearing wear, shaft imbalance — turning "an
+engine's rattle" into an actual diagnosis, exactly as this course's opening motivation
+promised.</p>
+<p><strong>Radar processing</strong> applies FFTs (often two-dimensional ones) to reflected radio signals
+to extract a target's range and velocity — a more advanced application of the same
+divide-and-conquer butterfly structure from Chapter 11. <strong>Software defined radio</strong> (SDR)
+replaces dedicated radio hardware with general-purpose processing that performs
+demodulation and filtering in software, with FFT-based spectrum analysis as one of its
+core operations — conceptually, the live spectrum analyzer from Chapter 16, tuned to
+radio frequencies instead of audio. And the broader category of <strong>communication
+systems</strong> — including the OFDM modulation scheme underlying most modern Wi-Fi and cellular
+standards — relies on FFTs to convert between the time domain a radio actually transmits
+in and the frequency domain a receiver needs to decode the signal.</p>
+<h4 id="diagram-applications-of-real-time-fft">Diagram: Applications of Real-Time FFT</h4>
+<iframe src="../../sims/fft-applications-map/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Applications of Real-Time FFT</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> fft-applications-map<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — exemplify, connect
+Learning objective: Connect each of six real-world FFT application domains back to the specific course chapter that taught its underlying technique.</p>
+<p>Canvas layout:
+- A 2×3 grid of six cards, one per application domain, each with an icon and short label
+- A details panel below the grid that fills in when a card is clicked</p>
+<p>Visual elements:
+- Six cards: Voice Recognition, Noise Cancellation, Machine Monitoring / Vibration Analysis, Radar Processing, Software Defined Radio, Communication Systems
+- Each card has a simple representative icon (microphone, headphone, gear, radar dish, antenna, signal bars)</p>
+<p>Interactive controls:
+- Click any card to reveal: a one-sentence description of the application, which earlier chapter's technique it relies on most directly, and one open-ended capstone project idea in that domain
+- Hover any card for a one-line tooltip preview</p>
+<p>Behavior:
+- Clicking "Machine Monitoring / Vibration Analysis" reveals: "Rotating machinery vibration, sampled by an accelerometer, analyzed for fault-specific frequency peaks — builds directly on Chapter 15's peak detection. Capstone idea: build a bearing-fault classifier using peak frequency and window choice."
+- Each of the six reveals follows the same three-part structure (description / chapter link / project idea)</p>
+<p>Instructional Rationale: An Understand-level "exemplify and connect" objective is well
+served by a clickable card grid — it lets the learner explore all six domains at their
+own pace and explicitly ties each one back to a specific, already-learned technique,
+reinforcing that these applications are extensions of skills already built, not new
+material.</p>
+<p>Implementation: p5.js, six card objects with associated detail text, click detection via bounding boxes</p>
+</details>
+<h2 id="from-inspiration-to-a-scoped-project">From Inspiration to a Scoped Project</h2>
+<p>A <strong>capstone project</strong> is this course's final deliverable: an independent piece of work,
+one to three weeks in scope, that applies what you've learned to a question you chose.
+None of the six domains above needs to be tackled in its full industrial complexity —
+<strong>project scoping</strong> is the deliberate practice of narrowing a broad application area down
+to a specific, achievable question that fits your remaining time and your actual
+hardware. "Build a production noise-cancellation headset" is not a scoped capstone;
+"measure how accurately a windowed FFT can identify a single dominant noise frequency in
+a recorded fan hum, and how that accuracy changes with window choice" is.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">A small, well-executed question beats a large, vague one</p>
+<p><img alt="Echo giving a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+The grading philosophy for this capstone rewards methodology and honesty over raw
+ambition. A tightly scoped project, rigorously measured and honestly reported, earns
+more credit than a sprawling one with unclear success criteria — scope down until you
+could actually finish it in the time you have.</p>
+</div>
+<h2 id="designing-a-rigorous-experiment">Designing a Rigorous Experiment</h2>
+<p>Once scoped, a capstone project needs <strong>experimental design</strong>: the structured plan for
+what you will vary, what you will measure, and how you will know whether your question
+has been answered. Every rigorous experimental design starts from a single, precisely
+stated <strong>research question</strong> — not "is windowing good?" but something answerable with a
+measurement, like "does applying a Hann window improve peak-frequency accuracy, compared
+to no window, when detecting a 3.2 kHz tone in a signal with added noise?"</p>
+<p>A well-formed research question implies its own <strong>independent variable</strong> — the one
+condition you deliberately change across trials, window type in the example above — and
+its <strong>dependent variable</strong> — the outcome you measure in response, frequency estimation
+error in that same example. Everything else about the experiment (signal length, sample
+rate, noise level, board, clock speed) becomes a controlled variable, held fixed exactly
+as Chapter 26 described, so that any change in the dependent variable can be attributed
+to the independent variable alone.</p>
+<h4 id="diagram-experimental-design-anatomy">Diagram: Experimental Design Anatomy</h4>
+<iframe src="../../sims/experimental-design-anatomy/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Experimental Design Anatomy</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> experimental-design-anatomy<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — classify, construct
+Learning objective: Classify the components of a stated research question into research question, independent variable, dependent variable, and controlled variables, and construct a benchmark suite around them.</p>
+<p>Canvas layout:
+- A worked example sentence at the top: "Does Hann windowing improve peak-frequency accuracy versus no window, when detecting a 3.2 kHz tone in noisy audio, at 150 MHz on a Pico 2, with a fixed 512-point FFT size?"
+- Below it, four labeled boxes the learner fills by dragging highlighted phrases from the sentence: Research Question, Independent Variable, Dependent Variable, Controlled Variables (multiple)</p>
+<p>Visual elements:
+- The example sentence with key phrases pre-highlighted in distinct colors matching the four target boxes
+- Drag targets clearly labeled and empty until filled</p>
+<p>Interactive controls:
+- Drag each highlighted phrase into its matching labeled box
+- Button: "Check my answers" — confirms correct placement or highlights a mismatch with a one-line hint
+- Button: "Try a new example" — cycles to a second worked sentence from a different application domain (e.g., vibration analysis) for additional practice</p>
+<p>Behavior:
+- Correct placement: "Window type (Hann vs. none)" → Independent Variable; "Peak-frequency error" → Dependent Variable; "150 MHz, Pico 2, 512-point FFT" → Controlled Variables
+- Incorrect placement gives a hint rather than the answer, e.g. "This phrase describes what you're measuring as an outcome, not what you're deliberately changing — try Dependent Variable instead."</p>
+<p>Instructional Rationale: An Apply-level "classify and construct" objective calls for
+direct manipulation — dragging phrases into categories requires the learner to actively
+apply the definitions just given, rather than passively reading a labeled diagram.</p>
+<p>Implementation: p5.js, draggable text objects with drop-zone collision detection, a small library of 2-3 worked example sentences</p>
+</details>
+<p>Testing a research question properly rarely means running just one signal once. A
+<strong>benchmark suite</strong> is a curated, reusable collection of representative test signals and
+conditions — several noise levels, several tone frequencies, several window functions —
+built once and run consistently across every trial, extending Chapter 18's single-test
+harness into a full, repeatable evaluation set for an entire project rather than one
+measurement.</p>
+<h2 id="writing-the-report">Writing the Report</h2>
+<p>A capstone project is only as convincing as its report, and this course expects a
+specific structure, each section serving a distinct purpose:</p>
+<table>
+<thead>
+<tr>
+<th>Report section</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Methodology section</strong></td>
+<td>States the research question, independent/dependent variables, benchmark suite, hardware, and exact procedure — detailed enough that someone else could reproduce your results, per Chapter 18's reproducibility standard</td>
+</tr>
+<tr>
+<td><strong>Results presentation</strong></td>
+<td>Reports what was actually measured — tables, performance charts, comparison matrices — without interpretation mixed in</td>
+</tr>
+<tr>
+<td><strong>Limitations statement</strong></td>
+<td>States plainly what the experiment did <em>not</em> control for, test, or rule out — the capstone-scale version of Chapter 18's "what a benchmark excludes"</td>
+</tr>
+<tr>
+<td><strong>Conclusion drawing</strong></td>
+<td>Interprets the results in light of the original research question, stating clearly whether the hypothesis was supported, refuted, or the evidence was inconclusive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Report generation</strong> is the overall skill of assembling these four sections, plus your
+raw data and code, into one coherent, readable document — the actual deliverable a
+capstone project produces, whether that document is a formal write-up, a lab notebook, or
+a project README, as your instructor specifies.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">A limitations section is a strength, not a confession</p>
+<p><img alt="Echo encouraging" class="mascot-admonition-img" src="../../img/mascot/encouraging.png" />
+It can feel like admitting weakness to write down what your experiment didn't cover.
+It's the opposite — a limitations statement tells a reader exactly how far to trust
+your conclusion, which is precisely what separates a scientific report from a sales
+pitch. Every strong result this course has shown you included one.</p>
+</div>
+<h2 id="one-more-set-of-eyes-peer-review">One More Set of Eyes: Peer Review</h2>
+<p>Before a report is finished, <strong>peer review</strong> — having someone else read your methodology
+and results critically, looking specifically for unstated assumptions, missed controlled
+variables, or a conclusion that overreaches what the data actually shows — catches
+mistakes that are genuinely difficult to see in your own work, precisely because you
+already know what you meant to measure. A classmate reading only what you wrote, not
+what you intended, is exactly the perspective a limitations statement and a
+reproducibility-focused methodology section are written for.</p>
+<details class="question">
+<summary>Your capstone measures a 12% speedup from a new optimization, but a peer reviewer points out your controlled variables didn't include ambient temperature, and your lab ran noticeably warmer on the 'after' measurements. What's the right response? Click to check.</summary>
+<p>Report it as a genuine limitation, not something to quietly fix and rerun without
+disclosure — add ambient temperature as an unstated controlled variable to your
+limitations statement, and if time allows, rerun the comparison with temperature
+controlled to see whether the 12% holds. If it doesn't hold, that revised,
+lower (or even negative) result, honestly explained, is worth full credit under this
+course's grading standard — exactly as much as the original 12% would have been.</p>
+</details>
+<h2 id="the-standard-this-whole-course-has-held">The Standard This Whole Course Has Held</h2>
+<p>This chapter closes on the same principle that opened Chapter 18: a <strong>negative result</strong> —
+a hypothesis that measurement did not support — honestly reported and explained, is a
+completely successful outcome. The only genuinely unacceptable move, in this capstone or
+anywhere else, is revising a hypothesis <em>after</em> seeing the data and presenting the
+revision as if it had been the original prediction. Prediction before measurement,
+honest reporting of what was excluded, and a conclusion that follows the evidence rather
+than the other way around — that is the actual throughline connecting Chapter 1's first
+GPIO blink to whatever you build for this capstone.</p>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Not bad for a $5 chip — and not bad for you, either</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+You're right on frequency — for the whole course, not just this chapter. You built a
+DFT from correlation, discovered the FFT for yourself, timed it to the nanosecond,
+and hand-wrote assembly that runs faster than 99% of the code most engineers will
+ever touch by hand. Whatever question you choose for your capstone, you already have
+every tool you need to answer it honestly. Time to transform — one more time, on your
+own terms.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../26-competing-variants/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 26. Competing Variants: Predict, Measure, Explain">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                26. Competing Variants: Predict, Measure, Explain
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../labs/" class="md-footer__link md-footer__link--next" aria-label="Next: List of Labs">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                List of Labs
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

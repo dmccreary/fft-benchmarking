@@ -1,0 +1,2392 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Build the complex-number and superposition toolkit — Euler's formula, the unit circle, wave addition, and the Fourier series — that correlation and the DFT are built from.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/07-complex-numbers-and-wave-superposition/">
+      
+      
+        <link rel="prev" href="../06-sampling-quantization-and-aliasing/">
+      
+      
+        <link rel="next" href="../08-correlation/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Complex Numbers and Wave Superposition - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#complex-numbers-and-wave-superposition" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Complex Numbers and Wave Superposition
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-two-hundred-year-old-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Two-Hundred-Year-Old Idea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#radians-a-natural-way-to-measure-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Radians: A Natural Way to Measure Angle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Radians: A Natural Way to Measure Angle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#angular-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Angular Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-unit-circle-and-radians-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Unit Circle and Radians Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complex-numbers-a-second-dimension-for-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Numbers: A Second Dimension for Numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complex Numbers: A Second Dimension for Numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-complex-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Complex Number
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eulers-formula-rotation-and-complex-numbers-unified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's Formula: Rotation and Complex Numbers, Unified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Euler&#39;s Formula: Rotation and Complex Numbers, Unified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eulers-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's Formula
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-complex-plane-and-eulers-formula-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Complex Plane and Euler's Formula Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-waves-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Waves Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Waves Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-wave-superposition-and-beats-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Wave Superposition and Beats Simulator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-signals-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Signals from Scratch
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building Signals from Scratch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-index-to-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample Index to Time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-first-look-at-orthogonality" class="md-nav__link">
+    <span class="md-ellipsis">
+      A First Look at Orthogonality
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-series-to-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Series to Spectrum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-two-hundred-year-old-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Two-Hundred-Year-Old Idea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#radians-a-natural-way-to-measure-angle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Radians: A Natural Way to Measure Angle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Radians: A Natural Way to Measure Angle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#angular-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Angular Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-unit-circle-and-radians-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Unit Circle and Radians Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complex-numbers-a-second-dimension-for-numbers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Numbers: A Second Dimension for Numbers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complex Numbers: A Second Dimension for Numbers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-complex-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Complex Number
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eulers-formula-rotation-and-complex-numbers-unified" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's Formula: Rotation and Complex Numbers, Unified
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Euler&#39;s Formula: Rotation and Complex Numbers, Unified">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eulers-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's Formula
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-complex-plane-and-eulers-formula-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Complex Plane and Euler's Formula Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-waves-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Waves Together
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Waves Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-wave-superposition-and-beats-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Wave Superposition and Beats Simulator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-signals-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Signals from Scratch
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building Signals from Scratch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sample-index-to-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample Index to Time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-first-look-at-orthogonality" class="md-nav__link">
+    <span class="md-ellipsis">
+      A First Look at Orthogonality
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-series-to-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Series to Spectrum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/07-complex-numbers-and-wave-superposition/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="complex-numbers-and-wave-superposition">Complex Numbers and Wave Superposition</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter introduces complex numbers, Euler's formula, and the unit circle as the mathematical language the Fourier transform is built from, then shows how multiple sine waves add together through superposition, producing constructive and destructive interference and beat frequencies. It connects this synthesis back to the harmonics from the waves chapter, letting students build arbitrary waveforms from simple sinusoids. This chapter is the direct mathematical foundation for correlation and the DFT that follow.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 25 concepts from the learning graph:</p>
+<ol>
+<li>Additive Synthesis</li>
+<li>Amplitude Envelope</li>
+<li>Angular Frequency</li>
+<li>Beat Frequency</li>
+<li>Complex Conjugate</li>
+<li>Complex Numbers</li>
+<li>Constructive Interference</li>
+<li>Continuous Fourier Transform</li>
+<li>Destructive Interference</li>
+<li>Euler's Formula</li>
+<li>Fourier Series</li>
+<li>Frequency Domain</li>
+<li>Imaginary Unit</li>
+<li>Jean Baptiste Fourier</li>
+<li>Magnitude</li>
+<li>Orthogonality</li>
+<li>Phase Offset</li>
+<li>Radians</li>
+<li>Sample Index To Time</li>
+<li>Signal Synthesis</li>
+<li>Sine Synthesis</li>
+<li>Superposition Principle</li>
+<li>Unit Circle</li>
+<li>Wave Addition</li>
+<li>Waveform Plotting</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">The language the FFT is written in</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Everything from here through the end of this course leans on one compact piece of mathematics: complex numbers, and one elegant equation that ties them to rotation. It looks abstract at first. By the end of this chapter you'll see it's really just a precise way of describing a spinning point — and spinning points are exactly what waves are made of. Let's tune in.</p>
+</div>
+<p>You now know how to describe a single wave and how to capture one for real. This chapter builds the mathematical toolkit that the next three chapters — correlation, the DFT, and eventually the FFT itself — are built entirely on top of. None of it is new physics. It is a more powerful, more compact way of writing down ideas you already understand.</p>
+<h2 id="a-two-hundred-year-old-idea">A Two-Hundred-Year-Old Idea</h2>
+<p>The mathematics in this chapter traces back to one specific person. <strong>Jean-Baptiste Fourier</strong> was a French mathematician and physicist who, in the early 1800s, proved that essentially any periodic signal — no matter how complicated its shape — can be represented as a sum of simple sine and cosine waves. At the time, this claim was startling enough that other mathematicians doubted it. Two centuries later, it is the working principle behind an FFT running on a five-dollar microcontroller.</p>
+<div class="admonition note">
+<p class="admonition-title">Why this history matters here</p>
+<p>Fourier's insight is the reason the "additive synthesis" section later in this chapter works at all, and the reason a spectrum analyzer can exist. Every frequency-domain tool in this course is, in some sense, still proving Fourier's original claim — just a lot faster than he could by hand.</p>
+</div>
+<h2 id="radians-a-natural-way-to-measure-angle">Radians: A Natural Way to Measure Angle</h2>
+<p>The wave equations from the previous chapters used degrees implicitly, but the mathematics of rotation — which is where this chapter is headed — works far more naturally in a different unit. A <strong>radian</strong> is a unit of angle measurement defined by the ratio of arc length to radius on a circle, where one full revolution equals <span class="arithmatex">\( 2\pi \)</span> radians (approximately 6.283 radians) instead of 360 degrees. Radians are not an arbitrary alternative to degrees — they are the unit in which the calculus and algebra of waves simplify the most, which is why every equation from this point forward in the course uses them exclusively.</p>
+<p>Frequency itself has a radian-based twin worth knowing before the unit circle below. <strong>Angular frequency</strong> is the rate of rotation expressed in radians per second rather than cycles per second, related to ordinary frequency by <span class="arithmatex">\( \omega = 2\pi f \)</span> — angular frequency is what actually appears inside the sine and cosine functions once rotation, rather than repetition count, becomes the mental model.</p>
+<h4 id="angular-frequency">Angular Frequency</h4>
+<div class="arithmatex">\[ \omega = 2\pi f \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( \omega \)</span> (omega) is the angular frequency, in radians per second</li>
+<li><span class="arithmatex">\( f \)</span> is the ordinary frequency, in Hertz</li>
+</ul>
+<p>The geometric object that makes radians concrete is a specific circle you have likely seen before but perhaps not by this name. The <strong>unit circle</strong> is a circle with radius exactly 1, centered at the origin of a coordinate plane, used to define sine and cosine geometrically as the vertical and horizontal coordinates of a point rotating around it. As a point travels once around the unit circle, its horizontal coordinate traces out a cosine wave and its vertical coordinate traces out a sine wave — the two waveforms from Chapter 4 are, quite literally, the shadow of one rotating point.</p>
+<h4 id="diagram-unit-circle-and-radians-explorer">Diagram: Unit Circle and Radians Explorer</h4>
+<iframe src="../../sims/unit-circle-radians-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Unit Circle and Radians Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> unit-circle-radians-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Interpret, explain</p>
+<p>Learning objective: Let students interpret the relationship between a point rotating around the unit circle, its angle in radians, and the resulting sine and cosine waveforms traced out over time.</p>
+<p>Canvas layout:
+- Left (350px): a unit circle with a point rotating around it, showing the current angle and its horizontal/vertical projections
+- Right (350px): a synchronized time-domain plot showing sine (from the vertical projection) and cosine (from the horizontal projection) building up over time as the point rotates</p>
+<p>Visual elements:
+- Unit circle with radius labeled "1"
+- A rotating point (dot) on the circle's edge
+- A dashed vertical line from the point down to the x-axis (showing the cosine projection) and a dashed horizontal line to the y-axis (showing the sine projection)
+- Angle arc from the positive x-axis to the current point, labeled in both radians and degrees
+- Right-hand plot: sine curve (solid) and cosine curve (dashed) growing left to right as the angle increases, synchronized with the rotating point</p>
+<p>Interactive controls:
+- Slider: Angle, range 0 to 2π radians (labeled in radians with degree equivalent shown), default 0
+- Play/Pause button: animates the point rotating continuously at an adjustable speed
+- Speed slider: controls rotation speed when playing</p>
+<p>Behavior:
+- Dragging the angle slider (or letting it animate) moves the point around the circle and simultaneously extends the sine and cosine curves on the right-hand plot
+- The angle readout updates live in both radians (e.g., "1.57 rad") and degrees (e.g., "90°")
+- At angle 0, π/2, π, and 3π/2, brief highlight markers appear on both the circle and the plot to anchor the four quarter-turn landmarks</p>
+<p>Instructional Rationale: An Understand-level synchronized dual-view is appropriate because the objective is interpreting the geometric origin of sine and cosine, not solving a problem — watching the same rotating angle simultaneously as a point on a circle and as two growing waveforms directly connects the geometric and algebraic representations of angle.</p>
+<p>Implementation notes:
+- Use p5.js; compute point position as (cos(angle), sin(angle)) and append to two growing arrays for the right-hand plot
+- Responsive width; circle and plot panels stack vertically below 700px width</p>
+</details>
+<h2 id="complex-numbers-a-second-dimension-for-numbers">Complex Numbers: A Second Dimension for Numbers</h2>
+<p>Ordinary numbers — the kind used for amplitude, time, or frequency so far — live on a single number line. Describing rotation, it turns out, requires a number system with two dimensions instead of one.</p>
+<p>The building block of that system starts from a number that has no ordinary square root. The <strong>imaginary unit</strong>, written <span class="arithmatex">\( i \)</span>, is defined as the square root of −1 — a number that does not exist among ordinary (real) numbers, since no real number multiplied by itself produces a negative result, but which is fully well-defined as its own mathematical object. Combining an ordinary real number with a multiple of <span class="arithmatex">\( i \)</span> produces the full number system this chapter needs: <strong>complex numbers</strong> are numbers of the form <span class="arithmatex">\( a + bi \)</span>, consisting of a real part <span class="arithmatex">\( a \)</span> and an imaginary part <span class="arithmatex">\( b \)</span>, that extend the ordinary number line into a two-dimensional plane.</p>
+<h4 id="a-complex-number">A Complex Number</h4>
+<div class="arithmatex">\[ z = a + bi \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( z \)</span> is the complex number</li>
+<li><span class="arithmatex">\( a \)</span> is the real part</li>
+<li><span class="arithmatex">\( b \)</span> is the imaginary part</li>
+<li><span class="arithmatex">\( i \)</span> is the imaginary unit, <span class="arithmatex">\( \sqrt{-1} \)</span></li>
+</ul>
+<p>Because a complex number carries two independent pieces of information, it plots naturally as a point — or equivalently, an arrow — on a two-dimensional plane, with the real part along one axis and the imaginary part along the other. That arrow has a length, and that length has a name: the <strong>magnitude</strong> of a complex number is its distance from the origin on the complex plane, calculated as <span class="arithmatex">\( |z| = \sqrt{a^2 + b^2} \)</span> — a direct application of the Pythagorean theorem to the real and imaginary parts. Magnitude will reappear constantly starting in the DFT chapter, where it becomes the "how strong is this frequency" measurement read directly off a spectrum.</p>
+<p>One more operation on complex numbers is worth defining now, because it appears repeatedly once the DFT is built. The <strong>complex conjugate</strong> of a complex number <span class="arithmatex">\( a + bi \)</span> is the number <span class="arithmatex">\( a - bi \)</span> — identical real part, imaginary part flipped in sign — geometrically, the mirror image of the original point reflected across the real axis.</p>
+<h2 id="eulers-formula-rotation-and-complex-numbers-unified">Euler's Formula: Rotation and Complex Numbers, Unified</h2>
+<p>The unit circle and complex numbers describe the same idea — position determined by an angle — using two different notations. One of the most celebrated equations in mathematics ties them together exactly.</p>
+<p><strong>Euler's formula</strong> states that <span class="arithmatex">\( e^{i\theta} = \cos(\theta) + i\sin(\theta) \)</span> — the complex exponential of an imaginary angle equals a complex number whose real part is the cosine of that angle and whose imaginary part is the sine of that angle. In plain terms: raising a special constant, <span class="arithmatex">\( e \)</span>, to an imaginary power produces exactly the coordinates of the point at angle <span class="arithmatex">\( \theta \)</span> on the unit circle from the previous section.</p>
+<h4 id="eulers-formula">Euler's Formula</h4>
+<div class="arithmatex">\[ e^{i\theta} = \cos(\theta) + i\sin(\theta) \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( e \)</span> is Euler's number, approximately 2.71828</li>
+<li><span class="arithmatex">\( \theta \)</span> (theta) is the angle, in radians</li>
+<li><span class="arithmatex">\( i \)</span> is the imaginary unit</li>
+</ul>
+<p>This single line is why complex numbers matter to this course at all: it lets an entire wave — its amplitude, its frequency, and its timing all at once — be written as one rotating complex number instead of a separate sine and cosine pair. The timing piece has a name of its own here: <strong>phase offset</strong> is the starting angle <span class="arithmatex">\( \theta_0 \)</span> of a rotating complex number (or a sine wave) at time zero, shifting exactly when in its cycle the wave begins — the same idea as the "phase" introduced in Chapter 4, now expressed as an angle on the unit circle rather than a fraction of a cycle.</p>
+<h4 id="diagram-complex-plane-and-eulers-formula-visualizer">Diagram: Complex Plane and Euler's Formula Visualizer</h4>
+<iframe src="../../sims/complex-plane-euler-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Complex Plane and Euler's Formula Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> complex-plane-euler-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Demonstrate, calculate</p>
+<p>Learning objective: Let students manipulate the angle of a rotating complex number and demonstrate that its real and imaginary parts continuously match cos(theta) and sin(theta), connecting Euler's formula to the complex plane.</p>
+<p>Canvas layout:
+- Left (400px): a complex plane (real axis horizontal, imaginary axis vertical) with a vector from the origin to the point e^(i*theta)
+- Right (300px): live numeric readout panel</p>
+<p>Visual elements:
+- Real and imaginary axes, labeled "Re" and "Im"
+- A vector (arrow) from the origin to the current point, with its magnitude always exactly 1 (since |e^(i*theta)| = 1)
+- Dashed projection lines onto both axes showing the real part (cos theta) and imaginary part (sin theta) separately
+- Live readout: "e^(i × [theta]) = [cos value] + [sin value]i" with numeric values substituted
+- Live readout of magnitude, always showing 1.00 regardless of angle</p>
+<p>Interactive controls:
+- Slider: theta, range 0 to 2π radians, default 0
+- Play/Pause button to animate continuous rotation</p>
+<p>Behavior:
+- Moving the theta slider rotates the vector and updates both the real/imaginary projections and the numeric readout live
+- The magnitude readout stays fixed at 1.00 no matter the angle, reinforcing that Euler's formula traces the unit circle exactly</p>
+<p>Instructional Rationale: An Apply-level parameter-exploration pattern is appropriate because the objective is calculating and confirming, for specific angle values, that the abstract formula e^(i<em>theta) = cos(theta) + i</em>sin(theta) produces the exact coordinates shown geometrically — direct manipulation with a live numeric readout lets students verify the equation rather than take it on faith.</p>
+<p>Implementation notes:
+- Use p5.js; compute point position directly from Math.cos(theta) and Math.sin(theta)
+- Responsive width; complex plane and readout panel stack vertically below 650px width</p>
+</details>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">One equation, three ideas at once</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Euler's formula is doing three jobs simultaneously: it's a rotation (angle theta), it's a point on a circle (real and imaginary parts), and it's a wave (cosine and sine). Every one of those three views is correct at the same time. When correlation and the DFT start using complex exponentials in two chapters, this is the equation making that possible.</p>
+</div>
+<h2 id="adding-waves-together">Adding Waves Together</h2>
+<p>Complex numbers and Euler's formula describe a single rotating wave precisely. The next question is what happens when more than one wave exists in the same place at the same time — which is, after all, the normal situation for any real sound.</p>
+<p>The physical rule governing this is remarkably simple. The <strong>superposition principle</strong> states that when two or more waves overlap in the same medium at the same time, the resulting displacement at every point is simply the sum of each individual wave's displacement — waves do not distort, block, or interfere with each other's underlying identity, they just add. Applying that rule directly produces <strong>wave addition</strong>: the process of combining two or more waveforms by adding their amplitude values together at each corresponding point in time, producing a single combined waveform.</p>
+<p>Wave addition can strengthen a signal or nearly erase it, entirely depending on how the waves line up in phase. When two waves happen to be in phase — peak lining up with peak — <strong>constructive interference</strong> occurs: the combination of two or more waves whose peaks and troughs align, producing a resulting wave with larger amplitude than either individual wave. When two waves are out of phase — one wave's peak lining up with the other's trough — <strong>destructive interference</strong> occurs: the combination of two or more waves whose peaks and troughs oppose each other, producing a resulting wave with smaller amplitude, potentially canceling out almost entirely.</p>
+<table>
+<thead>
+<tr>
+<th>Interference type</th>
+<th>Phase relationship</th>
+<th>Resulting amplitude</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Constructive</td>
+<td>Peaks align with peaks</td>
+<td>Larger than either wave alone</td>
+</tr>
+<tr>
+<td>Destructive</td>
+<td>Peaks align with troughs</td>
+<td>Smaller than either wave alone, possibly near zero</td>
+</tr>
+</tbody>
+</table>
+<p>A related, audible phenomenon happens when two waves have frequencies that are close but not identical. A <strong>beat frequency</strong> is the slow rise-and-fall pulsing in loudness heard when two tones of slightly different frequency are played together, occurring at a rate equal to the absolute difference between the two frequencies. Two guitar strings tuned almost, but not quite, to the same pitch produce a distinctive wavering "wah-wah-wah" sound — that pulsing rate is the beat frequency, and it is a direct, audible consequence of alternating constructive and destructive interference as the two waves drift in and out of phase with each other.</p>
+<h4 id="diagram-wave-superposition-and-beats-simulator">Diagram: Wave Superposition and Beats Simulator</h4>
+<iframe src="../../sims/wave-superposition-beats-simulator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Wave Superposition and Beats Simulator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> wave-superposition-beats-simulator<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, compare</p>
+<p>Learning objective: Let students set the frequency and phase of two independent sine waves, examine the summed waveform, and compare regions of constructive interference, destructive interference, and — when frequencies are close but unequal — the resulting beat pattern.</p>
+<p>Canvas layout:
+- Top (150px): Wave 1, plotted alone
+- Middle (150px): Wave 2, plotted alone
+- Bottom (250px): the summed waveform (Wave 1 + Wave 2), all three sharing the same time axis</p>
+<p>Visual elements:
+- Three stacked waveform plots sharing a common horizontal time axis
+- On the summed plot, shaded green regions where the two input waves are approximately in phase (constructive) and shaded red regions where approximately out of phase (destructive)
+- When frequencies are close but not equal, a slowly-varying dashed "envelope" curve is overlaid on the summed waveform, tracing the beat pattern</p>
+<p>Interactive controls:
+- Slider: Wave 1 frequency, range 200-500 Hz, default 300 Hz
+- Slider: Wave 2 frequency, range 200-500 Hz, default 300 Hz
+- Slider: Wave 2 phase offset, range 0 to 2π radians, default 0
+- Readout: "Beat frequency: |f1 - f2| = [X] Hz" (only shown when frequencies differ)</p>
+<p>Default parameters:
+- Wave 1 frequency: 300 Hz
+- Wave 2 frequency: 300 Hz (identical, so students first see pure constructive/destructive interference via phase alone)
+- Wave 2 phase offset: 0 (fully constructive at start)</p>
+<p>Behavior:
+- With equal frequencies, moving the phase slider from 0 to π smoothly morphs the summed wave from fully constructive (double amplitude) to fully destructive (near zero amplitude)
+- Setting Wave 2's frequency slightly different from Wave 1's frequency replaces the static interference pattern with a visibly pulsing beat envelope on the summed plot, and the beat frequency readout appears and updates live</p>
+<p>Instructional Rationale: An Analyze-level comparison pattern is appropriate because the objective requires examining how phase and frequency differences between two waves produce distinct, comparable outcomes (steady interference versus pulsing beats) — three synchronized stacked plots let students directly compare each input wave against the combined result.</p>
+<p>Implementation notes:
+- Use p5.js; compute the summed waveform as wave1(t) + wave2(t) sample by sample every frame
+- Responsive width; all three stacked plots scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Beats are interference you can literally hear</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+If you've ever tuned a guitar by listening for the wobble to slow down and disappear, you were using beat frequency without knowing its name. The wobble <em>is</em> the beat frequency, and it hits zero exactly when both strings reach the same pitch — a genuinely useful trick, and now you know why it works.</p>
+</div>
+<h2 id="building-signals-from-scratch">Building Signals from Scratch</h2>
+<p>Superposition works in reverse too: instead of two waves accidentally combining, a program can deliberately add together sine waves of chosen frequencies, amplitudes, and phases to construct a signal with any desired shape. This is precisely how Chapter 4's harmonic stack simulator built different instrument timbres, and it deserves a formal name now.</p>
+<p><strong>Signal synthesis</strong> is the process of deliberately generating a signal by computing its values from a mathematical formula, rather than capturing it from a physical sensor. The most common technique for doing this builds directly on this chapter's tools: <strong>additive synthesis</strong> is a signal synthesis technique that constructs a complex waveform by adding together multiple sine waves of different frequencies, amplitudes, and phases — the exact operation performed by the harmonic stack simulator two chapters ago, now named precisely. Constructing a signal from a single sine component, before combining several, is worth naming on its own: <strong>sine synthesis</strong> is the generation of a single sine wave from its frequency, amplitude, and phase parameters using the general sine wave equation from Chapter 4.</p>
+<p>Real instruments rarely sustain a constant amplitude the instant a note starts and stops — a plucked string starts loud and fades, a bowed note swells in. That shape, layered on top of a wave's regular oscillation, has its own name: an <strong>amplitude envelope</strong> is a curve describing how a sound's overall amplitude changes over the duration of a note — typically rising quickly at the start (attack) and falling off gradually at the end (decay) — multiplied against a synthesized wave to make it sound more like a real instrument rather than a flat, mechanical tone.</p>
+<p>Writing a synthesized signal in code requires converting between two ways of indexing time. A captured or synthesized signal is stored as an array, where each entry corresponds to one sample — but the sine and cosine equations from Chapter 4 expect an actual time value in seconds, not an array position. <strong>Sample index to time</strong> is the conversion from a sample's position (index) in an array to the actual time, in seconds, that sample represents, calculated as <span class="arithmatex">\( t = \frac{n}{f_s} \)</span>, where <span class="arithmatex">\( n \)</span> is the sample index and <span class="arithmatex">\( f_s \)</span> is the sampling rate.</p>
+<h4 id="sample-index-to-time">Sample Index to Time</h4>
+<div class="arithmatex">\[ t = \frac{n}{f_{s}} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( t \)</span> is time, in seconds</li>
+<li><span class="arithmatex">\( n \)</span> is the sample index (0, 1, 2, ...)</li>
+<li><span class="arithmatex">\( f_{s} \)</span> is the sampling rate, in Hertz</li>
+</ul>
+<p>Before the code below, it's worth stating plainly what each line does: the loop below builds a synthesized array by converting each sample index to a time value, then evaluating the sine wave equation at that exact time, for a specified number of samples at a specified sampling rate.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">synthesize_sine</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">amplitude</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">sample_rate</span>              <span class="c1"># Sample index to time</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">frequency</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">samples</span>
+</code></pre></div></td></tr></table></div>
+<p>Once a signal, real or synthesized, exists as an array of numbers, seeing its shape again requires plotting it the same way Chapter 4 did. <strong>Waveform plotting</strong> is the process of rendering a sequence of amplitude values, indexed by sample or by time, as a visual curve — the practical, repeated act of turning an array of numbers back into the kind of time domain plot introduced two chapters ago, used constantly throughout the rest of this course to sanity-check that captured or synthesized data looks the way it should.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">You've already built this, just without the vocabulary</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Additive synthesis, sine synthesis, sample index to time — three new terms in a row can feel like a lot. But you already did every one of these things when you explored the harmonic stack simulator back in Chapter 4. This section just gave the process its formal name and its formal code.</p>
+</div>
+<h2 id="a-first-look-at-orthogonality">A First Look at Orthogonality</h2>
+<p>One more idea deserves a preview here, even though its full power does not arrive until the next chapter. <strong>Orthogonality</strong> describes a relationship between two functions (or signals) in which they are, in a precise mathematical sense, completely independent of each other — combining or comparing them produces zero net interaction, similar to how two perpendicular directions in space share no overlap. Sine waves of different frequencies turn out to be orthogonal to each other in exactly this sense. That single fact is the entire mechanism the next chapter uses to detect whether a captured signal contains a specific frequency — a preview worth holding onto as this chapter closes.</p>
+<h2 id="from-series-to-spectrum">From Series to Spectrum</h2>
+<p>Fourier's original claim, stated formally, gives this chapter's tools a name and a destination. A <strong>Fourier series</strong> is a representation of a periodic signal as an infinite (or, in practice, finite) sum of sine and cosine waves at integer-multiple frequencies of the signal's fundamental frequency — precisely the additive-synthesis process from this chapter, but running in the <em>reverse</em> direction: instead of building a signal from known sine waves, a Fourier series describes an <em>existing</em> signal in terms of the sine waves hiding inside it.</p>
+<p>Fourier's insight was later generalized beyond strictly periodic signals. The <strong>continuous Fourier transform</strong> is a mathematical operation that decomposes any continuous signal — periodic or not — into the continuous range of frequencies that compose it, producing a description of the signal's frequency content rather than its value over time. That frequency-based description has a name shared throughout the rest of this course: the <strong>frequency domain</strong> is a way of representing a signal by the strength of each frequency component it contains, rather than by its value at each moment in time — the direct counterpart to the time domain representation from Chapter 4, and the representation every remaining chapter in Module 3 and beyond is building toward.</p>
+<p>The continuous Fourier transform, exactly as stated, needs a signal defined at every instant in continuous time — something no digital computer can ever actually possess, since Chapter 6 established that every captured signal already consists of discrete samples. Making the frequency domain computable from real, sampled data is precisely the unfinished business the next two chapters resolve.</p>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have the complete mathematical toolkit — complex numbers, Euler's formula, and superposition — that correlation, the DFT, and eventually the FFT are all built from.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li><strong>Radians</strong> and <strong>angular frequency</strong> describe angle and rotation rate the way the rest of this course's math expects; the <strong>unit circle</strong> makes that rotation geometric.</li>
+<li><strong>Complex numbers</strong>, built from the <strong>imaginary unit</strong> <span class="arithmatex">\( i \)</span>, have a <strong>magnitude</strong> and a <strong>complex conjugate</strong>; <strong>Euler's formula</strong> ties them directly to rotation and to sine and cosine, with <strong>phase offset</strong> as the starting angle.</li>
+<li>The <strong>superposition principle</strong> governs <strong>wave addition</strong>: waves in phase produce <strong>constructive interference</strong>, waves out of phase produce <strong>destructive interference</strong>, and two close-but-different frequencies produce an audible <strong>beat frequency</strong>.</li>
+<li><strong>Signal synthesis</strong>, especially <strong>additive synthesis</strong> built from <strong>sine synthesis</strong> and shaped by an <strong>amplitude envelope</strong>, builds a signal from scratch — using <strong>sample index to time</strong> conversion and verified with <strong>waveform plotting</strong>.</li>
+<li><strong>Orthogonality</strong> is a first preview of the mechanism the next chapter uses to detect frequencies.</li>
+<li>A <strong>Fourier series</strong> decomposes a periodic signal into sine waves; the <strong>continuous Fourier transform</strong> generalizes this into the <strong>frequency domain</strong> — the destination the rest of this course is built to reach, computably, from real sampled data.</li>
+</ul>
+<details class="note">
+<summary>Quick check: two identical-amplitude sine waves at 440 Hz meet with a phase offset of exactly π radians. What happens to the combined wave, and why? — Click to expand</summary>
+<p>They cancel out almost completely through destructive interference. A phase offset of π radians (180°) means one wave's peak aligns exactly with the other wave's trough — by the superposition principle, adding equal and opposite displacements at every point in time produces a resulting amplitude near zero.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now describe a wave as a rotating number</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Complex numbers, Euler's formula, superposition — that is genuinely graduate-level mathematical machinery, and you just built working intuition for all of it. Next stop: using orthogonality to answer one precise question — does my signal contain this note? — which is the exact seed the DFT grows from. Now <em>that's</em> a superpower.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../06-sampling-quantization-and-aliasing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 6. Sampling, Quantization, and Aliasing">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                6. Sampling, Quantization, and Aliasing
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../08-correlation/" class="md-footer__link md-footer__link--next" aria-label="Next: 8. Correlation: Does My Signal Contain This Note?">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                8. Correlation: Does My Signal Contain This Note?
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2469 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Generalize correlation into the Discrete Fourier Transform, define frequency bins, and validate a working DFT against known ground truth.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/09-computing-and-validating-the-dft/">
+      
+      
+        <link rel="prev" href="../08-correlation/">
+      
+      
+        <link rel="next" href="../10-why-the-dft-is-too-slow/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Computing and Validating the DFT - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#computing-and-validating-the-dft" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Computing and Validating the DFT
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-one-correlation-to-all-of-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      From One Correlation to All of Them
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From One Correlation to All of Them">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dft-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      DFT Definition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequency-bins-slicing-the-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequency Bins: Slicing the Spectrum
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequency Bins: Slicing the Spectrum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bin-exact-center-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bin Exact / Center Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dft-frequency-bin-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DFT Frequency Bin Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bins-worth-knowing-by-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Bins Worth Knowing by Name
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Bins Worth Knowing by Name">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-spectrum-symmetry-mirror" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Spectrum Symmetry Mirror
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storing-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storing the Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-backward-the-inverse-dft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Going Backward: The Inverse DFT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Going Backward: The Inverse DFT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inverse-dft-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverse DFT Definition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#computing-an-eight-point-dft-by-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing an Eight-Point DFT by Hand
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Computing an Eight-Point DFT by Hand">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-eight-point-dft-by-hand-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Eight-Point DFT by Hand Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-before-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Before Trust
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-how-wrong-is-too-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measuring How Wrong Is Too Wrong
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring How Wrong Is Too Wrong">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dft-validation-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DFT Validation Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-by-bisection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging by Bisection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-one-correlation-to-all-of-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      From One Correlation to All of Them
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="From One Correlation to All of Them">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dft-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      DFT Definition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frequency-bins-slicing-the-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequency Bins: Slicing the Spectrum
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Frequency Bins: Slicing the Spectrum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bin-exact-center-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bin Exact / Center Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dft-frequency-bin-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DFT Frequency Bin Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-bins-worth-knowing-by-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Bins Worth Knowing by Name
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Bins Worth Knowing by Name">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-spectrum-symmetry-mirror" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Spectrum Symmetry Mirror
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storing-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storing the Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#going-backward-the-inverse-dft" class="md-nav__link">
+    <span class="md-ellipsis">
+      Going Backward: The Inverse DFT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Going Backward: The Inverse DFT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inverse-dft-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverse DFT Definition
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#computing-an-eight-point-dft-by-hand" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing an Eight-Point DFT by Hand
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Computing an Eight-Point DFT by Hand">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-eight-point-dft-by-hand-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Eight-Point DFT by Hand Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-before-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Before Trust
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-how-wrong-is-too-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measuring How Wrong Is Too Wrong
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring How Wrong Is Too Wrong">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-dft-validation-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: DFT Validation Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-by-bisection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging by Bisection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/09-computing-and-validating-the-dft/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="computing-and-validating-the-dft">Computing and Validating the DFT</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter sweeps the single-frequency correlation from the previous chapter across every frequency bin, producing the Discrete Fourier Transform, and defines frequency bins, bin resolution, and the symmetry of a real-valued signal's spectrum. It then validates the resulting implementation against hand-computed and known-signal test cases, introducing debugging by bisection and the ground-truth mindset used for every implementation later in the course. By the end, students have a working, verified DFT built entirely from first principles.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 28 concepts from the learning graph:</p>
+<ol>
+<li>Absolute Error</li>
+<li>Bin Center Frequency</li>
+<li>Bin Exact Frequency</li>
+<li>Bin Index</li>
+<li>Bin Resolution</li>
+<li>Bin Width</li>
+<li>Complex Exponential</li>
+<li>DC Bin</li>
+<li>DFT Definition</li>
+<li>Debugging By Bisection</li>
+<li>Discrete Fourier Transform</li>
+<li>Eight Point DFT By Hand</li>
+<li>Expected Peak</li>
+<li>Frequency Bins</li>
+<li>Frequency Resolution</li>
+<li>Frequency Sweep</li>
+<li>Ground Truth</li>
+<li>Inverse DFT</li>
+<li>Known Signal Test</li>
+<li>Negative Frequencies</li>
+<li>Numerical Tolerance</li>
+<li>Nyquist Bin</li>
+<li>Real And Imaginary Parts</li>
+<li>Relative Error</li>
+<li>Spectrum Array</li>
+<li>Spectrum Symmetry</li>
+<li>Test Signal Design</li>
+<li>Validation Before Trust</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../08-correlation/">8. Correlation: Does My Signal Contain This Note?</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">You already built this — let's give it a name</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Last chapter you correlated a signal against one test frequency at a time. This chapter does something almost embarrassingly simple: repeat that exact process at every frequency you care about, and keep every result. That's it. That's the Discrete Fourier Transform. Let's tune in.</p>
+</div>
+<h2 id="from-one-correlation-to-all-of-them">From One Correlation to All of Them</h2>
+<p>The correlation-vs-test-frequency sweep at the end of the previous chapter already did almost everything this chapter formalizes — it just did it as a demonstration rather than as a defined, reusable transform. Making that sweep official, and running it systematically, produces one of the most important tools in this entire course.</p>
+<p>The <strong>Discrete Fourier Transform</strong>, or DFT, is a mathematical operation that converts a finite sequence of time-domain samples into a corresponding sequence of frequency-domain values, each one measuring how strongly a specific frequency is present in the original signal — precisely the multiply-and-sum correlation from Chapter 8, computed once for every frequency in a defined set rather than just one. Its exact mathematical statement is worth having in one place, since every implementation in this course traces back to it directly.</p>
+<p>The <strong>DFT definition</strong> states the transform formally, using the complex exponential form of the correlation test wave introduced conceptually last chapter:</p>
+<h4 id="dft-definition">DFT Definition</h4>
+<div class="arithmatex">\[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-i 2\pi k n / N} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( X[k] \)</span> is the complex-valued DFT output for frequency index <span class="arithmatex">\( k \)</span></li>
+<li><span class="arithmatex">\( x[n] \)</span> is the time-domain input signal's sample at index <span class="arithmatex">\( n \)</span></li>
+<li><span class="arithmatex">\( N \)</span> is the total number of samples in the signal</li>
+<li><span class="arithmatex">\( i \)</span> is the imaginary unit</li>
+<li><span class="arithmatex">\( k \)</span> ranges from 0 to <span class="arithmatex">\( N-1 \)</span></li>
+</ul>
+<p>The term <span class="arithmatex">\( e^{-i 2\pi k n / N} \)</span> inside the sum is not a new idea — it is Euler's formula from Chapter 7, applied as the combined in-phase and quadrature test wave from Chapter 8, written as a single expression. A <strong>complex exponential</strong> is a term of the form <span class="arithmatex">\( e^{i\theta} \)</span>, which — by Euler's formula — simultaneously represents a cosine (real part) and a sine (imaginary part) test wave at once, letting a single multiply-and-sum operation compute the in-phase and quadrature components together instead of running two separate correlations.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">One formula replaces two correlations</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Notice what just happened: last chapter needed two separate correlations — one against sine, one against cosine — to get phase-independent results. The complex exponential in the DFT definition does both at once, because its real and imaginary parts <em>are</em> the cosine and sine test waves. Complex numbers were not decoration in Chapter 7 — this is the payoff.</p>
+</div>
+<h2 id="frequency-bins-slicing-the-spectrum">Frequency Bins: Slicing the Spectrum</h2>
+<p>Running the DFT definition once for each value of <span class="arithmatex">\( k \)</span> from 0 to <span class="arithmatex">\( N-1 \)</span> produces <span class="arithmatex">\( N \)</span> separate output values, each one a measurement of a specific, distinct frequency. Those distinct output slots have a name used throughout the rest of this course.</p>
+<p><strong>Frequency bins</strong> are the individual output slots of a DFT, each one corresponding to a specific frequency and containing a complex value that measures how strongly that frequency is present in the input signal. The integer that identifies which bin is which is the <strong>bin index</strong>: the integer <span class="arithmatex">\( k \)</span>, ranging from 0 to <span class="arithmatex">\( N-1 \)</span>, that labels which frequency bin a given DFT output value corresponds to.</p>
+<p>Converting a bin index into an actual frequency in Hertz — the number that actually matters to a listener or a display — uses a direct formula. The <strong>bin exact frequency</strong> is the precise frequency, in Hertz, that a given bin index represents, computed as <span class="arithmatex">\( f_k = \frac{k \cdot f_s}{N} \)</span>, where <span class="arithmatex">\( f_s \)</span> is the sampling rate. Because a real-world signal's frequency essentially never lands exactly on one of these computed values, each bin is better understood as covering a small range rather than a single infinitely precise point — which is why that computed frequency is more precisely called the <strong>bin center frequency</strong>: the specific frequency value a bin is centered on, understood as the middle of a small range of frequencies that bin actually represents, since real signal energy near — but not exactly at — that frequency still shows up primarily in that bin.</p>
+<h4 id="bin-exact-center-frequency">Bin Exact / Center Frequency</h4>
+<div class="arithmatex">\[ f_k = \frac{k \cdot f_s}{N} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( f_k \)</span> is the frequency, in Hertz, that bin <span class="arithmatex">\( k \)</span> represents</li>
+<li><span class="arithmatex">\( k \)</span> is the bin index</li>
+<li><span class="arithmatex">\( f_s \)</span> is the sampling rate, in Hertz</li>
+<li><span class="arithmatex">\( N \)</span> is the total number of samples (and bins)</li>
+</ul>
+<p>How wide that small range around each bin center actually is has its own name and its own formula. The <strong>bin width</strong> is the span of frequency, in Hertz, covered by a single frequency bin, equal to <span class="arithmatex">\( \frac{f_s}{N} \)</span> — the same value as the spacing between one bin's center frequency and the next. Zooming out from a single bin to the whole spectrum, the overall coarseness or fineness of a DFT's frequency axis is described by a related, broader term: <strong>bin resolution</strong> is the granularity of the frequency axis a DFT produces, jointly determined by the sampling rate and the number of samples used — a "high resolution" DFT has many closely-spaced bins; a "low resolution" DFT has few, widely-spaced ones.</p>
+<p>That granularity has a direct, practical consequence worth naming on its own, because it determines whether two close-together real-world frequencies can be told apart at all. <strong>Frequency resolution</strong> is the smallest difference in frequency between two signal components that a DFT can distinguish as separate — numerically equal to the bin width, but framed as a practical limit rather than a formula: two tones closer together than one bin width blur into the same bin and cannot be told apart, no matter how the resulting spectrum is displayed.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Bigger N buys resolution, but it isn't free</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo giving a warning">
+It's tempting to always want more frequency resolution — just increase N, right? It works, but N also directly controls how many samples (and how much time) the DFT needs before it can produce a single result, and — as the very next chapter shows — how much computation it costs. Resolution and speed pull in opposite directions, and balancing them is a real engineering decision, not a free upgrade.</p>
+</div>
+<p>Before the interactive explorer below, it helps to see all of these bin-related quantities computed together for a concrete, adjustable example, since the relationships between <span class="arithmatex">\( N \)</span>, sampling rate, bin width, and bin count are easiest to internalize by watching them move together.</p>
+<h4 id="diagram-dft-frequency-bin-explorer">Diagram: DFT Frequency Bin Explorer</h4>
+<iframe src="../../sims/dft-frequency-bin-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>DFT Frequency Bin Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> dft-frequency-bin-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, demonstrate</p>
+<p>Learning objective: Let students adjust the number of samples (N) and the sampling rate and calculate the resulting bin width, frequency resolution, and each bin's center frequency, observing the tradeoff between frequency resolution and bin count directly.</p>
+<p>Canvas layout:
+- Top (300px): a horizontal row of labeled bin boxes (bin 0 through bin N-1, or a scrollable/collapsed view for large N), each showing its bin index and center frequency
+- Bottom (200px): controls and a computed-values readout panel</p>
+<p>Visual elements:
+- Row of bin boxes, index and frequency labeled on each
+- Special highlight color on bin 0 (labeled "DC") and the middle bin (labeled "Nyquist")
+- Readout panel: "Bin width = f_s / N = [value] Hz", "Frequency resolution = [value] Hz", "Number of bins = N = [value]"</p>
+<p>Interactive controls:
+- Slider: N (number of samples), values 8, 16, 32, 64, 128, 256, 512, default 512
+- Slider: Sampling rate, range 4,000-16,000 Hz, default 16,000 Hz
+- Clicking any bin box highlights it and displays its exact center frequency and covered range in the readout panel</p>
+<p>Behavior:
+- Changing N or sampling rate immediately recalculates and redraws every bin's center frequency, along with the bin width and frequency resolution readouts
+- Increasing N visibly increases the number of bin boxes and shrinks the frequency gap between them, making the resolution/bin-count tradeoff directly visible</p>
+<p>Instructional Rationale: An Apply-level calculator with live parameter sliders is appropriate because the objective is computational — students should be able to predict how changing N or sampling rate changes bin width and resolution, then confirm that prediction by dragging a slider and watching every computed value update together.</p>
+<p>Implementation notes:
+- Use p5.js; recompute all bin center frequencies as k * sample_rate / N for k = 0 to N-1 whenever a slider changes
+- Responsive width; bin row becomes horizontally scrollable on narrow viewports rather than shrinking bins below a readable size</p>
+</details>
+<h2 id="two-bins-worth-knowing-by-name">Two Bins Worth Knowing by Name</h2>
+<p>Among all the frequency bins a DFT produces, two specific ones show up so often in later chapters that they deserve names of their own, along with an explanation of why half the spectrum turns out to be redundant for the kind of signal this course captures.</p>
+<p>Bin index 0 always represents zero Hertz — no oscillation at all, just a constant offset. The <strong>DC bin</strong> is frequency bin 0, representing 0 Hz, whose value reflects the average (constant, non-oscillating) level of the input signal — the same "DC component" concept from Chapter 4, now appearing as a specific, isolated bin in the spectrum rather than an unwanted offset to be removed by hand. At the opposite end of the useful range sits the <strong>Nyquist bin</strong>: the frequency bin located at index <span class="arithmatex">\( N/2 \)</span>, representing exactly the Nyquist frequency from Chapter 6 — the highest frequency a given sampling rate can represent at all.</p>
+<p>Bins beyond the Nyquist bin, from <span class="arithmatex">\( N/2 + 1 \)</span> up to <span class="arithmatex">\( N-1 \)</span>, do not represent new, higher frequencies the way it might first seem. Because the complex exponential test wave in the DFT definition repeats periodically, these upper-index bins mathematically correspond to <strong>negative frequencies</strong>: frequency values that are, by the mathematics of the complex exponential basis, the mirror image of positive frequencies below the Nyquist bin, arising as a direct consequence of how the DFT's complex exponential basis functions are defined rather than describing any physically new information in a real-valued input signal.</p>
+<p>For the microphone-captured, real-valued signals this course works with almost exclusively, this mirroring is not an inconvenience to work around — it is a guaranteed, exploitable structure. <strong>Spectrum symmetry</strong> is the property that, for a real-valued (not complex-valued) input signal, the upper half of the DFT output spectrum is always the complex conjugate of the lower half, mirrored around the Nyquist bin — meaning the bins from <span class="arithmatex">\( N/2+1 \)</span> to <span class="arithmatex">\( N-1 \)</span> carry no independent information beyond what bins 1 through <span class="arithmatex">\( N/2 - 1 \)</span> already contain. This is precisely why spectrum displays in this course, from this chapter forward, only ever plot the lower half of the spectrum: the upper half is a guaranteed, redundant mirror.</p>
+<h4 id="diagram-spectrum-symmetry-mirror">Diagram: Spectrum Symmetry Mirror</h4>
+<iframe src="../../sims/spectrum-symmetry-mirror/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Spectrum Symmetry Mirror</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> spectrum-symmetry-mirror<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, interpret</p>
+<p>Learning objective: Let students interpret a full N-point DFT spectrum and explain why bins above the Nyquist bin mirror bins below it as complex conjugates, for a real-valued input signal.</p>
+<p>Canvas layout:
+- A full-width horizontal bar of N bin boxes, indices 0 through N-1, laid out left to right
+- Infobox panel below, populated on click</p>
+<p>Visual elements:
+- Bin 0 highlighted distinctly and labeled "DC bin"
+- Bin N/2 highlighted distinctly and labeled "Nyquist bin"
+- Bins 1 through N/2-1 shaded blue, labeled "Positive frequencies (unique, useful)"
+- Bins N/2+1 through N-1 shaded gray with a dashed mirror-line back to their corresponding lower bin, labeled "Negative frequencies (mirror / redundant for real input)"
+- Connector arcs drawn between mirrored bin pairs (e.g., bin 5 and bin N-5) when either is clicked</p>
+<p>Interactive elements:
+- Clicking any bin in the blue (positive frequency) region draws a connecting arc to its mirror bin in the gray region and displays: "Bin [k] and bin [N-k] are complex conjugates — same magnitude, opposite-signed imaginary part — because the input signal is real-valued."
+- Clicking the DC bin or Nyquist bin displays a note that these two bins are their own mirror (no separate partner)</p>
+<p>Instructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining a structural relationship (conjugate mirroring) between specific labeled parts of a static structure — click-triggered connector arcs make the abstract "bin k mirrors bin N-k" relationship spatially obvious rather than requiring students to compute it themselves.</p>
+<p>Implementation notes:
+- Use p5.js; draw N bin boxes proportioned to fit the container width, using a fixed example N (e.g., 16) for clarity regardless of the N used elsewhere in the chapter
+- Responsive width; bin boxes shrink proportionally, wrapping to a second row only below a minimum readable bin width</p>
+</details>
+<h2 id="storing-the-result">Storing the Result</h2>
+<p>Each frequency bin's DFT output is a single complex number, and a complete DFT produces <span class="arithmatex">\( N \)</span> of them together. That complete collection needs a data structure to live in, and its two pieces need names of their own.</p>
+<p>A <strong>spectrum array</strong> is the data structure — typically an array of complex numbers — that holds the complete set of DFT output values, one entry per frequency bin, indexed by bin index. Because MicroPython (like most languages) represents a complex number as two separate numbers rather than one combined type in performance-critical code, each entry in that array is usually stored as its <strong>real and imaginary parts</strong>: the two separate numeric components of a complex DFT output value — the real part corresponding to the in-phase component and the imaginary part corresponding to the quadrature component from the previous chapter — from which magnitude, and eventually phase, can be computed whenever needed.</p>
+<p>Before the code below, it's worth stating exactly what it computes: for each bin index <code>k</code> from 0 to <code>N-1</code>, the function sums the product of every input sample against the real and imaginary parts of that bin's complex exponential test wave, accumulating the real and imaginary totals separately — a direct, literal implementation of the DFT definition above.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">dft</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="p">[]</span>                      <span class="c1"># Spectrum array</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>                 <span class="c1"># One pass per frequency bin</span>
+        <span class="n">real_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">imag_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">n</span> <span class="o">/</span> <span class="n">N</span>
+            <span class="n">real_sum</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>   <span class="c1"># In-phase (real) part</span>
+            <span class="n">imag_sum</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>   <span class="c1"># Quadrature (imaginary) part</span>
+        <span class="n">spectrum</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">real_sum</span><span class="p">,</span> <span class="n">imag_sum</span><span class="p">))</span>    <span class="c1"># Real and imaginary parts</span>
+    <span class="k">return</span> <span class="n">spectrum</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="going-backward-the-inverse-dft">Going Backward: The Inverse DFT</h2>
+<p>The DFT converts a time-domain signal into a frequency-domain spectrum. The reverse operation also exists, and it will matter for a handful of specialized topics later in the course. The <strong>inverse DFT</strong> is the mathematical operation that reconstructs the original time-domain signal exactly from its complete spectrum array, defined as the DFT formula run in reverse with the sign of the exponent flipped and the result divided by <span class="arithmatex">\( N \)</span>:</p>
+<h4 id="inverse-dft-definition">Inverse DFT Definition</h4>
+<div class="arithmatex">\[ x[n] = \frac{1}{N}\sum_{k=0}^{N-1} X[k] \cdot e^{i 2\pi k n / N} \]</div>
+<p>where the symbols match the forward DFT definition, with the transform running from frequency bins <span class="arithmatex">\( X[k] \)</span> back to time-domain samples <span class="arithmatex">\( x[n] \)</span>. This course does not build extensive applications on top of the inverse DFT, but its existence — and the fact that the forward and inverse transforms are near-mirror images of each other mathematically — is worth knowing, since it confirms that converting to the frequency domain never actually discards information: every bit of the original signal is recoverable, in principle, from its complete spectrum.</p>
+<h2 id="computing-an-eight-point-dft-by-hand">Computing an Eight-Point DFT by Hand</h2>
+<p>Trusting a formula and trusting an implementation are two different things, and the gap between them is exactly what the rest of this chapter closes. Before validating code, it helps enormously to compute one small, complete example by hand, so there is a known-correct reference to compare against later.</p>
+<p>An <strong>eight-point DFT by hand</strong> is a fully worked numerical example computing all eight output bins of a DFT for a small, specific eight-sample input signal, performed with pencil, calculator, or a simple spreadsheet rather than running code — deliberately small enough to check every multiplication and addition by hand, yet large enough to exhibit real bin structure, a DC bin, a Nyquist bin, and spectrum symmetry all at once.</p>
+<h4 id="diagram-eight-point-dft-by-hand-calculator">Diagram: Eight-Point DFT by Hand Calculator</h4>
+<iframe src="../../sims/eight-point-dft-by-hand-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Eight-Point DFT by Hand Calculator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> eight-point-dft-by-hand-calculator<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, interpret</p>
+<p>Learning objective: Let students step through the full arithmetic of an 8-point DFT calculation bin by bin, seeing every multiplication and sum with concrete numbers, so they can explain how the abstract DFT definition becomes a specific numeric result.</p>
+<p>Canvas layout:
+- Top (200px): the fixed 8-sample input signal shown as a small bar chart, values visible as numbers above each bar
+- Middle (200px): the current bin's calculation worked out step by step (each of the 8 sample-times-test-wave-value products, then the running sum)
+- Bottom (150px): Next/Previous bin controls and a running results table (bin index, real part, imaginary part, magnitude) that fills in as each bin is completed</p>
+<p>Visual elements:
+- 8-sample input bar chart with exact numeric values labeled (a fixed example signal, e.g., a simple combination of a DC offset and one clean sinusoid sampled at exactly one full cycle across the 8 points)
+- Step-by-step arithmetic display for the current bin: each term x[n] × cos(angle) and x[n] × sin(angle), then the accumulating real and imaginary sums
+- Results table growing one row at a time as each bin (0 through 7) is completed</p>
+<p>Interactive controls:
+- Button: "Next bin" — advances to computing the next bin index's full arithmetic
+- Button: "Previous bin"
+- Button: "Show all 8 samples' individual products for this bin" (expand/collapse detail)</p>
+<p>Data Visibility Requirements:
+  Stage 1: Show the fixed 8-sample input signal with exact values
+  Stage 2 (per bin): Show each of the 8 individual products for both real and imaginary parts
+  Stage 3 (per bin): Show the summed real and imaginary totals for that bin
+  Final: Show the complete 8-row results table with every bin's real part, imaginary part, and magnitude, with bin 0 (DC) and bin 4 (Nyquist, since N=8) specially labeled</p>
+<p>Instructional Rationale: An Understand-level step-through worked example is appropriate because the objective is explaining how the DFT definition produces a specific numeric result — concrete, fully-visible arithmetic at every step lets students verify the formula themselves rather than trusting a black-box calculation, directly preparing them to validate their own code against this exact worked answer.</p>
+<p>Implementation notes:
+- Use p5.js; precompute the fixed 8-sample example and its correct DFT result once, then reveal it progressively through the step controls
+- Responsive width; the three stacked panels scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">This worked example is your answer key</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+Keep the results table from this calculator open in another tab when you write your own DFT code. Feeding your code the exact same 8-sample input and comparing its output bin by bin against this worked answer is the fastest, most reliable way to catch a bug before it hides inside a more complicated signal.</p>
+</div>
+<h2 id="validation-before-trust">Validation Before Trust</h2>
+<p>A DFT implementation that merely runs without crashing has proven almost nothing — it could easily produce plausible-looking numbers that are still completely wrong. This course treats a stronger standard as non-negotiable, starting here and continuing through every implementation that follows.</p>
+<p><strong>Validation before trust</strong> is the governing principle that no implementation should be relied upon for further work until it has been checked against an independently known correct answer — a working-looking result is not the same as a <em>correct</em> result, and this course treats the difference as the entire point of engineering discipline. That independently known correct answer needs a name of its own: <strong>ground truth</strong> is a correct, independently verified reference result — such as the hand-computed eight-point DFT above — used as the standard a new implementation's output is checked against.</p>
+<p>Producing ground truth for a DFT implementation is easiest with input signals specifically chosen to make the correct answer obvious in advance, rather than a real, messy recorded sound. A <strong>known signal test</strong> validates an implementation by feeding it an input signal whose correct frequency-domain output is already known in advance, then comparing the implementation's actual output against that known-correct answer. Choosing exactly what that input signal should look like is itself a deliberate skill worth naming: <strong>test signal design</strong> is the practice of deliberately constructing a test input — such as a pure sine wave at a frequency that lands exactly on a bin center — specifically to make the correct expected output simple, unambiguous, and easy to verify by hand.</p>
+<p>A well-designed test signal makes a strong, specific prediction about where in the spectrum a peak should appear. The <strong>expected peak</strong> is the specific frequency bin, computed in advance from ground truth, where a known test signal's energy should concentrate in the resulting spectrum — a pure 2,000 Hz tone sampled at 16,000 Hz across 512 samples has an expected peak at a bin index computable directly from the bin exact frequency formula, before the DFT ever runs.</p>
+<h2 id="measuring-how-wrong-is-too-wrong">Measuring How Wrong Is Too Wrong</h2>
+<p>Floating-point arithmetic virtually never produces a computed result that matches an expected value to the last decimal digit — some tiny discrepancy is normal and expected, not necessarily a bug. Deciding how much discrepancy is acceptable requires a precise way to measure it.</p>
+<p>The <strong>absolute error</strong> is the plain numeric difference between a computed value and its expected value, <span class="arithmatex">\( |{\text{computed} - \text{expected}}| \)</span>, with no adjustment for the size of the numbers involved. Because the same absolute error can be negligible for a large expected value and enormous for a small one, a scaled version is often more meaningful: the <strong>relative error</strong> is the absolute error expressed as a fraction (or percentage) of the expected value's magnitude, <span class="arithmatex">\( \frac{|\text{computed} - \text{expected}|}{|\text{expected}|} \)</span>, making error comparable across values of very different sizes.</p>
+<p>Deciding, in advance, exactly how much error is acceptable for a given comparison to still count as "correct" is the last piece needed before writing an actual test. <strong>Numerical tolerance</strong> is a deliberately chosen threshold below which a computed value's error, relative to its expected value, is still considered correct — accounting for the unavoidable tiny discrepancies inherent to floating-point arithmetic, without being so loose that a genuine bug slips through undetected.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Formula</th>
+<th>When to prefer it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Absolute error</td>
+<td><span class="arithmatex">\( \lvert \text{computed} - \text{expected} \rvert \)</span></td>
+<td>Comparing values of similar, known scale</td>
+</tr>
+<tr>
+<td>Relative error</td>
+<td><span class="arithmatex">\( \dfrac{\lvert \text{computed} - \text{expected} \rvert}{\lvert \text{expected} \rvert} \)</span></td>
+<td>Comparing values across very different magnitudes</td>
+</tr>
+<tr>
+<td>Numerical tolerance</td>
+<td>A chosen threshold, e.g. 0.1%</td>
+<td>Deciding pass/fail for an automated test</td>
+</tr>
+</tbody>
+</table>
+<p>Confirming a DFT implementation works correctly not just at one single frequency but across its entire usable range uses one more validation technique, already previewed informally in the last chapter's correlation chart. A <strong>frequency sweep</strong> — used here specifically as a validation technique — feeds a known test signal at a systematically increasing series of frequencies into an implementation and confirms that the detected peak correctly tracks the input frequency at every step, catching bugs that a single fixed-frequency test might miss entirely.</p>
+<h4 id="diagram-dft-validation-dashboard">Diagram: DFT Validation Dashboard</h4>
+<iframe src="../../sims/dft-validation-dashboard/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>DFT Validation Dashboard</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> dft-validation-dashboard<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Evaluate
+Bloom Taxonomy Verb: Judge, validate</p>
+<p>Learning objective: Let students judge whether a DFT implementation passes validation by comparing a computed spectrum's peak against an expected peak within a chosen numerical tolerance, across a swept range of test frequencies.</p>
+<p>Canvas layout:
+- Top (250px): computed spectrum bar chart for the currently selected test frequency, expected peak bin marked with a dashed line
+- Bottom (200px): pass/fail summary table across a full frequency sweep, plus a tolerance slider</p>
+<p>Visual elements:
+- Bar chart of spectrum magnitude by bin index, for the current known test signal
+- Dashed vertical marker at the expected peak bin, computed from ground truth
+- Color-coded pass (green) / fail (red) indicator based on whether relative error at the expected peak is within the chosen tolerance
+- Summary table: one row per swept test frequency, showing expected bin, actual detected bin, relative error, and pass/fail</p>
+<p>Interactive controls:
+- Slider: "Test frequency" (manually move through the swept range one at a time)
+- Slider: "Numerical tolerance" (0.01% to 5%), default 0.1%
+- Button: "Run full frequency sweep" — automatically steps through the full range and populates the summary table</p>
+<p>Behavior:
+- Selecting a test frequency updates the spectrum bar chart and shows whether that specific case passes or fails at the current tolerance
+- Running the full sweep populates every row of the summary table at once, letting students see at a glance whether validation passes uniformly across the entire usable frequency range or fails at specific points</p>
+<p>Instructional Rationale: An Evaluate-level pattern is appropriate because the objective is judging pass/fail against a defined standard (numerical tolerance) — a dashboard that surfaces the comparison explicitly, rather than hiding it inside a script's exit code, makes the judgment process itself visible and teachable.</p>
+<p>Implementation notes:
+- Use p5.js; compute the DFT of each synthesized test signal directly in JavaScript for the swept frequencies
+- Responsive width; chart and summary table stack vertically below 700px width</p>
+</details>
+<h2 id="debugging-by-bisection">Debugging by Bisection</h2>
+<p>Even a carefully validated DFT implementation will, at some point, fail a test — and when it does, this course teaches one specific, systematic strategy for finding out why, rather than guessing.</p>
+<p><strong>Debugging by bisection</strong> is a systematic debugging strategy that locates the source of an error by repeatedly narrowing the search space in half — checking an intermediate point between known-good and known-bad states, determining which half still contains the problem, and repeating — converging on the exact faulty step far faster than checking every step in order.</p>
+<p>Applied to a failing DFT implementation, debugging by bisection typically looks like this:</p>
+<ol>
+<li>Confirm the failure is real by re-running the known signal test — rule out a one-time fluke.</li>
+<li>Check the input signal itself against ground truth before suspecting the DFT code at all — a wrong test signal produces a wrong expected peak.</li>
+<li>Compare the DC bin (bin 0) alone against its known expected value — the simplest possible case, isolating whether the basic summation logic works at all.</li>
+<li>If the DC bin passes, jump to the middle of the spectrum (around the Nyquist bin) rather than checking every bin in sequence — a bisection step that immediately halves the remaining search space.</li>
+<li>Continue bisecting between the last known-good bin and the first known-bad bin until the exact failing calculation is isolated.</li>
+</ol>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Every implementation in this course gets this same treatment</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Twenty-eight concepts in one chapter, and a lot of them are about testing rather than the transform itself — that's deliberate. The validation habit you're building right now is the exact same habit the FFT chapters, the assembly chapters, and the capstone all lean on. Learn it once here, on code you can already check by hand, and it pays off for the rest of the course.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have a complete, working, <em>validated</em> Discrete Fourier Transform — the first frequency-domain tool in this course built entirely from first principles and proven correct against known answers.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>The <strong>DFT definition</strong> generalizes Chapter 8's correlation across every <strong>frequency bin</strong>, using a <strong>complex exponential</strong> to combine in-phase and quadrature in one term; the <strong>Discrete Fourier Transform</strong> is the resulting operation.</li>
+<li>Each bin has a <strong>bin index</strong>, a <strong>bin exact frequency</strong> and <strong>bin center frequency</strong>, and a <strong>bin width</strong>; together these determine <strong>bin resolution</strong> and, practically, <strong>frequency resolution</strong>.</li>
+<li>Bin 0 is the <strong>DC bin</strong>; bin <span class="arithmatex">\( N/2 \)</span> is the <strong>Nyquist bin</strong>; bins above it represent <strong>negative frequencies</strong>, producing <strong>spectrum symmetry</strong> for real-valued input.</li>
+<li>Results are stored in a <strong>spectrum array</strong> of <strong>real and imaginary parts</strong>; the <strong>inverse DFT</strong> reconstructs the original signal from that spectrum.</li>
+<li>An <strong>eight-point DFT by hand</strong> produces trustworthy <strong>ground truth</strong> for a <strong>known signal test</strong>, built through deliberate <strong>test signal design</strong> with a computable <strong>expected peak</strong>.</li>
+<li><strong>Absolute error</strong>, <strong>relative error</strong>, and <strong>numerical tolerance</strong> define what "close enough" means; a <strong>frequency sweep</strong> validates correctness across the whole range — all in service of <strong>validation before trust</strong>, with <strong>debugging by bisection</strong> as the systematic fallback when a test fails.</li>
+</ul>
+<details class="note">
+<summary>Quick check: a 512-sample DFT is computed on a signal sampled at 16,000 Hz. What is the frequency resolution, and which bin index is the Nyquist bin? — Click to expand</summary>
+<p>Frequency resolution (= bin width) is f_s / N = 16,000 / 512 = 31.25 Hz per bin. The Nyquist bin is at index N/2 = 256, representing exactly the Nyquist frequency of 8,000 Hz.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">A working, validated DFT — built entirely by hand</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+This is the milestone the whole first half of the course has been building toward: a Discrete Fourier Transform you built, understand completely, and have actually proven correct — not just trusted. There's just one problem left, and it's a big one: this implementation is astonishingly slow. The next chapter measures exactly how slow, and why. Not bad for a $5 chip — yet.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../08-correlation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 8. Correlation: Does My Signal Contain This Note?">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                8. Correlation: Does My Signal Contain This Note?
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../10-why-the-dft-is-too-slow/" class="md-footer__link md-footer__link--next" aria-label="Next: 10. Why the DFT Is Too Slow">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                10. Why the DFT Is Too Slow
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

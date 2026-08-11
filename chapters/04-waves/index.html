@@ -1,0 +1,2181 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Build the sine-wave vocabulary — amplitude, frequency, phase, and harmonics — that the rest of the course depends on.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/04-waves/">
+      
+      
+        <link rel="prev" href="../03-peripherals/">
+      
+      
+        <link rel="next" href="../05-capturing-real-audio/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Waves: Amplitude, Frequency, Phase, and Harmonics - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#waves-amplitude-frequency-phase-and-harmonics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Waves: Amplitude, Frequency, Phase, and Harmonics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-simplest-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Simplest Wave
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#describing-a-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describing a Wave
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Describing a Wave">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#period-and-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Period and Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-sine-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Sine Wave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sine-wave-with-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sine Wave With Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-sine-wave-parameter-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Sine Wave Parameter Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-a-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing a Wave
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-two-instruments-sound-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Two Instruments Sound Different
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Two Instruments Sound Different">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-harmonic-stack-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Harmonic Stack Synthesizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-simplest-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Simplest Wave
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#describing-a-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Describing a Wave
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Describing a Wave">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#period-and-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      Period and Frequency
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#general-sine-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      General Sine Wave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sine-wave-with-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sine Wave With Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-sine-wave-parameter-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Sine Wave Parameter Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-a-wave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing a Wave
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-two-instruments-sound-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Two Instruments Sound Different
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why Two Instruments Sound Different">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-harmonic-stack-synthesizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Harmonic Stack Synthesizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/04-waves/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="waves-amplitude-frequency-phase-and-harmonics">Waves: Amplitude, Frequency, Phase, and Harmonics</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter builds the wave vocabulary — amplitude, frequency, phase, and the periodic sine and cosine functions — that everything downstream in the course depends on. It introduces harmonics, overtones, and timbre as the reason two instruments playing the same note sound different. These concepts are taught here, ahead of the audio-capture chapter, because the sampling and aliasing discussion that follows assumes them.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 16 concepts from the learning graph:</p>
+<ol>
+<li>Amplitude</li>
+<li>Cosine Wave</li>
+<li>DC Component</li>
+<li>Frequency</li>
+<li>Fundamental Frequency</li>
+<li>Harmonics</li>
+<li>Hertz</li>
+<li>Overtones</li>
+<li>Peak Amplitude</li>
+<li>Period Of A Wave</li>
+<li>Periodic Functions</li>
+<li>Phase</li>
+<li>Sine Wave</li>
+<li>Timbre</li>
+<li>Time Domain</li>
+<li>Time Domain Plot</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to talk about wiggles</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+No hardware in this chapter — just math, and it's the math that makes everything else in this course possible. Every sound, every vibration, every signal you'll ever capture on this board is built from the shapes we're about to define. Let's tune in.</p>
+</div>
+<p>Before this course captures a single real sound, it needs a precise vocabulary for describing <em>any</em> sound — or any signal that rises and falls over time. That vocabulary starts with the single simplest repeating shape in all of mathematics.</p>
+<h2 id="the-simplest-wave">The Simplest Wave</h2>
+<p>A <strong>sine wave</strong> is a smooth, repeating curve described by the sine function, <span class="arithmatex">\( y = \sin(x) \)</span>, that rises from zero to a peak, falls back through zero to a trough, and returns to zero — over and over, forever, at perfectly even intervals. It is not just one shape among many worth knowing; it is the fundamental building block this entire course is built on, because — as later chapters prove directly — <em>any</em> repeating signal, no matter how complicated, can be built by adding together sine waves of different sizes and speeds.</p>
+<p>A close relative uses the same curve, just starting from a different point: a <strong>cosine wave</strong> is the same smooth, repeating shape as a sine wave, described by <span class="arithmatex">\( y = \cos(x) \)</span>, except it starts at its peak instead of at zero — cosine is what sine looks like if you start watching a quarter-cycle later. Sine and cosine waves belong to a broader category worth naming precisely: <strong>periodic functions</strong> are functions whose output repeats in an identical, unchanging pattern at regular intervals forever — sine and cosine are the two periodic functions this course uses constantly, but the term itself applies to any repeating pattern, mathematical or physical.</p>
+<h2 id="describing-a-wave">Describing a Wave</h2>
+<p>A bare sine or cosine shape does not, by itself, describe a <em>specific</em> real-world wave — a quiet, slow hum and a loud, piercing whistle are both "sine waves" in shape, yet clearly different. Telling them apart requires three numbers.</p>
+<p>The first is how fast the wave repeats. <strong>Frequency</strong> is the number of complete wave cycles that occur in one second — a slow, low hum has a low frequency; a piercing whistle has a high frequency. Frequency is measured in a unit with its own name: the <strong>Hertz</strong>, abbreviated Hz, is the standard unit of frequency, defined as exactly one cycle per second — a 440 Hz tone (concert-pitch A, the note orchestras tune to) completes 440 full wave cycles every second.</p>
+<p>Frequency and the time one single cycle takes are two sides of the same coin. The <strong>period of a wave</strong> is the amount of time one complete cycle takes to occur, measured in seconds, and it is mathematically the reciprocal of frequency:</p>
+<h4 id="period-and-frequency">Period and Frequency</h4>
+<div class="arithmatex">\[ T = \frac{1}{f} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( T \)</span> is the period, in seconds</li>
+<li><span class="arithmatex">\( f \)</span> is the frequency, in Hertz</li>
+</ul>
+<p>A 440 Hz tone, for example, has a period of <span class="arithmatex">\( \frac{1}{440} \approx 0.00227 \)</span> seconds — just over two milliseconds per cycle. Higher frequency always means shorter period, and vice versa.</p>
+<p>The second describing number is how big the wave's swing is. <strong>Amplitude</strong> is the size of a wave's swing away from its resting (zero) value — a louder sound or a bigger vibration has greater amplitude, while a quieter or gentler one has smaller amplitude, independent of how fast it repeats. The single largest value amplitude ever reaches during a cycle has its own name: <strong>peak amplitude</strong>, the maximum value a wave's amplitude reaches at the very top of its swing, used throughout this course to describe how "loud" or "large" a captured signal is without needing to describe its entire shape.</p>
+<p>Real-world signals are not always perfectly centered on zero the way a textbook sine wave is — a microphone or sensor can add a constant offset to every sample. That offset is the <strong>DC component</strong>: a constant, non-oscillating offset added to a wave's amplitude, shifting the entire wave up or down without changing its shape, frequency, or peak-to-peak swing. ("DC" borrows its name from <em>direct current</em> in electronics — a steady value, as opposed to the <em>alternating</em> back-and-forth swing of the wave itself.) Later chapters remove the DC component from captured audio before analyzing it, precisely because it carries no information about the sound itself.</p>
+<p>Putting frequency and amplitude together produces the general equation for a sine wave used throughout the rest of this course:</p>
+<h4 id="general-sine-wave">General Sine Wave</h4>
+<div class="arithmatex">\[ y(t) = A \sin(2\pi f t) \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( y(t) \)</span> is the wave's value at time <span class="arithmatex">\( t \)</span></li>
+<li><span class="arithmatex">\( A \)</span> is the amplitude</li>
+<li><span class="arithmatex">\( f \)</span> is the frequency, in Hertz</li>
+<li><span class="arithmatex">\( t \)</span> is time, in seconds</li>
+</ul>
+<p>Before defining the third and final describing number, it helps to name why one is still missing: two sine waves can share the exact same frequency and amplitude and still not overlap — one could be at its peak exactly when the other is crossing zero. That timing offset is <strong>phase</strong>: the position of a wave within its own cycle at a specific moment, relative to a reference starting point, typically expressed in degrees (0°–360°) or radians (0–2π). Adding a phase term to the general sine wave equation makes the timing offset explicit:</p>
+<h4 id="sine-wave-with-phase">Sine Wave With Phase</h4>
+<div class="arithmatex">\[ y(t) = A \sin(2\pi f t + \phi) \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( \phi \)</span> (phi) is the phase, in radians</li>
+</ul>
+<p>Phase is exactly what distinguishes sine from cosine mathematically: a cosine wave is precisely a sine wave with a phase of <span class="arithmatex">\( \frac{\pi}{2} \)</span> radians (90°) — <span class="arithmatex">\( \cos(x) = \sin\left(x + \frac{\pi}{2}\right) \)</span>. Two waves with identical frequency and amplitude but different phase will not add together the same way two perfectly aligned waves do — a fact that becomes critically important when this course reaches correlation and the Discrete Fourier Transform in Module 3.</p>
+<p>Before the interactive explorer below, it's worth naming exactly what each of its three sliders controls, since they map directly onto the equation just introduced: amplitude scales the wave's height, frequency scales how fast it repeats, and phase slides the whole wave left or right in time without changing its shape.</p>
+<h4 id="diagram-sine-wave-parameter-explorer">Diagram: Sine Wave Parameter Explorer</h4>
+<iframe src="../../sims/sine-wave-parameter-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Sine Wave Parameter Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> sine-wave-parameter-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Demonstrate, calculate</p>
+<p>Learning objective: Let students manipulate amplitude, frequency, and phase independently and observe exactly which visual feature of the plotted wave each parameter controls, connecting the equation y(t) = A sin(2<em>pi</em>f*t + phi) to its graph.</p>
+<p>Canvas layout:
+- Top (350px): a continuous waveform plot, x-axis labeled "Time (seconds)", y-axis labeled "Amplitude", showing 2-3 full cycles of the current wave at default settings
+- Bottom (150px): controls</p>
+<p>Visual elements:
+- A single smooth sine curve redrawn live as sliders move
+- A dashed horizontal reference line at y=0
+- A vertical marker line showing t=0, with a small dot on the curve showing the wave's exact value there (visually demonstrating phase's effect at the origin)
+- A live equation readout: "y(t) = [A] sin(2π × [f] × t + [phi])" with current slider values substituted</p>
+<p>Interactive controls:
+- Slider: Amplitude (A), range 0.2 to 2.0, default 1.0
+- Slider: Frequency (f), range 0.5 to 5 Hz, default 1 Hz (kept low for visual clarity of individual cycles)
+- Slider: Phase (phi), range 0 to 2π (displayed in degrees, 0-360°), default 0°
+- Toggle: "Overlay cosine wave" — draws a second curve (same A and f, phase fixed at 90°) in a contrasting color, to let students directly see that cosine is sine shifted by a quarter cycle</p>
+<p>Default parameters:
+- Amplitude: 1.0
+- Frequency: 1 Hz
+- Phase: 0°
+- Cosine overlay: off</p>
+<p>Behavior:
+- Moving the Amplitude slider visibly stretches or compresses the curve vertically only, with no change to spacing between peaks
+- Moving the Frequency slider visibly compresses or stretches the curve horizontally, changing how many cycles fit in the visible window, with no change to peak height
+- Moving the Phase slider slides the entire curve left or right without changing its height or cycle spacing
+- Enabling "Overlay cosine wave" draws a second curve offset exactly 90° from the first, letting students see the sine/cosine relationship directly regardless of the current phase slider value</p>
+<p>Instructional Rationale: An Apply-level parameter-exploration pattern is appropriate because the objective is to let students isolate the independent visual effect of each of the three parameters (amplitude, frequency, phase) by manipulating one at a time and observing the specific, predictable change in the graph.</p>
+<p>Implementation notes:
+- Use p5.js; recompute the plotted points every frame from the live slider values rather than pre-rendering
+- Responsive width; waveform plot and controls both scale to container width on window resize</p>
+</details>
+<h2 id="seeing-a-wave">Seeing a Wave</h2>
+<p>Plotting a wave's value against time, the way the explorer above just did, is common enough to have a formal name. The <strong>time domain</strong> is a way of representing a signal as its value changes over time — the natural, direct way any sensor or microphone actually records a signal, one sample after another. A <strong>time domain plot</strong> is a graph with time on the horizontal axis and signal amplitude on the vertical axis, visualizing exactly how a signal's value rises and falls moment to moment — the specific kind of chart the parameter explorer above draws.</p>
+<p>Nearly everything this course captures directly from the microphone in Module 2 arrives first as a time domain signal. Module 3 later introduces a <em>different</em> way of looking at the same signal — the frequency domain — but that transformation only makes sense once the time domain representation is second nature.</p>
+<h2 id="why-two-instruments-sound-different">Why Two Instruments Sound Different</h2>
+<p>A single, pure sine wave is a mathematical idealization — real instruments and voices essentially never produce one. Instead, they produce several sine waves simultaneously, layered on top of each other, and it is that layering that gives every instrument its distinctive character.</p>
+<p><strong>Harmonics</strong> are the family of sine-wave components — periodic functions of specific, related frequencies — that combine to form most real-world periodic sounds; rather than one pure tone, a plucked guitar string or a sung note is actually a <em>sum</em> of many sine waves at once. The lowest, quietest-sounding member of that family sets the pitch you actually perceive: the <strong>fundamental frequency</strong> is the lowest-frequency harmonic in a complex tone, and the one that determines the pitch a listener identifies — a note perceived as "A4" has a fundamental frequency of 440 Hz, even though the actual sound contains many additional frequencies layered on top.</p>
+<p>Those additional frequencies layered above the fundamental are the <strong>overtones</strong>: the higher-frequency harmonics present above the fundamental frequency in a complex tone, typically at whole-number multiples of the fundamental (twice, three times, four times its frequency, and so on) — it is the specific mixture and relative loudness of these overtones, not the fundamental frequency alone, that makes a violin playing A4 sound completely different from a flute playing the exact same A4 pitch.</p>
+<p>That perceptual difference — same pitch, different-sounding instrument — has a name of its own: <strong>timbre</strong> (pronounced "TAM-ber"), the quality that distinguishes two sounds with the identical fundamental frequency (and therefore the same perceived pitch) as sounding different, determined by which overtones are present and how loud each one is relative to the fundamental. A violin and a flute playing the same 440 Hz note share an identical fundamental frequency; their different overtone mixtures are the entire reason your ear can tell them apart instantly.</p>
+<p>Before comparing a few instruments' overtone patterns in a table, it is worth being concrete about what "mixture of overtones" actually means in numbers: for a note with a 440 Hz fundamental, the overtones sit near 880 Hz (2×), 1,320 Hz (3×), 1,760 Hz (4×), and so on — and different instruments make some of these louder and others nearly silent.</p>
+<table>
+<thead>
+<tr>
+<th>Instrument</th>
+<th>Fundamental (A4)</th>
+<th>Overtone character</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flute</td>
+<td>440 Hz</td>
+<td>Very few strong overtones</td>
+<td>Pure, breathy timbre</td>
+</tr>
+<tr>
+<td>Violin</td>
+<td>440 Hz</td>
+<td>Many strong overtones, especially odd multiples</td>
+<td>Rich, bright timbre</td>
+</tr>
+<tr>
+<td>Clarinet</td>
+<td>440 Hz</td>
+<td>Strong odd-numbered overtones, weak even ones</td>
+<td>Hollow, reedy timbre</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Timbre is a mixing recipe, not a single number</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Here's the idea worth holding onto: pitch is a single number (the fundamental frequency), but timbre is a whole recipe — which overtones are present, and how loud each one is relative to the others. Later in this course, the FFT you build is precisely the tool that takes a captured sound and reads that recipe back out, overtone by overtone.</p>
+</div>
+<p>Building a wave out of a fundamental plus overtones is easiest to understand by doing it yourself, one harmonic at a time, and watching the combined shape change while the fundamental frequency — and therefore the pitch — stays fixed.</p>
+<h4 id="diagram-harmonic-stack-synthesizer">Diagram: Harmonic Stack Synthesizer</h4>
+<iframe src="../../sims/harmonic-stack-synthesizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Harmonic Stack Synthesizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> harmonic-stack-synthesizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, differentiate</p>
+<p>Learning objective: Let students adjust the relative amplitude of several overtones above a fixed fundamental frequency and analyze how the combined waveform's shape (timbre) changes while its repetition rate (pitch) does not, differentiating the roles of fundamental frequency and overtone mixture.</p>
+<p>Canvas layout:
+- Top (300px): combined waveform plot showing the sum of the fundamental and all active overtones, x-axis "Time", y-axis "Amplitude"
+- Middle (150px): small stacked bar-style sliders, one per harmonic (1st through 5th), showing each harmonic's individual contribution
+- Bottom (100px): preset buttons and readout</p>
+<p>Visual elements:
+- Main plot: the combined (summed) waveform, redrawn live
+- Optional faint overlay of each individual harmonic sine wave in a light, distinguishing color, toggleable
+- Five small vertical sliders labeled "1st (fundamental)", "2nd", "3rd", "4th", "5th", each showing relative amplitude 0-100%
+- Readout: "Fundamental frequency: 440 Hz (fixed — this is the pitch)" to reinforce that pitch does not change regardless of slider settings</p>
+<p>Interactive controls:
+- Five vertical sliders, one per harmonic, range 0-100%, default: 1st=100%, 2nd=0%, 3rd=0%, 4th=0%, 5th=0% (pure sine wave / flute-like on load)
+- Preset buttons: "Flute-like" (mostly fundamental), "Violin-like" (fundamental + strong 2nd/3rd), "Clarinet-like" (fundamental + strong odd harmonics, weak even), "Reset to pure tone"
+- Checkbox: "Show individual harmonics overlay"</p>
+<p>Default parameters:
+- 1st harmonic (fundamental): 100%
+- All other harmonics: 0%
+- Overlay: off</p>
+<p>Behavior:
+- The combined waveform plot recomputes as the sum of all active harmonic sine waves (each at its slider-set relative amplitude and at its harmonic multiple of 440 Hz) every time any slider moves
+- Clicking a preset button animates all five sliders to that preset's values and updates the combined plot
+- The combined waveform's overall repetition rate (period) never changes as sliders move — only its shape within each cycle changes — visually demonstrating that pitch is independent of timbre</p>
+<p>Instructional Rationale: An Analyze-level pattern (parameter exploration plus explicit comparison via presets) is appropriate because the objective requires students to examine the relationship between overtone mixture and waveform shape, and differentiate that from the separate, fixed concept of fundamental frequency/pitch — direct manipulation with instrument-based presets makes the abstract "timbre" concept concrete.</p>
+<p>Implementation notes:
+- Use p5.js; sum harmonic sine waves as A_n * sin(2<em>pi</em>n<em>440</em>t) for n = 1 to 5, scaled by each slider's percentage
+- Responsive width; plot, harmonic sliders, and preset buttons all scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">You already know this by ear</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+Try the "Violin-like" and "Clarinet-like" presets back to back in the synthesizer above and just look at how differently shaped the combined wave is — even though both are still built on the same 440 Hz fundamental. Your ears have been distinguishing exactly this kind of overtone recipe your entire life without knowing the math behind it.</p>
+</div>
+<p>That intuition is not a coincidence — it is the entire reason this chapter comes before the sampling, correlation, and DFT chapters that follow. Every technique this course later uses to detect a frequency, from correlation in Module 3 through the DFT and FFT themselves, is built directly on the amplitude, frequency, and phase vocabulary just introduced here. The math ahead does not replace your ear's judgment; it formalizes something your ear already does effortlessly, so a computer can do it too.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">The equations will click once you can see them move</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Four new Greek-letter-adjacent terms in one chapter — amplitude, frequency, phase, and now harmonics on top — is genuinely a lot of vocabulary at once. If it feels abstract right now, that's expected; Lab 11, right after this chapter, has you build these exact waves yourself and watch them plotted live. Seeing them move is where this vocabulary actually sticks.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have the complete vocabulary for describing any repeating signal — the foundation every later chapter on sound, sampling, and frequency analysis builds on directly.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>A <strong>sine wave</strong> (and its phase-shifted twin, the <strong>cosine wave</strong>) is the fundamental repeating shape this entire course is built from; both are <strong>periodic functions</strong>.</li>
+<li><strong>Frequency</strong> (measured in <strong>Hertz</strong>) and <strong>period</strong> are reciprocals of each other — faster repetition means a shorter period.</li>
+<li><strong>Amplitude</strong> describes a wave's size; <strong>peak amplitude</strong> is its maximum swing; a <strong>DC component</strong> is an unwanted constant offset riding along with the wave.</li>
+<li><strong>Phase</strong> describes <em>where</em> in its cycle a wave currently sits — it is what makes cosine different from sine, and it matters enormously once waves start being compared to each other.</li>
+<li>A <strong>time domain plot</strong> shows a signal's value against time — the natural, direct way any sensor captures a signal.</li>
+<li><strong>Harmonics</strong> — a <strong>fundamental frequency</strong> plus its <strong>overtones</strong> — combine to produce <strong>timbre</strong>, the reason two instruments playing an identical pitch still sound completely different.</li>
+</ul>
+<details class="note">
+<summary>Quick check: two sine waves have the same 440 Hz frequency and the same amplitude, but one is a sine wave and the other is a cosine wave. What single parameter explains the difference? — Click to expand</summary>
+<p>Phase. A cosine wave is mathematically identical to a sine wave shifted by a phase of π/2 radians (90°) — same frequency, same amplitude, different position within the cycle.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now describe any wave precisely</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Amplitude, frequency, phase, harmonics, timbre — that's the complete vocabulary this course uses to talk about sound from here forward, and you built it without touching a single wire. Next stop: capturing a real sound with the I²S microphone and watching these exact shapes appear in your own recorded audio. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../03-peripherals/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../05-capturing-real-audio/" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Capturing Real Audio: The I2S Microphone">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                5. Capturing Real Audio: The I2S Microphone
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

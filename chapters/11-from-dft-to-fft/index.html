@@ -1,0 +1,2392 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Cooley-Tukey insight, twiddle factors, and the butterfly operation that let a DFT be computed in a fraction of the work.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/11-from-dft-to-fft/">
+      
+      
+        <link rel="prev" href="../10-why-the-dft-is-too-slow/">
+      
+      
+        <link rel="next" href="../12-building-the-fft/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#from-dft-to-fft-divide-and-conquer-twiddle-factors-and-the-butterfly" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparing-a-signal-before-transforming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparing a Signal Before Transforming
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-fast-idea-rediscovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Fast Idea, Rediscovered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#divide-and-conquer-splitting-the-problem-in-half" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer: Splitting the Problem in Half
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Divide and Conquer: Splitting the Problem in Half">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-divide-and-conquer-recursion-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Divide-and-Conquer Recursion Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roots-of-unity-the-numbers-that-combine-the-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roots of Unity: The Numbers That Combine the Pieces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roots of Unity: The Numbers That Combine the Pieces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#twiddle-factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Twiddle Factor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-roots-of-unity-on-the-unit-circle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Roots of Unity on the Unit Circle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiplying-complex-numbers-efficiently" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiplying Complex Numbers Efficiently
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiplying Complex Numbers Efficiently">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complex-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Multiplication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-butterfly-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Butterfly Operation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Butterfly Operation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#butterfly-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Butterfly Operation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-butterfly-operation-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Butterfly Operation Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bit-reversal-and-computing-in-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Reversal and Computing in Place
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stages-and-a-first-optimization-habit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stages and a First Optimization Habit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preparing-a-signal-before-transforming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparing a Signal Before Transforming
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-fast-idea-rediscovered" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Fast Idea, Rediscovered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#divide-and-conquer-splitting-the-problem-in-half" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer: Splitting the Problem in Half
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Divide and Conquer: Splitting the Problem in Half">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-divide-and-conquer-recursion-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Divide-and-Conquer Recursion Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roots-of-unity-the-numbers-that-combine-the-pieces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Roots of Unity: The Numbers That Combine the Pieces
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Roots of Unity: The Numbers That Combine the Pieces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#twiddle-factor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Twiddle Factor
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-roots-of-unity-on-the-unit-circle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Roots of Unity on the Unit Circle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiplying-complex-numbers-efficiently" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiplying Complex Numbers Efficiently
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiplying Complex Numbers Efficiently">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complex-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex Multiplication
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-butterfly-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Butterfly Operation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Butterfly Operation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#butterfly-operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Butterfly Operation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-butterfly-operation-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Butterfly Operation Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bit-reversal-and-computing-in-place" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Reversal and Computing in Place
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stages-and-a-first-optimization-habit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stages and a First Optimization Habit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/11-from-dft-to-fft/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="from-dft-to-fft-divide-and-conquer-twiddle-factors-and-the-butterfly">From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter introduces the Cooley-Tukey insight that a DFT can be split recursively into smaller DFTs on even- and odd-indexed samples, and defines the twiddle factors and butterfly operation that combine the results back together. It covers bit reversal and in-place computation as the bookkeeping the algorithm needs to run without extra memory. These pieces are assembled into a complete, validated implementation in the next chapter.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 24 concepts from the learning graph:</p>
+<ol>
+<li>Amplitude Normalization</li>
+<li>Audio Processing</li>
+<li>Bit Reversal</li>
+<li>Butterfly Diagram</li>
+<li>Butterfly Operation</li>
+<li>Complex Multiplication</li>
+<li>Cooley Tukey Algorithm</li>
+<li>DC Offset Removal</li>
+<li>Data Flow Graph</li>
+<li>Decimation In Time</li>
+<li>FFT Algorithm</li>
+<li>FFT History</li>
+<li>FFT Stages</li>
+<li>Four Multiply Form</li>
+<li>In Place FFT</li>
+<li>Interleaved Storage</li>
+<li>Loop Invariant Hoisting</li>
+<li>Normalization</li>
+<li>Precomputation</li>
+<li>Radix-2 FFT</li>
+<li>Roots Of Unity</li>
+<li>Signal Preprocessing</li>
+<li>Twiddle Factor Table</li>
+<li>Twiddle Factors</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+<li><a href="../10-why-the-dft-is-too-slow/">10. Why the DFT Is Too Slow</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">The trick that makes everything else in this course possible</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+530 times too slow was the cliffhanger. Here's the resolution: the DFT is doing an enormous amount of <em>redundant</em> work, and one clever restructuring throws almost all of it away without changing the answer by a single bit. Let's tune in — this is the chapter the whole course is named after.</p>
+</div>
+<h2 id="preparing-a-signal-before-transforming">Preparing a Signal Before Transforming</h2>
+<p>Before any fast algorithm runs, a captured audio buffer usually needs a little housekeeping first — cleanup steps that make the transform's output more meaningful, even though they don't change <em>how</em> the transform itself is computed. Collectively, this housekeeping falls under <strong>audio processing</strong>: any computation applied to a captured or synthesized audio signal, from simple cleanup steps through the full frequency analysis pipeline this course builds. The specific cleanup steps applied immediately after capture and before transforming are called <strong>signal preprocessing</strong>: a set of operations performed on a raw captured signal before it is analyzed, intended to remove artifacts and normalize scale so the analysis that follows produces cleaner, more comparable results.</p>
+<p>Two preprocessing steps are worth naming individually, because upcoming labs apply both to every captured buffer. Recall from Chapter 4 that a captured signal can carry an unwanted constant offset. <strong>DC offset removal</strong> is the preprocessing step that subtracts a signal's average (DC) value from every sample, centering the signal on zero before any frequency analysis — without it, the DFT's DC bin would absorb this offset and, worse, energy from the offset can leak into neighboring bins once windowing is introduced two chapters from now. Separately, captured signals can arrive at very different overall loudness levels depending on distance from the microphone or source volume. <strong>Normalization</strong> is the general process of rescaling a signal's values into a standard, predictable range, making results comparable regardless of the original signal's absolute size. Applied specifically to amplitude, <strong>amplitude normalization</strong> rescales a signal so its peak amplitude reaches a target value (often 1.0 or the full scale value from Chapter 6), ensuring a quiet whisper and a loud shout produce spectra that are comparable in overall scale, differing only in their frequency content.</p>
+<table>
+<thead>
+<tr>
+<th>Preprocessing step</th>
+<th>What it removes or fixes</th>
+<th>Why it matters before transforming</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DC offset removal</td>
+<td>Constant, non-oscillating offset</td>
+<td>Keeps offset energy out of the DC bin and away from neighboring bins</td>
+</tr>
+<tr>
+<td>Amplitude normalization</td>
+<td>Inconsistent overall loudness</td>
+<td>Makes spectra comparable regardless of input volume</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a-fast-idea-rediscovered">A Fast Idea, Rediscovered</h2>
+<p>The mathematics behind this chapter is not, strictly speaking, new. <strong>FFT history</strong> traces the fast Fourier transform's core idea back further than most students expect: Carl Friedrich Gauss sketched an equivalent method in 1805 to speed up astronomical calculations, but it went largely unnoticed for over a century. The version this course builds traces to a 1965 paper by James Cooley and John Tukey, published while working on unrelated seismic and nuclear test-detection data — their algorithm made frequency analysis practical on the computers of the era and is now considered one of the most important algorithms of the twentieth century.</p>
+<div class="admonition note">
+<p class="admonition-title">Same math, a hundred and sixty years apart</p>
+<p>Gauss's version and the Cooley-Tukey version rest on the identical divide-and-conquer insight this chapter is about to build from scratch. The gap between them wasn't a missing mathematical idea — it was the absence of a machine that needed to compute Fourier transforms fast enough for the insight to matter. Once computers existed, the idea's moment arrived.</p>
+</div>
+<p>The general term for any algorithm in this family is worth defining before diving into the specific one this course builds. The <strong>FFT algorithm</strong> — Fast Fourier Transform — is any of a family of algorithms that compute the same result as the Discrete Fourier Transform, exactly, using dramatically fewer operations than the direct DFT definition requires. The <strong>Cooley-Tukey algorithm</strong> is the specific, most widely used FFT algorithm, based on recursively breaking a DFT of size <span class="arithmatex">\( N \)</span> into smaller DFTs, then combining their results — the version this chapter and the next build in full.</p>
+<h2 id="divide-and-conquer-splitting-the-problem-in-half">Divide and Conquer: Splitting the Problem in Half</h2>
+<p>The DFT's quadratic cost, derived in the previous chapter, comes from treating every output bin as an independent, from-scratch calculation. Cooley-Tukey's insight is that these <span class="arithmatex">\( N \)</span> calculations are not actually independent — they share an enormous amount of duplicated arithmetic that a smarter structure can compute once and reuse.</p>
+<p>The specific restructuring this course builds is called <strong>decimation in time</strong>: a Cooley-Tukey strategy that splits an <span class="arithmatex">\( N \)</span>-sample input signal into two smaller sequences — one containing every even-indexed sample, one containing every odd-indexed sample — computes a smaller DFT on each, and combines the two results back into the full-size answer. Each of those two smaller DFTs can itself be split the same way, and the one after that, all the way down to trivially small problems — this repeated halving is exactly the <strong>radix-2 FFT</strong>: an FFT variant that always splits the current problem into exactly two equal halves at every stage, which requires the input size <span class="arithmatex">\( N \)</span> to be a power of two (256, 512, 1024, and so on) for the splitting to divide evenly all the way down.</p>
+<p>Before the diagram below, it's worth being explicit about why splitting helps at all: a size-<span class="arithmatex">\( N \)</span> DFT costs <span class="arithmatex">\( N^2 \)</span> operations, but two size-<span class="arithmatex">\( \frac{N}{2} \)</span> DFTs together cost only <span class="arithmatex">\( 2 \times \left(\frac{N}{2}\right)^2 = \frac{N^2}{2} \)</span> operations — already half the work, before even reaching the combination step. Splitting recursively, all the way down, is what eventually produces the dramatic <span class="arithmatex">\( O(N \log N) \)</span> result the next chapter proves in full.</p>
+<h4 id="diagram-divide-and-conquer-recursion-tree">Diagram: Divide-and-Conquer Recursion Tree</h4>
+<iframe src="../../sims/divide-and-conquer-recursion-tree/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Divide-and-Conquer Recursion Tree</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> divide-and-conquer-recursion-tree<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, interpret</p>
+<p>Learning objective: Let students interpret how an 8-sample DFT problem is recursively split by decimation in time into even- and odd-indexed halves, down to trivial size-1 problems, explaining what happens at each level of the tree.</p>
+<p>Canvas layout:
+- Full-width tree diagram, root at top (400px tall), growing downward through 4 levels
+- Infobox panel below the tree, populated on click</p>
+<p>Visual elements:
+- Root node: "8 samples: x[0]...x[7]"
+- Level 1: two child nodes — "Even: x[0],x[2],x[4],x[6]" and "Odd: x[1],x[3],x[5],x[7]"
+- Level 2: four nodes, each splitting its parent again by even/odd index within that subsequence
+- Level 3 (leaves): eight single-sample nodes, each labeled with its original index
+- Lines connecting each parent to its two children, labeled "even" and "odd"</p>
+<p>Interactive elements:
+- Clicking any node highlights the path from that node back to the root and displays in the infobox: "This subsequence contains [N] samples. Splitting it costs one comparison of index parity, an operation done once regardless of N."
+- A "Play split animation" button that visually animates the split happening level by level, top to bottom</p>
+<p>Instructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining the recursive structure itself, not performing a calculation — seeing the full tree at once, with click-triggered path highlighting, makes the "keep splitting until trivial" idea concrete before any butterfly arithmetic is introduced.</p>
+<p>Implementation notes:
+- Use p5.js; the tree structure and its 8-sample example are fixed for clarity, matching the eight-point DFT worked example from the previous chapter
+- Responsive width; tree nodes and connecting lines scale proportionally, with horizontal scrolling as a fallback on very narrow viewports</p>
+</details>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Splitting is free; the DFT arithmetic is what got expensive</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Notice that dividing the samples into even and odd groups costs almost nothing — it's just sorting by index. All the actual savings come from the fact that two small DFTs, run separately, need far fewer total operations than one big DFT run directly. That's the entire mechanism. Everything else in this chapter is about recombining those small results correctly.</p>
+</div>
+<h2 id="roots-of-unity-the-numbers-that-combine-the-pieces">Roots of Unity: The Numbers That Combine the Pieces</h2>
+<p>Splitting the problem in half is only useful if the two smaller results can be stitched back together into the correct full-size answer — and stitching them together correctly requires a specific, precisely defined set of complex numbers.</p>
+<p>The <strong>roots of unity</strong> are the complex number solutions to the equation <span class="arithmatex">\( z^N = 1 \)</span> — there are exactly <span class="arithmatex">\( N \)</span> of them for a given <span class="arithmatex">\( N \)</span>, and geometrically they land at evenly spaced points around the unit circle from Chapter 7, each one exactly <span class="arithmatex">\( \frac{2\pi}{N} \)</span> radians apart from its neighbors. The specific roots of unity used to recombine the even and odd sub-transforms in an FFT have their own name: <strong>twiddle factors</strong> are the complex numbers <span class="arithmatex">\( W_N^k = e^{-i 2\pi k / N} \)</span> used to multiply and rotate the output of one sub-transform before adding or subtracting it from the other, correctly accounting for the phase relationship between the even-indexed and odd-indexed halves of the original signal.</p>
+<h4 id="twiddle-factor">Twiddle Factor</h4>
+<div class="arithmatex">\[ W_N^k = e^{-i 2\pi k / N} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( W_N^k \)</span> is the twiddle factor for index <span class="arithmatex">\( k \)</span> at transform size <span class="arithmatex">\( N \)</span></li>
+<li><span class="arithmatex">\( N \)</span> is the size of the DFT being combined</li>
+<li><span class="arithmatex">\( k \)</span> is an integer index, <span class="arithmatex">\( 0 \le k &lt; N/2 \)</span></li>
+</ul>
+<p>Because twiddle factors depend only on <span class="arithmatex">\( N \)</span> and <span class="arithmatex">\( k \)</span> — never on the actual input signal's values — they are exactly the same for every FFT computed at a given size. Computing them freshly, with a sine and cosine call, every single time an FFT runs would waste effort recalculating an answer that never changes. <strong>Precomputation</strong> is the general strategy of calculating a value once, in advance, and reusing the stored result instead of recalculating it every time it's needed. Applied here, a <strong>twiddle factor table</strong> is a precomputed array holding every twiddle factor value an FFT of a given size will need, calculated once (often when a program starts) and simply looked up by index during every actual transform — a direct, high-value application of precomputation that every FFT implementation in this course relies on.</p>
+<h4 id="diagram-roots-of-unity-on-the-unit-circle">Diagram: Roots of Unity on the Unit Circle</h4>
+<iframe src="../../sims/roots-of-unity-unit-circle/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Roots of Unity on the Unit Circle</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> roots-of-unity-unit-circle<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, demonstrate</p>
+<p>Learning objective: Let students adjust N and calculate the resulting set of twiddle factors, observing that they always land as N evenly spaced points on the unit circle from Chapter 7.</p>
+<p>Canvas layout:
+- Left (400px): the unit circle with all N roots of unity plotted as points, connected to the origin by thin lines
+- Right (300px): a table listing each root's index k, its angle, and its value as a + bi</p>
+<p>Visual elements:
+- Unit circle with N evenly spaced points marked
+- Point at k=0 always highlighted distinctly (this is always the value 1 + 0i)
+- Clicking any point highlights it on the circle and its corresponding row in the table</p>
+<p>Interactive controls:
+- Slider or dropdown: N (4, 8, 16, 32), default 8
+- Clicking a point on the circle (or a table row) highlights the matching entry in both views and shows the twiddle factor formula with that k substituted</p>
+<p>Behavior:
+- Changing N redraws the circle with the new number of evenly spaced points and regenerates the table
+- Each point's exact angle is 2<em>pi</em>k/N, and hovering shows this computation explicitly</p>
+<p>Instructional Rationale: An Apply-level parameter exploration with calculation display is appropriate because the objective is calculating specific twiddle factor values for a chosen N and confirming their geometric placement — pairing the visual circle with an exact numeric table lets students verify the formula rather than only see a picture.</p>
+<p>Implementation notes:
+- Use p5.js; compute each point as (cos(-2<em>pi</em>k/N), sin(-2<em>pi</em>k/N)) for k = 0 to N-1
+- Responsive width; circle and table stack vertically below 650px width</p>
+</details>
+<h2 id="multiplying-complex-numbers-efficiently">Multiplying Complex Numbers Efficiently</h2>
+<p>Every twiddle factor eventually multiplies a complex sub-transform result, so an FFT implementation needs to perform complex multiplication efficiently and often. <strong>Complex multiplication</strong> follows a fixed algebraic rule: multiplying two complex numbers <span class="arithmatex">\( (a + bi) \)</span> and <span class="arithmatex">\( (c + di) \)</span> distributes across both terms and uses <span class="arithmatex">\( i^2 = -1 \)</span> to simplify, producing <span class="arithmatex">\( (ac - bd) + (ad + bc)i \)</span>.</p>
+<h4 id="complex-multiplication">Complex Multiplication</h4>
+<div class="arithmatex">\[ (a + bi)(c + di) = (ac - bd) + (ad + bc)i \]</div>
+<p>where <span class="arithmatex">\( a, b, c, d \)</span> are real numbers and <span class="arithmatex">\( i \)</span> is the imaginary unit.</p>
+<p>Written out directly like this, the formula requires four real-number multiplications (<span class="arithmatex">\( ac \)</span>, <span class="arithmatex">\( bd \)</span>, <span class="arithmatex">\( ad \)</span>, <span class="arithmatex">\( bc \)</span>) along with one addition and one subtraction. This specific, standard way of implementing complex multiplication has a name worth knowing, since later optimization chapters return to it directly: the <strong>four multiply form</strong> is the straightforward implementation of complex multiplication using exactly four real multiplications and two real additions/subtractions, as shown in the formula above — the version every butterfly operation in this chapter's FFT uses, and the version whose four multiplications later become a specific, countable cost when this course starts optimizing in assembly language.</p>
+<h2 id="the-butterfly-operation">The Butterfly Operation</h2>
+<p>Complex multiplication supplies the tool; the <strong>butterfly operation</strong> is where it gets used to actually recombine an even sub-transform result with an odd one. The butterfly operation takes one value from the even sub-transform (call it <span class="arithmatex">\( a \)</span>), one value from the odd sub-transform (call it <span class="arithmatex">\( b \)</span>), and a twiddle factor <span class="arithmatex">\( W \)</span>, and produces two new output values using a single pair of computations:</p>
+<h4 id="butterfly-operation">Butterfly Operation</h4>
+<div class="arithmatex">\[ \text{output}_1 = a + W \cdot b \]</div>
+<div class="arithmatex">\[ \text{output}_2 = a - W \cdot b \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( a \)</span> is a value from the even-indexed sub-transform</li>
+<li><span class="arithmatex">\( b \)</span> is a value from the odd-indexed sub-transform</li>
+<li><span class="arithmatex">\( W \)</span> is the twiddle factor for this position</li>
+</ul>
+<p>Notice that both outputs reuse the <em>identical</em> product <span class="arithmatex">\( W \cdot b \)</span> — computed once, then simply added for one output and subtracted for the other. This single-multiply, double-reuse structure is the specific reason the butterfly is so cheap: it produces two frequency-domain values from one complex multiplication and two complex additions, not two.</p>
+<p>The characteristic X-shaped diagram used to draw this operation gives it its name. A <strong>butterfly diagram</strong> is the standard visual representation of a butterfly operation, showing two input values on the left, two output values on the right, and crossing lines between them — with the twiddle-factor multiplication marked on the line feeding into the subtraction — resembling a butterfly's wings. A butterfly diagram is itself one small example of a broader kind of diagram used throughout computing: a <strong>data flow graph</strong> is a diagram representing how data moves through and is transformed by a sequence of operations, with nodes representing computations and edges representing data moving between them — an entire FFT, once fully assembled in the next chapter, can be drawn as one large data flow graph built from many connected butterfly diagrams.</p>
+<h4 id="diagram-butterfly-operation-visualizer">Diagram: Butterfly Operation Visualizer</h4>
+<iframe src="../../sims/butterfly-operation-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Butterfly Operation Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> butterfly-operation-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, demonstrate</p>
+<p>Learning objective: Let students set values for a, b, and a twiddle factor W, then calculate and observe the two butterfly outputs, confirming that output1 and output2 both derive from the single shared product W×b.</p>
+<p>Canvas layout:
+- Left (350px): the classic X-shaped butterfly diagram, with a and b entering on the left and output1/output2 exiting on the right
+- Right (300px): input controls and a step-by-step calculation readout</p>
+<p>Visual elements:
+- Two input nodes (a, b), two output nodes (output1, output2), crossing lines between them
+- The twiddle factor W marked on the line from b, feeding into the multiply
+- A "+" symbol at output1's combining point, a "−" symbol at output2's combining point
+- Live readout: "W × b = [value]", "output1 = a + (W×b) = [value]", "output2 = a − (W×b) = [value]"</p>
+<p>Interactive controls:
+- Numeric inputs (or small sliders): a (real, imaginary), b (real, imaginary)
+- Dropdown: W, selectable from a small set of common twiddle factor values (e.g., W_8^0, W_8^1, W_8^2)
+- Button: "Compute" — animates the multiply flowing along the line, then both additions/subtractions resolving at the outputs</p>
+<p>Behavior:
+- Changing any input immediately recalculates and redisplays every intermediate and final value
+- The shared W×b product is visually computed once and shown flowing into both output calculations, reinforcing that it is not recomputed</p>
+<p>Instructional Rationale: An Apply-level calculator with a data-flow visualization is appropriate because the objective is calculating specific butterfly outputs from chosen inputs — showing the single shared multiplication feeding both outputs directly addresses the "why is this efficient" question, not just "what is the answer."</p>
+<p>Implementation notes:
+- Use p5.js; implement complex multiplication using the four multiply form shown in this chapter
+- Responsive width; diagram and controls stack vertically below 650px width</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">One multiply, two answers — that's the whole savings</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+If you only remember one sentence from this chapter, make it this: the butterfly computes W×b exactly once and reuses it for both outputs. Multiply that single saved operation by thousands of butterflies across a full FFT, and you can already see where the next chapter's big speedup number comes from.</p>
+</div>
+<h2 id="bit-reversal-and-computing-in-place">Bit Reversal and Computing in Place</h2>
+<p>Recursively splitting samples into even and odd groups, over and over, scrambles the original sample order in a very specific, predictable way — and putting the pieces back together correctly, without wasting memory, requires understanding exactly how they got scrambled.</p>
+<p>Running an FFT on a memory-constrained microcontroller strongly favors an implementation that reuses its input buffer as scratch space rather than allocating new arrays at every recursive step. An <strong>in-place FFT</strong> is an FFT implementation that overwrites its own input array with intermediate and final results as it computes, rather than allocating separate memory for each stage of the algorithm — essential on a device with only kilobytes of RAM to work with. Making this work correctly requires the input samples to start out in a specific scrambled order rather than their original natural order. <strong>Bit reversal</strong> is the specific reordering required before an in-place radix-2 FFT: writing each sample's array index in binary, reversing the order of its bits, and using that reversed value as the sample's new position — a direct, mechanical consequence of how repeated even/odd splitting reorders data.</p>
+<p>Before the table below, it helps to see bit reversal worked out concretely for a small example: for an 8-sample array, index 3 in binary is <code>011</code>; reversed, it becomes <code>110</code>, which is 6 in decimal — so the sample originally at index 3 moves to index 6 before the in-place butterflies begin.</p>
+<table>
+<thead>
+<tr>
+<th>Natural index</th>
+<th>Binary</th>
+<th>Reversed binary</th>
+<th>Bit-reversed index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>000</td>
+<td>000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>001</td>
+<td>100</td>
+<td>4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>010</td>
+<td>010</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>011</td>
+<td>110</td>
+<td>6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>100</td>
+<td>001</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>101</td>
+<td>101</td>
+<td>5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>110</td>
+<td>011</td>
+<td>3</td>
+</tr>
+<tr>
+<td>7</td>
+<td>111</td>
+<td>111</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Once samples are rearranged into bit-reversed order, complex values need to actually live somewhere in memory — and MicroPython, like most languages, has no single built-in "complex number" type suited to tight, fast array access. <strong>Interleaved storage</strong> is a storage layout in which the real and imaginary parts of a sequence of complex numbers are stored alternately in a single flat array (real, imaginary, real, imaginary, ...) rather than in two separate arrays — a memory layout used throughout this course's FFT implementation, matching the <code>(real_sum, imag_sum)</code> pairs already produced by the previous chapter's DFT code.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">bit_reverse_indices</span><span class="p">(</span><span class="n">n_bits</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">n_bits</span>                       <span class="c1"># N = 2^n_bits</span>
+    <span class="n">reversed_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">N</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;0</span><span class="si">{</span><span class="n">n_bits</span><span class="si">}</span><span class="s1">b&#39;</span><span class="p">)</span>      <span class="c1"># Binary string, zero-padded</span>
+        <span class="n">reversed_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># Reverse and convert back</span>
+    <span class="k">return</span> <span class="n">reversed_indices</span>
+</code></pre></div></td></tr></table></div>
+<p>This function computes the bit-reversed position for every index in one pass, exactly as shown in the table above (<code>n_bits=3</code> reproduces every row for the 8-sample example). The next chapter uses this table to reorder a signal's samples before running the in-place butterfly stages.</p>
+<h2 id="stages-and-a-first-optimization-habit">Stages and a First Optimization Habit</h2>
+<p>A complete radix-2 FFT does not perform all of its butterflies at once — it works through a fixed number of sequential passes over the data. The <strong>FFT stages</strong> are the sequential steps a radix-2 FFT proceeds through, where each stage performs a full set of butterfly operations across the entire (bit-reversed) array before the next stage begins — the next chapter shows that the total number of stages is exactly <span class="arithmatex">\( \log_2 N \)</span>, which is the direct source of the FFT's <span class="arithmatex">\( N \log N \)</span> complexity.</p>
+<p>One coding habit, introduced here because the twiddle factor table makes it so natural, deserves a name before the next chapter's implementation puts it to constant use. <strong>Loop invariant hoisting</strong> is an optimization technique that moves a computation out of a loop when its result does not change across loop iterations, computing it once beforehand instead of repeatedly recomputing an identical value on every pass. Looking up a twiddle factor from the precomputed table, instead of recalculating <code>cos()</code> and <code>sin()</code> inside every single butterfly, is loop invariant hoisting in its purest, most direct form — the value the twiddle factor table stores never changes for a given <span class="arithmatex">\( N \)</span>, so computing it once, before any stage runs, is strictly better than recomputing it thousands of times during the transform.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Every piece here is small — the next chapter just connects them</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Twenty-four new terms is a lot, but look at what they actually are: split in half, multiply by a precomputed number, add and subtract once, reorder with bit reversal. None of these pieces is individually hard. The next chapter's job — and it's the biggest chapter in this book — is simply wiring them together into one working recursive function.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now understand every individual piece the Fast Fourier Transform is built from — the next chapter's entire job is assembling them into one working implementation.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li><strong>Audio processing</strong> and <strong>signal preprocessing</strong> — especially <strong>DC offset removal</strong>, <strong>normalization</strong>, and <strong>amplitude normalization</strong> — clean a signal before any transform runs.</li>
+<li><strong>FFT history</strong> traces back to Gauss and forward to the <strong>Cooley-Tukey algorithm</strong>, one member of the broader <strong>FFT algorithm</strong> family.</li>
+<li><strong>Decimation in time</strong> recursively splits a signal by even/odd index; the <strong>radix-2 FFT</strong> always splits into exactly two halves, requiring a power-of-two size.</li>
+<li><strong>Roots of unity</strong> are evenly-spaced points on the unit circle; <strong>twiddle factors</strong> are the specific roots of unity used to recombine sub-transforms, stored in a precomputed <strong>twiddle factor table</strong> via <strong>precomputation</strong>.</li>
+<li><strong>Complex multiplication</strong>, in its standard <strong>four multiply form</strong>, powers the <strong>butterfly operation</strong> — visualized with a <strong>butterfly diagram</strong>, one instance of a general <strong>data flow graph</strong>.</li>
+<li><strong>Bit reversal</strong> reorders samples for an <strong>in-place FFT</strong>, stored using <strong>interleaved storage</strong>; the algorithm proceeds through <span class="arithmatex">\( \log_2 N \)</span> <strong>FFT stages</strong>, with <strong>loop invariant hoisting</strong> (like the twiddle factor table itself) as a first optimization habit.</li>
+</ul>
+<details class="note">
+<summary>Quick check: why does the butterfly operation only need one complex multiplication to produce two outputs, instead of two? — Click to expand</summary>
+<p>Because both outputs are built from the identical product W×b — one output adds it to a, the other subtracts it from a. Computing W×b once and reusing it for both the addition and the subtraction avoids a second, redundant multiplication that would otherwise recompute the exact same value.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Every gear of the machine is on the table</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Divide and conquer, twiddle factors, the butterfly, bit reversal — you now understand every mechanism a real FFT implementation needs. Next chapter, all of it comes together into one working, validated function, and you'll watch the operation count fall off a cliff. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../10-why-the-dft-is-too-slow/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10. Why the DFT Is Too Slow">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                10. Why the DFT Is Too Slow
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../12-building-the-fft/" class="md-footer__link md-footer__link--next" aria-label="Next: 12. Building the FFT: A Complete Recursive Implementation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                12. Building the FFT: A Complete Recursive Implementation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

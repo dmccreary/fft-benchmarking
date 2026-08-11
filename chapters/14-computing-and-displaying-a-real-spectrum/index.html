@@ -1,0 +1,2275 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Turn FFT output into magnitude, phase, and power spectra, compress them onto a decibel scale, and display a live spectrum validated with the whistle test.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/14-computing-and-displaying-a-real-spectrum/">
+      
+      
+        <link rel="prev" href="../13-fft-variants-complexity-and-correctness/">
+      
+      
+        <link rel="next" href="../15-windowing-spectral-leakage-and-peak-detection/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Computing and Displaying a Real Spectrum - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#computing-and-displaying-a-real-spectrum" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Computing and Displaying a Real Spectrum
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-a-captured-frame-to-a-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      From a Captured Frame to a Spectrum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-complex-bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading a Complex Bin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading a Complex Bin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#magnitude-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magnitude Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-magnitude-and-phase-from-a-complex-bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Magnitude and Phase from a Complex Bin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-different-spectra" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Different Spectra
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-versus-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Versus Magnitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-faster-way-to-approximate-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Faster Way to Approximate Magnitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#only-half-the-story-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Only Half the Story, Again
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compressing-the-range-for-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compressing the Range for Display
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Compressing the Range for Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decibel-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decibel Conversion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-linear-vs-square-root-vs-decibel-scaling-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Linear vs. Square-Root vs. Decibel Scaling Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fitting-a-spectrum-on-a-small-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fitting a Spectrum on a Small Screen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fitting a Spectrum on a Small Screen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-live-spectrum-display-with-bin-averaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Live Spectrum Display with Bin Averaging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-the-whole-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming the Whole Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-whistle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Whistle Test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-a-captured-frame-to-a-spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      From a Captured Frame to a Spectrum
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-a-complex-bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading a Complex Bin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading a Complex Bin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#magnitude-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magnitude Calculation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-magnitude-and-phase-from-a-complex-bin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Magnitude and Phase from a Complex Bin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-different-spectra" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Different Spectra
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#power-versus-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Power Versus Magnitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-faster-way-to-approximate-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Faster Way to Approximate Magnitude
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#only-half-the-story-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      Only Half the Story, Again
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compressing-the-range-for-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compressing the Range for Display
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Compressing the Range for Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decibel-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decibel Conversion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-linear-vs-square-root-vs-decibel-scaling-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Linear vs. Square-Root vs. Decibel Scaling Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fitting-a-spectrum-on-a-small-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fitting a Spectrum on a Small Screen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fitting a Spectrum on a Small Screen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-live-spectrum-display-with-bin-averaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Live Spectrum Display with Bin Averaging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-the-whole-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming the Whole Pipeline
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-whistle-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Whistle Test
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/14-computing-and-displaying-a-real-spectrum/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="computing-and-displaying-a-real-spectrum">Computing and Displaying a Real Spectrum</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter applies the FFT to real captured audio for the first time, converting complex FFT output into magnitude and phase spectra, and then into a decibel scale suitable for display on the OLED. It introduces the whistle test — sweeping pitch by ear and watching the displayed peak follow — as the first end-to-end validation that the whole pipeline works on real sound. This chapter also revisits the RMS-based level-meter ideas from the correlation chapter in the context of spectral display.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 22 concepts from the learning graph:</p>
+<ol>
+<li>Bin Averaging For Display</li>
+<li>Decibel Conversion</li>
+<li>Decibel Scale</li>
+<li>Fast Magnitude Approximation</li>
+<li>Frame Capture</li>
+<li>Half Spectrum Display</li>
+<li>Level Meter</li>
+<li>Live Spectrum Display</li>
+<li>Logarithmic Scaling</li>
+<li>Magnitude Calculation</li>
+<li>Magnitude Computation</li>
+<li>Magnitude Spectrum</li>
+<li>Phase Calculation</li>
+<li>Phase Spectrum</li>
+<li>Post Processing</li>
+<li>Power Spectrum</li>
+<li>Power Versus Magnitude</li>
+<li>Spectral Analysis</li>
+<li>Spectrum Bars</li>
+<li>Spectrum Plot</li>
+<li>Square Root Scaling</li>
+<li>Whistle Test</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../08-correlation/">8. Correlation: Does My Signal Contain This Note?</a></li>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../12-building-the-fft/">12. Building the FFT: A Complete Recursive Implementation</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Real sound, real spectrum, on your own screen</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Every FFT you've run so far has worked on numbers you typed in or generated. This chapter points the transform at your own voice, for the first time, and puts the result on the OLED where you can watch it. This is the moment the whole course has been pointing toward. Let's tune in.</p>
+</div>
+<h2 id="from-a-captured-frame-to-a-spectrum">From a Captured Frame to a Spectrum</h2>
+<p>Everything in this chapter starts from a single block of audio, captured exactly the way Chapter 5 first demonstrated. A <strong>frame capture</strong> is the act of reading one fixed-size block of <span class="arithmatex">\( N \)</span> samples from the microphone — using the buffered read from Chapter 5 — to serve as the input to a single FFT computation; this course's real-time labs repeat frame capture continuously, over and over, once per frame duration, to keep a live display updating.</p>
+<p>Turning a captured frame into something meaningful about the sound's frequency content is a general practice worth naming before diving into its specific steps. <strong>Spectral analysis</strong> is the general practice of examining a signal's frequency content — using tools like the FFT — to understand what frequencies are present and how strong each one is, as opposed to examining the signal's raw value over time. Everything from this point in the chapter forward is one specific pipeline for performing spectral analysis on captured audio, stage by stage.</p>
+<h2 id="reading-a-complex-bin">Reading a Complex Bin</h2>
+<p>The FFT from Chapter 12 hands back a spectrum array of complex values — real and imaginary parts, exactly as Chapter 9 defined them. Neither part alone tells a complete, intuitive story about "how strong is this frequency" — that requires combining them.</p>
+<p><strong>Magnitude calculation</strong> is the formula that combines a complex bin's real and imaginary parts into a single strength value, using the same Pythagorean combination introduced for correlation magnitude back in Chapter 8: <span class="arithmatex">\( |X[k]| = \sqrt{\text{re}^2 + \text{im}^2} \)</span>. Applying that formula across every single bin in a spectrum array, not just one, is worth naming as its own practical step: <strong>magnitude computation</strong> is the process of applying magnitude calculation to every bin in a complete spectrum array, producing one magnitude value per frequency bin rather than a single isolated number.</p>
+<h4 id="magnitude-calculation">Magnitude Calculation</h4>
+<div class="arithmatex">\[ |X[k]| = \sqrt{\text{re}[k]^2 + \text{im}[k]^2} \]</div>
+<p>A complex bin carries a second piece of information beyond strength — its position within its own cycle, the same phase idea from Chapter 4 and Chapter 7, now measured directly from the transform's output. <strong>Phase calculation</strong> computes the phase angle of a complex bin using the arctangent of its imaginary part divided by its real part, <span class="arithmatex">\( \theta = \text{atan2}(\text{im}, \text{re}) \)</span> — using the two-argument <code>atan2</code> form specifically because it correctly determines the angle's quadrant, something a plain single-argument arctangent cannot do on its own.</p>
+<h4 id="diagram-magnitude-and-phase-from-a-complex-bin">Diagram: Magnitude and Phase from a Complex Bin</h4>
+<iframe src="../../sims/magnitude-phase-from-complex-bin/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Magnitude and Phase from a Complex Bin</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> magnitude-phase-from-complex-bin<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, demonstrate</p>
+<p>Learning objective: Let students adjust a complex bin's real and imaginary parts and calculate the resulting magnitude and phase, connecting the complex-plane point to both formulas simultaneously.</p>
+<p>Canvas layout:
+- Left (350px): a complex plane with a point at (re, im), a vector from the origin, and the angle theta marked
+- Right (300px): input controls and live formula readouts</p>
+<p>Visual elements:
+- Complex plane with real/imaginary axes
+- A vector from the origin to the point (re, im), its length visually representing magnitude
+- An arc showing the angle theta from the positive real axis to the vector</p>
+<p>Interactive controls:
+- Slider: Real part (re), range -10 to 10, default 6
+- Slider: Imaginary part (im), range -10 to 10, default 8</p>
+<p>Behavior:
+- Moving either slider immediately redraws the vector and updates two live readouts: "Magnitude = sqrt(re² + im²) = [value]" and "Phase = atan2(im, re) = [value] radians"</p>
+<p>Instructional Rationale: An Apply-level calculator is appropriate because the objective is calculating magnitude and phase from specific chosen values — a live, directly manipulable complex-plane point ties the geometric picture to both formulas at once.</p>
+<p>Implementation notes:
+- Use p5.js; compute magnitude and phase directly from the slider values every frame
+- Responsive width; complex plane and controls stack vertically below 600px width</p>
+</details>
+<h2 id="two-different-spectra">Two Different Spectra</h2>
+<p>Computing magnitude and phase for every bin in a spectrum array produces two separate, complete arrays, each telling a different story about the same signal. The <strong>magnitude spectrum</strong> is the complete array of magnitude values, one per frequency bin, showing how strongly each frequency is present in the signal — this is the array this course displays almost exclusively, since "how strong is each frequency" is the question a tuner, level meter, or spectrum analyzer actually needs answered. The <strong>phase spectrum</strong> is the complete array of phase values, one per frequency bin, showing the phase angle of each frequency component — genuinely useful for advanced applications like audio synthesis and certain filtering techniques, but rarely displayed directly in this course, since magnitude alone answers the "which notes are present" question this course's labs are built around.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Phase isn't useless — it's just not this course's question</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+It's tempting to conclude phase doesn't matter since this course barely displays it. That's not quite right — phase carries real information, it just doesn't answer "which notes are present," which is the question every tuner and spectrum analyzer in this course is built to answer. Keep phase calculation in your back pocket; the day you build a filter or a synthesizer, it becomes essential again.</p>
+</div>
+<h2 id="power-versus-magnitude">Power Versus Magnitude</h2>
+<p>Magnitude is not the only way to express a bin's strength, and the alternative has a specific relationship to it worth knowing precisely. The <strong>power spectrum</strong> is an array of values, one per bin, computed as the <em>square</em> of each bin's magnitude (equivalently, <span class="arithmatex">\( \text{re}^2 + \text{im}^2 \)</span> without ever taking the square root) — power is proportional to signal energy, the same physical quantity RMS approximates in the time domain back in Chapter 8.</p>
+<p>Choosing between the two is a real decision with visible consequences, worth naming directly. <strong>Power versus magnitude</strong> describes the tradeoff between displaying a power spectrum, which squares differences and therefore makes strong peaks stand out dramatically more than magnitude does, versus displaying a magnitude spectrum, which compresses that same dynamic range and keeps quieter frequency content more visible alongside louder peaks. A drum hit's power spectrum makes its dominant frequency look overwhelmingly dominant; the same hit's magnitude spectrum shows that same peak more moderately, with weaker frequencies still visible nearby.</p>
+<h2 id="a-faster-way-to-approximate-magnitude">A Faster Way to Approximate Magnitude</h2>
+<p>Magnitude calculation's square root operation is more computationally expensive than a simple multiplication or addition — a real cost on a microcontroller computing hundreds of magnitudes per frame, every frame, in real time. A cheaper approximation exists for situations where perfect precision matters less than speed.</p>
+<p><strong>Fast magnitude approximation</strong> estimates a complex bin's magnitude without computing an actual square root, using a formula like <span class="arithmatex">\( |X[k]| \approx \alpha \cdot \max(|\text{re}|, |\text{im}|) + \beta \cdot \min(|\text{re}|, |\text{im}|) \)</span>, with constants <span class="arithmatex">\( \alpha \approx 0.96 \)</span> and <span class="arithmatex">\( \beta \approx 0.398 \)</span> chosen to keep the approximation's error small across all possible angles — trading a small, bounded amount of accuracy for a meaningfully faster calculation.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">A preview of a recurring theme</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+Fast magnitude approximation is your first taste of a pattern this course returns to constantly starting in the benchmarking module: trading a small, carefully bounded amount of accuracy for real, measurable speed. It won't matter yet for this chapter's labs — but remember the name, because the tradeoff itself becomes a recurring decision later on.</p>
+</div>
+<h2 id="only-half-the-story-again">Only Half the Story, Again</h2>
+<p>Spectrum symmetry from Chapter 9 applies directly and immediately to display: since the upper half of a real-input signal's spectrum is guaranteed to mirror the lower half exactly, there is nothing new to see by plotting it. <strong>Half spectrum display</strong> is the practice of showing only bins 0 through <span class="arithmatex">\( N/2 \)</span> (the DC bin through the Nyquist bin) on screen, since the remaining bins are a guaranteed, redundant mirror that adds no additional information — every spectrum plot in this course follows this practice without exception.</p>
+<h2 id="compressing-the-range-for-display">Compressing the Range for Display</h2>
+<p>Magnitude values across a real spectrum can span an enormous range — a strong fundamental frequency's bin might be a thousand times larger than a quiet overtone's bin sitting right next to it. Plotted directly on a linear scale, the quiet content simply disappears, squashed flat against the axis by the loud peak's height.</p>
+<p>The standard fix borrows a scale already introduced for sound level in Chapter 8. The <strong>decibel scale</strong> is a logarithmic scale, expressed in decibels (dB), that compresses a very wide range of magnitude or power values into a much narrower, more visually usable range — the same underlying idea as sound level, now applied bin by bin across an entire spectrum rather than to one overall loudness number. Performing that compression is called <strong>decibel conversion</strong>: the calculation that transforms a raw magnitude or power value into its decibel equivalent, typically <span class="arithmatex">\( \text{dB} = 20 \log_{10}(\text{magnitude}) \)</span> for magnitude values or <span class="arithmatex">\( \text{dB} = 10 \log_{10}(\text{power}) \)</span> for power values (the factor-of-two difference exists because power is already a squared quantity).</p>
+<h4 id="decibel-conversion">Decibel Conversion</h4>
+<div class="arithmatex">\[ \text{dB} = 20 \log_{10}(|X[k]|) \]</div>
+<p>Decibel conversion is one specific case of a broader family of display techniques. <strong>Logarithmic scaling</strong> is any display technique that maps raw values through a logarithm before plotting them, compressing large ranges of data into a visually manageable range — decibel conversion is logarithmic scaling applied specifically to audio magnitude or power. A lighter-weight middle ground exists for situations where a full logarithm calculation is more computation than a display update can afford. <strong>Square root scaling</strong> displays magnitude directly — itself already the square root of power — as a computationally cheaper compromise between raw power's extreme dynamic range and a full decibel conversion's more expensive logarithm call, trading some of the decibel scale's visual compression for a faster calculation.</p>
+<p>Before the chart below, it helps to see all three of these choices — linear, square root, and decibel — applied to the identical example spectrum side by side, since the visual difference is the entire reason this section exists.</p>
+<h4 id="diagram-linear-vs-square-root-vs-decibel-scaling-chart">Diagram: Linear vs. Square-Root vs. Decibel Scaling Chart</h4>
+<iframe src="../../sims/linear-sqrt-decibel-scaling-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Linear vs. Square-Root vs. Decibel Scaling Chart</summary>
+<p>Type: chart
+<strong>sim-id:</strong> linear-sqrt-decibel-scaling-chart<br/>
+<strong>Library:</strong> Chart.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Evaluate
+Bloom Taxonomy Verb: Judge, compare</p>
+<p>Learning objective: Let students compare the same fixed example spectrum plotted under linear (power), square-root (magnitude), and decibel scaling, and judge which scaling choice best reveals quiet frequency content alongside a dominant peak.</p>
+<p>Chart type: Bar chart, with a toggle to switch scaling mode</p>
+<p>Purpose: Make the practical consequence of scaling choice visually unmistakable using one fixed, realistic example spectrum containing one dominant peak and several much quieter components</p>
+<p>X-axis: Frequency bin
+Y-axis: Displayed value (rescales automatically with the selected mode)</p>
+<p>Data series: A single fixed example spectrum (one dominant bin, several bins at roughly 1-5% of the dominant bin's power), redrawn under the selected scaling</p>
+<p>Interactive elements:
+- Radio buttons: "Linear (power)" / "Square root (magnitude)" / "Decibel"
+- Hovering any bar shows its raw value and its currently displayed (scaled) value in a tooltip</p>
+<p>Title: "The Same Spectrum, Three Different Scales"
+Annotations: A caption noting which quiet bins become visually indistinguishable from zero under each scaling choice</p>
+<p>Implementation: Chart.js bar chart, recomputing all bar heights from the fixed underlying data whenever the scaling mode changes</p>
+</details>
+<h2 id="fitting-a-spectrum-on-a-small-screen">Fitting a Spectrum on a Small Screen</h2>
+<p>The OLED display from Chapter 3 has far fewer horizontal pixels than a typical FFT has usable bins — a 512-point FFT produces 256 usable bins in its half spectrum, but the display might only have room for 64 or 128 distinct bar positions. Something has to give, and the solution is to combine, not discard.</p>
+<p><strong>Bin averaging for display</strong> groups several adjacent frequency bins together and averages their magnitude (or decibel) values into a single displayed value, reducing the number of distinct bars shown without simply throwing away the bins that don't fit — every bin still contributes to the display, just combined with its close neighbors rather than shown individually. The averaged, screen-ready values are what actually get drawn: <strong>spectrum bars</strong> are the individual vertical bars of a bar-graph-style spectrum display, each one representing one displayed frequency band's magnitude (post-averaging) as bar height, directly extending the bar graph display concept from Chapter 8's level meter to a whole row of bars instead of one. Arranging that row of bars, updated continuously as new frames arrive, produces the actual visual this chapter has been building toward: a <strong>spectrum plot</strong> is any visual representation of a magnitude, power, or decibel spectrum across frequency, whether drawn as bars, a continuous line, or another visual form.</p>
+<p>Two more terms name specific, familiar uses of this same display machinery. A <strong>level meter</strong> is a display, often reusing the bar graph format from Chapter 8, that shows a single overall loudness or magnitude value rather than a full frequency breakdown — useful as a simple VU-style indicator alongside, or instead of, a full spectrum plot. Putting all of these pieces together, continuously updating as new frames stream in, produces a <strong>live spectrum display</strong>: a spectrum plot that updates continuously in near real time as new audio frames are captured and processed, giving a moving, immediately responsive picture of a sound's changing frequency content.</p>
+<h4 id="diagram-live-spectrum-display-with-bin-averaging">Diagram: Live Spectrum Display with Bin Averaging</h4>
+<iframe src="../../sims/live-spectrum-display-bin-averaging/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Live Spectrum Display with Bin Averaging</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> live-spectrum-display-bin-averaging<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, compare</p>
+<p>Learning objective: Let students adjust the number of displayed spectrum bars relative to the number of underlying FFT bins and analyze how bin averaging trades frequency detail for a display that fits a small screen.</p>
+<p>Canvas layout:
+- Top (200px): a simulated small OLED-style display area (128x64-style aspect ratio) showing the averaged, bar-style spectrum
+- Bottom (250px): the full underlying (unaveraged) 256-bin spectrum, shown as a thin-line plot for comparison, with shaded groupings showing which bins average into which displayed bar</p>
+<p>Visual elements:
+- Simulated OLED display with spectrum bars, updating on each simulated frame
+- Full-resolution reference plot below it, with vertical shaded bands grouping bins that combine into each displayed bar</p>
+<p>Interactive controls:
+- Slider: Number of displayed bars, range 8 to 256, default 32
+- Button: "Next simulated frame" — cycles through a small set of pre-defined example spectra (e.g., a single tone, a chord, white noise) to show averaging behavior across different signal shapes</p>
+<p>Behavior:
+- Reducing the number of displayed bars widens each shaded grouping band on the reference plot and visibly smooths / simplifies the OLED-style display above it
+- Setting the displayed bar count equal to the full bin count removes all averaging, and the OLED-style display exactly matches the reference plot's shape</p>
+<p>Instructional Rationale: An Analyze-level comparison pattern is appropriate because the objective requires examining the relationship between display resolution and underlying frequency detail — a synchronized dual view (simulated screen plus full-resolution reference) makes the averaging tradeoff directly observable rather than abstract.</p>
+<p>Implementation notes:
+- Use p5.js; precompute a small set of example 256-bin spectra and group-average them live based on the slider value
+- Responsive width; both panels scale to container width, stacking is not needed since both are already full-width</p>
+</details>
+<h2 id="naming-the-whole-pipeline">Naming the Whole Pipeline</h2>
+<p>Everything from magnitude calculation through bin averaging is, collectively, a specific instance of a broader category worth naming now that every individual step has been explained. <strong>Post-processing</strong> is any computation applied to an FFT's raw complex output <em>after</em> the transform itself has finished, before the result is displayed or used further — magnitude calculation, decibel conversion, and bin averaging are all post-processing steps, distinct from the transform itself, and this course's post-processing pipeline always runs in that same order: magnitude first, scale conversion second, averaging last.</p>
+<h2 id="the-whistle-test">The Whistle Test</h2>
+<p>All of this machinery — capture, transform, magnitude, scaling, averaging, display — means nothing until it is checked against something a person can verify directly, by ear, without any instrument. This course's first true end-to-end validation does exactly that.</p>
+<p>The <strong>whistle test</strong> is an end-to-end validation procedure in which a student whistles (or plays a tone) at a smoothly rising or falling pitch while watching the live spectrum display, confirming that the displayed peak visibly and immediately follows the pitch change in real time — a validation that exercises every single piece of this chapter's pipeline simultaneously, from microphone capture through the final drawn bar, using nothing but a human ear and eye as the reference.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">This is the test that makes it all feel real</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Every validation so far in this course has compared numbers against numbers — hand-computed DFTs, tolerance thresholds, cross-checks against NumPy. The whistle test is different: it's the first time the proof that your pipeline works is something you can <em>hear yourself doing</em> and watch happen on screen in real time. Nothing quite matches that moment.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have a complete pipeline that turns a captured frame of real audio into a live, readable spectrum on your own hardware — and a way to prove, by ear, that it actually works.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>A <strong>frame capture</strong> feeds <strong>spectral analysis</strong>; <strong>magnitude calculation</strong> and <strong>magnitude computation</strong> combine real and imaginary parts, while <strong>phase calculation</strong> extracts the angle — producing a <strong>magnitude spectrum</strong> and a <strong>phase spectrum</strong>.</li>
+<li>The <strong>power spectrum</strong> squares magnitude; <strong>power versus magnitude</strong> is a real display tradeoff. <strong>Fast magnitude approximation</strong> trades a little accuracy for speed.</li>
+<li><strong>Half spectrum display</strong> shows only the non-redundant bins; the <strong>decibel scale</strong>, via <strong>decibel conversion</strong> and <strong>logarithmic scaling</strong> (or the lighter <strong>square root scaling</strong>), compresses a spectrum's wide dynamic range for display.</li>
+<li><strong>Bin averaging for display</strong> fits a spectrum's <strong>spectrum bars</strong> onto a small screen, forming a <strong>spectrum plot</strong>; a <strong>level meter</strong> and a full <strong>live spectrum display</strong> both build on this same machinery.</li>
+<li>Everything after the transform itself is <strong>post-processing</strong> — and the <strong>whistle test</strong> proves the whole pipeline works, end to end, by ear.</li>
+</ul>
+<details class="note">
+<summary>Quick check: a spectrum bar's magnitude is 100, its neighbor's is 1. On a linear scale the neighbor is nearly invisible. Roughly what happens to that same gap in decibels? — Click to expand</summary>
+<p>20<em>log10(100) = 40 dB and 20</em>log10(1) = 0 dB — a 40 dB gap. That is a huge compression compared to the raw 100:1 ratio: on the decibel scale, the quiet bin sits a clearly visible, bounded 40 dB below the loud one instead of being squashed flat against the axis by a hundred-to-one linear ratio.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Your own voice, turned into a spectrum, on your own screen</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Whistle a rising note and watch that peak climb the display — that's real-time frequency analysis, built by you, running on a five-dollar chip. Next chapter fixes a subtle blurriness you may have already noticed in that peak, and teaches your pipeline to pinpoint a frequency far more precisely than one bin width. Not bad for a $5 chip!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../13-fft-variants-complexity-and-correctness/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 13. FFT Variants, Complexity, and Correctness">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                13. FFT Variants, Complexity, and Correctness
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-footer__link md-footer__link--next" aria-label="Next: 15. Windowing, Spectral Leakage, and Peak Detection">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                15. Windowing, Spectral Leakage, and Peak Detection
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

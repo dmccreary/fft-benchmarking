@@ -1,0 +1,2229 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Assemble capture, FFT, and display into a continuously running spectrum analyzer with double buffering, overlap processing, and stage-by-stage profiling.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/16-building-a-real-time-spectrum-analyzer/">
+      
+      
+        <link rel="prev" href="../15-windowing-spectral-leakage-and-peak-detection/">
+      
+      
+        <link rel="next" href="../17-measuring-time/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Building a Real-Time Spectrum Analyzer - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#building-a-real-time-spectrum-analyzer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Building a Real-Time Spectrum Analyzer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-the-complete-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming the Complete System
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-in-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing in Blocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-the-pipeline-from-stalling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keeping the Pipeline From Stalling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Keeping the Pipeline From Stalling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-double-buffering-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Double Buffering Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlapping-frames-for-smoother-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overlapping Frames for Smoother Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overlapping Frames for Smoother Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-hop-size-and-overlap-processing-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Hop Size and Overlap Processing Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiling-the-pipeline-stage-by-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profiling the Pipeline, Stage by Stage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profiling the Pipeline, Stage by Stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-stage-profiling-breakdown-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Stage Profiling Breakdown Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-time-unfold" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing Time Unfold
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seeing Time Unfold">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-spectrogram-waterfall-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Spectrogram / Waterfall Display
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-the-complete-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming the Complete System
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing-in-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processing in Blocks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-the-pipeline-from-stalling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Keeping the Pipeline From Stalling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Keeping the Pipeline From Stalling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-double-buffering-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Double Buffering Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlapping-frames-for-smoother-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overlapping Frames for Smoother Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overlapping Frames for Smoother Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-hop-size-and-overlap-processing-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Hop Size and Overlap Processing Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiling-the-pipeline-stage-by-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profiling the Pipeline, Stage by Stage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profiling the Pipeline, Stage by Stage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-stage-profiling-breakdown-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Stage Profiling Breakdown Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-time-unfold" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing Time Unfold
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seeing Time Unfold">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-spectrogram-waterfall-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Spectrogram / Waterfall Display
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/16-building-a-real-time-spectrum-analyzer/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="building-a-real-time-spectrum-analyzer">Building a Real-Time Spectrum Analyzer</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter assembles capture, FFT, and display into a continuously running real-time spectrum analyzer, introducing block processing, double buffering, and hop size as the mechanics of keeping a live pipeline from stalling. It profiles the pipeline stage by stage — capture, compute, and draw time — to find the true bottleneck rather than guessing. This is the payoff chapter where every piece built so far runs together on real, live audio.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 17 concepts from the learning graph:</p>
+<ol>
+<li>Block Processing</li>
+<li>Bottleneck Identification</li>
+<li>Buffer Swapping</li>
+<li>Capture Time</li>
+<li>Compute Time</li>
+<li>Double Buffering</li>
+<li>Draw Time</li>
+<li>Frame Rate</li>
+<li>Hop Size</li>
+<li>Overlap Processing</li>
+<li>Real Time Processing</li>
+<li>Sound Processing</li>
+<li>Spectrogram</li>
+<li>Stage Profiling</li>
+<li>Spectrum Analyzer</li>
+<li>Streaming FFT</li>
+<li>Waterfall Display</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+<li><a href="../10-why-the-dft-is-too-slow/">10. Why the DFT Is Too Slow</a></li>
+<li><a href="../11-from-dft-to-fft/">11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly</a></li>
+<li><a href="../12-building-the-fft/">12. Building the FFT: A Complete Recursive Implementation</a></li>
+<li><a href="../14-computing-and-displaying-a-real-spectrum/">14. Computing and Displaying a Real Spectrum</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Everything you built, running at once, forever</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Capture, transform, window, detect, display — you've built every piece as a one-shot operation so far. This chapter wires them into a loop that never stops, updating live, the way a real instrument does. This is Module 5's payoff, and honestly, mine too — this is exactly what echolocation feels like from the inside. Let's tune in.</p>
+</div>
+<h2 id="naming-the-complete-system">Naming the Complete System</h2>
+<p>Every previous chapter in this module built one piece of a pipeline in isolation — a single captured frame, a single FFT, a single displayed spectrum. Running all of those pieces together, continuously, on live incoming audio is what actually turns this course's individual labs into an instrument.</p>
+<p>A <strong>spectrum analyzer</strong> is a complete, integrated system that continuously captures audio, transforms it into a spectrum, and displays the result in near real time — combining every piece this course has built so far (capture, FFT, windowing, magnitude calculation, display) into one continuously running whole. Doing this continuously, without ever falling permanently behind the incoming stream of new audio, is <strong>real-time processing</strong>: processing incoming data at a rate that keeps pace with its arrival, indefinitely, rather than processing one fixed batch and stopping — the direct, ongoing application of the real-time budget concept from Chapter 10, now sustained frame after frame rather than measured just once. The general application area this whole system belongs to is worth naming too: <strong>sound processing</strong> is the application of audio processing techniques (Chapter 11) to a continuous, ongoing stream of incoming audio rather than a single isolated capture.</p>
+<h2 id="processing-in-blocks">Processing in Blocks</h2>
+<p>A live audio stream, at the sample level, is really just an endless sequence of individual numbers arriving one after another. Working with it one sample at a time would be far too slow and far too fussy — this course's entire pipeline instead works on small, manageable chunks.</p>
+<p><strong>Block processing</strong> is the strategy of processing audio in discrete, fixed-size chunks (frames of <span class="arithmatex">\( N \)</span> samples) one at a time, rather than reacting to each individual incoming sample separately — the same frame capture and frame duration ideas from earlier chapters, now the standing operating procedure for a continuously running system rather than a one-time capture. How many complete capture-transform-display cycles a running spectrum analyzer completes each second has a name borrowed directly from video: the <strong>frame rate</strong> is the number of complete process-and-display cycles a real-time system completes per second — the practical, directly perceptible measure of how "live" and responsive a spectrum analyzer actually feels to someone watching it.</p>
+<h2 id="keeping-the-pipeline-from-stalling">Keeping the Pipeline From Stalling</h2>
+<p>A naive block-processing loop — capture a frame, then process it, then display it, then repeat — has an obvious weakness: the microphone cannot capture new samples while the previous frame is still being processed and drawn, so incoming audio gets silently dropped during every processing pause.</p>
+<p>The standard fix uses two buffers instead of one. <strong>Double buffering</strong> is a memory management technique using two separate buffers, so that one buffer is actively being filled with new incoming samples by capture while the other buffer, already full, is simultaneously being processed and displayed — capture and processing run concurrently instead of taking turns waiting for each other. At the end of each cycle, the two buffers' roles need to switch. <strong>Buffer swapping</strong> is the act of exchanging the two double-buffers' roles at the end of each processing cycle — the buffer that was just filled by capture becomes the one handed off for processing and display, while the buffer that was just processed and displayed becomes available again to be filled with new incoming samples.</p>
+<h4 id="diagram-double-buffering-pipeline">Diagram: Double Buffering Pipeline</h4>
+<iframe src="../../sims/double-buffering-pipeline/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Double Buffering Pipeline</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> double-buffering-pipeline<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, interpret</p>
+<p>Learning objective: Let students interpret how two buffers alternate roles between being filled by capture and being processed/displayed, explaining why this prevents the pipeline from ever having to pause capture while processing runs.</p>
+<p>Canvas layout:
+- Two labeled buffer boxes side by side ("Buffer A", "Buffer B"), each showing its current role ("Capturing..." or "Processing/Displaying...")
+- A timeline strip below showing several cycles, with each buffer's role color-coded per cycle</p>
+<p>Visual elements:
+- Buffer A and Buffer B boxes, each filled with a color indicating current role (blue = capturing, orange = processing/displaying)
+- Timeline strip showing 4-6 cycles, each split into two colored segments showing which buffer held which role during that cycle
+- An animated "swap" arrow shown at each cycle boundary</p>
+<p>Interactive controls:
+- Button: "Advance one cycle" — swaps the two buffers' roles and advances the timeline
+- Button: "Auto-play" — advances continuously at an adjustable speed</p>
+<p>Behavior:
+- Each time "Advance one cycle" is clicked, Buffer A and Buffer B's roles visibly swap (capturing becomes processing, and vice versa), and the timeline strip extends by one more color-coded segment
+- A running caption confirms: "Capture never pauses — while one buffer processes, the other is already filling."</p>
+<p>Instructional Rationale: An Understand-level pattern is appropriate because the objective is explaining the mechanism (concurrent roles prevented by swapping) rather than performing a calculation — an explicit, steppable role-swap animation makes the "why doesn't this drop samples" question directly observable.</p>
+<p>Implementation notes:
+- Use p5.js; maintain a simple two-state role tracker and a scrolling timeline history array
+- Responsive width; buffer boxes and timeline scale to container width on resize</p>
+</details>
+<h2 id="overlapping-frames-for-smoother-updates">Overlapping Frames for Smoother Updates</h2>
+<p>Double buffering solves <em>dropped samples</em>; it does not by itself address a separate, more subtle question: how much new data has to arrive before the next spectrum update happens at all? Non-overlapping blocks — process frame 1, then frame 2, then frame 3, with each frame entirely disjoint from its neighbors — are simple, but they update only as often as one full frame duration allows.</p>
+<p>A hop-based approach updates more often than that, by reusing some of the previous frame's samples. The <strong>hop size</strong> is the number of new samples a real-time pipeline advances between one processed frame and the next — when hop size equals the full frame size, frames are non-overlapping; when hop size is smaller, consecutive frames share some of the same samples. Running frames with a hop size smaller than the frame size is called <strong>overlap processing</strong>: processing overlapping frames, where consecutive frames share some of their samples, producing more frequent spectrum updates (and a smoother-feeling frame rate) than non-overlapping block processing would allow, at the cost of recomputing an FFT over some samples more than once.</p>
+<p>Running the FFT over and over, continuously, on this hop-advancing stream of frames — rather than once on a single static buffer — is the literal, mechanical core of the whole real-time system. A <strong>streaming FFT</strong> is the practice of running the FFT repeatedly and continuously on a live incoming audio stream, once per hop, forever, as opposed to computing it a single time on one fixed, already-captured buffer.</p>
+<h4 id="diagram-hop-size-and-overlap-processing-visualizer">Diagram: Hop Size and Overlap Processing Visualizer</h4>
+<iframe src="../../sims/hop-size-overlap-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Hop Size and Overlap Processing Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> hop-size-overlap-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, compare</p>
+<p>Learning objective: Let students adjust the hop size relative to a fixed frame size and examine how much consecutive frames overlap, comparing the resulting update frequency against the extra recomputation cost overlap introduces.</p>
+<p>Canvas layout:
+- A horizontal timeline of the continuous sample stream, with successive frame windows drawn as overlapping colored bars beneath it
+- Controls and a readout panel below</p>
+<p>Visual elements:
+- A long horizontal strip representing the continuous incoming sample stream
+- Several semi-transparent colored bars beneath it, each representing one processed frame's window, positioned according to the current hop size (adjacent bars overlapping visually when hop size &lt; frame size)
+- Readout: "Frame size: [N] samples | Hop size: [value] samples | Overlap: [percentage]% | Updates per second: [value]"</p>
+<p>Interactive controls:
+- Slider: Frame size, fixed at 512 for this example (labeled, not adjustable, to isolate hop size's effect)
+- Slider: Hop size, range 64 to 512 samples, default 512 (no overlap)</p>
+<p>Behavior:
+- Reducing hop size below frame size visibly increases the overlap between adjacent frame-window bars and increases the "updates per second" readout, while a caption notes that total FFT computations per second rises proportionally
+- Setting hop size equal to frame size returns to the simple non-overlapping case, with bars sitting exactly edge to edge</p>
+<p>Instructional Rationale: An Analyze-level comparison pattern is appropriate because the objective is examining the tradeoff between update smoothness and computational cost as hop size changes — a visual, adjustable overlap display makes this tradeoff concrete rather than requiring students to reason about it abstractly.</p>
+<p>Implementation notes:
+- Use p5.js; draw frame-window bars procedurally based on the current hop size and a fixed total stream length
+- Responsive width; timeline strip and controls scale to container width on resize</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Overlap trades CPU time for smoother motion</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+A 50% overlap (hop size equal to half the frame size) roughly doubles how often your display updates — and roughly doubles how many FFTs per second your Pico 2 has to compute. Overlap processing isn't free smoothness; it's a direct trade against the exact real-time budget from Chapter 10.</p>
+</div>
+<h2 id="profiling-the-pipeline-stage-by-stage">Profiling the Pipeline, Stage by Stage</h2>
+<p>With a continuously running system in place, the natural next question is: where does all the time actually go? Guessing is unreliable — the only trustworthy answer comes from measuring each stage separately.</p>
+<p>Three specific stages make up one cycle of this chapter's pipeline, and each has its own measured duration. <strong>Capture time</strong> is the measured time spent specifically reading one frame's worth of samples over I2S during a single pipeline cycle. <strong>Compute time</strong> is the measured time spent specifically computing the FFT and its post-processing (magnitude, scaling, bin averaging) during a single cycle. <strong>Draw time</strong> is the measured time spent specifically rendering the resulting spectrum to the OLED display during a single cycle. Measuring all three separately, rather than only measuring one combined total, is called <strong>stage profiling</strong>: instrumenting a multi-stage pipeline to record the time spent in each individual stage separately, rather than only the pipeline's overall end-to-end time.</p>
+<p>Stage profiling turns the abstract idea of a performance bottleneck from Chapter 10 into a concrete, measured answer for this specific pipeline. <strong>Bottleneck identification</strong> uses stage profiling's separated measurements to determine which specific stage consumes the largest share of total pipeline time — the stage that must be optimized first, since improving any other stage barely moves the total while the bottleneck remains. Measured on this course's actual pipeline, the answer is not close: computing the spectrum consumes roughly 66% of a real-time frame's total time, while capturing the audio that feeds it takes roughly 1% — draw time fills most of the remainder.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Approximate share of frame time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Capture time</td>
+<td>~1%</td>
+</tr>
+<tr>
+<td>Compute time (FFT + post-processing)</td>
+<td>~66%</td>
+</tr>
+<tr>
+<td>Draw time</td>
+<td>Remainder</td>
+</tr>
+</tbody>
+</table>
+<h4 id="diagram-stage-profiling-breakdown-chart">Diagram: Stage Profiling Breakdown Chart</h4>
+<iframe src="../../sims/stage-profiling-breakdown-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Stage Profiling Breakdown Chart</summary>
+<p>Type: chart
+<strong>sim-id:</strong> stage-profiling-breakdown-chart<br/>
+<strong>Library:</strong> Chart.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Evaluate
+Bloom Taxonomy Verb: Judge, prioritize</p>
+<p>Learning objective: Let students judge, from a stacked breakdown of capture, compute, and draw time, which stage should be prioritized for optimization, using the measured percentages rather than intuition.</p>
+<p>Chart type: Horizontal stacked bar (single bar, three segments) plus a companion pie chart toggle</p>
+<p>Purpose: Make the true bottleneck (compute time) visually unmistakable against the other two stages combined</p>
+<p>Data: Capture time ~1%, Compute time ~66%, Draw time ~33% (remainder), of one total pipeline cycle</p>
+<p>Interactive elements:
+- Clicking any segment (Capture / Compute / Draw) displays an infobox: "This stage takes [X]% of total frame time. [Note on whether this is a bottleneck.]"
+- Toggle: "Stacked bar" / "Pie chart" view</p>
+<p>Title: "Where Does the Frame Time Actually Go?"
+Annotations: A callout arrow pointing at the Compute segment reading "The clear bottleneck — this is what the next module optimizes"</p>
+<p>Implementation: Chart.js with a stacked horizontal bar dataset and an alternate pie dataset toggled via a button</p>
+</details>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Don't optimize draw time first just because it's easy to see</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo giving a warning">
+It's tempting to start optimizing whatever code you personally find messiest — often the display-drawing code, since it's the most visible. Resist that instinct here. Stage profiling says compute time is the real bottleneck, at roughly 66% of every frame. Polishing draw code first would be effort spent exactly where Chapter 10's motivation-for-optimization lesson warns against: away from where the actual cost lives.</p>
+</div>
+<h2 id="seeing-time-unfold">Seeing Time Unfold</h2>
+<p>A single spectrum snapshot shows frequency content at one instant. Stacking many consecutive spectra together, one per processed frame, reveals something a single snapshot cannot: how a sound's frequency content changes over time.</p>
+<p>A <strong>spectrogram</strong> is a two-dimensional visualization plotting frequency on one axis and time on another, using color or brightness to represent magnitude at each time-frequency point — built directly by stacking this chapter's continuously produced stream of individual spectra side by side. A specific, commonly used visual style for displaying a spectrogram live gives it a distinctive, descriptive name: a <strong>waterfall display</strong> presents a spectrogram so that new spectra continuously scroll onto the display from one edge while older spectra scroll off the opposite edge, creating the visual impression of frequency data flowing downward (or sideways) like a waterfall.</p>
+<h4 id="diagram-spectrogram-waterfall-display">Diagram: Spectrogram / Waterfall Display</h4>
+<iframe src="../../sims/spectrogram-waterfall-display/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Spectrogram / Waterfall Display</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> spectrogram-waterfall-display<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, interpret</p>
+<p>Learning objective: Let students examine a scrolling waterfall spectrogram built from a sequence of example spectra and interpret how a changing pitch appears as a moving, colored trace over time.</p>
+<p>Canvas layout:
+- Full-width scrolling 2D plot, frequency on the vertical axis, time scrolling horizontally (newest data at the right edge), magnitude shown as color intensity (dark = quiet, bright = loud)
+- Controls below: play/pause and a selector for a small set of example sound sequences</p>
+<p>Visual elements:
+- A continuously scrolling color-mapped grid, each new column representing the latest processed frame's spectrum
+- A color legend mapping intensity to magnitude in dB</p>
+<p>Interactive controls:
+- Dropdown: example sequence ("Rising whistle", "Falling whistle", "Two-tone chord", "Silence then a clap")
+- Play/Pause button
+- Hovering any point on the waterfall shows its exact frequency, time offset, and magnitude in a tooltip</p>
+<p>Behavior:
+- Selecting an example sequence and pressing play scrolls a precomputed series of spectra across the display in real time, visibly tracing a rising or falling bright line for a swept whistle, or a broadband vertical flash for a clap
+- Hovering pauses the scroll and reveals the exact tooltip value at that point</p>
+<p>Instructional Rationale: An Analyze-level examination pattern is appropriate because the objective is interpreting patterns across combined frequency-and-time data — a scrolling color-mapped display, paired with recognizable example sounds, lets students connect a familiar sound (a rising whistle) to its visual signature directly.</p>
+<p>Implementation notes:
+- Use p5.js; precompute each example sequence's frame-by-frame spectra and render as a scrolling texture or pixel grid
+- Responsive width; waterfall plot and controls scale to container width on resize</p>
+</details>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">You just built the same tool audio engineers pay thousands for</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Double buffering, overlap processing, stage profiling, a waterfall display — this is not a simplified classroom toy anymore. This is, mechanically, the same architecture behind professional audio analysis tools that cost real money. You built it on a five-dollar board, and you know exactly why every piece of it is there.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have a complete, continuously running spectrum analyzer, profiled and understood stage by stage, running entirely on real, live captured audio.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>A <strong>spectrum analyzer</strong> performs <strong>real-time processing</strong> as a form of continuous <strong>sound processing</strong>, built from <strong>block processing</strong> at a measured <strong>frame rate</strong>.</li>
+<li><strong>Double buffering</strong> with <strong>buffer swapping</strong> keeps capture from ever pausing for processing.</li>
+<li><strong>Hop size</strong> smaller than the frame size enables <strong>overlap processing</strong>, powered by a continuously running <strong>streaming FFT</strong>.</li>
+<li><strong>Stage profiling</strong> separately measures <strong>capture time</strong>, <strong>compute time</strong>, and <strong>draw time</strong>, enabling real <strong>bottleneck identification</strong> — compute time, at roughly 66% of every frame, is this pipeline's clear bottleneck.</li>
+<li>A <strong>spectrogram</strong>, often shown as a <strong>waterfall display</strong>, reveals how a sound's frequency content changes over time, not just at one instant.</li>
+</ul>
+<details class="note">
+<summary>Quick check: capture time is 1% of a frame, compute time is 66%, and draw time is the remainder. If you could somehow make capture instantaneous (0%), roughly how much would total frame time improve? — Click to expand</summary>
+<p>Only about 1% — capture was already a tiny fraction of the total. Bottleneck identification exists precisely to prevent this mistake: optimizing the smallest-share stage feels productive but barely moves the total, while the 66% compute-time bottleneck remains completely untouched.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">A real-time spectrum analyzer, built entirely by you</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Capture, FFT, windowing, peak detection, and display, all running together, continuously, on your own five-dollar board — that's Module 5, complete. You've also found, with real measurements, exactly where the next module needs to focus: compute time. Time to go measure it properly. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 15. Windowing, Spectral Leakage, and Peak Detection">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                15. Windowing, Spectral Leakage, and Peak Detection
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../17-measuring-time/" class="md-footer__link md-footer__link--next" aria-label="Next: 17. Measuring Time: The DWT Cycle Counter">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                17. Measuring Time: The DWT Cycle Counter
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

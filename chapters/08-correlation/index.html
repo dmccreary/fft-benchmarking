@@ -1,0 +1,2328 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Detect a single frequency inside a captured signal using multiply-and-sum correlation, orthogonality, and in-phase/quadrature components.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/08-correlation/">
+      
+      
+        <link rel="prev" href="../07-complex-numbers-and-wave-superposition/">
+      
+      
+        <link rel="next" href="../09-computing-and-validating-the-dft/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Correlation: Does My Signal Contain This Note? - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#correlation-does-my-signal-contain-this-note" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Correlation: Does My Signal Contain This Note?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-core-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiply-and-sum-the-mechanics-of-correlation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiply and Sum: The Mechanics of Correlation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiply and Sum: The Mechanics of Correlation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correlation-by-multiply-and-sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlation by Multiply and Sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-multiply-and-sum-correlator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Multiply-and-Sum Correlator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basis-functions-and-why-non-matching-frequencies-cancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basis Functions and Why Non-Matching Frequencies Cancel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basis Functions and Why Non-Matching Frequencies Cancel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-correlation-vs-test-frequency-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Correlation vs. Test Frequency Sweep
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solving-the-phase-problem-in-phase-and-quadrature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solving the Phase Problem: In-Phase and Quadrature
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solving the Phase Problem: In-Phase and Quadrature">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correlation-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlation Magnitude
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-in-phase-quadrature-phase-independence-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: In-Phase / Quadrature Phase Independence Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-how-loud-not-just-whether" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measuring How Loud, Not Just Whether
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring How Loud, Not Just Whether">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-mean-square" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Mean Square
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-the-signal-before-correlating" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cleaning the Signal Before Correlating
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smoothing-a-live-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Smoothing a Live Reading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#displaying-and-calibrating-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Displaying and Calibrating the Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-core-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Core Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multiply-and-sum-the-mechanics-of-correlation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multiply and Sum: The Mechanics of Correlation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiply and Sum: The Mechanics of Correlation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correlation-by-multiply-and-sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlation by Multiply and Sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-multiply-and-sum-correlator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Multiply-and-Sum Correlator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basis-functions-and-why-non-matching-frequencies-cancel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basis Functions and Why Non-Matching Frequencies Cancel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basis Functions and Why Non-Matching Frequencies Cancel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-correlation-vs-test-frequency-sweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Correlation vs. Test Frequency Sweep
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#solving-the-phase-problem-in-phase-and-quadrature" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solving the Phase Problem: In-Phase and Quadrature
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Solving the Phase Problem: In-Phase and Quadrature">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#correlation-magnitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      Correlation Magnitude
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagram-in-phase-quadrature-phase-independence-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: In-Phase / Quadrature Phase Independence Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-how-loud-not-just-whether" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measuring How Loud, Not Just Whether
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring How Loud, Not Just Whether">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-mean-square" class="md-nav__link">
+    <span class="md-ellipsis">
+      Root Mean Square
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleaning-the-signal-before-correlating" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cleaning the Signal Before Correlating
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smoothing-a-live-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Smoothing a Live Reading
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#displaying-and-calibrating-the-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Displaying and Calibrating the Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/08-correlation/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="correlation-does-my-signal-contain-this-note">Correlation: Does My Signal Contain This Note?</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter answers a single question — does a captured signal contain a specific frequency — by introducing correlation as a multiply-and-sum operation against a test sinusoid. It covers orthogonality, basis functions, and why non-matching frequencies cancel out, along with the RMS and loudness concepts used to normalize a signal before comparing it. This is the conceptual seed that the next chapter generalizes into the full Discrete Fourier Transform.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 23 concepts from the learning graph:</p>
+<ol>
+<li>Anti Aliasing Filter</li>
+<li>Band Pass Filter</li>
+<li>Bandwidth</li>
+<li>Bar Graph Display</li>
+<li>Basis Function</li>
+<li>Correlation</li>
+<li>Correlation Magnitude</li>
+<li>Dot Product</li>
+<li>Exponential Smoothing</li>
+<li>In Phase Component</li>
+<li>Loudness Perception</li>
+<li>Low Pass Filter</li>
+<li>Moving Average</li>
+<li>Multiply And Sum</li>
+<li>Orthogonal Functions</li>
+<li>Phase Independence</li>
+<li>Projection Onto Basis</li>
+<li>Quadrature Component</li>
+<li>Root Mean Square</li>
+<li>Sensor Auto Calibration</li>
+<li>Similarity Measure</li>
+<li>Sound Level</li>
+<li>Test Frequency</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+<li><a href="../06-sampling-quantization-and-aliasing/">6. Sampling, Quantization, and Aliasing</a></li>
+<li><a href="../07-complex-numbers-and-wave-superposition/">7. Complex Numbers and Wave Superposition</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">One question, one number</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Everything so far has been building toward one deceptively simple question: does a captured signal contain a specific note or not? This chapter answers it with nothing more exotic than multiplication and addition. Echolocation works on exactly this principle — I send out a known signal and check how much of it comes back matching. Let's tune in.</p>
+</div>
+<h2 id="the-core-question">The Core Question</h2>
+<p>Every technique in the rest of this course, all the way through the FFT, ultimately answers one question, asked over and over at different frequencies: <em>does this captured signal contain a wave at this particular frequency, and if so, how strongly?</em> This chapter builds the tool that answers that question for a single frequency at a time.</p>
+<p><strong>Correlation</strong> is a mathematical operation that measures how similar two signals are to each other, producing a single number that is large when the signals match closely and small (or zero) when they do not. Correlation is a specific example of a broader idea worth naming first: a <strong>similarity measure</strong> is any quantitative method for comparing two signals, functions, or datasets and producing a number that reflects how alike they are. Many similarity measures exist across mathematics and engineering; correlation is simply the one built specifically for comparing waveforms.</p>
+<p>To ask "does this signal contain a 440 Hz tone," correlation needs something concrete to compare the captured signal <em>against</em> — a known, controllable reference. That reference is exactly the tone generator from Chapter 6, now put to a new use: a <strong>test frequency</strong> is a specific, precisely known frequency used as the comparison signal in a correlation calculation, generated internally by the analyzing program rather than captured from the outside world. Correlating a captured signal against a 440 Hz test frequency answers, specifically, "how much 440 Hz is in this signal?"</p>
+<h2 id="multiply-and-sum-the-mechanics-of-correlation">Multiply and Sum: The Mechanics of Correlation</h2>
+<p>Correlation's actual arithmetic is simpler than its name suggests. Given two signals of equal length, stored as arrays of sample values, the calculation pairs up corresponding samples, multiplies each pair, and adds up all the products.</p>
+<p>This exact operation already has a name in mathematics, borrowed directly for use here: the <strong>dot product</strong> is the sum of the products of corresponding elements in two equal-length sequences of numbers — multiply element one by element one, element two by element two, and so on, then add every product together into a single total. Applied specifically to comparing a captured signal against a test frequency, this operation is called <strong>multiply and sum</strong>: the specific application of the dot product to correlation, where each sample of a captured signal is multiplied by the corresponding sample of a test frequency waveform, and every product is summed into one correlation value.</p>
+<h4 id="correlation-by-multiply-and-sum">Correlation by Multiply and Sum</h4>
+<div class="arithmatex">\[ C = \sum_{n=0}^{N-1} x[n] \cdot t[n] \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( C \)</span> is the resulting correlation value</li>
+<li><span class="arithmatex">\( x[n] \)</span> is the captured signal's sample at index <span class="arithmatex">\( n \)</span></li>
+<li><span class="arithmatex">\( t[n] \)</span> is the test frequency waveform's sample at index <span class="arithmatex">\( n \)</span></li>
+<li><span class="arithmatex">\( N \)</span> is the number of samples compared</li>
+</ul>
+<p>Before the interactive demonstration below, it helps to have a concrete intuition for why this sum behaves the way it does: when the captured signal and the test frequency rise and fall together — matching frequency and roughly matching phase — most products in the sum are positive, and the total grows large. When they do not match, positive and negative products mix together and mostly cancel out, leaving a small total.</p>
+<h4 id="diagram-multiply-and-sum-correlator">Diagram: Multiply-and-Sum Correlator</h4>
+<iframe src="../../sims/multiply-and-sum-correlator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Multiply-and-Sum Correlator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> multiply-and-sum-correlator<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, demonstrate</p>
+<p>Learning objective: Let students step through a multiply-and-sum correlation calculation sample by sample and calculate how the running correlation total behaves differently for a matching versus a non-matching test frequency.</p>
+<p>Canvas layout:
+- Top (150px): captured signal waveform, with the current sample index marked
+- Middle (150px): test frequency waveform, same time axis, current sample marked
+- Bottom (200px): a running bar showing the accumulated correlation sum, growing or shrinking with each step, plus numeric readout</p>
+<p>Visual elements:
+- Two aligned waveform plots (captured signal, test frequency) sharing a time axis
+- A vertical marker line showing the current sample index on both plots
+- At each step, a small popup showing "x[n] × t[n] = [product]" for the current sample
+- A running-total bar that grows (green) or shrinks (red) as each new product is added</p>
+<p>Interactive controls:
+- Dropdown: "Captured signal frequency" (matches test, or offset by a chosen amount)
+- Slider: Test frequency, range 200-800 Hz, default 440 Hz
+- Button: "Step forward one sample"
+- Button: "Run to completion" — animates through all samples automatically
+- Button: "Reset"</p>
+<p>Default parameters:
+- Captured signal frequency: 440 Hz (set to match the test frequency by default)
+- Test frequency: 440 Hz</p>
+<p>Data Visibility Requirements:
+  Stage 1: Show both waveforms at rest, running sum at zero
+  Stage 2 (each step): Show the current sample pair, their product, and the updated running sum
+  Final: Show the completed correlation value, large for matching frequencies, near zero for non-matching frequencies</p>
+<p>Instructional Rationale: An Apply-level step-through calculator is appropriate because the objective is calculating the correlation value directly, sample by sample, so students see exactly how the sum accumulates rather than only observing a final black-box number.</p>
+<p>Implementation notes:
+- Use p5.js; store both waveforms as precomputed sample arrays and index into them as the step controls advance
+- Responsive width; all three panels scale to container width on window resize</p>
+</details>
+<h2 id="basis-functions-and-why-non-matching-frequencies-cancel">Basis Functions and Why Non-Matching Frequencies Cancel</h2>
+<p>The test frequency waveform used in correlation is not just any convenient reference signal — it plays a specific structural role that deserves a formal name. A <strong>basis function</strong> is a reference function against which a signal is compared or measured, chosen so that combinations of basis functions at different frequencies can represent a wide range of possible signals — the test frequency sine wave from the previous section is acting as exactly this kind of basis function.</p>
+<p>Measuring how much of a signal "points in the direction of" a given basis function is itself a named operation, closely related to correlation. <strong>Projection onto basis</strong> is the operation of measuring how much of a signal aligns with a specific basis function, computed through correlation — the resulting correlation value is literally a measurement of the signal's component along that one basis direction, analogous to measuring a shadow's length along a specific direction.</p>
+<p>This is where the orthogonality preview from the previous chapter pays off directly. <strong>Orthogonal functions</strong> are two functions whose correlation (dot product, summed or integrated over a full period) equals exactly zero — geometrically, they share no overlap in the same sense that perpendicular directions in space share no overlap. Sine waves at different frequencies are orthogonal to each other over a whole number of cycles. That single fact is <em>why</em> multiply-and-sum correlation works as a frequency detector at all: correlating a captured signal against a 440 Hz test frequency picks up only the 440 Hz content and, because of orthogonality, cancels out contributions from every other frequency almost completely.</p>
+<p>Before the chart below, it helps to see this orthogonality claim demonstrated directly, by sweeping the test frequency across a range and watching correlation collapse to near zero everywhere except at the one frequency actually present in the signal.</p>
+<h4 id="diagram-correlation-vs-test-frequency-sweep">Diagram: Correlation vs. Test Frequency Sweep</h4>
+<iframe src="../../sims/correlation-vs-test-frequency-sweep/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Correlation vs. Test Frequency Sweep</summary>
+<p>Type: chart
+<strong>sim-id:</strong> correlation-vs-test-frequency-sweep<br/>
+<strong>Library:</strong> Chart.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, distinguish</p>
+<p>Learning objective: Let students examine a plot of correlation magnitude against test frequency and distinguish the sharp peak at the signal's true frequency from the near-zero correlation at every orthogonal, non-matching frequency.</p>
+<p>Chart type: Line chart</p>
+<p>Purpose: Demonstrate that sweeping the test frequency and computing correlation at each point produces a sharp peak exactly at the frequency present in a fixed captured signal, and near-zero everywhere else — a direct visual proof of orthogonality's practical effect</p>
+<p>X-axis: Test frequency, 100-1000 Hz
+Y-axis: Correlation magnitude (normalized 0-1)</p>
+<p>Data series: correlation value computed live at each test frequency point for a captured signal fixed at a chosen frequency (default 440 Hz)</p>
+<p>Interactive elements:
+- Slider: "Captured signal frequency" (100-1000 Hz, default 440 Hz) — moving it slides the peak in the chart to a new position, recomputed live
+- Hovering any point on the line shows its exact test frequency and correlation value in a tooltip</p>
+<p>Title: "Correlation Magnitude vs. Test Frequency"
+Annotations: A dashed vertical line marking the true captured signal frequency, with a label "Signal is actually here"</p>
+<p>Implementation: Chart.js line chart, recomputing 200 correlation points across the swept range whenever the captured signal frequency slider changes</p>
+</details>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">That peak is the whole idea behind next chapter</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Look closely at what you just built: a sharp peak at the true frequency, near-zero everywhere else. The next chapter takes exactly this sweep — correlation computed at many test frequencies — and formalizes it into the Discrete Fourier Transform. You've essentially already built a DFT by hand; it just doesn't have that name yet.</p>
+</div>
+<h2 id="solving-the-phase-problem-in-phase-and-quadrature">Solving the Phase Problem: In-Phase and Quadrature</h2>
+<p>There is a catch in the multiply-and-sum approach as described so far, and it traces directly back to phase offset from the previous chapter. If a captured signal matches the test frequency exactly but is 90 degrees out of phase with it — a sine correlated against a cosine of the same frequency — the multiply-and-sum total comes out to zero, even though the signal clearly contains that frequency. A single test wave is <em>phase-sensitive</em>, and that sensitivity is a flaw, not a feature, for a frequency detector.</p>
+<p>The fix uses two test waveforms at the same frequency instead of one, offset from each other by exactly a quarter cycle. Correlating against a sine-shaped test wave produces what is called the <strong>quadrature component</strong>: the correlation result obtained using a sine-shaped test wave, conventionally labeled Q, sensitive to signal content that is 90 degrees out of phase with a cosine reference. Correlating the same signal against a cosine-shaped test wave at the same frequency produces the <strong>in-phase component</strong>: the correlation result obtained using a cosine-shaped test wave, conventionally labeled I, sensitive to signal content aligned with the cosine reference. Between the two of them, at least one component always picks up a strong signal, no matter what the actual phase of the captured signal happens to be.</p>
+<p>Combining the two components into a single, phase-blind strength measurement uses a formula that should look familiar from the previous chapter's work on complex-number magnitude. The <strong>correlation magnitude</strong> is the overall strength of a detected frequency, computed by combining the in-phase and quadrature components as <span class="arithmatex">\( \sqrt{I^2 + Q^2} \)</span> — the same Pythagorean combination used to compute a complex number's magnitude, because I and Q are, in fact, the real and imaginary parts of a complex correlation result. This combined magnitude has a property worth naming directly: <strong>phase independence</strong> is the property of correlation magnitude that makes it unaffected by the captured signal's phase offset — regardless of exactly <em>when</em> in its cycle the signal's frequency component starts, the magnitude correctly reports its strength.</p>
+<h4 id="correlation-magnitude">Correlation Magnitude</h4>
+<div class="arithmatex">\[ M = \sqrt{I^2 + Q^2} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( M \)</span> is the correlation magnitude</li>
+<li><span class="arithmatex">\( I \)</span> is the in-phase component (cosine correlation)</li>
+<li><span class="arithmatex">\( Q \)</span> is the quadrature component (sine correlation)</li>
+</ul>
+<h4 id="diagram-in-phase-quadrature-phase-independence-explorer">Diagram: In-Phase / Quadrature Phase Independence Explorer</h4>
+<iframe src="../../sims/in-phase-quadrature-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>In-Phase / Quadrature Phase Independence Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> in-phase-quadrature-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, compare</p>
+<p>Learning objective: Let students adjust a captured signal's phase offset and compare how the in-phase component and quadrature component individually rise and fall, while the combined correlation magnitude stays constant — demonstrating phase independence directly.</p>
+<p>Canvas layout:
+- Top (250px): three live bar meters side by side, labeled "I (in-phase)", "Q (quadrature)", "Magnitude"
+- Bottom (200px): captured signal waveform with a phase-offset slider</p>
+<p>Visual elements:
+- I bar and Q bar, each ranging from -1 to +1, updating live as phase changes
+- Magnitude bar, ranging from 0 to 1.4 (max possible), shown in a distinguishing color
+- Small readout under the magnitude bar confirming its formula: "sqrt(I² + Q²)"</p>
+<p>Interactive controls:
+- Slider: Captured signal phase offset, range 0 to 2π radians, default 0</p>
+<p>Behavior:
+- As the phase slider moves through a full cycle, the I bar traces a cosine-shaped path and the Q bar traces a sine-shaped path — each individually rising and falling, and each hitting zero at different phase values
+- The magnitude bar, computed from both, stays essentially flat throughout the full slider range, visually proving that phase independence holds even though I and Q individually do not</p>
+<p>Instructional Rationale: An Analyze-level comparison pattern is appropriate because the objective requires examining and comparing three related live quantities to see which one (magnitude) remains invariant under a transformation (phase change) that strongly affects the other two — the side-by-side bar meters make the contrast immediate and visual.</p>
+<p>Implementation notes:
+- Use p5.js; compute I and Q directly from the multiply-and-sum formula against sine and cosine test waves each frame the phase slider changes
+- Responsive width; meters and waveform plot stack vertically below 600px width</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">I and Q aren't two separate answers — they're one complex answer</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+If the I/Q split feels like a workaround, it's really the same Euler's-formula idea from last chapter showing up again: correlating against cosine and sine simultaneously is exactly the real and imaginary parts of correlating against a single complex exponential test wave. The DFT in the next chapter makes that connection explicit.</p>
+</div>
+<h2 id="measuring-how-loud-not-just-whether">Measuring How Loud, Not Just Whether</h2>
+<p>Correlation tells you <em>whether</em> and <em>how strongly</em> a frequency is present, but reading that number usefully often requires comparing it against an overall sense of the signal's loudness. Several concepts from the earlier VU-meter style labs are worth formalizing here, since a correlation-based tuner or analyzer needs them too.</p>
+<p>The standard way to summarize a signal's overall size with a single number is the <strong>root mean square</strong>, or RMS: a statistical measure of a signal's magnitude computed by squaring every sample, averaging those squares, and taking the square root of the result — RMS is preferred over a simple average because squaring makes every contribution positive before averaging, so positive and negative swings do not cancel each other out the way a plain average would.</p>
+<h4 id="root-mean-square">Root Mean Square</h4>
+<div class="arithmatex">\[ \text{RMS} = \sqrt{\frac{1}{N}\sum_{n=0}^{N-1} x[n]^2} \]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\( \text{RMS} \)</span> is the root-mean-square value</li>
+<li><span class="arithmatex">\( x[n] \)</span> is the signal's sample at index <span class="arithmatex">\( n \)</span></li>
+<li><span class="arithmatex">\( N \)</span> is the number of samples</li>
+</ul>
+<p>Converting an RMS value into a number that reflects how a system reports loudness typically uses a logarithmic scale. <strong>Sound level</strong> is a measurement of a signal's intensity, typically expressed in decibels, derived from RMS amplitude on a logarithmic scale that compresses a very wide range of physical intensities into a manageable range of numbers. That measured sound level does not translate directly into how loud a sound seems to a human listener — human hearing itself is a variable in the equation. <strong>Loudness perception</strong> is the subjective, human experience of how loud a sound seems, which depends not only on the sound's physical intensity but also on its frequency — human hearing is measurably more sensitive to some frequencies than others, so two tones with identical measured sound levels can seem noticeably different in perceived loudness.</p>
+<h2 id="cleaning-the-signal-before-correlating">Cleaning the Signal Before Correlating</h2>
+<p>Correlation performs best on a signal that has already been prepared, not raw, unfiltered captured audio. A family of tools called filters shapes a signal's frequency content before any correlation calculation runs.</p>
+<p>A <strong>low pass filter</strong> allows frequencies below a chosen cutoff to pass through largely unaffected while attenuating (reducing) frequencies above that cutoff. A <strong>band pass filter</strong> allows only frequencies within a specific range — a "band" — to pass through, attenuating both lower and higher frequencies outside that range. The width of that allowed range has its own name: <strong>bandwidth</strong> is the width of the frequency range a filter (or a signal) occupies, measured as the difference between its upper and lower frequency limits.</p>
+<p>One specific, critically important application of a low pass filter connects directly back to the Nyquist theorem from Chapter 6. An <strong>anti-aliasing filter</strong> is a low pass filter applied to a signal <em>before</em> it is sampled, specifically to remove any frequency content above the Nyquist frequency, preventing the aliasing that Chapter 6 demonstrated as a productive failure. Without an anti-aliasing filter in place ahead of the ADC, any stray high-frequency content — even content the system has no interest in measuring — can fold down into the range of frequencies being analyzed and corrupt the result.</p>
+<p>Before comparing these filter types directly, it is worth summarizing their distinct roles now that each has been explained individually.</p>
+<table>
+<thead>
+<tr>
+<th>Filter type</th>
+<th>Passes</th>
+<th>Blocks</th>
+<th>Typical use in this course</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low pass filter</td>
+<td>Frequencies below cutoff</td>
+<td>Frequencies above cutoff</td>
+<td>General noise reduction</td>
+</tr>
+<tr>
+<td>Band pass filter</td>
+<td>A specific frequency range</td>
+<td>Everything outside that range</td>
+<td>Isolating a note or instrument range</td>
+</tr>
+<tr>
+<td>Anti-aliasing filter</td>
+<td>Frequencies below the Nyquist frequency</td>
+<td>Frequencies above the Nyquist frequency</td>
+<td>Protecting the ADC from aliasing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="smoothing-a-live-reading">Smoothing a Live Reading</h2>
+<p>A correlation magnitude computed fresh on every new block of audio tends to jitter rapidly from one reading to the next, even for a perfectly steady input tone, simply because each new block of samples differs slightly from the last. Smoothing that jitter into a stable, readable display uses one of two common techniques.</p>
+<p>A <strong>moving average</strong> smooths a sequence of readings by continuously averaging together the most recent fixed-size window of values, replacing each raw reading with the average of, say, the last eight readings. A lighter-weight alternative achieves a similar smoothing effect without needing to store a window of past values at all: <strong>exponential smoothing</strong> produces a smoothed reading by blending each new raw value with the <em>previous smoothed value</em>, weighted by a chosen smoothing factor, so recent readings influence the result more than older ones without ever needing to store a history of past samples.</p>
+<h2 id="displaying-and-calibrating-the-result">Displaying and Calibrating the Result</h2>
+<p>The final step turns a smoothed correlation magnitude into something a person can read at a glance on the OLED display from Chapter 3. A <strong>bar graph display</strong> presents a numeric value as a filled bar whose length is proportional to that value, growing and shrinking in real time as the underlying reading changes — the visual format used throughout this course's VU meters and tuner displays.</p>
+<p>One practical wrinkle remains before a bar graph is genuinely useful: raw correlation magnitude values can vary enormously depending on how loud a signal is to begin with, making a fixed bar-length scale either too twitchy for quiet sounds or clipped at maximum for loud ones. <strong>Sensor auto calibration</strong> is the automatic adjustment of a sensor's baseline or scaling based on recently observed signal characteristics — for example, automatically rescaling a bar graph's range based on the loudest correlation magnitude seen over the past few seconds, so the display stays readable and responsive regardless of how loud the current input happens to be.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Every piece here reappears, renamed, in the next chapter</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Twenty-three new terms in one chapter is a lot to hold at once. Take comfort in this: you are not about to leave any of it behind. The next chapter takes this exact multiply-and-sum, I/Q, magnitude toolkit and simply runs it at many frequencies at once — nothing here was a detour.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You can now answer, with a single number, whether a captured signal contains a specific frequency — and you understand exactly why the answer is trustworthy regardless of phase or loudness.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li><strong>Correlation</strong> is a <strong>similarity measure</strong> between a captured signal and a <strong>test frequency</strong>, computed by the <strong>dot product</strong> — specifically <strong>multiply and sum</strong>.</li>
+<li>The test frequency acts as a <strong>basis function</strong>; correlation is <strong>projection onto basis</strong>, and it works because sine waves at different frequencies are <strong>orthogonal functions</strong>.</li>
+<li>A single test wave is phase-sensitive, so correlation uses an <strong>in-phase component</strong> and a <strong>quadrature component</strong> together, combined into a phase-blind <strong>correlation magnitude</strong> — the source of <strong>phase independence</strong>.</li>
+<li><strong>Root mean square</strong> summarizes signal size; <strong>sound level</strong> and <strong>loudness perception</strong> connect that number to how loud a sound actually seems.</li>
+<li><strong>Low pass</strong>, <strong>band pass</strong>, and <strong>anti-aliasing filters</strong> shape a signal's <strong>bandwidth</strong> before correlation runs; <strong>moving average</strong> and <strong>exponential smoothing</strong> stabilize a jittery live reading.</li>
+<li>A <strong>bar graph display</strong>, aided by <strong>sensor auto calibration</strong>, turns the final number into something readable at a glance.</li>
+</ul>
+<details class="note">
+<summary>Quick check: why does correlating a captured 440 Hz sine wave against a 440 Hz cosine test wave produce a value near zero, even though the signal clearly contains 440 Hz? — Click to expand</summary>
+<p>A sine wave and a cosine wave at the same frequency are 90 degrees out of phase with each other — this is exactly the phase problem the in-phase/quadrature split solves. The cosine (in-phase) correlation is near zero in this case, but the sine (quadrature) correlation is strong. Combining both into the correlation magnitude, sqrt(I² + Q²), correctly reports the 440 Hz content regardless of this phase mismatch.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You just built a one-frequency detector from scratch</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Multiply, sum, and combine in-phase with quadrature — that's the entire mechanism, and you now understand every piece of it. Next chapter takes this exact tool and sweeps it across every frequency bin at once, and you'll have a name for what you just built by hand: the Discrete Fourier Transform. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../07-complex-numbers-and-wave-superposition/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 7. Complex Numbers and Wave Superposition">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                7. Complex Numbers and Wave Superposition
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../09-computing-and-validating-the-dft/" class="md-footer__link md-footer__link--next" aria-label="Next: 9. Computing and Validating the DFT">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                9. Computing and Validating the DFT
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

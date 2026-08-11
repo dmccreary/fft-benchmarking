@@ -1,0 +1,2308 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How benchmarks lie — observer effect, single-sample measurement, unstated exclusions — and the statistical practices that defend against each one">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/18-benchmarking-methodology/">
+      
+      
+        <link rel="prev" href="../17-measuring-time/">
+      
+      
+        <link rel="next" href="../19-the-abstraction-ladder/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#benchmarking-methodology-warm-up-statistics-and-fair-comparison" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variance-sources-why-the-same-code-gives-different-times" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variance Sources: Why the Same Code Gives Different Times
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-sampling-measuring-more-than-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical Sampling: Measuring More Than Once
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistical Sampling: Measuring More Than Once">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-variance-source-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Variance Source Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-of-n-versus-the-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best of N Versus the Mean
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-observer-effect-and-timing-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Observer Effect and Timing Overhead
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fair-comparison-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fair Comparison and Reproducibility
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency-and-throughput-formally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Latency and Throughput, Formally
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-usage-the-other-half-of-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Usage: The Other Half of "Performance"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building a Test Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#presenting-benchmark-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Presenting Benchmark Results
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Presenting Benchmark Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-benchmark-results-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Benchmark Results Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-what-a-benchmark-excludes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming What a Benchmark Excludes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variance-sources-why-the-same-code-gives-different-times" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variance Sources: Why the Same Code Gives Different Times
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistical-sampling-measuring-more-than-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistical Sampling: Measuring More Than Once
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Statistical Sampling: Measuring More Than Once">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-variance-source-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Variance Source Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-of-n-versus-the-mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best of N Versus the Mean
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-observer-effect-and-timing-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Observer Effect and Timing Overhead
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fair-comparison-and-reproducibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fair Comparison and Reproducibility
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latency-and-throughput-formally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Latency and Throughput, Formally
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-usage-the-other-half-of-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Usage: The Other Half of "Performance"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building a Test Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#presenting-benchmark-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Presenting Benchmark Results
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Presenting Benchmark Results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-benchmark-results-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Benchmark Results Chart
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming-what-a-benchmark-excludes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naming What a Benchmark Excludes
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/18-benchmarking-methodology/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="benchmarking-methodology-warm-up-statistics-and-fair-comparison">Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter catalogs the ways a benchmark can lie: skipped warm-up runs, single-sample measurements, the observer effect of instrumentation overhead, and unstated exclusions that flatter a result. It introduces statistical sampling, mean and standard deviation, and best-of-N versus mean as concrete defenses against those failure modes. These practices are the methodology every later chapter's performance claims are held to.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 19 concepts from the learning graph:</p>
+<ol>
+<li>Benchmark Results</li>
+<li>Benchmarking Framework</li>
+<li>Best Of N</li>
+<li>Fair Comparison</li>
+<li>Interrupt Interference</li>
+<li>Latency Metric</li>
+<li>Mean Execution Time</li>
+<li>Memory Usage</li>
+<li>Minimum Sample</li>
+<li>Observer Effect</li>
+<li>Performance Charts</li>
+<li>Processing Latency</li>
+<li>Reproducibility</li>
+<li>Standard Deviation</li>
+<li>Statistical Sampling</li>
+<li>Test Harness</li>
+<li>Throughput Metric</li>
+<li>Timing Overhead</li>
+<li>Variance Sources</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../16-building-a-real-time-spectrum-analyzer/">16. Building a Real-Time Spectrum Analyzer</a></li>
+<li><a href="../17-measuring-time/">17. Measuring Time: The DWT Cycle Counter</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — a timer into trustworthy evidence!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Chapter 17 gave you an instrument accurate to 6.7 nanoseconds. That's the easy part.
+A perfectly accurate timer, used carelessly, still produces a lie — just a very
+<em>precise</em> lie. This chapter is about the careless mistakes that turn good hardware
+into bad conclusions.</p>
+</div>
+<p>Run your FFT once, print the elapsed microseconds, and you have a number. That number is
+not yet a <strong>benchmark result</strong> — a benchmark result is a measurement obtained under
+conditions controlled and documented well enough that someone else could reproduce it and
+get the same answer. A single, unrepeated reading rarely clears that bar. This chapter
+walks through the specific ways a single reading misleads you, and the statistical habits
+that fix each one.</p>
+<h2 id="variance-sources-why-the-same-code-gives-different-times">Variance Sources: Why the Same Code Gives Different Times</h2>
+<p>Run the identical FFT call ten times in a row on the same board, and you will <em>not</em> get
+ten identical cycle counts. Small fluctuations are normal, and they come from several
+independent <strong>variance sources</strong> — factors that make execution time vary even when the
+code and input are unchanged.</p>
+<p>The most disruptive of these is <strong>interrupt interference</strong>: the Pico 2's operating
+firmware periodically pauses whatever code is running to service hardware interrupts —
+USB polling, the system tick, background peripheral handling — and each pause adds extra,
+unpredictable cycles to whatever you happen to be timing at that moment. A run that gets
+interrupted mid-FFT will measure slower than one that doesn't, for reasons that have
+nothing to do with your algorithm. Other variance sources include small differences in
+which data happened to already be in fast on-chip memory versus needing a slower fetch,
+and minor timing jitter in the clock circuitry itself. None of these are bugs — they are
+simply the reality of measuring a real, shared piece of hardware.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">One reading tells you nothing about the spread</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+If interrupt interference can add a random delay to any single run, then any single
+run is really "the true time, plus an unknown amount of noise." You cannot separate
+signal from noise with one data point — you need many.</p>
+</div>
+<h2 id="statistical-sampling-measuring-more-than-once">Statistical Sampling: Measuring More Than Once</h2>
+<p><strong>Statistical sampling</strong> is the practice of running the same measurement many times and
+treating the resulting set of numbers — not any one of them — as the actual result. A
+typical benchmark in this course runs the FFT 50 or 100 times back to back, recording
+every individual execution time before doing anything else with the data. From that
+sample, two summary statistics do almost all the work.</p>
+<p>The <strong>mean execution time</strong> is the ordinary average of every recorded run:</p>
+<div class="arithmatex">\[
+\bar{t} = \frac{1}{n}\sum_{i=1}^{n} t_i
+\]</div>
+<p>The <strong>standard deviation</strong> measures how spread out those individual times are around
+that mean — a small standard deviation means the runs were consistent; a large one means
+something (probably a variance source) is making some runs much slower than others:</p>
+<div class="arithmatex">\[
+s = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(t_i - \bar{t})^2}
+\]</div>
+<p>Reporting both together — "412 μs ± 18 μs" rather than just "412 μs" — tells a reader not
+just the typical time, but how much to trust that number as representative.</p>
+<h4 id="diagram-variance-source-explorer">Diagram: Variance Source Explorer</h4>
+<iframe src="../../sims/variance-source-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Variance Source Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> variance-source-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — explain, interpret
+Learning objective: Interpret a histogram of repeated timing measurements and explain how interrupt interference produces a right-skewed distribution rather than uniform noise.</p>
+<p>Canvas layout:
+- Left (400px): A live-updating histogram of 100 simulated FFT execution times
+- Right (200px): Controls and running statistics readout (mean, standard deviation, min)</p>
+<p>Visual elements:
+- Histogram bars, x-axis "execution time (μs)", y-axis "count of runs"
+- Most bars clustered tightly around a baseline value (e.g. 400 μs)
+- A smaller cluster of outlier bars further right, representing interrupt-interfered runs
+- Statistics panel showing live mean, standard deviation, and minimum as more samples are added</p>
+<p>Interactive controls:
+- Button: "Run 1 more sample" — adds one new simulated timing value to the histogram
+- Button: "Run 20 more samples"
+- Slider: "Interrupt interference rate" (0% to 30% of runs affected) — controls how often an outlier appears
+- Button: "Reset"</p>
+<p>Default parameters:
+- Baseline execution time: 400 μs, small Gaussian jitter ± 5 μs
+- Interrupt interference rate: 8%, adding 50-150 μs to affected runs</p>
+<p>Behavior:
+- Each "run" adds one bar-contributing value to the histogram, drawn from the baseline distribution or, with the interference-rate probability, from the elevated outlier distribution
+- Mean and standard deviation update live and visibly shift as outliers accumulate
+- Minimum stays anchored near the baseline, visually demonstrating why the minimum resists interference while the mean does not</p>
+<p>Instructional Rationale: A live histogram with adjustable interference rate lets the
+learner directly observe (Understand-level) how variance sources shape a distribution,
+rather than only being told that interrupts add noise.</p>
+<p>Implementation: p5.js, histogram as an array of bin counts, statistics recomputed on each new sample</p>
+</details>
+<h2 id="best-of-n-versus-the-mean">Best of N Versus the Mean</h2>
+<p>Because interrupt interference tends to make runs <em>slower</em>, never faster, than the true
+best-case time, a second useful statistic is the <strong>minimum sample</strong> — the single fastest
+execution time observed across the whole run. Taking the <strong>best of N</strong> approach means
+reporting that minimum, on the reasoning that the fastest run is the one least likely to
+have been disturbed by an interrupt, and therefore the closest estimate of the algorithm's
+true, unburdened speed.</p>
+<p>Mean and best-of-N answer different questions, and conflating them is a common source of
+misleading benchmarks:</p>
+<table>
+<thead>
+<tr>
+<th>Statistic</th>
+<th>Answers</th>
+<th>Sensitive to interference?</th>
+<th>Best used when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mean execution time</td>
+<td>What should I expect on a typical run, interference included?</td>
+<td>Yes — pulled upward by every outlier</td>
+<td>Estimating real-world, in-context performance</td>
+</tr>
+<tr>
+<td>Minimum sample (best of N)</td>
+<td>How fast can this code run under ideal conditions?</td>
+<td>No — a single interrupted run doesn't change the minimum</td>
+<td>Comparing the raw speed of two algorithms or implementations</td>
+</tr>
+</tbody>
+</table>
+<p>This course reports best-of-N when comparing <em>algorithms</em> (DFT versus FFT versus assembly
+FFT), because the question is "which one is fundamentally faster," and reports the mean
+when describing what a deployed spectrum analyzer will <em>actually feel like</em> to a user,
+interference included.</p>
+<h2 id="the-observer-effect-and-timing-overhead">The Observer Effect and Timing Overhead</h2>
+<div class="admonition mascot-warning">
+<p class="admonition-title">The act of measuring changes what you measure</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+Every call to read CYCCNT, every <code>print()</code> statement inside a timing loop, and every
+extra function call you add "just to measure" also takes cycles — cycles that get
+counted as part of your result if you're not careful.</p>
+</div>
+<p>The <strong>observer effect</strong> is the general principle that measurement itself is not free —
+inserting instrumentation into a system changes the very quantity being measured. In
+software timing, this shows up as <strong>timing overhead</strong>: the handful of cycles consumed by
+the timing code itself (reading CYCCNT, computing the masked subtraction, storing the
+result) rather than by the thing you actually wanted to measure. If you time a very short
+operation, that overhead can become a significant fraction of the reported result.</p>
+<p>The defense is to measure the overhead itself, once, and either report it separately or
+subtract it out. A simple way to estimate timing overhead is to time an <em>empty</em> block —
+call the exact same timing code around nothing at all, and see what elapsed time it
+reports. That number is your instrumentation's own floor; any measurement smaller than a
+few times that floor should be treated with real skepticism.</p>
+<h2 id="fair-comparison-and-reproducibility">Fair Comparison and Reproducibility</h2>
+<p>Two more disciplines matter as much as the statistics themselves. A <strong>fair comparison</strong>
+holds every condition constant except the one thing being compared — same input data,
+same board, same clock speed, same ambient temperature, same number of samples — so that
+a difference in measured time can only be attributed to the one variable that actually
+changed. Comparing an FFT run on a freshly powered-on board against one run after twenty
+minutes of continuous operation is not a fair comparison of two algorithms; it may just be
+a comparison of a cool chip against a warmer one.</p>
+<p><strong>Reproducibility</strong> is the property that another person, given your code, your input
+data, and your stated conditions, gets the same result (within normal statistical
+variance) that you got. A benchmark result nobody else can reproduce is not evidence of
+anything — it is an anecdote. Every benchmark in this course states its sample size,
+statistic (mean or best-of-N), board, and clock speed for exactly this reason.</p>
+<h2 id="latency-and-throughput-formally">Latency and Throughput, Formally</h2>
+<p>Chapter 17 introduced execution time and FFTs per second informally; this chapter gives
+the general versions their formal names. The <strong>latency metric</strong> is the general term for
+"time from when a unit of work becomes available to when its result is ready" — execution
+time is latency for a single FFT call. The specific case that matters for a live spectrum
+analyzer is <strong>processing latency</strong>: the time from "a fresh audio sample is ready in the
+buffer" to "its contribution to the displayed spectrum is on screen," which includes the
+FFT itself plus every surrounding step from Chapter 16's pipeline. The <strong>throughput
+metric</strong> is the general term for "amount of work completed per unit time" — FFTs per
+second is throughput, specifically.</p>
+<h2 id="memory-usage-the-other-half-of-performance">Memory Usage: The Other Half of "Performance"</h2>
+<p>Time is not the only resource worth measuring. <strong>Memory usage</strong> — how much RAM an
+implementation consumes, for buffers, twiddle-factor tables, and intermediate arrays — is
+a second, independent performance dimension. A variant that runs faster by keeping a
+larger precomputed table in memory has made a real tradeoff, not a pure win, on a board
+with a fixed, modest amount of RAM. Later chapters that compare implementation variants
+report memory usage alongside execution time for exactly this reason — a "fastest"
+implementation that doesn't fit in available memory is not actually usable.</p>
+<h2 id="building-a-test-harness">Building a Test Harness</h2>
+<p>All of the practices above compose into reusable code. A <strong>test harness</strong> is the specific
+piece of code that runs an operation a fixed number of times, records each execution time,
+and computes the summary statistics — the thing that actually presses the stopwatch,
+repeatedly, in a controlled loop. A <strong>benchmarking framework</strong> is the larger, reusable
+system built around one or more test harnesses: shared timing utilities, a consistent way
+to report results, and the conventions (sample size, which statistic to use, how to state
+exclusions) that keep every benchmark in a project comparable to every other one.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run_harness</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CYCCNT</span><span class="p">]</span>
+        <span class="n">func</span><span class="p">()</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">DWT_CYCCNT</span><span class="p">]</span>
+        <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elapsed_us</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">t</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">std_dev</span> <span class="o">=</span> <span class="n">variance</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;mean_us&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span>
+        <span class="s2">&quot;std_dev_us&quot;</span><span class="p">:</span> <span class="n">std_dev</span><span class="p">,</span>
+        <span class="s2">&quot;min_us&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">times</span><span class="p">),</span>
+        <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p><code>run_harness</code> takes any zero-argument function <code>func</code> and a sample size <code>n</code>, times it <code>n</code>
+times using the wraparound-safe <code>elapsed_us</code> helper from Chapter 17, and returns a
+dictionary holding the mean, standard deviation, minimum (best-of-N), and sample size
+together — everything a reproducible benchmark result needs to report in one place.</p>
+<h2 id="presenting-benchmark-results">Presenting Benchmark Results</h2>
+<p>Raw numbers in a dictionary are hard to compare at a glance, which is why <strong>performance
+charts</strong> — bar charts with error bars showing mean ± standard deviation, or grouped bars
+comparing several implementations side by side — accompany almost every benchmark result
+in this course from here forward.</p>
+<h4 id="diagram-benchmark-results-chart">Diagram: Benchmark Results Chart</h4>
+<iframe src="../../sims/benchmark-results-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Benchmark Results Chart</summary>
+<p>Type: chart
+<strong>sim-id:</strong> benchmark-results-chart<br/>
+<strong>Library:</strong> Chart.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze (L4) — compare, examine
+Learning objective: Compare mean-with-error-bars against best-of-N across several implementations, and examine which comparison changes the apparent ranking.</p>
+<p>Chart type: Bar chart with error bars, plus a toggle overlay</p>
+<p>Purpose: Show the same three placeholder implementations ("A", "B", "C") under two different statistics, so learners see whether the ranking changes</p>
+<p>X-axis: Implementation (A, B, C)
+Y-axis: Execution time (μs), linear scale</p>
+<p>Data series (toggle between the two with a control, do not show both by default):
+1. Mean execution time with error bars showing ± 1 standard deviation
+   - A: mean 410 μs, std dev 35 μs
+   - B: mean 395 μs, std dev 60 μs
+   - C: mean 430 μs, std dev 12 μs
+2. Minimum sample (best of N)
+   - A: 380 μs
+   - B: 340 μs
+   - C: 415 μs</p>
+<p>Interactive elements:
+- Toggle switch: "Mean ± std dev" vs "Best of N"
+- Hover over any bar to see the exact value and, for the mean view, the standard deviation
+- Callout text below the chart that updates with the toggle: for the mean view, "B has the lowest mean but the widest spread — B is inconsistent." For the best-of-N view, "B is also fastest at its best — but note how differently 'B is best' reads once you know why."</p>
+<p>Title: "Same Three Implementations, Two Statistics"
+Legend: top-right, labeling which statistic is active</p>
+<p>Implementation: Chart.js bar chart with a custom error-bar plugin, data array swapped on toggle</p>
+</details>
+<h2 id="naming-what-a-benchmark-excludes">Naming What a Benchmark Excludes</h2>
+<p>Even a statistically careful benchmark can still mislead if it quietly leaves something
+out — display refresh time, memory allocation, or the cost of preparing input data,
+excluded without saying so. Stating every exclusion explicitly, alongside the sample size
+and statistic used, is what separates a <strong>benchmark result</strong> worth citing from one that
+only looks rigorous.</p>
+<details class="question">
+<summary>You benchmark an FFT and report '380 μs, best of 50 runs.' What is still missing before another researcher could trust this number? Click to check.</summary>
+<p>At minimum: the board and clock speed (150 MHz Pico 2?), the FFT size (512-point?),
+whether timing overhead was subtracted or estimated, whether any warm-up runs were
+discarded before the 50 were recorded, and what — if anything — was excluded from the
+timed region (buffer preparation? display update?). Chapter 19 formalizes the
+warm-up question specifically; this chapter's job was making you ask it.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now catch a lying benchmark</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+You're right on frequency! Statistical sampling, mean and standard deviation,
+best-of-N, fair comparison, and stated exclusions — that's the full toolkit for
+telling a trustworthy result from a flattering one. Chapter 19 puts it straight to
+work, comparing MicroPython, C, and assembly on the very same computation.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../17-measuring-time/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 17. Measuring Time: The DWT Cycle Counter">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                17. Measuring Time: The DWT Cycle Counter
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../19-the-abstraction-ladder/" class="md-footer__link md-footer__link--next" aria-label="Next: 19. The Abstraction Ladder: Python, C, and Assembly Compared">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                19. The Abstraction Ladder: Python, C, and Assembly Compared
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2240 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Wire an SPI OLED display and two debounced buttons to the Pico 2, then deploy code that runs standalone on power-up.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/03-peripherals/">
+      
+      
+        <link rel="prev" href="../02-know-your-board/">
+      
+      
+        <link rel="next" href="../04-waves/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Peripherals: The OLED Display, Buttons, and Deploying Standalone Code - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#peripherals-the-oled-display-buttons-and-deploying-standalone-code" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#talking-over-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Talking Over SPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ssd1306-and-the-framebuffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The SSD1306 and the Framebuffer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The SSD1306 and the Framebuffer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-framebuffer-draw-and-refresh-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Framebuffer Draw and Refresh Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-buttons-without-being-fooled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Buttons Without Being Fooled
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Buttons Without Being Fooled">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-switch-bounce-and-debounce-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Switch Bounce and Debounce Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-code-that-runs-on-its-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Code That Runs on Its Own
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying Code That Runs on Its Own">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-standalone-deployment-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Standalone Deployment Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#talking-over-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Talking Over SPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ssd1306-and-the-framebuffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      The SSD1306 and the Framebuffer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The SSD1306 and the Framebuffer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-framebuffer-draw-and-refresh-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Framebuffer Draw and Refresh Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-buttons-without-being-fooled" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Buttons Without Being Fooled
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Buttons Without Being Fooled">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-switch-bounce-and-debounce-visualizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Switch Bounce and Debounce Visualizer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-code-that-runs-on-its-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Code That Runs on Its Own
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying Code That Runs on Its Own">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-standalone-deployment-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Standalone Deployment Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/03-peripherals/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="peripherals-the-oled-display-buttons-and-deploying-standalone-code">Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter covers the two physical peripherals used throughout the course — an SPI-driven OLED display and two debounced push buttons — along with the deployment workflow that lets a program run untethered from a computer. It introduces the framebuffer and draw/show display pattern, event-driven button handling, and the import paths and boot scripts needed for standalone operation. By the end, a board can display live output and respond to input without Thonny attached.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 29 concepts from the learning graph:</p>
+<ol>
+<li>Active Low Logic</li>
+<li>Autorun main.py</li>
+<li>Chip Select Line</li>
+<li>Code Organization</li>
+<li>Data Visualization</li>
+<li>Debouncing</li>
+<li>Digital Input</li>
+<li>Display Driver Chip</li>
+<li>Display Refresh</li>
+<li>Edge Detection</li>
+<li>Event Loop</li>
+<li>File Transfer To Device</li>
+<li>Framebuffer</li>
+<li>Import Path</li>
+<li>Library Directory</li>
+<li>Mode Switching</li>
+<li>Module Import</li>
+<li>Monochrome Display</li>
+<li>Pixel Coordinates</li>
+<li>Polling Loop</li>
+<li>Pull Up Resistor</li>
+<li>SPI Clock And Data</li>
+<li>SSD1306 Controller</li>
+<li>Serial Peripheral Interface</li>
+<li>Shared Configuration Module</li>
+<li>Standalone Operation</li>
+<li>Switch Bounce</li>
+<li>Text Rendering</li>
+<li>mpremote Tool</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Let's give your board a voice and a way to listen</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+So far your Pico 2 can blink one light and tell you about itself over USB. This chapter gives it a real screen to draw on and two buttons to listen to — and then teaches it to do both without a laptop attached at all. Let's tune in.</p>
+</div>
+<p>A blinking LED can only communicate one bit of information: on or off. Real instruments — a tuner, a spectrum analyzer, the tools you will build in this course — need to show much richer information: numbers, shapes, entire graphs that update live. That need has a name: <strong>data visualization</strong>, the practice of representing data visually — as shapes, graphs, or text on a screen — so that patterns a person could never spot in a list of raw numbers become immediately obvious. Everything in this chapter exists to put data visualization capability onto a five-dollar board.</p>
+<h2 id="talking-over-spi">Talking Over SPI</h2>
+<p>The screen this course uses does not connect through USB or a handful of simple on/off wires — it needs a fast, dedicated communication channel built for moving many bytes per second. That channel is the <strong>Serial Peripheral Interface</strong>, commonly abbreviated SPI: a synchronous communication protocol that uses a small, fixed set of GPIO pins to move data between a microcontroller and a peripheral chip at high speed, one bit at a time, in step with a shared clock signal.</p>
+<p>Two of those fixed pins carry the substance of an SPI connection, and their name describes exactly what they do: <strong>SPI clock and data</strong> — one pin (the clock line) ticks at a steady rate to pace every bit transferred, while a second pin (the data line) carries the actual bits, each one read or written in sync with a clock tick. Without the clock line, the receiving chip would have no way to know where one bit ends and the next begins.</p>
+<p>SPI is also, unusually, a protocol designed to let one microcontroller talk to <em>several</em> peripheral chips over the same clock and data wires — which raises an obvious question: how does a chip know which peripheral a given message is meant for? The answer is the <strong>chip select line</strong>: a dedicated GPIO pin, one per connected peripheral, that the microcontroller pulls low to say "this specific message is for you" — only the peripheral whose chip select line is active pays attention to what is on the shared data line.</p>
+<p>On the receiving end of all that wiring sits a <strong>display driver chip</strong> — a small, dedicated integrated circuit, physically separate from the display's own pixels, that translates commands and pixel data arriving over SPI into the specific electrical signals needed to light up the display hardware. Your microcontroller never talks to the screen's pixels directly; it always talks to this driver chip, which does the low-level work of actually addressing rows and columns of pixels.</p>
+<h2 id="the-ssd1306-and-the-framebuffer">The SSD1306 and the Framebuffer</h2>
+<p>The specific driver chip used throughout this course is the <strong>SSD1306 controller</strong> — a widely used display driver chip, found on countless small OLED modules, that this course's 128×64-pixel display is built around. Because the SSD1306 is so common, MicroPython ships with a ready-made software library for talking to it, which means you will rarely write raw SPI commands by hand for the display — you will call methods on an SSD1306 driver object instead.</p>
+<p>Before drawing anything, that driver object needs somewhere to build an image before sending it to the screen. That somewhere is the <strong>framebuffer</strong>: a block of memory that holds a complete image of everything that should appear on the display, one bit (or byte) per pixel, which your program modifies freely and privately before it is ever sent to the physical screen in one batch. Working through a framebuffer, rather than writing directly to the display for every single pixel change, is both faster and avoids showing a half-drawn image mid-update.</p>
+<p>The specific display this course uses only ever needs one bit per pixel, because it is a <strong>monochrome display</strong> — a display capable of showing only two states per pixel, lit or unlit, with no color and no shades of gray — which is exactly why its framebuffer can be so compact: 128 × 64 pixels needs only 1,024 bytes of RAM, easily within the Pico 2's budget.</p>
+<p>Every pixel within that framebuffer has an address of its own, expressed as <strong>pixel coordinates</strong> — an (x, y) pair identifying one specific pixel's position, conventionally measured with (0, 0) at the top-left corner of the display and x increasing rightward, y increasing downward. Drawing anything — a line, a letter, a bar on a spectrum plot — ultimately comes down to deciding which pixel coordinates to light up.</p>
+<p>Changing the framebuffer in memory does not, by itself, change what is visible on the physical screen — that requires an explicit, separate step: <strong>display refresh</strong>, the act of sending the entire framebuffer's contents over SPI to the display driver chip so the physical pixels are updated to match, typically triggered by calling a <code>.show()</code> method. This two-step pattern — draw into the framebuffer, then refresh — is universal across this course's display code.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span><span class="p">,</span> <span class="n">SPI</span>
+<span class="kn">from</span> <span class="nn">ssd1306</span> <span class="kn">import</span> <span class="n">SSD1306_SPI</span>
+
+<span class="n">spi</span> <span class="o">=</span> <span class="n">SPI</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sck</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span> <span class="n">mosi</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">19</span><span class="p">))</span>
+<span class="n">oled</span> <span class="o">=</span> <span class="n">SSD1306_SPI</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">spi</span><span class="p">,</span> <span class="n">dc</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">res</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">17</span><span class="p">),</span> <span class="n">cs</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">13</span><span class="p">))</span>
+
+<span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;Hello, Pico 2!&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">oled</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+<p>In this snippet, <code>SPI(0, sck=Pin(18), mosi=Pin(19))</code> sets up the clock and data lines discussed above; <code>dc</code>, <code>res</code>, and <code>cs</code> configure the driver chip's data/command, reset, and chip-select pins. The <code>oled.fill(0)</code> call clears the framebuffer in memory (0 means every pixel unlit); <code>oled.text(...)</code> writes into that same in-memory framebuffer without touching the screen yet; and only <code>oled.show()</code> performs the actual display refresh, sending the whole buffer over SPI in one shot.</p>
+<p>That <code>oled.text(...)</code> call demonstrates <strong>text rendering</strong> — the process of converting characters into patterns of lit pixels at specific pixel coordinates within the framebuffer, using a built-in bitmap font, so that readable text appears on a display that fundamentally only understands individual pixels.</p>
+<p>Before looking at the diagram below, it helps to name exactly what it will trace: the round trip from a <code>oled.text(...)</code> call, into the in-memory framebuffer, and out to the physical screen only once <code>oled.show()</code> runs — the same two-step draw/refresh pattern just described, now shown spatially.</p>
+<h4 id="diagram-framebuffer-draw-and-refresh-pipeline">Diagram: Framebuffer Draw and Refresh Pipeline</h4>
+<iframe src="../../sims/framebuffer-draw-refresh-pipeline/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Framebuffer Draw and Refresh Pipeline</summary>
+<p>Type: diagram
+<strong>sim-id:</strong> framebuffer-draw-refresh-pipeline<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, summarize</p>
+<p>Learning objective: Help students explain why changes to a framebuffer are invisible until <code>.show()</code> is called, and trace how a text-rendering call becomes lit pixels on the physical screen.</p>
+<p>Purpose: Make the two-step draw/refresh pattern (modify framebuffer in RAM, then send the whole buffer over SPI) concrete and visible, since it is easy to assume drawing calls update the screen immediately.</p>
+<p>Components to show (left-to-right flow):
+- "Your Code" (e.g. <code>oled.text("Hi", 0, 0)</code>) — leftmost node
+- "Framebuffer (RAM)" — a small 128x64 grid representation showing a few lit pixels forming letters, mid-left
+- "oled.show()" — a distinct trigger node, mid-right
+- "SPI (Clock + Data + Chip Select)" — connector node
+- "SSD1306 Controller" — receiving node
+- "Physical OLED Pixels" — rightmost node, showing the same lit-pixel pattern now "on the glass"</p>
+<p>Connections:
+- "Your Code" → "Framebuffer (RAM)" labeled "writes bits, no visible change yet"
+- "Framebuffer (RAM)" → "oled.show()" labeled "read only when triggered"
+- "oled.show()" → "SPI" → "SSD1306 Controller" → "Physical OLED Pixels" labeled "entire buffer sent in one burst"</p>
+<p>Interactive features:
+- A "Step" button that advances through the pipeline stage by stage, greying out not-yet-reached nodes and highlighting the active one
+- Clicking any node opens an infobox with that node's definition from this chapter's vocabulary (Framebuffer, Display Refresh, Serial Peripheral Interface, SSD1306 Controller)
+- A toggle: "Draw another line WITHOUT calling show()" — visually adds a second lit shape to the Framebuffer grid but explicitly does NOT propagate it to the Physical OLED Pixels node until Step reaches oled.show() again, reinforcing that multiple draws can accumulate before one refresh</p>
+<p>Visual style: Horizontal pipeline, rounded rectangle nodes, small pixel-grid mockups inside the Framebuffer and Physical OLED Pixels nodes</p>
+<p>Color scheme: Software-side nodes (Your Code, Framebuffer) in blue; the SPI connector in gray; hardware-side nodes (SSD1306 Controller, Physical OLED Pixels) in orange</p>
+<p>Implementation: p5.js, responsive width, step state stored so resizing the window does not reset progress</p>
+</details>
+<h2 id="reading-buttons-without-being-fooled">Reading Buttons Without Being Fooled</h2>
+<p>A display only ever sends information one direction — the OLED cannot tell your program anything. Getting information the other way, from the physical world into your code, is the job of <strong>digital input</strong>: configuring a GPIO pin (via <code>Pin(number, Pin.IN)</code>) to read whatever voltage something else is applying to it, rather than driving a voltage out, the mirror image of the digital output you used to blink an LED in Chapter 1.</p>
+<p>Left disconnected, a digital input pin does not reliably read as either high or low — it "floats," picking up electrical noise from nearby wires. The standard fix is a <strong>pull-up resistor</strong>: a resistor connected between a GPIO pin and the positive supply voltage, so the pin reads a definite logic high by default, and only reads logic low when something (like a pressed button) actively pulls it down to ground. The Pico 2 has these resistors built into its GPIO peripheral, enabled in software with <code>Pin(number, Pin.IN, Pin.PULL_UP)</code> — no external resistor needed for this course's buttons.</p>
+<p>That default-high, pressed-low wiring is common enough to have its own name: <strong>active-low logic</strong>, a design convention where the "active" or "pressed" state of a signal is represented by logic low rather than logic high — the opposite of what intuition might suggest, which is exactly why it is worth naming explicitly rather than assuming.</p>
+<table>
+<thead>
+<tr>
+<th>Button state</th>
+<th>Pull-up default</th>
+<th>GPIO reads</th>
+<th>Meaning under active-low logic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Not pressed</td>
+<td>Pulled to 3.3V</td>
+<td>Logic high (1)</td>
+<td>Inactive</td>
+</tr>
+<tr>
+<td>Pressed</td>
+<td>Pulled to ground</td>
+<td>Logic low (0)</td>
+<td>Active — button is down</td>
+</tr>
+</tbody>
+</table>
+<p>A pressed mechanical button, however, does not produce one clean transition from high to low. It produces <strong>switch bounce</strong>: the rapid, unwanted series of electrical on/off transitions a mechanical switch produces in the first few milliseconds after being pressed or released, caused by physical contacts literally bouncing against each other before settling. Read naively, one press of a button can look to software like five or six presses in a row.</p>
+<p>The standard remedy is <strong>debouncing</strong>: the technique of filtering out switch bounce — typically by ignoring any additional transitions for a short delay (often 20–50 milliseconds, using <code>sleep_ms()</code>) immediately after detecting the first one — so that one physical press is reported as exactly one logical event.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep_ms</span>
+
+<span class="n">button</span> <span class="o">=</span> <span class="n">Pin</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">IN</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">PULL_UP</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">debounced_press</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">button</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sleep_ms</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">button</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+<p>Here, <code>button.value() == 0</code> checks for the active-low pressed state; the <code>sleep_ms(30)</code> pause lets any bounce settle before the second check confirms the button is genuinely still held down, rather than reporting a bounce as a real press.</p>
+<p>Continuously checking a button's state, over and over, is itself a pattern with a name: the <strong>polling loop</strong> — a loop that repeatedly checks a digital input's current state, over and over in quick succession, rather than waiting to be notified when something changes. Polling is simple, but it only tells you the button's <em>current</em> state — it cannot, by itself, tell you the exact moment a press <em>began</em>.</p>
+<p>That moment matters, so a further refinement is usually layered on top of polling: <strong>edge detection</strong>, noticing the specific instant a digital input's value changes from one state to another (for example, high to low), rather than simply reporting whatever the current state happens to be. Combining a polling loop with edge detection and debouncing produces the standard shape of button-handling code used throughout this course, generalized as an <strong>event loop</strong>: a loop, structurally similar to a polling loop, that repeatedly checks for meaningful state changes (events) and dispatches a response — such as calling a specific function — whenever one is detected.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Debounce first, react second</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+A common early bug: reading a button, seeing it "pressed," and immediately acting on it — before the bounce has settled. Always debounce first, then treat the confirmed result as the actual event. It is a small extra step that saves a lot of confusing double-triggered behavior.</p>
+</div>
+<p>With reliable button-press events available, this course's two buttons drive one recurring interaction pattern: <strong>mode switching</strong> — using a detected button-press event to change which of several operating modes a program is currently in (for example, cycling a spectrum analyzer between a waveform view and a frequency view), implemented as an event loop that updates a mode variable each time a press event fires.</p>
+<p>Before the interactive debounce visualizer below, it is worth naming exactly what its two traces represent: a raw, noisy voltage signal straight off a physical switch (showing the bounce this section just defined), and the same signal after the debouncing logic above has been applied to it.</p>
+<h4 id="diagram-switch-bounce-and-debounce-visualizer">Diagram: Switch Bounce and Debounce Visualizer</h4>
+<iframe src="../../sims/switch-bounce-debounce-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Switch Bounce and Debounce Visualizer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> switch-bounce-debounce-visualizer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Demonstrate, apply</p>
+<p>Learning objective: Let students apply a debounce delay to a simulated noisy switch signal and observe how too short a delay still lets bounce through, while a reasonable delay produces exactly one clean logical press event.</p>
+<p>Canvas layout:
+- Top (200px): "Raw signal" strip chart — simulated noisy square wave showing 3-6 rapid bounces within the first ~15ms after a simulated press
+- Middle (200px): "Debounced signal" strip chart — the same time window, showing the output of the debounce logic applied with the current delay setting
+- Bottom (150px): controls and event counter</p>
+<p>Visual elements:
+- Two stacked, time-aligned strip charts sharing the same x-axis (time in milliseconds)
+- Vertical marker lines at each detected "logical press event" on the debounced chart
+- Event counter: "Logical presses detected: N" (should read 1 for a single simulated press, if the delay is adequate)</p>
+<p>Interactive controls:
+- Button: "Simulate one press" — triggers a new randomized bounce pattern (3-6 bounces within 15ms) on the raw signal
+- Slider: Debounce delay, range 0-60 ms, default 30 ms
+- Checkbox: "Show bounce count" — displays how many raw transitions occurred vs how many were filtered</p>
+<p>Default parameters:
+- Debounce delay: 30 ms
+- No press simulated until "Simulate one press" is clicked</p>
+<p>Behavior:
+- Each click of "Simulate one press" generates a new random bounce sequence (always ending in a stable pressed state) and redraws the raw signal chart
+- The debounced chart applies the current delay slider value to that same raw sequence and redraws, updating the "Logical presses detected" counter
+- Setting the delay too low (e.g., 5ms) against a bounce pattern that lasts 15ms visibly produces more than one logical press, letting students discover the failure mode themselves before being told about it</p>
+<p>Instructional Rationale: An Apply-level parameter exploration is appropriate because the objective asks students to connect a numeric debounce-delay choice to an observable correctness outcome (one press = one event), including deliberately letting them choose a value that is too small and see it fail.</p>
+<p>Implementation notes:
+- Use p5.js; keep both strip charts on a shared millisecond timescale so vertical alignment is meaningful
+- Responsive width; both charts and controls scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Polling, events, and modes are the same idea at three scales</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Zoom out for a second: a polling loop asks "what's the state right now?" repeatedly. Edge detection asks "did the state just change?" And mode switching asks "given that it changed, what should the whole program do differently?" Each one builds directly on the last — the same three-question pattern will show up again when this course reaches real-time audio processing.</p>
+</div>
+<h2 id="deploying-code-that-runs-on-its-own">Deploying Code That Runs on Its Own</h2>
+<p>Every peripheral so far has been driven by code you ran from Thonny with a laptop attached. The last piece of this chapter removes that dependency entirely, so a finished project can run from nothing but a USB power source.</p>
+<p>The first requirement is getting more than one file onto the board. <strong>File transfer to device</strong> is the general act of copying any file — not just the <code>main.py</code> you saved directly from Thonny in Chapter 1 — onto the Pico 2's device filesystem, which becomes necessary the moment a project needs supporting files like a display driver library. Thonny's Save dialog can do this one file at a time, but larger projects benefit from a purpose-built command-line tool: the <strong>mpremote tool</strong>, MicroPython's official command-line utility for copying files to and from a connected board, running scripts, and opening a REPL session, all without opening Thonny at all.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>mpremote<span class="w"> </span>cp<span class="w"> </span>ssd1306.py<span class="w"> </span>:lib/ssd1306.py
+mpremote<span class="w"> </span>cp<span class="w"> </span>main.py<span class="w"> </span>:main.py
+</code></pre></div></td></tr></table></div>
+<p>Here, the <code>cp</code> command copies a local file to the board; the colon prefix (<code>:lib/ssd1306.py</code>) tells <code>mpremote</code> the destination path is on the device filesystem, not your computer's own disk.</p>
+<p>That <code>lib/</code> destination is not arbitrary. MicroPython automatically searches a specific folder for library code: the <strong>library directory</strong>, a conventional folder named <code>/lib</code> on the device filesystem where MicroPython automatically looks for modules that scripts try to import, keeping reusable driver code separate from your project's own top-level scripts like <code>main.py</code>.</p>
+<p>Automatic searching still requires MicroPython to know <em>where</em> to look, which is governed by the <strong>import path</strong> — the ordered list of folder locations, including the <code>/lib</code> directory, that MicroPython checks, in order, when a script executes an <code>import</code> statement, stopping at the first matching module it finds. Understanding the import path matters because a module saved to the wrong location on the device filesystem will fail to import even though the file is genuinely present on the board.</p>
+<p>Beyond a single display driver, most projects in this course share settings — pin numbers, display dimensions, calibration constants — across several files. Rather than repeating those values, this course collects them in a <strong>shared configuration module</strong>: a single <code>.py</code> file (commonly named <code>config.py</code>), saved to the device filesystem, that defines shared constants and settings once, so that every other script can import and reuse them instead of hard-coding the same values repeatedly.</p>
+<p>Bringing a library directory, an import path, and a shared configuration module together is what makes the standard Python <strong>module import</strong> statement work reliably on-device: the <code>import</code> statement that loads another <code>.py</code> file's code into your current script, following the import path described above to locate it, exactly as <code>import gc</code> or <code>import machine</code> did in earlier chapters — except now resolving to files you saved yourself.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1"># config.py — a shared configuration module</span>
+<span class="n">OLED_WIDTH</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">OLED_HEIGHT</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">SPI_SCK_PIN</span> <span class="o">=</span> <span class="mi">18</span>
+<span class="n">SPI_MOSI_PIN</span> <span class="o">=</span> <span class="mi">19</span>
+
+<span class="c1"># main.py</span>
+<span class="kn">import</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span><span class="p">,</span> <span class="n">SPI</span>
+
+<span class="n">spi</span> <span class="o">=</span> <span class="n">SPI</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sck</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SPI_SCK_PIN</span><span class="p">),</span> <span class="n">mosi</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">SPI_MOSI_PIN</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+<p>Splitting a project this way — driver code in <code>/lib</code>, shared constants in <code>config.py</code>, and the top-level logic in <code>main.py</code> — is an instance of a broader engineering practice worth naming directly: <strong>code organization</strong>, the practice of splitting a program's source code across multiple files and modules by responsibility, rather than writing everything in one large script, so that each piece can be read, tested, and reused independently.</p>
+<p>The very last piece makes all of this run without Thonny at all. <strong>Autorun main.py</strong> is the specific, built-in MicroPython behavior of automatically executing a file named exactly <code>main.py</code>, located in the device filesystem's root folder, immediately every time the board powers on or resets — no button press, no command, no attached computer required. That single built-in behavior is what enables <strong>standalone operation</strong>: running a complete program directly from the device filesystem on power-up, with no computer, IDE, or USB data connection attached at all — only power, commonly supplied by an ordinary phone charger.</p>
+<p>Before the deployment workflow diagram below, it is worth naming the order these pieces must happen in, since getting the sequence wrong is the most common deployment mistake: files first, correct locations second, correct filename (<code>main.py</code>, root folder) last.</p>
+<h4 id="diagram-standalone-deployment-workflow">Diagram: Standalone Deployment Workflow</h4>
+<iframe src="../../sims/standalone-deployment-workflow/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Standalone Deployment Workflow</summary>
+<p>Type: workflow
+<strong>sim-id:</strong> standalone-deployment-workflow<br/>
+<strong>Library:</strong> vis-network<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Summarize, explain</p>
+<p>Learning objective: Help students summarize the correct order of steps required to move from "code that only runs while Thonny is attached" to "code that runs standalone on power-up," and diagnose which step was skipped when standalone operation fails.</p>
+<p>Purpose: Turn the multi-step, easy-to-get-wrong deployment process into a checkable, clickable sequence.</p>
+<p>Components to show (as a left-to-right or top-to-bottom sequence of nodes):
+1. "Write and test in Thonny" (editor pane, board attached)
+2. "Copy driver libraries to /lib" (via mpremote or Thonny Save, e.g. ssd1306.py)
+3. "Copy config.py to device root" (shared configuration module)
+4. "Save your program as main.py in device root" (NOT any other filename)
+5. "Unplug from computer, connect to USB power only"
+6. "Board autoruns main.py — standalone operation confirmed"</p>
+<p>Connections: simple linear arrows, node 1 → 2 → 3 → 4 → 5 → 6</p>
+<p>Interactive features:
+- Clicking any node opens an infobox with: what the step accomplishes, the specific MicroPython/mpremote command involved, and the most common mistake at that step (e.g., for node 4: "Saving as blink.py instead of main.py — MicroPython only autoruns the exact filename main.py")
+- A "Common failure" toggle button that, when active, adds small red warning icons to nodes 2-4 with a one-line note on what breaks if that step is skipped or done wrong
+- Hover over any node shows a one-line summary before clicking for the full infobox</p>
+<p>Visual style: Vertical or horizontal linear flowchart, numbered rounded-rectangle nodes, arrows between each</p>
+<p>Color scheme: Steps performed while still connected to a computer (1-4) in blue; the final standalone steps (5-6) in green</p>
+<p>Implementation: vis-network, responsive to container width, canvas height 500px</p>
+</details>
+<div class="admonition mascot-warning">
+<p class="admonition-title">One wrong filename breaks the whole plan</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo warning">
+Autorun only triggers for a file named exactly <code>main.py</code>, sitting in the device filesystem's root folder — not <code>main.PY</code>, not inside <code>/lib</code>, not <code>blink.py</code>. This single naming rule trips up more students building their first standalone project than any wiring mistake does.</p>
+</div>
+<p>Once a project deploys cleanly this way, it stays deployed. The device filesystem keeps every file exactly where it was — <code>main.py</code>, <code>config.py</code>, everything in <code>/lib</code> — across power cycles, until you explicitly overwrite something. Reconnecting to Thonny later to fix a bug does not undo any of it; you are editing a file on the same filesystem the board already boots from, not starting deployment over. That permanence is exactly why it is worth getting the sequence right once, rather than something to repeat before every use.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">This is the last setup-heavy chapter</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+Wiring, import paths, and deployment steps are a lot of plumbing to absorb at once — and plumbing is genuinely less exciting than a spectrum analyzer. Good news: once your display, buttons, and standalone deployment all work, you will not need to revisit any of this setup again. Every chapter from here forward builds on top of it.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>Your board can now show information, respond to input, and run entirely on its own.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>The <strong>SSD1306 controller</strong> talks over <strong>SPI</strong>, using dedicated clock, data, and chip-select lines; your code draws into an in-memory <strong>framebuffer</strong> and only updates the physical screen on <strong>display refresh</strong>.</li>
+<li><strong>Pull-up resistors</strong> and <strong>active-low logic</strong> mean a button reads high when untouched and low when pressed — the opposite of what intuition suggests.</li>
+<li><strong>Debouncing</strong> turns messy <strong>switch bounce</strong> into one clean logical press, and layering <strong>edge detection</strong> on a <strong>polling loop</strong> produces a proper <strong>event loop</strong> for <strong>mode switching</strong>.</li>
+<li>Reliable deployment depends on getting three things right, in order: files in the right places (<strong>library directory</strong>, <strong>import path</strong>), a <strong>shared configuration module</strong> for constants, and a program saved as exactly <code>main.py</code> so <strong>autorun</strong> enables true <strong>standalone operation</strong>.</li>
+</ul>
+<details class="note">
+<summary>Quick check: your button reads logic HIGH when you are not touching it. Is that active-high or active-low wiring, and why? — Click to expand</summary>
+<p>Active-low. The pull-up resistor holds the pin high by default, so the "active" or pressed state is represented by the pin reading LOW — pressing the button pulls it down to ground, the opposite of what "active" might intuitively suggest.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Your board can see, listen, and stand on its own</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Screen wired, buttons debounced, code deployed to run without a laptop in sight — that's the complete hardware platform this entire course builds on. Everything from here forward is about what you choose to <em>show</em> on that screen and <em>compute</em> in response to those buttons. Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-know-your-board/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2. Know Your Board: ARM Cortex-M Architecture and the Pico 2">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../04-waves/" class="md-footer__link md-footer__link--next" aria-label="Next: 4. Waves: Amplitude, Frequency, Phase, and Harmonics">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                4. Waves: Amplitude, Frequency, Phase, and Harmonics
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

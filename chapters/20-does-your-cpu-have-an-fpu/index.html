@@ -1,0 +1,2144 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="How to detect floating-point and DSP hardware by reading ARM feature registers directly, rather than assuming it from a datasheet">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/20-does-your-cpu-have-an-fpu/">
+      
+      
+        <link rel="prev" href="../19-the-abstraction-ladder/">
+      
+      
+        <link rel="next" href="../21-your-first-assembly-function/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Does Your CPU Have an FPU? - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#does-your-cpu-have-an-fpu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Does Your CPU Have an FPU?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instruction-set-architecture-the-real-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instruction Set Architecture: The Real Contract
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-purpose-cpus-versus-dsp-chips" class="md-nav__link">
+    <span class="md-ellipsis">
+      General-Purpose CPUs Versus DSP Chips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-floating-point-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Floating-Point Unit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-portability-constraint-this-creates" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Portability Constraint This Creates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capability-probing-ask-the-chip-dont-assume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capability Probing: Ask the Chip, Don't Assume
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capability Probing: Ask the Chip, Don&#39;t Assume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-fpu-capability-probe-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: FPU Capability Probe Simulator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-feature-gates-and-failure-root-cause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware Feature Gates and Failure Root Cause
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instruction-set-architecture-the-real-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instruction Set Architecture: The Real Contract
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-purpose-cpus-versus-dsp-chips" class="md-nav__link">
+    <span class="md-ellipsis">
+      General-Purpose CPUs Versus DSP Chips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-floating-point-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Floating-Point Unit
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-portability-constraint-this-creates" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Portability Constraint This Creates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capability-probing-ask-the-chip-dont-assume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capability Probing: Ask the Chip, Don't Assume
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capability Probing: Ask the Chip, Don&#39;t Assume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-fpu-capability-probe-simulator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: FPU Capability Probe Simulator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-feature-gates-and-failure-root-cause" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware Feature Gates and Failure Root Cause
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/20-does-your-cpu-have-an-fpu/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="does-your-cpu-have-an-fpu">Does Your CPU Have an FPU?</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter teaches students to detect their own chip's floating-point and DSP capability by reading ARM architecture and feature registers, rather than assuming it from a datasheet. It distinguishes the Cortex-M0+ (no FPU) from the M4 and M33, and treats a missing capability as diagnostic information rather than a dead end. This capability probe is a prerequisite for every assembly-language chapter that follows.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 16 concepts from the learning graph:</p>
+<ol>
+<li>ARMv6-M</li>
+<li>ARMv7-M</li>
+<li>ARMv8-M</li>
+<li>Capability Probing</li>
+<li>Cortex M0 Plus</li>
+<li>DSP Chip</li>
+<li>DSP Instructions</li>
+<li>FPU Presence Detection</li>
+<li>FPv5-SP Unit</li>
+<li>Failure Root Cause</li>
+<li>Floating Point Unit</li>
+<li>General Purpose CPU</li>
+<li>Hardware Feature Gate</li>
+<li>Instruction Set Architecture</li>
+<li>MVFR0 Register</li>
+<li>Portability Constraint</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../09-computing-and-validating-the-dft/">9. Computing and Validating the DFT</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — into a chip detective!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Before you write a single line of assembly, there's a question you cannot skip: does
+the chip in front of you even <em>have</em> the hardware you're about to program? Let's find
+out by asking the chip itself, not a datasheet.</p>
+</div>
+<h2 id="instruction-set-architecture-the-real-contract">Instruction Set Architecture: The Real Contract</h2>
+<p>Every CPU understands a fixed, specific set of instructions — add this, load that, branch
+if equal — and that complete vocabulary is called its <strong>instruction set architecture</strong>
+(ISA). The ISA is the actual contract between hardware and software: a program compiled
+or hand-written for one ISA will not run correctly on a chip implementing a different one,
+no matter how similar the two chips look on a spec sheet. ARM does not sell one ISA — it
+licenses a family of related but distinct ones, and three of them matter directly to this
+course.</p>
+<p><strong>ARMv6-M</strong> is the smallest, oldest member of the Cortex-M family's architecture line —
+a minimal integer-only instruction set found in chips like the Cortex-M0 and <strong>Cortex
+M0+</strong>, the core used in the original Raspberry Pi Pico (RP2040). <strong>ARMv7-M</strong> is the
+mid-range generation, adding a substantially larger instruction set including
+floating-point and DSP extensions, found in cores like the Cortex-M3 and Cortex-M4.
+<strong>ARMv8-M</strong> is the newest generation relevant here, adding security extensions and
+further instruction refinements on top of ARMv7-M's capabilities, implemented in cores
+like the Cortex-M23 and the Cortex-M33 — the core inside your Pico 2's RP2350. Knowing
+which ISA generation a chip implements tells you, in broad strokes, what kind of
+instructions it can possibly execute before you look at a single register.</p>
+<h2 id="general-purpose-cpus-versus-dsp-chips">General-Purpose CPUs Versus DSP Chips</h2>
+<p>Historically, a <strong>general purpose CPU</strong> was built to handle a broad mix of ordinary
+workloads — control logic, string handling, simple arithmetic — while a dedicated <strong>DSP
+chip</strong> (Digital Signal Processor) was purpose-built with hardware specifically optimized
+for the kind of work signal processing demands: rapid, repeated multiply-and-accumulate
+operations on streams of numbers, exactly the pattern at the heart of correlation and the
+FFT.</p>
+<p>Modern Cortex-M cores blur that historical line on purpose. Starting with ARMv7-M, ARM
+added optional <strong>DSP instructions</strong> — single-cycle multiply-accumulate operations,
+saturating arithmetic, and packed-data instructions that process several small values at
+once — directly into an otherwise general-purpose core. A Cortex-M4 or M33 is still a
+general-purpose CPU in the sense that it also runs ordinary control code, GPIO handling,
+and display drivers perfectly well, but it also carries hardware capability that used to
+require a separate, dedicated DSP chip. That is precisely what makes real-time FFT
+processing possible on a $5 general-purpose microcontroller in the first place.</p>
+<h2 id="the-floating-point-unit">The Floating-Point Unit</h2>
+<p>A <strong>floating point unit</strong> (FPU) is a dedicated hardware block that performs
+floating-point arithmetic — addition, multiplication, and more — directly in silicon, in
+a small, fixed number of cycles. Without an FPU, a chip must emulate floating-point
+operations entirely in software, one integer instruction at a time, which is dramatically
+slower — often tens to hundreds of times slower for a single operation.</p>
+<p>The specific FPU implementation built into the Cortex-M33 (and Cortex-M4) is called the
+<strong>FPv5-SP unit</strong> — the fifth version of ARM's floating-point architecture, in its
+single-precision (SP) configuration, meaning it operates on 32-bit floats directly in
+hardware but does not accelerate 64-bit double-precision values. Every floating-point
+instruction this course's assembly chapters use — <code>VADD</code>, <code>VMUL</code>, and the rest — is
+executed by this exact unit.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Not every Cortex-M has one</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+The <strong>Cortex M0 Plus</strong> core — ARMv6-M, used in the original Pico's RP2040 — has no
+FPU and no DSP instructions at all. Every floating-point operation on that chip runs
+in slow software emulation. This is not a defect; the M0+ was designed for extreme
+low power and low cost, and an FPU was traded away to get there.</p>
+</div>
+<h2 id="the-portability-constraint-this-creates">The Portability Constraint This Creates</h2>
+<p>This difference is not a footnote — it is a hard <strong>portability constraint</strong> on any code
+this course writes from here forward. Assembly instructions that use the FPU's register
+bank simply do not exist on a Cortex-M0+; attempting to assemble or run them fails
+outright, or on some tooling, produces confusing, indirect errors far from the actual
+cause. A Pico 2 <strong>W</strong> works identically to a plain Pico 2 for every lab in this course,
+because both use the Cortex-M33. The <em>original</em> Pico does not, because its RP2040 uses
+the Cortex-M0+ — Labs 30 through 34 in the assembly module simply cannot run there. Table
+below summarizes the relevant generations at a glance, now that each one has been
+explained individually:</p>
+<table>
+<thead>
+<tr>
+<th>ISA generation</th>
+<th>Example cores</th>
+<th>FPU?</th>
+<th>DSP instructions?</th>
+<th>Used in this course</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARMv6-M</td>
+<td>Cortex-M0, Cortex-M0+</td>
+<td>No</td>
+<td>No</td>
+<td>Original Pico (RP2040) — cannot run Labs 30-34</td>
+</tr>
+<tr>
+<td>ARMv7-M</td>
+<td>Cortex-M3, Cortex-M4</td>
+<td>M4: yes (FPv5-SP)</td>
+<td>M4: yes</td>
+<td>Common in industry; not this course's board</td>
+</tr>
+<tr>
+<td>ARMv8-M</td>
+<td>Cortex-M23, Cortex-M33</td>
+<td>M33: yes (FPv5-SP)</td>
+<td>M33: yes</td>
+<td>Pico 2 / Pico 2 W (RP2350) — this course's board</td>
+</tr>
+</tbody>
+</table>
+<h2 id="capability-probing-ask-the-chip-dont-assume">Capability Probing: Ask the Chip, Don't Assume</h2>
+<div class="admonition mascot-warning">
+<p class="admonition-title">A datasheet is not the chip in front of you</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+Assuming a board has an FPU because "it's a Pico 2" invites exactly the kind of bug
+that is painful to track down later — a typo'd board revision, a substituted chip, or
+simply a student who grabbed the wrong board from a shared bin. The fix costs three
+lines of code.</p>
+</div>
+<p><strong>Capability probing</strong> is the practice of asking the hardware itself what it supports at
+startup, rather than assuming a capability from a part number, a datasheet, or last
+semester's notes. The specific check this chapter builds is <strong>FPU presence detection</strong> —
+reading a register that reports, in hardware, whether a floating-point unit actually
+exists on this exact chip, right now.</p>
+<p>ARM Cortex-M cores expose this information through the <strong>MVFR0 register</strong> (Media and VFP
+Feature Register 0) — a read-only system register that reports, in a set of small bit
+fields, exactly which floating-point capabilities are implemented in silicon. Reading
+MVFR0 and checking its relevant bit field tells you definitively whether single-precision
+floating point is present, with no ambiguity and no dependence on documentation that
+might be stale or wrong for the specific unit in your hand.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="n">MVFR0</span> <span class="o">=</span> <span class="mh">0xE000EF40</span>
+
+<span class="k">def</span> <span class="nf">has_single_precision_fpu</span><span class="p">():</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">mem32</span><span class="p">[</span><span class="n">MVFR0</span><span class="p">]</span>
+    <span class="n">single_precision_field</span> <span class="o">=</span> <span class="n">value</span> <span class="o">&amp;</span> <span class="mh">0xF</span>          <span class="c1"># bits [3:0]</span>
+    <span class="k">return</span> <span class="n">single_precision_field</span> <span class="o">==</span> <span class="mh">0x2</span>           <span class="c1"># 0x2 means &quot;single-precision supported&quot;</span>
+
+<span class="k">if</span> <span class="n">has_single_precision_fpu</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FPU detected — Module 7&#39;s assembly chapters will run here.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No FPU detected — this board cannot run Labs 30-34.&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p><code>value &amp; 0xF</code> isolates the lowest four bits of the 32-bit MVFR0 register — the specific
+bit field ARM's architecture reference defines as reporting single-precision
+floating-point support. A value of <code>0x2</code> in that field means "single-precision supported
+as defined by the VFP architecture"; any other value means it is absent. This is exactly
+the same <strong>register bit manipulation</strong> pattern from Chapter 17, now used to read a
+capability instead of controlling a counter.</p>
+<h4 id="diagram-fpu-capability-probe-simulator">Diagram: FPU Capability Probe Simulator</h4>
+<iframe src="../../sims/fpu-capability-probe/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>FPU Capability Probe Simulator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> fpu-capability-probe<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply (L3) — execute, demonstrate
+Learning objective: Apply the MVFR0 bit-field check to determine FPU presence for several simulated chips, demonstrating that the same code correctly reports different verdicts on different hardware.</p>
+<p>Canvas layout:
+- Left (300px): A chip selector showing three labeled chip cards (Cortex-M0+, Cortex-M4, Cortex-M33)
+- Right (300px): A register-read panel showing the simulated MVFR0 value for the selected chip, the bitmask operation, and the resulting verdict</p>
+<p>Visual elements:
+- Each chip card shows its name, ISA generation, and a "?" placeholder for FPU status until probed
+- Register panel shows MVFR0 as a 32-bit hex value appropriate to the selected chip (e.g. <code>0x00000000</code> for Cortex-M0+, <code>0x10110021</code> for a Cortex-M4/M33 style value)
+- A visual AND-mask animation showing <code>value &amp; 0xF</code> isolating the low nibble
+- Verdict readout: green checkmark + "FPU detected" or red X + "No FPU"</p>
+<p>Interactive controls:
+- Click a chip card to select it
+- Button: "Run has_single_precision_fpu()" — animates the mask operation and reveals the verdict for the selected chip
+- Button: "Reset all"</p>
+<p>Default parameters:
+- Chip selected: Cortex-M33 (matches the reader's own Pico 2)</p>
+<p>Behavior:
+- Selecting Cortex-M0+ and running the probe always yields "No FPU" (bit field 0x0)
+- Selecting Cortex-M4 or Cortex-M33 always yields "FPU detected" (bit field 0x2)
+- The chip card's "?" placeholder updates to the verdict icon once probed, and stays until a different chip is selected</p>
+<p>Instructional Rationale: Apply-level objectives call for direct execution and
+demonstration — letting the learner run the exact same probing function against multiple
+simulated chips and see it produce different, correct verdicts each time reinforces that
+the function is reading real hardware state, not returning a hardcoded answer.</p>
+<p>Implementation: p5.js, chip data as an array of {name, mvfr0_value} objects, bitmask math performed in JS matching the Python logic exactly</p>
+</details>
+<h2 id="hardware-feature-gates-and-failure-root-cause">Hardware Feature Gates and Failure Root Cause</h2>
+<p>The pattern <code>has_single_precision_fpu()</code> demonstrates is general enough to have its own
+name: a <strong>hardware feature gate</strong> is any point in code where execution branches based on
+a runtime capability check, rather than proceeding under an unverified assumption. Feature
+gates show up constantly in embedded and systems programming — checking for a peripheral
+before configuring it, checking for a co-processor before dispatching work to it — and the
+FPU probe above is this course's first hands-on example.</p>
+<p>The payoff of gating on a real capability check, instead of failing partway through an
+assembly routine with a cryptic fault, is a clear <strong>failure root cause</strong>: when
+<code>has_single_precision_fpu()</code> returns <code>False</code>, the program can say exactly why it cannot
+proceed — "no FPU on this chip" — rather than crashing three instructions into a
+hand-written routine with no indication of what went wrong. Treating a missing capability
+as diagnostic information, reported plainly, rather than a dead end reached by accident,
+is the actual engineering skill this chapter teaches. It is also directly reusable: any
+future project on unfamiliar ARM hardware starts with exactly this kind of probe before
+trusting any hardware-specific code path.</p>
+<details class="question">
+<summary>You run <code>has_single_precision_fpu()</code> on a board and get <code>False</code>, but you were told it was a Pico 2. What should you check first? Click to check.</summary>
+<p>Before assuming the probe code itself is wrong, verify the board's actual identity —
+it's easy to grab an original Pico (RP2040, Cortex-M0+) from a shared parts bin by
+mistake, since they look nearly identical. Chapter 2's board-identification technique
+(reading the chip's own ID registers) is the fastest way to confirm which silicon is
+actually in your hand before debugging anything else.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You can now trust your own hardware</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Not bad for three lines of code! You've confirmed, from the chip itself rather than a
+datasheet, that your Pico 2's Cortex-M33 has exactly the floating-point hardware
+Module 7 needs. Chapter 21 puts that confirmed hardware to work — your very first
+hand-written ARM assembly function.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../19-the-abstraction-ladder/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 19. The Abstraction Ladder: Python, C, and Assembly Compared">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                19. The Abstraction Ladder: Python, C, and Assembly Compared
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../21-your-first-assembly-function/" class="md-footer__link md-footer__link--next" aria-label="Next: 21. Your First Assembly Function: Registers and Loops">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                21. Your First Assembly Function: Registers and Loops
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

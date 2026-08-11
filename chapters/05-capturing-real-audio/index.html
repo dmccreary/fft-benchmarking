@@ -1,0 +1,2191 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Turn real sound into a MicroPython buffer of numbers over the I2S protocol, using a MEMS microphone.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/05-capturing-real-audio/">
+      
+      
+        <link rel="prev" href="../04-waves/">
+      
+      
+        <link rel="next" href="../06-sampling-quantization-and-aliasing/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Capturing Real Audio: The I2S Microphone - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#capturing-real-audio-the-i2s-microphone" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Capturing Real Audio: The I2S Microphone
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-air-pressure-to-electrical-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Air Pressure to Electrical Signal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-a-mems-microphone-hears" class="md-nav__link">
+    <span class="md-ellipsis">
+      How a MEMS Microphone Hears
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How a MEMS Microphone Hears">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-mems-microphone-cross-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: MEMS Microphone Cross-Section
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-i2s-protocol-three-wires-one-bitstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      The I2S Protocol: Three Wires, One Bitstream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The I2S Protocol: Three Wires, One Bitstream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-i2s-protocol-timing-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: I2S Protocol Timing Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-stream-into-micropython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the Stream into MicroPython
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-what-you-captured" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing What You Captured
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#productive-failure-some-labs-are-built-to-go-wrong-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Productive Failure: Some Labs Are Built to Go Wrong First
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-air-pressure-to-electrical-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Air Pressure to Electrical Signal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-a-mems-microphone-hears" class="md-nav__link">
+    <span class="md-ellipsis">
+      How a MEMS Microphone Hears
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How a MEMS Microphone Hears">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-mems-microphone-cross-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: MEMS Microphone Cross-Section
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-i2s-protocol-three-wires-one-bitstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      The I2S Protocol: Three Wires, One Bitstream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The I2S Protocol: Three Wires, One Bitstream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-i2s-protocol-timing-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: I2S Protocol Timing Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-stream-into-micropython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading the Stream into MicroPython
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seeing-what-you-captured" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seeing What You Captured
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#productive-failure-some-labs-are-built-to-go-wrong-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Productive Failure: Some Labs Are Built to Go Wrong First
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/05-capturing-real-audio/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="capturing-real-audio-the-i2s-microphone">Capturing Real Audio: The I2S Microphone</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter explains how a MEMS microphone turns sound into a digital bitstream over the I2S protocol, and how MicroPython reads that stream into a usable audio buffer. It introduces the distinction between analog and digital signals and previews the productive-failure pedagogy used later in the course, where a wrong result becomes the lesson. By the end, students can capture and buffer real audio from a physical sensor.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 13 concepts from the learning graph:</p>
+<ol>
+<li>Analog Signals</li>
+<li>Audio Buffer</li>
+<li>Bit Clock</li>
+<li>Buffered Read</li>
+<li>Digital Microphone Output</li>
+<li>Digital Signals</li>
+<li>I2S Protocol</li>
+<li>I2S Serial Data</li>
+<li>INMP441 Microphone</li>
+<li>MEMS Microphone</li>
+<li>Productive Failure</li>
+<li>Thonny Plotter</li>
+<li>Word Select Line</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+<li><a href="../03-peripherals/">3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code</a></li>
+<li><a href="../04-waves/">4. Waves: Amplitude, Frequency, Phase, and Harmonics</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to catch a real sound</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Everything in the last chapter was pure math — sine waves living only in equations and sliders. That changes right now. This chapter wires up a real microphone and pulls a real sound into your Pico 2 as an array of numbers you can inspect. Let's tune in.</p>
+</div>
+<p>The previous chapter gave you the vocabulary to describe any wave: amplitude, frequency, phase, harmonics. This chapter connects that vocabulary to something you can actually point a microphone at. Before any of the sampling, correlation, or transform math in later chapters can run, a sound wave in the air has to become a sequence of numbers your program can read. That conversion — air pressure to array — is what this chapter builds.</p>
+<h2 id="from-air-pressure-to-electrical-signal">From Air Pressure to Electrical Signal</h2>
+<p>Sound in the physical world is a continuous phenomenon: air pressure rises and falls smoothly, with no gaps or steps, as a wave travels through it. A signal that behaves this way — varying smoothly and continuously over time, capable of taking on <em>any</em> value within its range — is called an <strong>analog signal</strong>. The voltage coming directly off a microphone's sensing element, before any conversion happens, is analog: at any instant it could be 1.001 volts, or 1.0011 volts, or any value in between, with no smallest possible step.</p>
+<p>Computers cannot store or process a value that varies continuously — memory can only hold discrete numbers. A <strong>digital signal</strong>, by contrast, represents information using discrete, distinct values, typically encoded as sequences of 1s and 0s. Every value a digital system stores has been rounded to one of a fixed set of possible numbers, no matter how sound in the room actually continues to vary smoothly in between them. Turning the microphone's continuous analog signal into a sequence of discrete digital numbers is the single job of everything this chapter covers.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">This isn't optional rounding — it's the entire bridge</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Analog-to-digital conversion isn't a minor implementation detail — it's the bridge between the physical world and every line of code you'll write for the rest of this course. Every number your FFT ever processes started as one of these discrete snapshots of a continuous sound wave.</p>
+</div>
+<h2 id="how-a-mems-microphone-hears">How a MEMS Microphone Hears</h2>
+<p>The microphone in your kit is not the kind found in a decades-old telephone handset. It is a <strong>MEMS microphone</strong>: a microelectromechanical systems microphone that combines a tiny mechanical diaphragm and an analog-to-digital converter on a single chip, small enough to sit on a fingertip and cheap enough to appear in nearly every smartphone made in the last fifteen years. Sound pressure vibrates the microscopic diaphragm; the chip converts that vibration directly into an electrical, and eventually digital, representation — all inside one package roughly four millimeters square.</p>
+<p>The specific part in your kit has a name worth knowing, since its datasheet is the reference for everything in this section: the <strong>INMP441 microphone</strong> is the MEMS microphone module used throughout this course, a chip that captures sound and outputs it as a digital bitstream directly, with no separate analog-to-digital converter chip required on your breadboard. That last detail matters — cheaper microphones output a raw analog voltage that a <em>different</em> chip must digitize; the INMP441 does the digitizing itself, right on the sensor.</p>
+<p>Because the INMP441 digitizes internally, what comes off its output pin is already a <strong>digital microphone output</strong>: an audio signal represented as a stream of binary values rather than a continuously varying voltage, ready for a microcontroller to read directly without any extra conversion hardware. Before looking at how that stream is organized, it helps to see where each labeled part of the chip sits and what job it does.</p>
+<h4 id="diagram-mems-microphone-cross-section">Diagram: MEMS Microphone Cross-Section</h4>
+<iframe src="../../sims/mems-microphone-cross-section/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>MEMS Microphone Cross-Section</summary>
+<p>Type: infographic
+<strong>sim-id:</strong> mems-microphone-cross-section<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, describe</p>
+<p>Learning objective: Let students identify the internal parts of a MEMS microphone package and explain, in one sentence per part, what each part does to turn sound into a digital bitstream.</p>
+<p>Canvas layout:
+- Left (500px): a labeled cross-section illustration of the INMP441 package
+- Right (200px): infobox panel, empty until a part is clicked</p>
+<p>Visual elements:
+- Sound port: a small opening at the top of the package where air pressure waves enter
+- Diaphragm: a thin, flexible membrane suspended below the sound port that physically vibrates
+- Back plate: a fixed perforated plate near the diaphragm forming a capacitor with it
+- ASIC (application-specific integrated circuit): the small silicon chip that reads the capacitance change and performs analog-to-digital conversion
+- Output pins: labeled SD (serial data), WS (word select), SCK (bit clock), and L/R (channel select)
+- Arrows showing signal flow: sound pressure to diaphragm, diaphragm motion to ASIC, ASIC output to pins</p>
+<p>Interactive elements:
+- Clicking any labeled part (sound port, diaphragm, back plate, ASIC, each output pin) highlights it and displays its name and a one-sentence explanation in the right-hand infobox
+- Hovering briefly outlines the part before clicking</p>
+<p>Data displayed on click (examples):
+- Diaphragm: "Vibrates in response to sound pressure, changing its distance from the back plate."
+- ASIC: "Measures the changing capacitance, then digitizes and encodes it as an I2S bitstream — this is why no separate ADC chip is needed."
+- SD pin: "Carries the actual digitized audio bits, one bit per bit-clock pulse."</p>
+<p>Instructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining what each internal part does, not manipulating a live physical process — progressive disclosure through click-to-reveal keeps the diagram uncluttered while still letting students connect each label to its function at their own pace.</p>
+<p>Implementation notes:
+- Use p5.js; draw the cross-section as simple shapes (rectangles, a thin arc for the diaphragm) rather than a photorealistic image
+- Responsive width; cross-section and infobox both scale to container width on window resize, stacking vertically below 600px width</p>
+</details>
+<h2 id="the-i2s-protocol-three-wires-one-bitstream">The I2S Protocol: Three Wires, One Bitstream</h2>
+<p>The INMP441 does not send its digital audio over a single wire the way a simple sensor might. It uses a small, well-defined protocol built specifically for streaming digital audio between chips. The <strong>I2S protocol</strong> (Inter-IC Sound) is a serial communication standard designed specifically for transmitting digital audio data between chips, using a small, fixed set of signal lines that stay synchronized to each other. I2S was designed decades ago for exactly this job — moving audio bits reliably between a sensor or codec and a processor — and it has barely changed since, because the problem it solves has not changed either.</p>
+<p>I2S divides its job across three signal lines, each with one clear responsibility. Before naming them individually, it helps to know what problem all three are jointly solving: audio bits have to arrive in the right order, at the right rate, and grouped correctly into left-channel and right-channel samples, all without any of that information being stated explicitly in the data itself. Timing carries the meaning.</p>
+<p>The first wire supplies the heartbeat every other signal depends on. The <strong>bit clock</strong> (often abbreviated BCLK or SCK) is the I2S signal line that toggles once for every single data bit transmitted, providing the timing reference the receiving chip uses to know exactly when to read each bit. Without the bit clock, the receiving microcontroller would have no way to know where one bit ends and the next begins.</p>
+<p>The second wire tells the receiver which audio channel it is currently receiving. The <strong>word select line</strong> (often abbreviated WS or LRCLK) is the I2S signal line that indicates which audio channel — left or right — the current data word belongs to, typically by staying low during the left channel's bits and high during the right channel's bits. Because the microphone in this kit outputs mono audio on a single channel, the word select line's value tells your code which half of the frame to keep and which to discard.</p>
+<p>The third wire carries the payload itself. <strong>I2S serial data</strong> is the actual stream of digitized audio sample bits, transmitted one bit per bit-clock pulse, with each block of bits grouped into a channel's sample according to the word select line's current state. This is the signal that ultimately becomes the numbers your program works with — the other two wires exist purely to make this one interpretable.</p>
+<p>Before examining how these three signals interact over time, the table below summarizes the role each one plays, now that all three have been introduced in prose.</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Common name</th>
+<th>What it carries</th>
+<th>Toggles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bit clock</td>
+<td>BCLK / SCK</td>
+<td>Timing pulse, one per data bit</td>
+<td>Once per bit</td>
+</tr>
+<tr>
+<td>Word select</td>
+<td>WS / LRCLK</td>
+<td>Which channel (left/right) is active</td>
+<td>Once per channel switch</td>
+</tr>
+<tr>
+<td>Serial data</td>
+<td>SD / DOUT</td>
+<td>The actual audio sample bits</td>
+<td>Carries the payload</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Three wires, one job each — that's the whole trick</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+If you remember nothing else about I2S, remember this: the bit clock says <em>when</em>, the word select line says <em>which channel</em>, and the serial data line says <em>what value</em>. Every I2S peripheral you'll ever wire up, on this board or any other, follows that same three-wire split.</p>
+</div>
+<p>Seeing the three lines side by side, changing together over time, makes the relationship far more concrete than the table alone.</p>
+<h4 id="diagram-i2s-protocol-timing-explorer">Diagram: I2S Protocol Timing Explorer</h4>
+<iframe src="../../sims/i2s-protocol-timing-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>I2S Protocol Timing Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> i2s-protocol-timing-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Analyze
+Bloom Taxonomy Verb: Examine, distinguish</p>
+<p>Learning objective: Let students step through an I2S transmission bit by bit and analyze how the bit clock, word select line, and serial data line relate to each other in time, distinguishing which bits belong to the left channel versus the right channel.</p>
+<p>Canvas layout:
+- Top (350px): three stacked digital timing traces (like a logic analyzer view), labeled BCLK, WS, SD, sharing a common horizontal time axis
+- Bottom (150px): step controls and a readout panel</p>
+<p>Visual elements:
+- BCLK trace: a regular square wave, one pulse per bit
+- WS trace: a slower square wave, low for the left channel's 16 or 24 bits, high for the right channel's bits
+- SD trace: a square wave showing an example bit pattern for one sample word, changing only at BCLK edges
+- A vertical "playhead" line marking the currently selected bit, movable by the step controls
+- Background shading: light blue behind the left-channel region of all three traces, light orange behind the right-channel region</p>
+<p>Interactive controls:
+- Button: "Step forward one bit" — advances the playhead to the next BCLK pulse
+- Button: "Step back one bit"
+- Button: "Jump to next word boundary" — advances directly to the next WS transition
+- Slider: "Word length" (16-bit or 24-bit), changes how many BCLK pulses occur per WS half-cycle
+- Play/Pause button for automatic continuous stepping at an adjustable speed</p>
+<p>Data Visibility Requirements:
+  Stage 1 (initial state): Show all three idle traces with the playhead at time zero, WS low (left channel)
+  Stage 2 (each step): Show the playhead advancing one BCLK pulse, with the readout panel displaying "Bit N of [16 or 24], Channel: LEFT" or RIGHT
+  Stage 3 (word boundary): Show WS flipping and the readout announcing "New word starting — Channel: RIGHT"
+  Final: Show a completed word with the readout displaying the full assembled binary value and its channel</p>
+<p>Instructional Rationale: An Analyze-level step-through pattern is appropriate because the objective requires students to trace the precise timing relationship between three simultaneous signals and distinguish channel boundaries — a continuously animated waveform would move too fast to inspect individual bit-to-channel correspondence, while manual stepping lets students pause exactly at the transitions that matter.</p>
+<p>Implementation notes:
+- Use p5.js; represent each trace as a simple high/low square-wave line redrawn from an internal bit-pattern array
+- Responsive width; all three traces and the control panel scale to container width on window resize</p>
+</details>
+<h2 id="reading-the-stream-into-micropython">Reading the Stream into MicroPython</h2>
+<p>Wiring the three I2S signals to the Pico 2's GPIO pins gets the raw bitstream physically present at the microcontroller. Turning that stream into numbers your program can use is the job of MicroPython's <code>I2S</code> class, part of the <code>machine</code> module you first met in the peripherals chapter. Rather than handing you one sample at a time, the class fills a block of memory with many samples at once, because reading samples one by one would be far too slow to keep up with continuous audio.</p>
+<p>That block of memory has a name: an <strong>audio buffer</strong> is a region of memory used to temporarily hold a sequence of audio samples, allowing many samples to be read, processed, or transmitted together as a group rather than one at a time. Filling that buffer is called a <strong>buffered read</strong>: reading multiple samples from an I2S peripheral into a pre-allocated buffer in a single operation, rather than issuing a separate read call for every individual sample. Buffered reads are dramatically more efficient, because the underlying hardware and MicroPython driver do the repetitive work of pulling bits off the wire, leaving your code free to process a whole chunk of audio at once.</p>
+<p>Before looking at the code itself, it helps to know what each piece does: <code>readinto()</code> is the MicroPython method that performs a buffered read, filling a <code>bytearray</code> you provide with raw sample bytes; <code>sample_rate</code> sets how many samples per second the microphone captures; and <code>bits</code> sets how many bits make up each sample.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">I2S</span><span class="p">,</span> <span class="n">Pin</span>
+
+<span class="n">audio_in</span> <span class="o">=</span> <span class="n">I2S</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span>                      <span class="c1"># I2S peripheral ID</span>
+    <span class="n">sck</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span>            <span class="c1"># Bit clock pin</span>
+    <span class="n">ws</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">17</span><span class="p">),</span>             <span class="c1"># Word select pin</span>
+    <span class="n">sd</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span>             <span class="c1"># Serial data pin</span>
+    <span class="n">mode</span><span class="o">=</span><span class="n">I2S</span><span class="o">.</span><span class="n">RX</span><span class="p">,</span>            <span class="c1"># Receive mode (microphone input)</span>
+    <span class="n">bits</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>                <span class="c1"># Bits per sample (INMP441 outputs 24 bits inside a 32-bit word)</span>
+    <span class="nb">format</span><span class="o">=</span><span class="n">I2S</span><span class="o">.</span><span class="n">MONO</span><span class="p">,</span>        <span class="c1"># Single-channel audio</span>
+    <span class="n">rate</span><span class="o">=</span><span class="mi">16000</span><span class="p">,</span>             <span class="c1"># Sample rate in Hz</span>
+    <span class="n">ibuf</span><span class="o">=</span><span class="mi">4000</span><span class="p">,</span>              <span class="c1"># Internal buffer size in bytes</span>
+<span class="p">)</span>
+
+<span class="n">audio_buffer</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>     <span class="c1"># Pre-allocated audio buffer</span>
+<span class="n">num_bytes_read</span> <span class="o">=</span> <span class="n">audio_in</span><span class="o">.</span><span class="n">readinto</span><span class="p">(</span><span class="n">audio_buffer</span><span class="p">)</span>   <span class="c1"># Buffered read</span>
+</code></pre></div></td></tr></table></div>
+<p>Each call to <code>readinto()</code> performs one buffered read, filling <code>audio_buffer</code> with raw bytes straight off the I2S serial data line and returning the number of bytes actually captured. Later chapters unpack those raw bytes into signed integer sample values and remove an unwanted DC offset — but capturing the bytes at all, reliably and efficiently, is what this chapter's code accomplishes.</p>
+<h2 id="seeing-what-you-captured">Seeing What You Captured</h2>
+<p>Numbers scrolling past in a text console are hard to reason about. Thonny, the IDE introduced in Chapter 1, includes a built-in tool built exactly for this problem. The <strong>Thonny Plotter</strong> is a feature of the Thonny IDE that graphs numeric values printed by a running MicroPython program in real time, turning a stream of <code>print()</code> output into a live scrolling line chart with no extra code required. Printing each captured sample value in your buffered-read loop is enough to see your own voice, a clap, or a whistle appear as a moving waveform on screen — the exact time domain plot shape introduced in the previous chapter, but now built from a real sound instead of an equation.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Watching your own voice appear as a wiggly line never gets old</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+The wiring and the protocol details in this chapter are genuinely fiddly — three pins, exact voltage levels, exact pin assignments. But the payoff is immediate: the first time you see the Thonny Plotter trace jump when you clap near the microphone, all of that setup suddenly feels worth it.</p>
+</div>
+<h2 id="productive-failure-some-labs-are-built-to-go-wrong-first">Productive Failure: Some Labs Are Built to Go Wrong First</h2>
+<p>Not every lab in this course is designed to work the first time. Two labs coming up in the next module are deliberately engineered so that the "obvious" approach produces a confidently wrong answer — on purpose. <strong>Productive failure</strong> is a teaching approach in which a student first attempts a task in a way that predictably fails, then learns the underlying concept by directly examining why that failure happened, producing deeper and more durable understanding than being told the correct approach up front.</p>
+<p>Concretely: an upcoming lab has you play a tone <em>above</em> a frequency limit this course has not defined yet, and watch your instrument confidently report a completely wrong frequency. Another has you deliberately overload the microphone's input and watch new frequencies appear in the output that were never present in the original sound. Both results look like bugs. Neither one is — they are the direct, correct consequence of a hardware limit you have not yet named. The next chapter names it.</p>
+<table>
+<thead>
+<tr>
+<th>Lab behavior</th>
+<th>What it looks like</th>
+<th>What it actually demonstrates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instrument reports a wrong frequency</td>
+<td>A confident, precise, <em>incorrect</em> number</td>
+<td>A hardware limit on how fast a signal can safely vary</td>
+</tr>
+<tr>
+<td>New frequencies appear from nowhere</td>
+<td>Tones that were never played</td>
+<td>A hardware limit on how large a signal can safely get</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-warning">
+<p class="admonition-title">When a lab looks broken, read the number carefully first</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo giving a warning"> 
+If an upcoming lab gives you a result that looks obviously wrong, resist the urge to assume you wired something incorrectly. Check first whether the wrong-looking result is actually the lesson. The next chapter gives you the exact vocabulary — Nyquist frequency, clipping — to recognize these failures on sight instead of debugging code that was never broken.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You can now take a real, physical sound and turn it into numbers your Pico 2 can store and inspect — the first link in the chain that eventually leads to a working FFT.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li><strong>Analog signals</strong> vary continuously; <strong>digital signals</strong> are represented as discrete values a computer can store — every microphone bridges this gap.</li>
+<li>A <strong>MEMS microphone</strong>, specifically the <strong>INMP441 microphone</strong> in your kit, digitizes sound on-chip and produces a <strong>digital microphone output</strong> with no separate ADC required.</li>
+<li>The <strong>I2S protocol</strong> carries that output over three synchronized wires: the <strong>bit clock</strong> (timing), the <strong>word select line</strong> (channel), and <strong>I2S serial data</strong> (the actual sample bits).</li>
+<li>MicroPython captures I2S audio with a <strong>buffered read</strong>, filling an <strong>audio buffer</strong> in one efficient operation instead of one sample at a time.</li>
+<li>The <strong>Thonny Plotter</strong> turns printed sample values into a live waveform, so you can see your own captured sound.</li>
+<li><strong>Productive failure</strong> is used deliberately in upcoming labs — a wrong-looking result is sometimes the entire lesson, not a bug to chase.</li>
+</ul>
+<details class="note">
+<summary>Quick check: why does I2S need a separate word select line at all, instead of just alternating left and right samples automatically? — Click to expand</summary>
+<p>Because the receiving chip has no other way to know which channel a given block of bits belongs to — the serial data line carries only raw bits, with no built-in labels. The word select line is what makes those bits interpretable as "this is the left channel" or "this is the right channel," entirely through timing rather than any data encoded in the bitstream itself.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Your first real captured sound</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+You just turned real, physical sound into a buffer of numbers on a five-dollar chip — no lab bench, no dedicated DSP hardware. Next up: the theory that explains exactly how fast and how loud a signal can be before this capture process starts lying to you. Not bad for a $5 chip!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../04-waves/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 4. Waves: Amplitude, Frequency, Phase, and Harmonics">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                4. Waves: Amplitude, Frequency, Phase, and Harmonics
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../06-sampling-quantization-and-aliasing/" class="md-footer__link md-footer__link--next" aria-label="Next: 6. Sampling, Quantization, and Aliasing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                6. Sampling, Quantization, and Aliasing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

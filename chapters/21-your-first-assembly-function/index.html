@@ -1,0 +1,2169 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ARM Thumb assembly from zero — general-purpose registers, moves, comparisons, branches, and MicroPython's inline assembler">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/21-your-first-assembly-function/">
+      
+      
+        <link rel="prev" href="../20-does-your-cpu-have-an-fpu/">
+      
+      
+        <link rel="next" href="../22-talking-to-the-fpu/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Your First Assembly Function: Registers and Loops - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#your-first-assembly-function-registers-and-loops" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Your First Assembly Function: Registers and Loops
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-machine-code-to-mnemonics" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Machine Code to Mnemonics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registers-the-cpus-own-scratch-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registers: The CPU's Own Scratch Space
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-instructions-that-do-almost-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Three Instructions That Do Almost Everything
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#labels-and-conditional-branches-building-a-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Labels and Conditional Branches: Building a Loop
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Labels and Conditional Branches: Building a Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-register-tracer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Register Tracer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assembling-inside-micropython-the-asm_thumb-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assembling Inside MicroPython: The asm_thumb Decorator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passing-arguments-and-returning-a-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passing Arguments and Returning a Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-allocation-deciding-who-gets-which-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register Allocation: Deciding Who Gets Which Box
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-assembly-code-you-didnt-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Assembly Code You Didn't Write
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-machine-code-to-mnemonics" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Machine Code to Mnemonics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registers-the-cpus-own-scratch-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registers: The CPU's Own Scratch Space
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-instructions-that-do-almost-everything" class="md-nav__link">
+    <span class="md-ellipsis">
+      Three Instructions That Do Almost Everything
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#labels-and-conditional-branches-building-a-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Labels and Conditional Branches: Building a Loop
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Labels and Conditional Branches: Building a Loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-register-tracer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Register Tracer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assembling-inside-micropython-the-asm_thumb-decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assembling Inside MicroPython: The asm_thumb Decorator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passing-arguments-and-returning-a-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Passing Arguments and Returning a Result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#register-allocation-deciding-who-gets-which-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register Allocation: Deciding Who Gets Which Box
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-assembly-code-you-didnt-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reading Assembly Code You Didn't Write
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/21-your-first-assembly-function/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="your-first-assembly-function-registers-and-loops">Your First Assembly Function: Registers and Loops</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter introduces ARM Thumb assembly from zero: general-purpose registers, the instruction set for moves, comparisons, and branches, and the calling convention MicroPython's inline assembler uses to pass arguments and return values. It builds a simple loop entirely in assembly as a first working program. This is the foundation the floating-point and butterfly assembly chapters build directly on.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 18 concepts from the learning graph:</p>
+<ol>
+<li>ARM Assembly</li>
+<li>Add Instruction</li>
+<li>Argument Passing Convention</li>
+<li>Assembly Label</li>
+<li>Assembly Loop</li>
+<li>CPU Register</li>
+<li>Compare Instruction</li>
+<li>Conditional Branch</li>
+<li>General Purpose Register</li>
+<li>Inline Assembler</li>
+<li>Instruction Mnemonic</li>
+<li>Machine Code</li>
+<li>Move Instruction</li>
+<li>Reading Assembly Code</li>
+<li>Register Allocation</li>
+<li>Return Value Register</li>
+<li>Thumb Instructions</li>
+<li>asm_thumb Decorator</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+<li><a href="../02-know-your-board/">2. Know Your Board: ARM Cortex-M Architecture and the Pico 2</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../20-does-your-cpu-have-an-fpu/">20. Does Your CPU Have an FPU?</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — into an assembly programmer!</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+You confirmed your chip has the hardware. Now you get to program it directly, one
+instruction at a time, with nothing between your code and the CPU. Your first
+assembly function is smaller than it sounds — let's build it from the ground up.</p>
+</div>
+<h2 id="from-machine-code-to-mnemonics">From Machine Code to Mnemonics</h2>
+<p>Underneath every program this course has run so far, the Cortex-M33 ultimately executes
+<strong>machine code</strong> — raw binary patterns, each one telling the CPU to perform one specific
+operation. No human reads or writes those binary patterns directly; instead, <strong>ARM
+assembly</strong> gives each pattern a short, human-readable <strong>instruction mnemonic</strong> — <code>MOV</code>,
+<code>ADD</code>, <code>CMP</code>, <code>B</code> — standing in for the exact binary encoding an assembler translates it
+into. Cortex-M cores specifically execute <strong>Thumb instructions</strong> — a compact instruction
+encoding, either 16 or 32 bits per instruction, that ARM designed for smaller code size
+than its older 32-bit-only encoding. Every instruction in this chapter and the two that
+follow is a Thumb instruction; there is no other kind available on this chip.</p>
+<h2 id="registers-the-cpus-own-scratch-space">Registers: The CPU's Own Scratch Space</h2>
+<p>Before any instruction can do useful work, it needs somewhere to keep the values it is
+working on. A <strong>CPU register</strong> is a tiny, extremely fast storage location built directly
+into the processor itself — reading or writing a register takes a single clock cycle,
+far faster than reading from RAM. The Cortex-M33 provides thirteen <strong>general purpose
+registers</strong>, named <code>r0</code> through <code>r12</code>, each holding one 32-bit value that your code is
+free to use for any purpose — a loop counter, a memory address, an intermediate result.
+Three additional registers have fixed, special jobs: <code>sp</code> (the stack pointer), <code>lr</code> (the
+link register, holding a return address), and <code>pc</code> (the program counter, holding the
+address of the next instruction) — this chapter's examples use only the thirteen
+general-purpose ones.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Thirteen boxes, infinite bookkeeping</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+In Python, you can have as many named variables as you want. In assembly, you have
+exactly thirteen general-purpose registers and nothing else to work with directly —
+every value your routine needs has to fit into that fixed set, or be temporarily
+saved to memory and reloaded later. Deciding what goes where is a real design step,
+not an afterthought.</p>
+</div>
+<h2 id="three-instructions-that-do-almost-everything">Three Instructions That Do Almost Everything</h2>
+<p>Three instruction types carry most of the work in a simple assembly routine.</p>
+<p>The <strong>move instruction</strong>, <code>MOV</code>, copies a value into a register — either a small
+constant, or the contents of another register:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>MOV r0, #5      ; put the literal value 5 into r0
+MOV r1, r0      ; copy the value in r0 into r1
+</code></pre></div></td></tr></table></div>
+<p>The <strong>add instruction</strong>, <code>ADD</code>, adds two values and stores the result in a register:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>ADD r0, r0, r1  ; r0 = r0 + r1
+</code></pre></div></td></tr></table></div>
+<p>The <strong>compare instruction</strong>, <code>CMP</code>, subtracts one value from another <em>without</em> storing
+the result anywhere — its only job is to set internal status flags recording whether the
+result was zero, negative, or produced a carry. Nothing about <code>CMP</code> is visible in a
+register afterward; its only effect is on those flags:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>CMP r0, #0      ; compare r0 against 0, setting status flags accordingly
+</code></pre></div></td></tr></table></div>
+<h2 id="labels-and-conditional-branches-building-a-loop">Labels and Conditional Branches: Building a Loop</h2>
+<p><code>CMP</code>'s status flags become useful the instant you pair them with a <strong>conditional
+branch</strong> — an instruction that jumps to a different point in the program, but only if a
+specific flag condition holds. <code>BNE</code> (branch if not equal) jumps only if the most recent
+comparison found the two values unequal; <code>BEQ</code> branches only if they were equal, and
+several other condition codes exist for greater-than, less-than, and so on. A branch
+target is marked with an <strong>assembly label</strong> — a name followed by a colon, placed at the
+exact instruction you want to jump to:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>    MOV r0, #5          ; r0 = counter, starting at 5
+loop_start:
+    ; ... do something with r0 here ...
+    SUB r0, r0, #1       ; r0 = r0 - 1
+    CMP r0, #0           ; compare r0 against 0
+    BNE loop_start        ; if r0 != 0, jump back to loop_start
+</code></pre></div></td></tr></table></div>
+<p>This pattern — initialize, label, do work, decrement, compare, conditionally branch back
+— is an <strong>assembly loop</strong>, the direct, hardware-level equivalent of a Python <code>for</code> or
+<code>while</code> loop, built from individual instructions rather than a single keyword.</p>
+<h4 id="diagram-register-tracer">Diagram: Register Tracer</h4>
+<iframe src="../../sims/register-tracer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Register Tracer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> register-tracer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand (L2) — interpret, trace
+Learning objective: Interpret a short assembly loop by tracing register contents and status flags one instruction at a time, building the "reading assembly code" skill.</p>
+<p>Canvas layout:
+- Top (300px): The five-instruction loop source code shown line by line, with the currently executing line highlighted
+- Bottom (200px): A register panel showing r0 and the Z (zero) status flag, updating live</p>
+<p>Visual elements:
+- Source listing exactly matching the loop example in the chapter text (MOV r0 #5, loop_start:, SUB r0 r0 #1, CMP r0 #0, BNE loop_start)
+- Highlighted current-instruction indicator (an arrow or highlighted background)
+- r0 value shown as a large readable number
+- Z flag shown as a lit/unlit indicator with the label "Zero flag"</p>
+<p>Data Visibility Requirements:
+  Stage 1: Show initial state — r0 undefined, Z flag off, arrow at MOV instruction
+  Stage 2: After MOV — r0 = 5
+  Stage 3: After first SUB — r0 = 4
+  Stage 4: After first CMP — Z flag off (4 != 0)
+  Stage 5: After first BNE — arrow jumps back to loop_start, taken because Z was off
+  ... continues through iterations until r0 reaches 0, Z flag turns on, BNE is NOT taken, arrow falls through to end</p>
+<p>Interactive controls:
+- Button: "Step" — advances exactly one instruction
+- Button: "Run to completion" — auto-steps at a readable pace
+- Button: "Reset"</p>
+<p>Instructional Rationale: A Bloom Understand-level "trace and interpret" objective calls
+for step-through with visible concrete state at every stage, not continuous animation —
+the learner must see r0 and the Z flag update after every single instruction to build a
+mental model of how CMP and BNE cooperate.</p>
+<p>Implementation: p5.js, instruction list as an array with a program-counter index, register/flag state as simple variables updated per step() call</p>
+</details>
+<h2 id="assembling-inside-micropython-the-asm_thumb-decorator">Assembling Inside MicroPython: The <code>asm_thumb</code> Decorator</h2>
+<p>Writing raw assembly normally requires a separate toolchain — an assembler, a linker, a
+way to load the resulting machine code onto the chip. MicroPython removes all of that
+friction with its <strong>inline assembler</strong>: the ability to write Thumb assembly instructions
+directly inside a <code>.py</code> file, translated to machine code automatically the moment the
+function is defined, with no external tools at all.</p>
+<p>The mechanism is the <strong><code>asm_thumb</code> decorator</strong> — <code>@micropython.asm_thumb</code> placed above a
+function definition tells MicroPython to treat everything inside that function's body not
+as Python statements, but as a sequence of Thumb assembly instructions:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@micropython</span><span class="o">.</span><span class="n">asm_thumb</span>
+<span class="k">def</span> <span class="nf">sum_to_n</span><span class="p">(</span><span class="n">r0</span><span class="p">):</span>
+    <span class="n">label</span><span class="p">(</span><span class="n">loop_start</span><span class="p">)</span>
+    <span class="n">mov</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>          <span class="c1"># r1 will accumulate the running sum</span>
+<span class="n">loop_body</span><span class="p">:</span>
+    <span class="n">add</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r0</span><span class="p">)</span>      <span class="c1"># r1 = r1 + r0 (add current counter value)</span>
+    <span class="n">sub</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>        <span class="c1"># r0 = r0 - 1</span>
+    <span class="n">cmp</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">bgt</span><span class="p">(</span><span class="n">loop_body</span><span class="p">)</span>         <span class="c1"># branch back while r0 &gt; 0</span>
+    <span class="n">mov</span><span class="p">(</span><span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>             <span class="c1"># move the final sum into r0 to return it</span>
+</code></pre></div></td></tr></table></div>
+<p>Calling <code>sum_to_n(5)</code> from ordinary Python runs this entire routine as real, compiled
+Thumb machine code — no interpreter loop, no boxed values, exactly the speed advantage
+Chapter 19 predicted for the bottom rung of the abstraction ladder.</p>
+<h2 id="passing-arguments-and-returning-a-result">Passing Arguments and Returning a Result</h2>
+<p>That last example relied on a convention it never explained: why does the parameter list
+say <code>def sum_to_n(r0):</code>, and why does moving a value into <code>r0</code> at the end make it come
+back out as the function's return value? The answer is the ARM <strong>argument passing
+convention</strong> MicroPython's inline assembler follows: the first argument to an
+<code>asm_thumb</code> function arrives already sitting in register <code>r0</code>, the second (if any) in
+<code>r1</code>, and so on up through <code>r3</code>. Whatever value sits in <code>r0</code> at the moment the function
+ends becomes the value Python receives back — <code>r0</code> doing double duty as both the first
+argument register and the <strong>return value register</strong> is not a coincidence; it is the
+standard convention every ARM-targeting compiler and hand-written routine follows, so
+that hand-written assembly and compiled code can call each other reliably.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Read the parameter names as a promise, not just syntax</p>
+<p><img alt="Echo giving a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+Writing <code>def sum_to_n(r0):</code> isn't just a naming choice — it's you telling
+MicroPython's assembler exactly which register your first argument will already be
+sitting in when the function starts. Name it anything else in the parameter list and
+the assembler still puts the first argument in <code>r0</code>; the parameter name is really
+documentation for <em>you</em>, not an instruction to the hardware.</p>
+</div>
+<h2 id="register-allocation-deciding-who-gets-which-box">Register Allocation: Deciding Who Gets Which Box</h2>
+<p>With only thirteen general-purpose registers and no automatic variable management,
+writing anything beyond a trivial routine requires deliberate <strong>register allocation</strong> —
+consciously deciding which register holds which value for how long, and making sure two
+different purposes never collide in the same register at the same time. In <code>sum_to_n</code>
+above, the allocation was simple: <code>r0</code> holds the loop counter (and later, the return
+value), <code>r1</code> holds the running sum. A slightly longer routine might need four or five
+values live simultaneously, and keeping track of which register means what — on paper, in
+a comment, or simply in your head — is a real, transferable skill, not busywork.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Overwriting a register you still needed is the single most common assembly bug</p>
+<p><img alt="Echo warning" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+If <code>sum_to_n</code> had written its running sum into <code>r0</code> instead of <code>r1</code>, it would have
+silently destroyed the loop counter it still needed to decrement — the loop would
+either never end or end after the wrong number of iterations, with no error message
+at all. Assembly does not stop you from reusing a register you still need; it simply
+does what you told it to.</p>
+</div>
+<h2 id="reading-assembly-code-you-didnt-write">Reading Assembly Code You Didn't Write</h2>
+<p>Writing your own short loop is one skill; <strong>reading assembly code</strong> someone else wrote —
+tracing what a register holds at each step, without running it — is a separate, arguably
+more important one. This course leans on reading deliberately: production systems call
+well-tested assembly libraries far more often than they write new ones, and the durable
+skill for most working engineers is confidently tracing what an unfamiliar routine does,
+not authoring one from scratch. The <code>sum_to_n</code> walkthrough above is exactly that exercise
+in miniature — five instructions, one register holding the counter, one accumulating the
+result, and a conditional branch tying them into a loop, entirely readable once you know
+what each mnemonic does.</p>
+<details class="question">
+<summary>In <code>sum_to_n</code>, what would happen if the line <code>bgt(loop_body)</code> were changed to branch unconditionally, every time, with no comparison at all? Click to check.</summary>
+<p>The loop would never terminate — <code>r0</code> would keep decrementing forever (eventually
+wrapping around past zero, since it's an unsigned register), and the function would
+never return. This is the assembly-level version of an infinite loop, and it's a
+direct consequence of removing the <code>CMP</code>-driven condition that <code>BGT</code> depends on to
+decide whether to branch.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Your first real assembly function — running at full hardware speed</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+Time to transform, indeed — you just wrote and ran genuine ARM Thumb machine code,
+with full control over every register. Chapter 22 extends this exact skill set to the
+FPU's own register bank, which is the last piece you need before hand-writing the
+FFT's butterfly operation itself.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../20-does-your-cpu-have-an-fpu/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 20. Does Your CPU Have an FPU?">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                20. Does Your CPU Have an FPU?
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../22-talking-to-the-fpu/" class="md-footer__link md-footer__link--next" aria-label="Next: 22. Talking to the FPU: Floating-Point Assembly">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                22. Talking to the FPU: Floating-Point Assembly
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

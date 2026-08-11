@@ -1,0 +1,2177 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Connect a Raspberry Pi Pico 2 to Thonny, work in the REPL, and write your first GPIO program to blink the onboard LED.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/01-hello-world/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../02-know-your-board/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Hello World: Thonny, MicroPython, and Your First GPIO Program - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hello-world-thonny-micropython-and-your-first-gpio-program" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hello World: Thonny, MicroPython, and Your First GPIO Program
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meet-your-5-superpower" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet Your $5 Superpower
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-flavors-of-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Flavors of Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-connected-thonny-and-the-repl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Connected — Thonny and the REPL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Connected — Thonny and the REPL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-thonny-and-the-pico-2-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Thonny and the Pico 2 Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-gpio-program-blinking-the-onboard-led" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your First GPIO Program — Blinking the Onboard LED
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your First GPIO Program — Blinking the Onboard LED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-blink-timing-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Blink Timing Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-know-your-board/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meet-your-5-superpower" class="md-nav__link">
+    <span class="md-ellipsis">
+      Meet Your $5 Superpower
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-flavors-of-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Flavors of Python
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-connected-thonny-and-the-repl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Connected — Thonny and the REPL
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Getting Connected — Thonny and the REPL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-thonny-and-the-pico-2-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Thonny and the Pico 2 Workflow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-first-gpio-program-blinking-the-onboard-led" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your First GPIO Program — Blinking the Onboard LED
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Your First GPIO Program — Blinking the Onboard LED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-blink-timing-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Blink Timing Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/01-hello-world/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="hello-world-thonny-micropython-and-your-first-gpio-program">Hello World: Thonny, MicroPython, and Your First GPIO Program</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter introduces the Raspberry Pi Pico 2 and the MicroPython development workflow: connecting over USB serial, working in the REPL, and running your first scripts with Thonny. It also covers the board's first GPIO program, blinking the onboard LED, establishing the toggle-and-delay pattern used throughout the course. By the end, you can save code to the device, interrupt a running script, and explain the difference between MicroPython and CPython.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 22 concepts from the learning graph:</p>
+<ol>
+<li>Device Filesystem</li>
+<li>Digital Output</li>
+<li>GPIO Pin</li>
+<li>General Purpose IO</li>
+<li>Infinite Loop</li>
+<li>Keyboard Interrupt</li>
+<li>Logic High And Low</li>
+<li>MicroPython</li>
+<li>MicroPython Firmware</li>
+<li>MicroPython vs CPython</li>
+<li>Microcontroller</li>
+<li>Onboard LED</li>
+<li>Pin Object</li>
+<li>Pin Toggle</li>
+<li>Print Statement</li>
+<li>Python Language</li>
+<li>REPL</li>
+<li>Saving To Device</li>
+<li>Script Execution</li>
+<li>Sleep Delay</li>
+<li>Thonny IDE</li>
+<li>USB Serial Connection</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter assumes only the prerequisites listed in the <a href="../../course-description/">course description</a>.</p>
+<hr />
+<h2 id="meet-your-5-superpower">Meet Your $5 Superpower</h2>
+<p>Every superpower needs an origin story. This one starts with a <strong>microcontroller</strong> — a single chip that packs a processor, memory, and input/output circuitry into one small package, built to run one program and talk directly to the physical world. Unlike the laptop or phone you are reading this on, a microcontroller does not run an operating system with dozens of background apps. It boots, runs your code, and does exactly what you told it to do — nothing more, nothing less.</p>
+<p>The microcontroller at the center of this course is the Raspberry Pi Pico 2, built around an ARM Cortex-M33 processor running at 150 MHz. It costs about five dollars. By the end of Week 10 you will have used this same five-dollar chip to compute audio spectrums in real time, something that used to require specialized laboratory equipment. That gap — between what this chip is capable of and what most people assume a five-dollar board can do — is the whole reason this course exists.</p>
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Hi! I'm Echo.</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waves hello">
+Welcome aboard! I'm <strong>Echo</strong>, a dolphin who happens to think in frequencies — echolocation is real-time signal processing, so this course is basically my home turf. I'll be popping up in the margins all the way through this book, but I do not show up randomly. I have exactly <strong>six jobs</strong>, and you'll learn to recognize me by which one I'm doing:</p>
+<ol>
+<li><strong>Welcome you</strong> at the start of every chapter — that's what I'm doing right now.</li>
+<li><strong>Help you think through</strong> a key concept when an idea is worth pausing on.</li>
+<li><strong>Give you tips</strong> — the small moves an experienced signal hunter makes that nobody writes down.</li>
+<li><strong>Warn you gently</strong> about the specific spots where students (and I, honestly) get tripped up.</li>
+<li><strong>Encourage you</strong> when a concept looks intimidating on first contact.</li>
+<li><strong>Celebrate with you</strong> when you've earned it, usually at the end of a chapter.</li>
+</ol>
+<p>That's it. If I'm not doing one of those six things, I'm not in the chapter. Time to transform!</p>
+</div>
+<h2 id="two-flavors-of-python">Two Flavors of Python</h2>
+<p>You will write every line of code in this course in the <strong>Python language</strong>, a general-purpose programming language known for readable syntax — code that reads almost like plain English, using indentation instead of curly braces to mark blocks of code. If you have written a <code>for</code> loop or defined a function in Python before, that experience transfers directly.</p>
+<p>But the Pico 2 does not run the same Python interpreter that lives on a desktop computer. It runs <strong>MicroPython</strong>, a compact reimplementation of the Python language designed to fit inside a microcontroller's tiny memory footprint — kilobytes of RAM instead of gigabytes. MicroPython supports the core Python syntax and a useful subset of the standard library, plus hardware-specific modules (like <code>machine</code>, which you will meet shortly) that do not exist on a desktop at all, because a desktop computer has no GPIO pins to control.</p>
+<p>The full-size Python interpreter that runs on laptops and servers has a name too: <strong>CPython</strong>, the reference implementation of Python written in the C language. Comparing <strong>MicroPython vs CPython</strong> side by side makes the differences concrete.</p>
+<p>Before comparing them in a table, it helps to name why the difference matters practically: CPython assumes a full operating system underneath it — a filesystem with folders, network access, and megabytes of RAM to spare. MicroPython assumes none of that. It is Python re-engineered to boot directly on bare metal.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>CPython (desktop)</th>
+<th>MicroPython (Pico 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Typical RAM available</td>
+<td>Gigabytes</td>
+<td>~520 KB</td>
+</tr>
+<tr>
+<td>Runs on</td>
+<td>Operating system (Windows, macOS, Linux)</td>
+<td>Bare metal, no OS</td>
+</tr>
+<tr>
+<td>Standard library</td>
+<td>Full</td>
+<td>Compact subset</td>
+</tr>
+<tr>
+<td>Hardware access</td>
+<td>None built in</td>
+<td><code>machine</code>, <code>time</code>, and other hardware modules</td>
+</tr>
+<tr>
+<td>Startup time</td>
+<td>Seconds</td>
+<td>Milliseconds</td>
+</tr>
+</tbody>
+</table>
+<p>That compact interpreter has to live somewhere on the chip before it can run anything. The <strong>MicroPython firmware</strong> is the pre-built binary image — MicroPython itself, compiled for the Pico 2's specific processor — that gets flashed onto the board's internal flash memory. Once installed, the firmware is what wakes up every time you power on the Pico and gives you a Python prompt instead of a blank, unresponsive chip.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Why does the interpreter matter?</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Here's the mental model worth keeping: CPython is Python for a computer that already has everything. MicroPython is Python for a chip that has almost nothing — and that constraint is exactly why it can boot in milliseconds and fit in half a megabyte. You'll feel this constraint again later in the course when floating-point math on this chip turns out to be slower than you'd expect. Same reason: small, focused, and built for hardware.</p>
+</div>
+<h2 id="getting-connected-thonny-and-the-repl">Getting Connected — Thonny and the REPL</h2>
+<p>To write and run MicroPython code, this course uses <strong>Thonny</strong>, a free, beginner-friendly Python IDE (integrated development environment) that can talk directly to a microcontroller over a USB cable, upload files, and show you what the board is doing in real time. Thonny is the only software tool this course requires — no compiler, no build system, no command-line setup.</p>
+<p>The physical link between your computer and the Pico 2 is the <strong>USB serial connection</strong> — a USB cable that carries both power and a two-way stream of text data between your computer and the board, using a protocol that makes the microcontroller appear as a serial port your computer can open. This is the same style of connection old modems used, just far faster and running over USB instead of a phone line.</p>
+<p>Connecting for the first time follows a short, repeatable sequence:</p>
+<ol>
+<li>Plug the Pico 2 into your computer with a USB cable that supports data (not a charge-only cable).</li>
+<li>Open Thonny and check the bottom-right corner of the window for the interpreter selector.</li>
+<li>Select <strong>MicroPython (Raspberry Pi Pico)</strong> and the correct serial port from that menu.</li>
+<li>Watch the Shell panel at the bottom of the window for a <code>&gt;&gt;&gt;</code> prompt — that prompt means the board is alive and listening.</li>
+<li>Type a short command, like <code>1 + 1</code>, and press Enter to confirm the connection works.</li>
+</ol>
+<p>That <code>&gt;&gt;&gt;</code> prompt is your entry point into the <strong>REPL</strong> — Read-Eval-Print Loop, an interactive prompt that reads one line of code you type, evaluates it immediately, prints the result, and loops back to wait for your next line. The REPL is where you will experiment throughout this course: testing a single line before committing to a full script, checking a variable's value, or confirming a peripheral responds the way you expect.</p>
+<p>Every time you type a line into the REPL and see output appear, you are relying on the <strong>print statement</strong> — the <code>print()</code> function, which sends text output from your running MicroPython program back over the USB serial connection so Thonny can display it in the Shell panel. It is the simplest and most-used debugging tool in this entire course; whenever something on the board seems to be doing the wrong thing, a well-placed <code>print()</code> is usually the fastest way to find out why.</p>
+<p>Typing commands one at a time in the REPL is useful for exploration, but real programs live in files. <strong>Script execution</strong> is the process of running an entire saved <code>.py</code> file from start to finish, rather than one line at a time — in Thonny, that means clicking Run (or pressing F5) with a file open in the editor pane above the Shell. The board executes every line of the file in order, printing any output to the Shell exactly as it would if you had typed each line into the REPL yourself.</p>
+<p>Before looking at how Thonny and the board's REPL fit together as a system, it helps to name the three pieces this diagram will show: the <strong>editor pane</strong> where you write a script, the <strong>Shell</strong> where the REPL lives, and the <strong>board</strong> itself, which only ever sees text sent over the USB serial connection — it has no idea whether that text came from a saved file or a line you typed by hand.</p>
+<h4 id="diagram-thonny-and-the-pico-2-workflow">Diagram: Thonny and the Pico 2 Workflow</h4>
+<iframe src="../../sims/thonny-repl-workflow/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Thonny and the Pico 2 Workflow</summary>
+<p>Type: workflow
+<strong>sim-id:</strong> thonny-repl-workflow<br/>
+<strong>Library:</strong> vis-network<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, summarize</p>
+<p>Learning objective: Help students explain how the editor pane, the Shell/REPL, and the physical board relate to one another, and why "Run" behaves differently from typing directly into the Shell.</p>
+<p>Purpose: Show the round trip of code and data between Thonny (running on a laptop) and the Pico 2 (connected by USB), so students understand what "the REPL" actually is before they start typing commands into it.</p>
+<p>Components to show (as clickable nodes in a simple left-to-right flow):
+- "Editor Pane" (top left) — where a <code>.py</code> script is written and saved
+- "Run Button / F5" (small connector node between editor and Shell)
+- "Shell Panel (REPL)" (middle) — shows the <code>&gt;&gt;&gt;</code> prompt and output
+- "USB Serial Connection" (connector node between Shell and Board)
+- "Pico 2 Board" (right) — running the MicroPython firmware
+- "print() output" (small node feeding back from Board into Shell)</p>
+<p>Connections:
+- Editor Pane → Run Button → Shell Panel (script sent for execution)
+- Shell Panel ⇄ USB Serial Connection ⇄ Pico 2 Board (two-way arrow, code down, output back)
+- Pico 2 Board → print() output → Shell Panel (labeled "printed text returns here")
+- A separate direct arrow from a "Type directly here" label into Shell Panel, showing the REPL also accepts commands with no editor/Run step at all</p>
+<p>Interactive features:
+- Hovering any node shows a one-sentence definition of that term pulled from this chapter's vocabulary (Editor Pane, Shell Panel/REPL, USB Serial Connection, MicroPython Firmware)
+- Clicking "Run Button / F5" highlights the full path a saved script takes, dimming the direct-typing path
+- Clicking "Type directly here" highlights the direct REPL path instead, dimming the script path
+- Zoom and pan enabled; layout is left-to-right hierarchical</p>
+<p>Visual style: Simple horizontal flowchart, rounded rectangle nodes, arrows labeled with what travels along them ("code", "text output")</p>
+<p>Color scheme: Software-side nodes (Editor Pane, Shell Panel) in blue; hardware-side nodes (Pico 2 Board) in orange; the USB Serial Connection edge in gray with a small USB icon</p>
+<p>Implementation: vis-network, responsive to container width, canvas height 500px</p>
+</details>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Two ways to run code, one board listening</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+Typing directly into the Shell is great for a quick experiment — try a line, see the result, done. But anything you want to keep needs to live in a saved file. Get in the habit early of moving working REPL lines into a real script; you'll thank yourself in Week 4 when scripts get longer.</p>
+</div>
+<p>A script only survives a power cycle if it actually lives on the board. <strong>Saving to device</strong> means writing your <code>.py</code> file onto the Pico 2's own storage — using Thonny's Save dialog and choosing "Raspberry Pi Pico" as the destination — rather than saving it to your computer's hard drive. That storage location is the <strong>device filesystem</strong>, the small persistent flash storage built into the Pico 2 that holds your saved scripts, MicroPython's own firmware, and any files you upload, all of which survive even after you unplug the board.</p>
+<p>There is one filename that matters more than any other: a file saved as <code>main.py</code> in the device filesystem's root folder runs automatically every time the board powers on, with no computer or Thonny required at all. That single fact is what makes Lab 6, later in this course, possible — a spectrum analyzer that runs standalone from a phone charger.</p>
+<h2 id="your-first-gpio-program-blinking-the-onboard-led">Your First GPIO Program — Blinking the Onboard LED</h2>
+<p>With the REPL and Thonny workflow in hand, it's time for the program every embedded-systems course starts with: making a single LED blink. Before writing it, three pieces of vocabulary need to be in place.</p>
+<p>A <strong>GPIO pin</strong> is General Purpose Input/Output — one of the physical metal legs on the Pico 2 that software can configure to either read a signal coming in or send a signal out, under direct program control. <strong>General Purpose IO</strong> (GPIO, the same idea at the system level) is what makes a microcontroller useful at all: it is the set of these configurable pins, collectively, that let a chip sense buttons, drive LEDs, and talk to sensors like the microphone you will wire up in Module 2.</p>
+<p>When a GPIO pin is configured to send a signal out rather than read one in, that configuration is called <strong>digital output</strong> — the pin actively drives its own voltage, rather than passively reporting whatever voltage something else is putting on it. Digital output only ever has two states, and those two states have names: <strong>logic high and low</strong>. Logic high means the pin is driving roughly 3.3 volts; logic low means it is driving roughly 0 volts (ground). There is no in-between in digital logic — a pin is either high or low, and that binary distinction is what your code controls directly.</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Approx. voltage</th>
+<th>Common meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logic high</td>
+<td>3.3 V</td>
+<td>"On" — LED lit, signal asserted</td>
+</tr>
+<tr>
+<td>Logic low</td>
+<td>0 V</td>
+<td>"Off" — LED dark, signal not asserted</td>
+</tr>
+</tbody>
+</table>
+<p>The easiest place to see logic high and low in action is a component already soldered onto the board: the <strong>onboard LED</strong>, a small light-emitting diode built directly into the Pico 2 that is wired to a specific GPIO pin (labeled <code>"LED"</code> in MicroPython) so it can be controlled without any extra wiring or breadboard. Driving that pin logic high lights the LED; driving it logic low turns it dark.</p>
+<p>In MicroPython, you control a specific pin through a <strong>Pin object</strong> — an instance of the <code>Pin</code> class from the <code>machine</code> module that represents one physical GPIO pin and exposes methods to configure and control it. Creating one looks like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">Pin</span><span class="p">(</span><span class="s2">&quot;LED&quot;</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>Here, <code>"LED"</code> tells MicroPython which physical pin to attach to — in this case, the pin already wired to the onboard LED — and <code>Pin.OUT</code> configures that pin for digital output, meaning your code will drive its voltage rather than read it. Once <code>led</code> exists, two calls follow directly from what you just learned: <code>led.value(1)</code> drives the pin logic high (LED on), and <code>led.value(0)</code> drives it logic low (LED off).</p>
+<p>Rather than setting the value explicitly every time, MicroPython offers a shortcut built exactly for blinking: <strong>pin toggle</strong>, the <code>led.toggle()</code> method, which flips a digital output pin from whatever state it is currently in to the opposite state — high becomes low, low becomes high — without your code needing to track which one it was.</p>
+<p>Toggling once just changes the LED's state one time. To make it blink, the program needs to pause between toggles, which is the job of <strong>sleep delay</strong>: <code>sleep()</code>, a function from MicroPython's <code>time</code> module that pauses script execution for a specified number of seconds (or, using <code>sleep_ms()</code>, milliseconds) before the next line runs.</p>
+<p>Putting <code>Pin</code>, <code>toggle()</code>, and <code>sleep()</code> together produces the classic blink program:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="n">led</span> <span class="o">=</span> <span class="n">Pin</span><span class="p">(</span><span class="s2">&quot;LED&quot;</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">toggle</span><span class="p">()</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>That <code>while True:</code> line is an <strong>infinite loop</strong> — a loop whose condition (<code>True</code>) can never become false, so the code inside it repeats forever until something outside the loop stops it, such as the board losing power or the user interrupting the script. Infinite loops show up constantly in embedded systems, because a microcontroller usually has exactly one job and no reason to ever stop doing it. This is the toggle-and-delay pattern you will reuse, in more sophisticated forms, throughout the rest of this course.</p>
+<p>Before running this in the interactive timing explorer below, it's worth naming what the sim will show explicitly: the pin's voltage over time as a simple two-level graph — high or low, nothing in between — updating as you adjust the sleep delay.</p>
+<h4 id="diagram-blink-timing-explorer">Diagram: Blink Timing Explorer</h4>
+<iframe src="../../sims/blink-timing-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Blink Timing Explorer</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> blink-timing-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Demonstrate, calculate</p>
+<p>Learning objective: Let students manipulate the sleep-delay parameter and directly observe its effect on the onboard LED's logic-high/logic-low timeline and blink frequency, connecting the <code>sleep()</code> argument to a physical rate they can predict.</p>
+<p>Canvas layout:
+- Top (350px height): a scrolling voltage-vs-time strip chart showing the LED pin's state as a square wave (two levels only — logic high at 3.3V line, logic low at 0V line)
+- Bottom (150px height): control panel</p>
+<p>Visual elements:
+- Square wave trace scrolling right to left, redrawn each frame
+- A small onboard-LED icon that visibly lights up (yellow/white) when the simulated pin is logic high, and goes dark gray when logic low
+- Horizontal gridlines labeled "3.3V (HIGH)" and "0V (LOW)"
+- A running readout: "Blinks per second: X.X" and "Delay per toggle: Y ms"</p>
+<p>Interactive controls:
+- Slider: Sleep delay, range 0.05 to 2.0 seconds, default 0.5 seconds, updates <code>sleep()</code> argument in the displayed code snippet live
+- Button: "Toggle Once" — manually step the pin state by one toggle, for students who want to see a single transition in isolation
+- Button: "Run / Pause" — starts or stops the automatic toggle-and-delay loop
+- Checkbox: "Show code" — reveals the exact three-line loop (<code>led.toggle()</code>, <code>sleep(delay)</code>) being simulated, with the current slider value substituted in</p>
+<p>Default parameters:
+- Sleep delay: 0.5 seconds
+- Running: paused until student presses Run</p>
+<p>Behavior:
+- When running, the simulated pin flips state every <code>delay</code> seconds, exactly mirroring <code>while True: led.toggle(); sleep(delay)</code>
+- The strip chart redraws the square wave in real time as delay changes, so a shorter delay visibly produces a faster-alternating wave and a lower delay value visibly increases "Blinks per second"
+- "Toggle Once" pauses automatic running and performs exactly one state flip, useful for stepping through the logic-high/logic-low transition slowly</p>
+<p>Instructional Rationale: An Apply-level parameter-exploration pattern is appropriate because the objective asks students to connect a numeric input (the sleep delay argument) to an observable physical rate (blink frequency) — a calculation they should be able to predict before dragging the slider, then confirm by watching the wave.</p>
+<p>Implementation notes:
+- Use p5.js with <code>frameRate()</code>-independent timing (based on <code>millis()</code>) so the wave speed matches real seconds, not frame count
+- Responsive width; strip chart and controls both scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-warning">
+<p class="admonition-title">The board doesn't know what a file is until you save it</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo warning">
+A script you only <em>ran</em> from the editor pane, without ever using Save-to-device, disappears the moment you unplug the Pico. It lived in Thonny's memory on your laptop, not in the device filesystem. If you want your blink program to survive a power cycle, save it to the board as <code>main.py</code> — not just click Run.</p>
+</div>
+<p>Sooner or later, an infinite loop needs to stop — usually because you want to edit the code and try something different. In Thonny, pressing Ctrl+C (or clicking the Stop button) sends a <strong>keyboard interrupt</strong> — a signal that halts a running MicroPython script immediately, mid-line if necessary, and returns control to the REPL so you can type new commands or run a different script. Without a keyboard interrupt, the only way to stop a <code>while True:</code> loop would be to physically unplug the board — which works, but is a blunt instrument compared to a clean interrupt.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Infinite loops feel weird at first — that's normal</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+If <code>while True:</code> feels unsettling — a loop that's designed to <em>never</em> end on its own — you're reacting exactly the way most people do the first time. On a desktop program, that would usually be a bug. On a microcontroller with exactly one job, it's the normal shape of the whole program. You'll write dozens of these before this course is done.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You now have everything needed to get a Raspberry Pi Pico 2 talking to Thonny and blinking its own LED — the foundation every later lab in this course builds on.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>A <strong>microcontroller</strong> runs one program directly on hardware, with no operating system in between.</li>
+<li><strong>MicroPython</strong> is a compact Python implementation built for that constraint; <strong>CPython</strong> is the full desktop version. They share syntax but not scale.</li>
+<li>The <strong>REPL</strong>, reached through <strong>Thonny</strong> over a <strong>USB serial connection</strong>, lets you test code one line at a time before committing it to a saved script.</li>
+<li>Saving a file to the <strong>device filesystem</strong> — especially as <code>main.py</code> — is what makes code survive a power cycle and run standalone.</li>
+<li>A <strong>GPIO pin</strong> configured for <strong>digital output</strong> can only be <strong>logic high</strong> or <strong>logic low</strong>; the <strong>onboard LED</strong> wired to one specific pin makes that binary state visible.</li>
+<li>The toggle-and-delay pattern — <code>Pin.toggle()</code> plus <code>sleep()</code> inside a <code>while True:</code> <strong>infinite loop</strong> — is the blueprint for the real-time programs the rest of this course builds, and a <strong>keyboard interrupt</strong> is how you stop one cleanly.</li>
+</ul>
+<details class="note">
+<summary>Quick check: what happens if you unplug the Pico while a script is only saved on your laptop, not on the device? — Click to expand</summary>
+<p>The script disappears from the board immediately — the Pico only remembers what has been explicitly saved to its own device filesystem (ideally as <code>main.py</code>). Anything that only ever lived in Thonny's editor on your computer has to be re-sent the next time you connect.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You just brought a $5 chip to life</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+Nice work — you connected to a real microcontroller, talked to it through the REPL, and made it blink a light entirely under your own code's control. That toggle-and-delay pattern you just learned is the exact same shape you'll use to drive an OLED display in the next chapter, and eventually to output a live audio spectrum. Not bad for a $5 chip! Time to transform!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: List of Chapters">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                List of Chapters
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../02-know-your-board/" class="md-footer__link md-footer__link--next" aria-label="Next: 2. Know Your Board: ARM Cortex-M Architecture and the Pico 2">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

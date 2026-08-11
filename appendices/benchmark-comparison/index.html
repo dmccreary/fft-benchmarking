@@ -1,0 +1,1248 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/appendices/benchmark-comparison/">
+      
+      
+        <link rel="prev" href="../../plans/02-competing-variants/">
+      
+      
+        <link rel="next" href="../../faq/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Benchmark Comparison - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#appendix-how-our-512-point-assembly-fft-compares-to-published-libraries" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Benchmark Comparison
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Appendices
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#our-measured-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      Our measured result
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-to-publishedexternal-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison to published/external sources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analysis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caveats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caveats
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/appendices/benchmark-comparison/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="appendix-how-our-512-point-assembly-fft-compares-to-published-libraries">Appendix: How Our 512-Point Assembly FFT Compares to Published Libraries</h1>
+<p>This project built a hand-written ARM assembly-language FFT, callable directly from
+MicroPython, that computes a 512-bin FFT in <strong>621.7 µs</strong> on a Raspberry Pi Pico 2 (RP2350,
+Cortex-M33 @ 150 MHz) — about 289× faster than the same transform in pure interpreted
+MicroPython. Reaching that result took a series of experiments exercising both the RP2350's
+hardware floating-point unit (FPU) and its DSP instruction extensions, combining a
+real-input algorithm, specialized trivial-twiddle stages, branchless bit-reversal, and a
+hand-encoded fused multiply-add (VFMA) instruction. This appendix compares that result
+against other published FFT implementations.</p>
+<p><strong>Status:</strong> Web research, August 2026. No published MicroPython library was found benchmarked
+at exactly 512 points on RP2040/RP2350, so most comparisons below required scaling a
+different transform size to 512 points using the FFT's O(N log₂N) cost, or comparing across
+chips. Every number that required scaling or an assumption is flagged in the Notes column.</p>
+<h2 id="our-measured-result">Our measured result</h2>
+<p>From <a href="../../../src/fft-benchmark/outputs/variant-comparison.md"><code>variant-comparison.md</code></a>,
+measured on a Raspberry Pi Pico 2 (RP2350, Cortex-M33 @ 150 MHz), best-of-15 trials after a
+discarded warm-up:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th style="text-align: right;">Best cycles</th>
+<th style="text-align: right;">Mean cycles</th>
+<th style="text-align: right;">Time (mean)</th>
+<th style="text-align: right;">Speedup vs. baseline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>V9 — combined (real-input + specialized + branchless + VFMA)</strong></td>
+<td style="text-align: right;">91,923</td>
+<td style="text-align: right;">93,257</td>
+<td style="text-align: right;"><strong>621.7 µs</strong></td>
+<td style="text-align: right;">1.41×</td>
+</tr>
+<tr>
+<td>V0 — baseline radix-2 DIT (assembly)</td>
+<td style="text-align: right;">130,024</td>
+<td style="text-align: right;">131,099</td>
+<td style="text-align: right;">874.0 µs</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>V3-python — pure interpreted MicroPython</td>
+<td style="text-align: right;">26,501,319</td>
+<td style="text-align: right;">26,936,832</td>
+<td style="text-align: right;">179.6 ms</td>
+<td style="text-align: right;">0.003×</td>
+</tr>
+</tbody>
+</table>
+<h2 id="comparison-to-publishedexternal-sources">Comparison to published/external sources</h2>
+<p>Each row's source name links to the original. "Scaled to 512-pt" estimates use the FFT's
+O(N log₂N) cost to convert a different transform size to an equivalent 512-point figure;
+see <a href="#caveats">Caveats</a> before treating any scaled number as a measurement. How each row
+compares to our V9 (621.7 µs) is discussed in <a href="#analysis">Analysis</a> below, not repeated here.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Measured</th>
+<th>Board / chip</th>
+<th>Language</th>
+<th style="text-align: right;">Result</th>
+<th style="text-align: right;">Scaled to 512-pt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/peterhinch/micropython-fourier">micropython-fourier</a></td>
+<td>1024-pt forward FFT</td>
+<td><strong>Pico 2 (RP2350)</strong> — same board</td>
+<td>MicroPython (asm)</td>
+<td style="text-align: right;">6.97 ms</td>
+<td style="text-align: right;">≈3.14 ms</td>
+</tr>
+<tr>
+<td><a href="https://www.pschatzmann.ch/home/2026/07/17/microcontroller-fft-ifft-performance-benchmark-n64/">pschatzmann blog</a></td>
+<td>N=64 FFT, float</td>
+<td><strong>RP2350 @ 150 MHz</strong> — same chip</td>
+<td>C++ (bare-metal)</td>
+<td style="text-align: right;">91.78 µs</td>
+<td style="text-align: right;">≈1.10 ms</td>
+</tr>
+<tr>
+<td>same source</td>
+<td>N=64 FFT, float</td>
+<td>RP2040 (no hardware FPU)</td>
+<td>C++</td>
+<td style="text-align: right;">939.43 µs</td>
+<td style="text-align: right;">not scaled — different chip</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pschatzmann/fixedpoint-fft">fixedpoint-fft</a> <code>Performance.md</code></td>
+<td>N=64, several boards</td>
+<td>STM32F411, ESP32(-S3), STM32H7, UNO R4, Nano</td>
+<td>C++</td>
+<td style="text-align: right;">23.4–17,166 µs</td>
+<td style="text-align: right;">not scaled — supporting data</td>
+</tr>
+<tr>
+<td><a href="https://github.com/PY1CX/Cortex-M-FFT">Cortex-M-FFT</a></td>
+<td>512-pt FFT, float32 (CMSIS-DSP)</td>
+<td>Cortex-M4 (ST Nucleo)</td>
+<td>Bare C, SIMD — not MicroPython</td>
+<td style="text-align: right;">7,113 cycles (≈71 µs @ 100 MHz, assumed)</td>
+<td style="text-align: right;">already 512-pt</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rcolistete/ulab_samples">ulab_samples</a></td>
+<td>1024-pt FFT, float32, best board</td>
+<td>OpenMV H7 (Cortex-M7 @ 480 MHz)</td>
+<td>CircuitPython (C module)</td>
+<td style="text-align: right;">0.397 ms</td>
+<td style="text-align: right;">not scaled — 3.2× our clock</td>
+</tr>
+<tr>
+<td><a href="https://learn.adafruit.com/ulab-crunch-numbers-fast-with-circuitpython/a-simple-benchmark">Adafruit ulab guide</a></td>
+<td>general ulab speed claims</td>
+<td>various CircuitPython boards</td>
+<td>CircuitPython</td>
+<td style="text-align: right;">no FFT-specific number found</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="analysis">Analysis</h2>
+<ul>
+<li><strong>The one apples-to-apples MicroPython comparison</strong> is Peter Hinch's <code>micropython-fourier</code>,
+  because it is (a) a real published MicroPython library, (b) hand-written assembler like this
+  project's, and (c) benchmarked on the exact same board (Pico 2 / RP2350). Scaled to 512
+  points, this project's V9 is about <strong>5× faster</strong>, and even the unoptimized V0 baseline is
+  about <strong>3.6× faster</strong>. This is the strongest evidence for the "faster than most other
+  published MicroPython libraries" claim.</li>
+<li><strong>Same-chip, non-Python reference</strong> (pschatzmann's C++ library on RP2350): our V9 is still
+  about <strong>1.8× faster</strong> than the scaled estimate, even though that comparison isn't running
+  under MicroPython at all and therefore pays none of the interpreter/boxing overhead our own
+  V3-python variant shows costing ~289× (26.9 ms mean vs. 93,257 cycles / 621.7 µs mean for V9).</li>
+<li><strong>CMSIS-DSP is faster, but it isn't a MicroPython library.</strong> ARM's own hand-tuned production
+  DSP library outperforms our V9 outright, which is expected — it has no Python call boundary,
+  no <code>viper</code>/<code>native</code> compilation step, nothing. It represents a ceiling for "FFT on this class
+  of core," not a competing MicroPython implementation.</li>
+<li><strong>No RP2040/RP2350 ulab number could be found.</strong> ulab is the library most people mean by
+  "a MicroPython FFT library," but every published ulab FFT benchmark located during this
+  research used STM32/SAMD/OpenMV-class boards, not RP2040 or RP2350, and most used
+  CircuitPython rather than stock MicroPython. If a truly direct ulab comparison is needed, it
+  would have to be measured directly on this project's own Pico 2 board rather than sourced
+  from a search, since none currently exists in the literature.</li>
+</ul>
+<h2 id="caveats">Caveats</h2>
+<ol>
+<li><strong>Scaling by N·log₂N is an estimate, not a measurement.</strong> It assumes constant per-butterfly
+   cost is independent of transform size, which is approximately but not exactly true (table
+   setup, twiddle computation, and cache/pipeline effects can shift with size).</li>
+<li><strong>Timing windows differ.</strong> This project's numbers are kernel time only (excludes table
+   construction and buffer loading, per <a href="../../labs/26-benchmarking/">26-benchmarking/index.md</a>).
+   Peter Hinch's number is "end of acquisition to result available," which may include a small
+   amount beyond pure kernel time. CMSIS-DSP's figure is pure kernel cycles.</li>
+<li><strong>The CMSIS-DSP clock speed is an assumption.</strong> The source cycle count (7,113 cycles) did
+   not publish the clock speed used; 100 MHz was chosen only because it matches a comparable
+   Cortex-M4 board (STM32F411) seen elsewhere in this research, not because it was confirmed for
+   this specific benchmark.</li>
+<li><strong>No comparison here is a substitute for a same-board, same-methodology measurement.</strong> The
+   only fully controlled comparison in this research is against Peter Hinch's library, and even
+   that required scaling from 1024 to 512 points.</li>
+</ol>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/peterhinch/micropython-fourier">peterhinch/micropython-fourier</a> — published MicroPython inline-assembler FFT library, Pico 2 benchmark</li>
+<li><a href="https://www.pschatzmann.ch/home/2026/07/17/microcontroller-fft-ifft-performance-benchmark-n64/">Microcontroller FFT &amp; IFFT Performance Benchmark (N=64) — Phil Schatzmann</a> — RP2350/RP2040/ESP32/STM32 N=64 benchmark table</li>
+<li><a href="https://github.com/pschatzmann/fixedpoint-fft">pschatzmann/fixedpoint-fft</a> — header-only C++ FFT library and its <code>Performance.md</code></li>
+<li><a href="https://github.com/PY1CX/Cortex-M-FFT">PY1CX/Cortex-M-FFT</a> — CMSIS-DSP <code>arm_cfft_f32</code> cycle counts across Cortex-M cores</li>
+<li><a href="https://github.com/rcolistete/ulab_samples">rcolistete/ulab_samples</a> — ulab FFT benchmark tables across CircuitPython boards</li>
+<li><a href="https://learn.adafruit.com/ulab-crunch-numbers-fast-with-circuitpython/a-simple-benchmark">ulab: Crunch Numbers fast in CircuitPython — Adafruit Learning System</a> — canonical ulab reference guide</li>
+<li><a href="../../../src/fft-benchmark/outputs/variant-comparison.md">This project's <code>variant-comparison.md</code></a> — our own measured V0–V9 results</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../plans/02-competing-variants/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plan 2">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Plan 2
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../faq/" class="md-footer__link md-footer__link--next" aria-label="Next: FAQ">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                FAQ
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2193 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Survey the ARM Cortex-M architecture behind the Pico 2, read the chip's own identity registers, and derive the CPU-cycle budget for real-time audio.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/02-know-your-board/">
+      
+      
+        <link rel="prev" href="../01-hello-world/">
+      
+      
+        <link rel="next" href="../03-peripherals/">
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Know Your Board: ARM Cortex-M Architecture and the Pico 2 - FFT Benchmarking</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#know-your-board-arm-cortex-m-architecture-and-the-pico-2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FFT Benchmarking
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Know Your Board: ARM Cortex-M Architecture and the Pico 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    FFT Benchmarking
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-hello-world/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-a-system-embedded" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes a System "Embedded"?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cortex-m-family-m4-and-m33" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Cortex-M Family — M4 and M33
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-core-to-board-pico-and-pico-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Core to Board — Pico and Pico 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-memory-is-organized-ram-flash-and-registers" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Memory Is Organized — RAM, Flash, and Registers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ask-the-chip-who-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ask the Chip Who It Is
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ask the Chip Who It Is">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-pico-2-memory-map-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Pico 2 Memory Map Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cycle-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Cycle Budget
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Cycle Budget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-cycle-budget-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Cycle Budget Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-peripherals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-waves/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-capturing-real-audio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-correlation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-building-the-fft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-measuring-time/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-capstone/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-makes-a-system-embedded" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Makes a System "Embedded"?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cortex-m-family-m4-and-m33" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Cortex-M Family — M4 and M33
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-core-to-board-pico-and-pico-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      From Core to Board — Pico and Pico 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-memory-is-organized-ram-flash-and-registers" class="md-nav__link">
+    <span class="md-ellipsis">
+      How Memory Is Organized — RAM, Flash, and Registers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ask-the-chip-who-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ask the Chip Who It Is
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ask the Chip Who It Is">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-pico-2-memory-map-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Pico 2 Memory Map Explorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-cycle-budget" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Cycle Budget
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Cycle Budget">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#diagram-cycle-budget-calculator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Diagram: Cycle Budget Calculator
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chapter-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Chapter Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/02-know-your-board/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="know-your-board-arm-cortex-m-architecture-and-the-pico-2">Know Your Board: ARM Cortex-M Architecture and the Pico 2</h1>
+<h2 id="summary">Summary</h2>
+<p>This chapter surveys the ARM Cortex-M architecture underlying the Pico 2 — the M33 core, its clock speed, memory layout, and the CPUID and memory-mapped registers that let a program identify its own silicon. It introduces the CPU-cycle budget that governs every real-time calculation in the rest of the book. Students finish able to read their board's identity directly from its registers rather than from a datasheet.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter covers the following 24 concepts from the learning graph:</p>
+<ol>
+<li>ARM Architecture</li>
+<li>ARM Cortex M Series</li>
+<li>ARM Cortex M33</li>
+<li>ARM Cortex M4</li>
+<li>CPU Clock Frequency</li>
+<li>CPU Cycles</li>
+<li>CPUID Register</li>
+<li>Clock Speed</li>
+<li>Embedded Systems</li>
+<li>Filesystem Statistics</li>
+<li>Firmware Version</li>
+<li>Free Memory Query</li>
+<li>Instruction Latency</li>
+<li>Memory Architecture</li>
+<li>Memory Mapped Register</li>
+<li>Pipelining</li>
+<li>RAM Versus Flash</li>
+<li>RP2040 Chip</li>
+<li>RP2350 Chip</li>
+<li>Raspberry Pi Pico</li>
+<li>Raspberry Pi Pico 2</li>
+<li>Real Time Constraints</li>
+<li>Silicon Revision</li>
+<li>Unique Device ID</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../01-hello-world/">1. Hello World: Thonny, MicroPython, and Your First GPIO Program</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to meet the chip itself</p>
+<p><img src="../../img/mascot/welcome.png" class="mascot-admonition-img" alt="Echo the dolphin waving">
+Last chapter you blinked a light. This chapter, you're going to make the board tell you exactly what it is — clock speed, memory, even a serial number burned into the silicon. Let's tune in and find out what's actually under the hood.</p>
+</div>
+<p>You already know the Pico 2 as a <strong>microcontroller</strong> — a chip that runs one program directly on hardware, no operating system involved. That description covers a huge range of devices, from a thermostat to a car's anti-lock braking system, so it needs sharpening before it is useful for real engineering decisions. This chapter builds two ideas that, together, define that sharper category, then uses them to identify the exact silicon sitting on your desk.</p>
+<h2 id="what-makes-a-system-embedded">What Makes a System "Embedded"?</h2>
+<p>Every processor executes instructions written in some specific vocabulary of operations — add these two numbers, load this value from memory, jump to this address. That vocabulary, along with the rules for how instructions are encoded and how the processor's internal components are organized to execute them, is called an <strong>instruction set architecture</strong>, and the Pico 2's flavor of it is the <strong>ARM architecture</strong> — a widely licensed instruction set architecture, designed by ARM Holdings, that prioritizes power efficiency and is used in devices from smartphones to microcontrollers. Nearly every phone on Earth runs ARM instructions; so does the chip in your hand right now.</p>
+<p>An instruction set alone does not explain where a program's data lives while the processor works on it. That is the job of <strong>memory architecture</strong> — the organization of a computer system's memory into distinct regions (such as working storage and permanent storage) with different speeds, sizes, and purposes, and the rules that govern how the processor addresses each one. Every microcontroller needs a memory architecture; the specific one used by the Pico 2 is explored later in this chapter.</p>
+<p>With those two ideas in hand — an ARM instruction set and a defined memory architecture — the term <strong>embedded systems</strong> finally has a precise meaning: computer systems built into a larger device to perform one dedicated function, combining a processor running a specific instruction set architecture with a fixed memory architecture, rather than a general-purpose computer capable of running arbitrary user-installed software. Your laptop is a general-purpose computer; the Pico 2, running exactly the script you saved to it, is an embedded system.</p>
+<h2 id="the-cortex-m-family-m4-and-m33">The Cortex-M Family — M4 and M33</h2>
+<p>ARM licenses several distinct processor <em>cores</em> — actual circuit designs, not just the instruction set on paper — and groups the ones built specifically for low-power embedded use under one family name: the <strong>ARM Cortex-M series</strong>, a family of ARM processor cores designed specifically for microcontrollers and other cost- and power-sensitive embedded applications, distinguished from ARM's higher-performance cores used in phones and servers.</p>
+<p>Two members of that family matter for this course. The <strong>ARM Cortex-M4</strong> is a Cortex-M series core that added a floating-point unit and DSP (digital signal processing) instructions to the family — hardware support for exactly the kind of math this course is built around. The <strong>ARM Cortex-M33</strong>, the core actually inside your Pico 2, is a newer Cortex-M series core that builds on the Cortex-M4's floating-point and DSP capabilities while adding stronger security features and improved efficiency.</p>
+<p>Before comparing the two cores in a table, it is worth naming why this comparison matters at all: whether a chip has a <em>hardware</em> floating-point unit — real circuitry that does floating-point math directly — versus doing that math the slow way, in software, is one of the biggest performance differences you will measure in this entire course.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>ARM Cortex-M4</th>
+<th>ARM Cortex-M33 (Pico 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hardware floating-point unit</td>
+<td>Optional (present on many implementations)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DSP instructions</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Security extensions</td>
+<td>No</td>
+<td>Yes (TrustZone)</td>
+</tr>
+<tr>
+<td>Typical use in this course</td>
+<td>Reference comparison point</td>
+<td>The chip you actually program</td>
+</tr>
+</tbody>
+</table>
+<p>One more architectural detail explains <em>how</em> a single core executes instructions quickly in the first place: <strong>pipelining</strong>, a processor design technique that overlaps the execution of multiple instructions — while one instruction is being decoded, the next is already being fetched, and the one after that is being read from memory — so that, on average, close to one instruction completes every clock cycle instead of one instruction taking several cycles from start to finish. Both the M4 and M33 are pipelined; you will feel the practical consequences of pipelining later in this chapter, when instruction timing turns out to be less predictable than a naive cycle count would suggest.</p>
+<h2 id="from-core-to-board-pico-and-pico-2">From Core to Board — Pico and Pico 2</h2>
+<p>A processor core is a design, not a physical object you can hold. To get an actual chip, ARM's core design has to be licensed, combined with supporting circuitry, and manufactured — and to get a board you can plug into a breadboard, that chip has to be mounted with power regulation, USB circuitry, and pin headers.</p>
+<p>The <strong>Raspberry Pi Pico</strong> is the original board in this product line: a small, low-cost microcontroller development board from the Raspberry Pi Foundation, built around an ARM Cortex-M series core, designed for hobbyist and educational use. The specific chip soldered onto that original board is the <strong>RP2040</strong>, the Raspberry Pi Foundation's first custom silicon chip, built around a Cortex-M series core.</p>
+<p>This course uses its successor. The <strong>Raspberry Pi Pico 2</strong> is the second-generation board in the same product line, built around the ARM Cortex-M33 core, released in August 2024. The chip on that board is the <strong>RP2350</strong>, the Raspberry Pi Foundation's second custom silicon chip, built around the Cortex-M33 core and adding the hardware floating-point unit that the FFT work in this course depends on.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Raspberry Pi Pico</th>
+<th>Raspberry Pi Pico 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chip</td>
+<td>RP2040</td>
+<td>RP2350</td>
+</tr>
+<tr>
+<td>Core</td>
+<td>Cortex-M series (no hardware FPU)</td>
+<td>Cortex-M33</td>
+</tr>
+<tr>
+<td>Hardware floating point</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Runs Labs 30–34 (assembly FPU work)?</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition mascot-tip">
+<p class="admonition-title">Check your board before Module 7</p>
+<p><img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+A Pico 2 <strong>W</strong> (the wireless variant) works identically for every lab in this course — the radio just sits unused. An <em>original</em> Pico, though, is missing the hardware floating-point unit later labs assume. Lab 28 teaches you to detect this yourself by reading the chip's own registers, which is exactly the skill this chapter is building toward.</p>
+</div>
+<h2 id="how-memory-is-organized-ram-flash-and-registers">How Memory Is Organized — RAM, Flash, and Registers</h2>
+<p>Memory architecture is not one undifferentiated pool of storage. The Pico 2 splits it into two fundamentally different regions, described by the comparison <strong>RAM versus flash</strong>: RAM (random-access memory) is fast, volatile working memory that holds a running program's variables and loses its contents the instant power is removed, while flash memory is slower, non-volatile storage that holds the MicroPython firmware and any files saved to the device, and keeps its contents even after the board is unplugged. That distinction is why last chapter's <code>main.py</code>, saved to the device filesystem, survives a power cycle, while a variable you set in the REPL does not.</p>
+<p>Beyond ordinary memory, a microcontroller reserves certain memory addresses for a different purpose entirely: a <strong>memory-mapped register</strong> is a hardware register — a small storage location built directly into the chip's circuitry, distinct from RAM — that is given its own memory address, so that reading or writing to that specific address reads or writes hardware state directly, rather than reading or writing ordinary data. Some memory-mapped registers report information about the chip itself; others control peripherals you will meet in the next chapter, like the display and buttons.</p>
+<p>Two everyday MicroPython operations reach into ordinary RAM and flash to answer practical questions, and are worth knowing before diving into the registers that answer identity questions. A <strong>free memory query</strong> — the <code>gc.mem_free()</code> function — reports how many bytes of RAM remain available for your program to use, which matters because a Pico 2 running out of RAM crashes rather than gracefully slowing down. <strong>Filesystem statistics</strong> — the <code>os.statvfs()</code> function — reports how much flash storage space remains on the device filesystem, the same filesystem you saved <code>main.py</code> to in Chapter 1.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">gc</span><span class="o">,</span> <span class="nn">os</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free RAM (bytes):&quot;</span><span class="p">,</span> <span class="n">gc</span><span class="o">.</span><span class="n">mem_free</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Flash stats:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">statvfs</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+<p>Here, <code>gc.mem_free()</code> returns a single integer — bytes of RAM currently free — and <code>os.statvfs("/")</code> returns a tuple describing the root of the device filesystem, including total space and space available, in the same units a desktop <code>df</code> command would report.</p>
+<h2 id="ask-the-chip-who-it-is">Ask the Chip Who It Is</h2>
+<p>Every Pico 2 you will ever hold is, in one specific way, unique: during manufacturing, each chip is programmed with its own permanent identifier. The <strong>unique device ID</strong> is a factory-programmed serial number, unique to each individual chip, readable through a memory-mapped register and exposed in MicroPython through <code>machine.unique_id()</code> — useful whenever a program needs to tell two otherwise-identical boards apart, such as logging which physical unit produced a given benchmark result.</p>
+<p>A related but different register answers a different question — not "which specific chip is this" but "what <em>kind</em> of chip is this." The <strong>CPUID register</strong> is a memory-mapped register, defined by the ARM Cortex-M33 architecture itself, that reports the processor's part number, architecture version, and implementation details in a standardized, machine-readable format. Reading it in MicroPython looks like this:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unique ID:&quot;</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">unique_id</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Frequency:&quot;</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">freq</span><span class="p">())</span>
+</code></pre></div></td></tr></table></div>
+<p>That same register, and others near it, expose one more detail worth knowing before you trust a chip's behavior: the <strong>silicon revision</strong> — a version number identifying a specific manufacturing revision of a chip design, since even chips sharing the same part number can differ in minor bug fixes or capabilities between revisions. Finally, one more piece of "who am I" information lives not in hardware but in software: the <strong>firmware version</strong> — the version identifier of the specific MicroPython firmware build installed on the device, retrievable through <code>sys.implementation</code> or <code>sys.version</code>, distinct from the silicon revision because the same chip can run many different firmware versions over its lifetime as you update it.</p>
+<p>Before looking at how all of these registers relate to each other spatially in the chip's address space, it helps to name what the diagram below will show: RAM, flash, and the block of memory-mapped registers sit at different, non-overlapping address ranges, and the CPUID register, unique device ID, and other identity registers are simply specific addresses within that register block.</p>
+<h4 id="diagram-pico-2-memory-map-explorer">Diagram: Pico 2 Memory Map Explorer</h4>
+<iframe src="../../sims/pico2-memory-map-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Pico 2 Memory Map Explorer</summary>
+<p>Type: diagram
+<strong>sim-id:</strong> pico2-memory-map-explorer<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Understand
+Bloom Taxonomy Verb: Explain, classify</p>
+<p>Learning objective: Help students classify a given address or piece of data as belonging to RAM, flash, or the memory-mapped register block, and explain why reading a register address behaves differently from reading ordinary RAM.</p>
+<p>Purpose: Give a spatial, clickable mental model of the Pico 2's address space so "memory-mapped register" stops being an abstract phrase and becomes a specific labeled region students can point to.</p>
+<p>Components to show:
+- A single tall vertical bar representing the full address space, divided into three labeled, differently colored horizontal bands (not to scale, but ordered top-to-bottom): "Flash (program + saved files)", "RAM (running variables)", "Memory-Mapped Registers (hardware)"
+- Within the "Memory-Mapped Registers" band, four smaller labeled sub-blocks: "CPUID Register", "Unique Device ID", "Clock Control", "Peripheral Registers (SPI, GPIO, etc.)"
+- A small "You are here" style pointer that moves to the relevant band when a code snippet is selected</p>
+<p>Interactive features:
+- Clicking any band or sub-block opens an infobox with: the term's definition (matching this chapter's prose), an example of what lives there, and whether it is volatile (lost on power-off) or non-volatile
+- A row of three buttons above the diagram, each labeled with a code snippet (<code>gc.mem_free()</code>, <code>machine.unique_id()</code>, <code>open("main.py")</code>); clicking one highlights the memory band that snippet actually reads from, reinforcing which concept maps to which region
+- Hover over any band shows a one-line tooltip summary before the full infobox is opened by click</p>
+<p>Visual style: Simple vertical block diagram, flat colors, no 3D effects</p>
+<p>Color scheme: Flash in amber, RAM in blue, Memory-Mapped Registers in green with darker-green sub-blocks</p>
+<p>Implementation: p5.js, responsive width, fixed regions recalculated proportionally on window resize</p>
+</details>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">A register isn't 'data' — it's a window into hardware</p>
+<p><img src="../../img/mascot/thinking.png" class="mascot-admonition-img" alt="Echo thinking">
+Here's the idea worth sitting with: when you read an ordinary variable, you get back whatever your program stored there. When you read a memory-mapped register, you get back whatever the <em>hardware</em> is doing right now — live, not cached. That's a fundamentally different kind of "reading," and it's why register access in assembly, later in this course, has its own special rules.</p>
+</div>
+<h2 id="the-cycle-budget">The Cycle Budget</h2>
+<p>Everything so far has been about identity — what chip, what core, what memory. This last section introduces the number that will follow you through the rest of the book: how much <em>time</em> the chip actually gives you.</p>
+<p>A processor does not run continuously in a smooth, analog sense — it advances in discrete, evenly spaced steps, driven by an internal oscillator. The <strong>clock speed</strong> is the rate at which a processor's internal clock ticks, measured in cycles per second, that paces every operation the processor performs. The Pico 2 runs at 150 MHz by default, meaning its clock ticks 150 million times every second. Expressed formally, that rate is the chip's <strong>CPU clock frequency</strong> — clock speed, specifically expressed in Hertz (cycles per second) — which for the Pico 2 is:</p>
+<div class="arithmatex">\[ f = 150 \times 10^6 \text{ Hz} = 150 \text{ MHz} \]</div>
+<p>Each individual tick of that clock is one <strong>CPU cycle</strong> — a single tick of the processor's clock, the smallest unit of time in which the processor can make forward progress on an instruction. A cycle is not automatically the same as "one instruction finished," though — and this is exactly where pipelining, introduced earlier, and <strong>instruction latency</strong> meet. Instruction latency is the number of clock cycles a specific instruction actually takes to complete, which varies by instruction type: a simple integer addition might complete in one cycle, while a floating-point division might take many cycles even on a chip with a hardware FPU, and a pipeline stall (waiting on a value that is not ready yet) can add cycles no instruction-count estimate would predict.</p>
+<p>That gap between "clock speed" and "actual completed work" is precisely why this course insists on measuring rather than estimating — a theme that returns with force in Module 6. For now, one number matters most: the <strong>real-time constraints</strong> every audio-processing lab in this course must satisfy — a hard deadline, derived from clock speed, CPU cycles, and instruction latency, by which a computation must finish in order to keep up with a continuous, live input stream, such as audio arriving from a microphone.</p>
+<p>Before showing the interactive budget calculator below, it's worth walking through the exact arithmetic it performs, since the reasoning matters more than the tool. If a real-time audio pipeline must process each new chunk of audio within a 40-millisecond window to avoid falling behind, and the Pico 2's clock ticks 150 million times per second, then the number of CPU cycles available in that window is:</p>
+<div class="arithmatex">\[ 150{,}000{,}000 \ \tfrac{\text{cycles}}{\text{second}} \times 0.040 \ \text{seconds} = 6{,}000{,}000 \ \text{cycles} \]</div>
+<p>Six million cycles sounds like a lot — until you remember that a single unoptimized floating-point multiply on this chip, measured later in this course, can cost over a thousand cycles by itself.</p>
+<h4 id="diagram-cycle-budget-calculator">Diagram: Cycle Budget Calculator</h4>
+<iframe src="../../sims/cycle-budget-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+
+<details>
+<summary>Cycle Budget Calculator</summary>
+<p>Type: microsim
+<strong>sim-id:</strong> cycle-budget-calculator<br/>
+<strong>Library:</strong> p5.js<br/>
+<strong>Status:</strong> Specified</p>
+<p>Bloom Taxonomy: Apply
+Bloom Taxonomy Verb: Calculate, apply</p>
+<p>Learning objective: Let students calculate the CPU-cycle budget available for a real-time task, given clock speed and a time deadline, and see how that budget shrinks as the deadline tightens or grows as clock speed increases.</p>
+<p>Canvas layout:
+- Top (250px): large readout showing the calculation as it updates: "Clock speed × Time budget = Cycles available", with live numeric substitution
+- Middle (150px): a horizontal bar showing the cycle budget being "spent" by a sample workload (adjustable), so students see how much headroom remains
+- Bottom (150px): controls</p>
+<p>Visual elements:
+- Large equation display: "150,000,000 cycles/sec × 0.040 sec = 6,000,000 cycles" with each number highlighted in the color of its corresponding slider
+- Horizontal capacity bar: total width = cycle budget; a filled colored segment = cycles consumed by the sample workload; remaining gray segment = headroom
+- Text readout: "Headroom: X cycles (Y% of budget)" or, if over budget, "OVER BUDGET by X cycles" in red</p>
+<p>Interactive controls:
+- Slider: Clock speed, range 1–200 MHz, default 150 MHz (the Pico 2's actual speed)
+- Slider: Real-time deadline, range 5–100 ms, default 40 ms
+- Slider: Sample workload cost, range 100,000–20,000,000 cycles, default 8,000,000 cycles (deliberately set slightly over the default budget to demonstrate an over-budget state on load)
+- Checkbox: "Show formula" — toggles visibility of the full equation with units</p>
+<p>Default parameters:
+- Clock speed: 150 MHz
+- Deadline: 40 ms
+- Workload: 8,000,000 cycles (intentionally over budget to make the "OVER BUDGET" state visible immediately)</p>
+<p>Behavior:
+- Cycle budget recalculates live as either slider moves: budget = clock_speed_hz × deadline_seconds
+- Capacity bar and headroom text update immediately to reflect the new budget versus the fixed workload slider
+- When workload exceeds budget, the capacity bar fills entirely red and the readout switches to the "OVER BUDGET" message</p>
+<p>Instructional Rationale: An Apply-level calculator with live parameter sliders is appropriate because the objective is computational — students should be able to predict how changing clock speed or deadline changes the cycle budget, then confirm that prediction by dragging a slider and watching the equation and bar update together.</p>
+<p>Implementation notes:
+- Use p5.js; recompute and redraw on every slider <code>input</code> event, not just on release
+- Responsive width; equation text and capacity bar both scale to container width on window resize</p>
+</details>
+<div class="admonition mascot-warning">
+<p class="admonition-title">A fast clock does not mean a fast program</p>
+<p><img src="../../img/mascot/warning.png" class="mascot-admonition-img" alt="Echo warning">
+It is tempting to look at "150 MHz" and assume any reasonable computation fits easily. It does not. Module 3 of this course builds a brute-force DFT that blows through this exact 6,000,000-cycle budget by more than 500×. Clock speed tells you the size of your budget — it says nothing about whether your code respects it.</p>
+</div>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">You don't need to memorize register addresses</p>
+<p><img src="../../img/mascot/encouraging.png" class="mascot-admonition-img" alt="Echo encouraging">
+If CPUID registers and memory maps feel like a lot of new vocabulary at once, that's fair — this chapter front-loads identity concepts so later chapters can move fast without re-explaining them. You will never need to memorize a specific register address in this course; MicroPython's <code>machine</code> module handles that translation for you every time.</p>
+</div>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>You can now describe precisely what kind of chip is running your code and how much time it gives you to work with.</p>
+<p>Key ideas to carry forward:</p>
+<ul>
+<li>An <strong>embedded system</strong> combines a specific instruction set architecture (<strong>ARM</strong>) with a defined <strong>memory architecture</strong> — the Pico 2 is one, your laptop is not.</li>
+<li>The <strong>Cortex-M33</strong> core inside the Pico 2 builds on the <strong>Cortex-M4</strong>, adding a hardware floating-point unit — the single biggest reason this course requires the Pico <em>2</em>, not the original Pico.</li>
+<li><strong>RAM</strong> is fast and volatile; <strong>flash</strong> is slower and non-volatile; <strong>memory-mapped registers</strong> are a third category entirely — live hardware state, not stored data.</li>
+<li>The <strong>CPUID register</strong>, <strong>unique device ID</strong>, <strong>silicon revision</strong>, and <strong>firmware version</strong> let a program identify its own hardware and software without a datasheet.</li>
+<li><strong>Clock speed</strong> sets the size of your time budget; <strong>instruction latency</strong> and <strong>pipelining</strong> determine how much real work fits inside it — and <strong>real-time constraints</strong> are what happens when that budget has a hard deadline.</li>
+</ul>
+<details class="note">
+<summary>Quick check: the Pico 2 runs at 150 MHz. How many CPU cycles are available in a 20-millisecond window? — Click to expand</summary>
+<p>150,000,000 cycles/sec × 0.020 sec = 3,000,000 cycles. Half the deadline means half the cycle budget — the relationship is directly proportional.</p>
+</details>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">You just read your board's mind</p>
+<p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
+You can now ask a Pico 2 what it is, how much memory it has, and how many cycles it gets per second — and derive exactly how tight a real-time deadline really is. That 6,000,000-cycle number isn't trivia. You'll watch it get spent, wasted, and eventually respected across the rest of this book. Not bad for a $5 chip!</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../01-hello-world/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1. Hello World: Thonny, MicroPython, and Your First GPIO Program">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../03-peripherals/" class="md-footer__link md-footer__link--next" aria-label="Next: 3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

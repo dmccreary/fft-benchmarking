@@ -248,7 +248,7 @@ An **eight-point DFT by hand** is a fully worked numerical example computing all
 
 #### Diagram: Eight-Point DFT by Hand Calculator
 
-<iframe src="../../sims/eight-point-dft-by-hand-calculator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/eight-point-dft-by-hand-calculator/main.html" width="100%" height="552px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Eight-Point DFT by Hand Calculator</summary>

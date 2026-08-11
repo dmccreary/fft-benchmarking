@@ -1,0 +1,15 @@
+{
+  "sim_id": "boxed-unboxed-memory-explorer",
+  "diagram_name": "Boxed vs. Unboxed Memory Layout Explorer",
+  "chapter_number": 19,
+  "chapter_title": "\"The Abstraction Ladder: Python, C, and Assembly Compared\"",
+  "chapter_dir": "19-the-abstraction-ladder",
+  "chapter_rel_dir": "chapters/19-the-abstraction-ladder",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — explain, compare",
+  "bloom_verb": null,
+  "learning_objective": "Explain why arithmetic on a boxed value requires more memory accesses than the same arithmetic on an unboxed value, by comparing their memory layouts step by step.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** boxed-unboxed-memory-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — explain, compare\nLearning objective: Explain why arithmetic on a boxed value requires more memory accesses than the same arithmetic on an unboxed value, by comparing their memory layouts step by step.\n\nCanvas layout:\n- Top (250px): \"Boxed\" memory diagram — a variable slot pointing (arrow) to a heap object containing [type tag][refcount][value bytes]\n- Bottom (250px): \"Unboxed\" memory diagram — a variable slot containing the value bytes directly, no arrow, no separate object\n\nVisual elements:\n- Both diagrams represent computing `a + b` where a and b are floats\n- Boxed diagram shows: variable → pointer → heap box (3 labeled fields) for both a and b, then a NEW heap box allocated for the result\n- Unboxed diagram shows: variable slots holding raw bytes directly, an ADD operation writing straight into a result slot, no allocation\n\nData Visibility Requirements:\n  Stage 1: Show both starting states (a and b represented each way) side by side\n  Stage 2 (Boxed path): highlight pointer-follow step, then type-check step, then value-extraction step, then new-allocation step, counting each as \"1 memory operation\" in a running tally\n  Stage 3 (Unboxed path): highlight the single direct ADD step, tally stays at 1\n  Final: Show final tallies side by side — Boxed: 7 operations, Unboxed: 1 operation (illustrative counts, not a precise cycle count)\n\nInteractive controls:\n- Button: \"Step forward\" / \"Step back\" through both paths in lockstep\n- Button: \"Run both to completion\"\n- Toggle: \"Show operation tally\"\n\nInstructional Rationale: Step-through with an explicit operation tally is appropriate for\nthis Understand-level objective because it makes the abstract idea of \"pointer chasing has\na cost\" concrete and countable, rather than relying on an animation that would obscure\nexactly which steps are extra.\n\nImplementation: p5.js, two parallel diagrams drawn as boxes and arrows, tally counter updates per step"
+}

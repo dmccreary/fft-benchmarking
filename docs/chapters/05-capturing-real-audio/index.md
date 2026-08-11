@@ -136,7 +136,7 @@ Seeing the three lines side by side, changing together over time, makes the rela
 
 #### Diagram: I2S Protocol Timing Explorer
 
-<iframe src="../../sims/i2s-protocol-timing-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/i2s-protocol-timing-explorer/main.html" width="100%" height="432px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>I2S Protocol Timing Explorer</summary>

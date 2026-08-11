@@ -1,0 +1,15 @@
+{
+  "sim_id": "dft-scaling-behavior-chart",
+  "diagram_name": "DFT Scaling Behavior Chart",
+  "chapter_number": 10,
+  "chapter_title": "Why the DFT Is Too Slow",
+  "chapter_dir": "10-why-the-dft-is-too-slow",
+  "chapter_rel_dir": "chapters/10-why-the-dft-is-too-slow",
+  "library": "Chart.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, compare",
+  "learning_objective": "Let students examine a plotted curve of operation count versus N and compare the DFT's quadratic (N²) growth against a hypothetical linear (N) algorithm, seeing directly how far apart the two curves become at realistic audio sizes.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** dft-scaling-behavior-chart<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, compare\n\nLearning objective: Let students examine a plotted curve of operation count versus N and compare the DFT's quadratic (N²) growth against a hypothetical linear (N) algorithm, seeing directly how far apart the two curves become at realistic audio sizes.\n\nChart type: Line chart, with a toggle for logarithmic Y-axis\n\nPurpose: Make the gap between O(N) and O(N²) growth visually unmistakable across the range of N values this course actually uses\n\nX-axis: N (number of samples), 8 to 1024\nY-axis: Operation count (toggle between linear and logarithmic scale)\n\nData series:\n1. \"DFT (N²)\" — quadratic curve, plotted in orange\n2. \"Hypothetical linear algorithm (N)\" — straight line, plotted in blue, for comparison only\n\nInteractive elements:\n- Hovering any point on either curve shows its exact N and operation count in a tooltip\n- Toggle: \"Logarithmic Y-axis\" — makes both curves comparable on one chart even though their values differ by orders of magnitude at large N\n- Draggable vertical marker the student can place at a specific N to read off both curves' exact values side by side\n\nTitle: \"Operation Count vs. N: Quadratic vs. Linear Growth\"\nAnnotations: A marker at N=512 (this course's standard FFT size) labeled \"262,144 operations for the DFT — this is the number the rest of the course exists to shrink\"\n\nImplementation: Chart.js line chart with a log-scale toggle plugin"
+}

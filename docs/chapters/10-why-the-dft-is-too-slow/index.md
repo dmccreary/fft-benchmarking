@@ -72,7 +72,7 @@ This is exactly the tension previewed at the end of the last chapter: more sampl
 
 #### Diagram: DFT Scaling Behavior Chart
 
-<iframe src="../../sims/dft-scaling-behavior-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/dft-scaling-behavior-chart/main.html" width="100%" height="472px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>DFT Scaling Behavior Chart</summary>

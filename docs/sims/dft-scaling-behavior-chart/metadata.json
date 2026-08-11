@@ -1,0 +1,77 @@
+{
+  "title": "DFT Scaling Behavior Chart",
+  "description": "A Chart.js comparison of quadratic DFT growth against a linear algorithm from N = 8 to 1024, with a log-scale toggle and a draggable marker reading both curves.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Algorithm Analysis", "Performance"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "dft-scaling-behavior-chart",
+  "library": "Chart.js",
+  "canvasHeight": 470,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 10,
+  "chapter_title": "Why the DFT Is Too Slow",
+  "chapter_dir": "10-why-the-dft-is-too-slow",
+  "chapter_rel_dir": "chapters/10-why-the-dft-is-too-slow",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Science",
+    "topic": "Asymptotic growth of the direct DFT",
+    "learningObjectives": [
+      "Examine operation count as a function of N",
+      "Compare quadratic and linear growth at realistic window sizes",
+      "Explain why the penalty ratio is itself N"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10 minutes",
+    "prerequisites": ["The direct DFT is a double loop", "Reading a line chart"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "4.4.0",
+    "canvasDimensions": { "width": "responsive", "height": 470 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "checkbox", "label": "Logarithmic Y-axis", "purpose": "Make both curves comparable across orders of magnitude" },
+      { "type": "slider", "label": "Marker at N", "min": 8, "max": 1024, "default": 512, "step": 8 },
+      { "type": "hover", "label": "Either curve", "purpose": "Tooltip with exact N and operation count" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form growth curves",
+    "variables": ["N", "operation count"],
+    "equations": ["DFT operations = N^2", "linear reference = N", "ratio = N"],
+    "assumptions": [
+      "One operation per multiply-accumulate; constant factors ignored",
+      "The linear series is a hypothetical reference, not a real algorithm"
+    ],
+    "limitations": [
+      "The FFT is O(N log N), between these two curves; it is introduced in the next chapter rather than plotted here"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Comparative growth curves with a movable read-off marker",
+    "keyQuestions": [
+      "Why does the linear curve look flat on a linear axis?",
+      "What is the ratio between the curves, and why does it grow?"
+    ],
+    "commonMisconceptions": [
+      "That hand-optimizing the inner loop can close an asymptotic gap",
+      "That the flat blue line means the linear series is missing or zero"
+    ],
+    "assessmentOpportunities": [
+      "Judge whether a 30% constant-factor speedup rescues a doubling of N"
+    ]
+  }
+}

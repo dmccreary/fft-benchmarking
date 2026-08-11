@@ -326,3 +326,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "Every gear of the machine is on the table"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Divide and conquer, twiddle factors, the butterfly, bit reversal — you now understand every mechanism a real FFT implementation needs. Next chapter, all of it comes together into one working, validated function, and you'll watch the operation count fall off a cliff. Time to transform!
+
+[See Annotated References](./references.md)

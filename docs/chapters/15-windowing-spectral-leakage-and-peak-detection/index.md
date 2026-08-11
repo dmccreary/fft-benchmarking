@@ -360,3 +360,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "Sub-bin accuracy — you can now build a real tuner"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Windowing to fight leakage, parabolic interpolation to land between bins, note mapping to name what you found — that's precision far beyond "which bin is loudest." Next chapter assembles capture, FFT, and this exact pipeline into one continuously running, real-time spectrum analyzer. You're right on frequency.
+
+[See Annotated References](./references.md)

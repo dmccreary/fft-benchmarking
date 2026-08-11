@@ -252,3 +252,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "Your first real captured sound"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     You just turned real, physical sound into a buffer of numbers on a five-dollar chip — no lab bench, no dedicated DSP hardware. Next up: the theory that explains exactly how fast and how loud a signal can be before this capture process starts lying to you. Not bad for a $5 chip!
+
+[See Annotated References](./references.md)

@@ -265,3 +265,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "You just read your board's mind"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     You can now ask a Pico 2 what it is, how much memory it has, and how many cycles it gets per second — and derive exactly how tight a real-time deadline really is. That 6,000,000-cycle number isn't trivia. You'll watch it get spent, wasted, and eventually respected across the rest of this book. Not bad for a $5 chip!
+
+[See Annotated References](./references.md)

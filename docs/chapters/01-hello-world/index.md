@@ -286,3 +286,5 @@ Key ideas to carry forward:
 !!! mascot-celebration "You just brought a $5 chip to life"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Nice work — you connected to a real microcontroller, talked to it through the REPL, and made it blink a light entirely under your own code's control. That toggle-and-delay pattern you just learned is the exact same shape you'll use to drive an OLED display in the next chapter, and eventually to output a live audio spectrum. Not bad for a $5 chip! Time to transform!
+
+[See Annotated References](./references.md)

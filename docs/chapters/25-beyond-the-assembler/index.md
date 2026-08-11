@@ -303,3 +303,5 @@ students this gap leaves curious.
     course stopped at floating point instead of chasing fixed point too. Chapter 26 pulls
     every variant you've built — from Chapter 12's Python FFT through today's hand-encoded
     instruction — into one honest, predicted-then-measured comparison.
+
+[See Annotated References](./references.md)

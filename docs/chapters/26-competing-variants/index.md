@@ -220,3 +220,5 @@ is an incomplete comparison.
     you've now run it on the hardest comparison yet: every variant you've built, head to
     head. Chapter 27 turns this same discipline outward, onto a project entirely of your
     own design.
+
+[See Annotated References](./references.md)

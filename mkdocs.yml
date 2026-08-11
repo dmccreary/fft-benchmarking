@@ -18,39 +18,123 @@ nav:
     - Concept Taxonomy: learning-graph/concept-taxonomy.md
     - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
     - Quality Metrics: learning-graph/quality-metrics.md
+    - Book Metrics: learning-graph/book-metrics.md
+    - Chapter Metrics: learning-graph/chapter-metrics.md
     - Mascot Style Guide: learning-graph/mascot-test.md
     - FAQ Quality Report: learning-graph/faq-quality-report.md
     - FAQ Coverage Gaps: learning-graph/faq-coverage-gaps.md
+    - Quiz Generation Report: learning-graph/quiz-generation-report.md
 
   - Chapters:
     - List of Chapters: chapters/index.md
-    - '1. Hello World: Thonny, MicroPython, and Your First GPIO Program': chapters/01-hello-world/index.md
-    - '2. Know Your Board: ARM Cortex-M Architecture and the Pico 2': chapters/02-know-your-board/index.md
-    - '3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code': chapters/03-peripherals/index.md
-    - '4. Waves: Amplitude, Frequency, Phase, and Harmonics': chapters/04-waves/index.md
-    - '5. Capturing Real Audio: The I2S Microphone': chapters/05-capturing-real-audio/index.md
-    - '6. Sampling, Quantization, and Aliasing': chapters/06-sampling-quantization-and-aliasing/index.md
-    - '7. Complex Numbers and Wave Superposition': chapters/07-complex-numbers-and-wave-superposition/index.md
-    - '8. Correlation: Does My Signal Contain This Note?': chapters/08-correlation/index.md
-    - '9. Computing and Validating the DFT': chapters/09-computing-and-validating-the-dft/index.md
-    - '10. Why the DFT Is Too Slow': chapters/10-why-the-dft-is-too-slow/index.md
-    - '11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly': chapters/11-from-dft-to-fft/index.md
-    - '12. Building the FFT: A Complete Recursive Implementation': chapters/12-building-the-fft/index.md
-    - '13. FFT Variants, Complexity, and Correctness': chapters/13-fft-variants-complexity-and-correctness/index.md
-    - '14. Computing and Displaying a Real Spectrum': chapters/14-computing-and-displaying-a-real-spectrum/index.md
-    - '15. Windowing, Spectral Leakage, and Peak Detection': chapters/15-windowing-spectral-leakage-and-peak-detection/index.md
-    - '16. Building a Real-Time Spectrum Analyzer': chapters/16-building-a-real-time-spectrum-analyzer/index.md
-    - '17. Measuring Time: The DWT Cycle Counter': chapters/17-measuring-time/index.md
-    - '18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison': chapters/18-benchmarking-methodology/index.md
-    - '19. The Abstraction Ladder: Python, C, and Assembly Compared': chapters/19-the-abstraction-ladder/index.md
-    - '20. Does Your CPU Have an FPU?': chapters/20-does-your-cpu-have-an-fpu/index.md
-    - '21. Your First Assembly Function: Registers and Loops': chapters/21-your-first-assembly-function/index.md
-    - '22. Talking to the FPU: Floating-Point Assembly': chapters/22-talking-to-the-fpu/index.md
-    - '23. The Butterfly in Assembly: A Complete FFT and Production Libraries': chapters/23-the-butterfly-in-assembly/index.md
-    - '24. Specialization and Branchless Code': chapters/24-specialization-and-branchless-code/index.md
-    - '25. Beyond the Assembler: Hand-Encoding and Instruction Formats': chapters/25-beyond-the-assembler/index.md
-    - '26. Competing Variants: Predict, Measure, Explain': chapters/26-competing-variants/index.md
-    - '27. Capstone: Applications, Design, and Reporting': chapters/27-capstone/index.md
+    - '1. Hello World: Thonny, MicroPython, and Your First GPIO Program':
+      - Content: chapters/01-hello-world/index.md
+      - Quiz: chapters/01-hello-world/quiz.md
+      - Annotated References: chapters/01-hello-world/references.md
+    - '2. Know Your Board: ARM Cortex-M Architecture and the Pico 2':
+      - Content: chapters/02-know-your-board/index.md
+      - Quiz: chapters/02-know-your-board/quiz.md
+      - Annotated References: chapters/02-know-your-board/references.md
+    - '3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code':
+      - Content: chapters/03-peripherals/index.md
+      - Quiz: chapters/03-peripherals/quiz.md
+      - Annotated References: chapters/03-peripherals/references.md
+    - '4. Waves: Amplitude, Frequency, Phase, and Harmonics':
+      - Content: chapters/04-waves/index.md
+      - Quiz: chapters/04-waves/quiz.md
+      - Annotated References: chapters/04-waves/references.md
+    - '5. Capturing Real Audio: The I2S Microphone':
+      - Content: chapters/05-capturing-real-audio/index.md
+      - Quiz: chapters/05-capturing-real-audio/quiz.md
+      - Annotated References: chapters/05-capturing-real-audio/references.md
+    - '6. Sampling, Quantization, and Aliasing':
+      - Content: chapters/06-sampling-quantization-and-aliasing/index.md
+      - Quiz: chapters/06-sampling-quantization-and-aliasing/quiz.md
+      - Annotated References: chapters/06-sampling-quantization-and-aliasing/references.md
+    - '7. Complex Numbers and Wave Superposition':
+      - Content: chapters/07-complex-numbers-and-wave-superposition/index.md
+      - Quiz: chapters/07-complex-numbers-and-wave-superposition/quiz.md
+      - Annotated References: chapters/07-complex-numbers-and-wave-superposition/references.md
+    - '8. Correlation: Does My Signal Contain This Note?':
+      - Content: chapters/08-correlation/index.md
+      - Quiz: chapters/08-correlation/quiz.md
+      - Annotated References: chapters/08-correlation/references.md
+    - '9. Computing and Validating the DFT':
+      - Content: chapters/09-computing-and-validating-the-dft/index.md
+      - Quiz: chapters/09-computing-and-validating-the-dft/quiz.md
+      - Annotated References: chapters/09-computing-and-validating-the-dft/references.md
+    - '10. Why the DFT Is Too Slow':
+      - Content: chapters/10-why-the-dft-is-too-slow/index.md
+      - Quiz: chapters/10-why-the-dft-is-too-slow/quiz.md
+      - Annotated References: chapters/10-why-the-dft-is-too-slow/references.md
+    - '11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly':
+      - Content: chapters/11-from-dft-to-fft/index.md
+      - Quiz: chapters/11-from-dft-to-fft/quiz.md
+      - Annotated References: chapters/11-from-dft-to-fft/references.md
+    - '12. Building the FFT: A Complete Recursive Implementation':
+      - Content: chapters/12-building-the-fft/index.md
+      - Quiz: chapters/12-building-the-fft/quiz.md
+      - Annotated References: chapters/12-building-the-fft/references.md
+    - '13. FFT Variants, Complexity, and Correctness':
+      - Content: chapters/13-fft-variants-complexity-and-correctness/index.md
+      - Quiz: chapters/13-fft-variants-complexity-and-correctness/quiz.md
+      - Annotated References: chapters/13-fft-variants-complexity-and-correctness/references.md
+    - '14. Computing and Displaying a Real Spectrum':
+      - Content: chapters/14-computing-and-displaying-a-real-spectrum/index.md
+      - Quiz: chapters/14-computing-and-displaying-a-real-spectrum/quiz.md
+      - Annotated References: chapters/14-computing-and-displaying-a-real-spectrum/references.md
+    - '15. Windowing, Spectral Leakage, and Peak Detection':
+      - Content: chapters/15-windowing-spectral-leakage-and-peak-detection/index.md
+      - Quiz: chapters/15-windowing-spectral-leakage-and-peak-detection/quiz.md
+      - Annotated References: chapters/15-windowing-spectral-leakage-and-peak-detection/references.md
+    - '16. Building a Real-Time Spectrum Analyzer':
+      - Content: chapters/16-building-a-real-time-spectrum-analyzer/index.md
+      - Quiz: chapters/16-building-a-real-time-spectrum-analyzer/quiz.md
+      - Annotated References: chapters/16-building-a-real-time-spectrum-analyzer/references.md
+    - '17. Measuring Time: The DWT Cycle Counter':
+      - Content: chapters/17-measuring-time/index.md
+      - Quiz: chapters/17-measuring-time/quiz.md
+      - Annotated References: chapters/17-measuring-time/references.md
+    - '18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison':
+      - Content: chapters/18-benchmarking-methodology/index.md
+      - Quiz: chapters/18-benchmarking-methodology/quiz.md
+      - Annotated References: chapters/18-benchmarking-methodology/references.md
+    - '19. The Abstraction Ladder: Python, C, and Assembly Compared':
+      - Content: chapters/19-the-abstraction-ladder/index.md
+      - Quiz: chapters/19-the-abstraction-ladder/quiz.md
+      - Annotated References: chapters/19-the-abstraction-ladder/references.md
+    - '20. Does Your CPU Have an FPU?':
+      - Content: chapters/20-does-your-cpu-have-an-fpu/index.md
+      - Quiz: chapters/20-does-your-cpu-have-an-fpu/quiz.md
+      - Annotated References: chapters/20-does-your-cpu-have-an-fpu/references.md
+    - '21. Your First Assembly Function: Registers and Loops':
+      - Content: chapters/21-your-first-assembly-function/index.md
+      - Quiz: chapters/21-your-first-assembly-function/quiz.md
+      - Annotated References: chapters/21-your-first-assembly-function/references.md
+    - '22. Talking to the FPU: Floating-Point Assembly':
+      - Content: chapters/22-talking-to-the-fpu/index.md
+      - Quiz: chapters/22-talking-to-the-fpu/quiz.md
+      - Annotated References: chapters/22-talking-to-the-fpu/references.md
+    - '23. The Butterfly in Assembly: A Complete FFT and Production Libraries':
+      - Content: chapters/23-the-butterfly-in-assembly/index.md
+      - Quiz: chapters/23-the-butterfly-in-assembly/quiz.md
+      - Annotated References: chapters/23-the-butterfly-in-assembly/references.md
+    - '24. Specialization and Branchless Code':
+      - Content: chapters/24-specialization-and-branchless-code/index.md
+      - Quiz: chapters/24-specialization-and-branchless-code/quiz.md
+      - Annotated References: chapters/24-specialization-and-branchless-code/references.md
+    - '25. Beyond the Assembler: Hand-Encoding and Instruction Formats':
+      - Content: chapters/25-beyond-the-assembler/index.md
+      - Quiz: chapters/25-beyond-the-assembler/quiz.md
+      - Annotated References: chapters/25-beyond-the-assembler/references.md
+    - '26. Competing Variants: Predict, Measure, Explain':
+      - Content: chapters/26-competing-variants/index.md
+      - Quiz: chapters/26-competing-variants/quiz.md
+      - Annotated References: chapters/26-competing-variants/references.md
+    - '27. Capstone: Applications, Design, and Reporting':
+      - Content: chapters/27-capstone/index.md
+      - Quiz: chapters/27-capstone/quiz.md
+      - Annotated References: chapters/27-capstone/references.md
 
   - Hands-On Labs:
       - List of Labs: labs/index.md

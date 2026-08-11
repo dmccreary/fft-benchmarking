@@ -418,3 +418,5 @@ it will not be re-explained.
     the same performance vocabulary the rest of this course uses. Chapter 18 puts this
     instrument to work — and shows you all the ways a careless benchmark can lie even
     with a perfectly good timer in hand.
+
+[See Annotated References](./references.md)

@@ -453,3 +453,5 @@ table's real job is making that tradeoff visible rather than picking a winner fo
     Chapter 20 asks the one question that decides whether you can even take the next step
     down this ladder on your own board: does your chip's CPU actually have the hardware
     to run the assembly you're about to write?
+
+[See Annotated References](./references.md)

@@ -334,3 +334,5 @@ first principles.
     the judgment to know when *not* to ship your own. Chapter 24 pushes further still —
     exploiting specific properties of this exact computation to make the hot loop even
     faster.
+
+[See Annotated References](./references.md)

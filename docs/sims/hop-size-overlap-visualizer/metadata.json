@@ -1,0 +1,79 @@
+{
+  "title": "Hop Size Overlap Visualizer",
+  "description": "A sample stream with successive 512-sample frame windows drawn as overlapping bars, and a readout of overlap percentage, update rate, and the resulting FFT cost multiplier.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Real-Time Systems", "STFT"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "hop-size-overlap-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 420,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Hop size, frame overlap, and recomputation cost",
+    "learningObjectives": [
+      "Examine frame overlap as a function of hop size",
+      "Compare update rate against FFT cost",
+      "Determine a sustainable hop from a compute budget"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A frame is a block of samples", "Sampling rate and frame rate"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 420 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Hop size", "min": 64, "max": 512, "default": 512, "step": 64, "units": "samples" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Geometric frame scheduling",
+    "variables": ["hop size", "overlap", "update rate"],
+    "equations": [
+      "overlap = (N - H) / N",
+      "updates per second = fs / H",
+      "cost factor = N / H"
+    ],
+    "assumptions": [
+      "Frame size fixed at 512 samples, sampling rate 16 kHz",
+      "One FFT per frame regardless of overlap"
+    ],
+    "limitations": [
+      "The frame stack is truncated to fit the panel; the caption states how many of the total are shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Geometric view paired with a quantitative cost readout",
+    "keyQuestions": [
+      "How many times is each sample processed at 75% overlap?",
+      "What is the smallest hop your compute budget allows?"
+    ],
+    "commonMisconceptions": [
+      "That overlapping frames improve the display for free",
+      "That overlap changes frequency resolution"
+    ],
+    "assessmentOpportunities": [
+      "Determine the smallest sustainable hop from a measured FFT time"
+    ]
+  }
+}

@@ -122,7 +122,7 @@ Running the FFT over and over, continuously, on this hop-advancing stream of fra
 
 #### Diagram: Hop Size and Overlap Processing Visualizer
 
-<iframe src="../../sims/hop-size-overlap-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/hop-size-overlap-visualizer/main.html" width="100%" height="422px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Hop Size and Overlap Processing Visualizer</summary>

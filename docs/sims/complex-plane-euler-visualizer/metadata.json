@@ -1,0 +1,75 @@
+{
+  "title": "Complex Plane Euler Visualizer",
+  "description": "A unit vector on the complex plane with color-coded real and imaginary projections and a live substitution of Euler's formula, plus a magnitude readout pinned at 1.00.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Mathematics", "Complex Analysis"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "complex-plane-euler-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 450,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Demonstrate, calculate",
+  "completion_status": "implemented",
+  "chapter_number": 7,
+  "chapter_title": "Complex Numbers and Wave Superposition",
+  "chapter_dir": "07-complex-numbers-and-wave-superposition",
+  "chapter_rel_dir": "chapters/07-complex-numbers-and-wave-superposition",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Mathematics",
+    "topic": "Euler's formula on the complex plane",
+    "learningObjectives": [
+      "Demonstrate that Re(e^(i theta)) = cos theta and Im(e^(i theta)) = sin theta",
+      "Calculate both components for a given angle",
+      "Explain why the magnitude is always 1"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": [
+      "Sine and cosine as unit-circle coordinates",
+      "A complex number has real and imaginary parts"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 450 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "theta", "min": 0, "max": 6.283, "default": 0, "step": 0.01, "units": "radians" },
+      { "type": "button", "label": "Play / Pause", "purpose": "Animate continuous rotation" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Direct evaluation of Euler's formula",
+    "variables": ["theta", "real part", "imaginary part", "magnitude"],
+    "equations": [
+      "e^(i*theta) = cos(theta) + i*sin(theta)",
+      "|e^(i*theta)| = sqrt(cos^2 + sin^2) = 1"
+    ],
+    "assumptions": ["Unit magnitude only; scaled complex exponentials are not shown"],
+    "limitations": ["Does not cover complex exponentials with a real exponent component (growth or decay)"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Verify-the-equation parameter exploration",
+    "keyQuestions": [
+      "Why is the magnitude 1 even when the real part is negative?",
+      "What does multiplying by e^(i theta) do to a complex number?"
+    ],
+    "commonMisconceptions": [
+      "That a negative real part implies a negative magnitude",
+      "That Euler's formula is a definition rather than something checkable"
+    ],
+    "assessmentOpportunities": ["State the components and magnitude of e^(i pi)"]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "title": "Branch Misprediction Visualizer",
+  "description": "Two pipeline lanes stepping through the same ten branch outcomes, one predictable and one data-dependent, with pipeline flushes and a running wasted-cycle tally.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Computer Architecture", "Assembly Language"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "branch-misprediction-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 489,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 24,
+  "chapter_title": "Specialization and Branchless Code",
+  "chapter_dir": "24-specialization-and-branchless-code",
+  "chapter_rel_dir": "chapters/24-specialization-and-branchless-code",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Branch prediction and the cost of a pipeline flush",
+    "learningObjectives": [
+      "Explain why a predictable branch costs almost nothing",
+      "Interpret a pipeline flush as discarded speculative work",
+      "Distinguish the cost of a comparison from the cost of a wrong guess"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10-12 minutes",
+    "prerequisites": [
+      "A pipeline overlaps fetch, decode, and execute",
+      "A branch direction is unknown until it executes",
+      "Loops end in a conditional branch"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 489 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Step", "purpose": "Resolve one branch in both lanes simultaneously" },
+      { "type": "button", "label": "Run all 10", "purpose": "Auto-advance through the whole sequence" },
+      { "type": "button", "label": "Reset", "purpose": "Return both lanes to the unstarted state" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "One-bit branch predictor driving two three-stage pipelines over a fixed outcome sequence",
+    "variables": ["branch index", "predicted direction", "actual direction", "wasted cycles per lane"],
+    "equations": [
+      "prediction[i] = actual[i-1], with prediction[0] = taken",
+      "wasted cycles += 2 whenever prediction != actual",
+      "predictable sequence = nine taken then one not-taken",
+      "unpredictable sequence yields five mispredicts in ten"
+    ],
+    "assumptions": [
+      "A one-bit predictor, the simplest scheme that still learns a counted loop",
+      "A flush discards exactly the Fetch and Decode stages, costing two cycles",
+      "Both lanes execute identical instruction sequences apart from the branch outcome"
+    ],
+    "limitations": [
+      "Real Cortex-M cores use more elaborate prediction and prefetch than a one-bit scheme",
+      "Memory stalls, which can dominate in practice, are not modeled"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Side-by-side stepping so the same number of branches produces visibly different costs",
+    "keyQuestions": [
+      "What does the comparison cost, and what does the wrong guess cost?",
+      "How does the per-iteration cost of each lane change as the loop gets longer?"
+    ],
+    "commonMisconceptions": [
+      "That branches are inherently slow",
+      "That the cost is in evaluating the condition rather than in guessing wrong"
+    ],
+    "assessmentOpportunities": [
+      "Explain how doing unnecessary arithmetic can make a loop faster",
+      "Predict the ten outcomes by hand using the one-bit rule and score the result"
+    ]
+  }
+}

@@ -131,7 +131,7 @@ erasing the savings the trivial-twiddle shortcut was supposed to provide.
 
 #### Diagram: Branch Misprediction Visualizer
 
-<iframe src="../../sims/branch-misprediction-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/branch-misprediction-visualizer/main.html" width="100%" height="491px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Branch Misprediction Visualizer</summary>

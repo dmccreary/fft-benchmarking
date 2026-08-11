@@ -1,0 +1,80 @@
+{
+  "title": "Normalization Factor Explorer",
+  "description": "A fixed example spectrum rescaled live by three FFT normalization conventions against a pinned axis, with forward, inverse, and round-trip factors displayed.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Numerical Conventions"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "normalization-factor-explorer",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Demonstrate, calculate",
+  "completion_status": "implemented",
+  "chapter_number": 13,
+  "chapter_title": "FFT Variants, Complexity, and Correctness",
+  "chapter_dir": "13-fft-variants-complexity-and-correctness",
+  "chapter_rel_dir": "chapters/13-fft-variants-complexity-and-correctness",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "FFT scaling conventions",
+    "learningObjectives": [
+      "Calculate the forward factor for each convention at a given N",
+      "Demonstrate that scaling does not affect round-trip correctness",
+      "Recognize convention mismatch when comparing implementations"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10 minutes",
+    "prerequisites": ["The DFT produces a magnitude per bin", "Forward and inverse transforms as a pair"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "radio", "label": "Scaling convention", "options": ["No forward scaling, 1/N inverse", "1/sqrt(N) both directions (unitary)", "1/N forward, no inverse scaling"] },
+      { "type": "select", "label": "N", "options": [8, 512, 1024], "default": 512 }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Display-only rescaling of a fixed spectrum",
+    "variables": ["convention", "N", "forward factor"],
+    "equations": [
+      "displayed = unscaled * forward_factor",
+      "forward_factor in {1, 1/sqrt(N), 1/N}",
+      "forward_factor * inverse_factor * N = 1 for every convention"
+    ],
+    "assumptions": [
+      "A single fixed underlying spectrum is the source of truth",
+      "Only the first 16 bins are displayed"
+    ],
+    "limitations": [
+      "Does not model the inverse transform itself; the round-trip claim is stated rather than computed here"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Same-data-different-display comparison on a pinned axis",
+    "keyQuestions": [
+      "Does any convention change the underlying signal?",
+      "Why do the conventions differ less at small N?"
+    ],
+    "commonMisconceptions": [
+      "That a magnitude difference between libraries implies a bug",
+      "That one convention is more correct than the others"
+    ],
+    "assessmentOpportunities": [
+      "Infer two libraries' conventions from their reported peak magnitudes"
+    ]
+  }
+}

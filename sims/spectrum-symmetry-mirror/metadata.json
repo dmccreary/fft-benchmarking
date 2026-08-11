@@ -1,0 +1,71 @@
+{
+  "title": "Spectrum Symmetry Mirror",
+  "description": "A clickable 16-bin DFT spectrum with connector arcs between conjugate pairs, showing why a real-valued input makes the upper half of the spectrum redundant.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "DFT", "Frequency Analysis"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "spectrum-symmetry-mirror",
+  "library": "p5.js",
+  "canvasHeight": 425,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Conjugate symmetry of the DFT for real inputs",
+    "learningObjectives": [
+      "Interpret the structure of a full N-point spectrum",
+      "Explain why bin k and bin N-k are conjugates for real input",
+      "Identify the two bins that are their own mirror"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": ["A DFT produces N complex outputs", "Complex conjugation"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 425 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any bin", "purpose": "Draw the connector arc to its mirror and explain the pairing" },
+      { "type": "button", "label": "Clear selection", "purpose": "Remove the arc and return to the prompt" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Structural relationship diagram",
+    "variables": ["selected bin"],
+    "equations": ["partner(k) = (N - k) mod N", "X[N-k] = conjugate(X[k])"],
+    "assumptions": ["N = 16, fixed for clarity", "Real-valued input signal"],
+    "limitations": ["Shows the index relationship only; actual bin values are not computed here"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Click-triggered connector arcs over a persistent layout",
+    "keyQuestions": [
+      "Which bins have no separate partner, and why?",
+      "How many bins are unique for a real input?"
+    ],
+    "commonMisconceptions": [
+      "That all N bins carry independent information",
+      "That the upper half represents higher frequencies than Nyquist"
+    ],
+    "assessmentOpportunities": [
+      "Determine how many bins of a 256-point FFT need to be kept"
+    ]
+  }
+}

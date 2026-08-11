@@ -1,0 +1,15 @@
+{
+  "sim_id": "thonny-repl-workflow",
+  "diagram_name": "Thonny and the Pico 2 Workflow",
+  "chapter_number": 1,
+  "chapter_title": "'Hello World: Thonny, MicroPython, and Your First GPIO Program'",
+  "chapter_dir": "01-hello-world",
+  "chapter_rel_dir": "chapters/01-hello-world",
+  "library": "vis-network",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, summarize",
+  "learning_objective": "Help students explain how the editor pane, the Shell/REPL, and the physical board relate to one another, and why \"Run\" behaves differently from typing directly into the Shell.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: workflow\n**sim-id:** thonny-repl-workflow<br/>\n**Library:** vis-network<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, summarize\n\nLearning objective: Help students explain how the editor pane, the Shell/REPL, and the physical board relate to one another, and why \"Run\" behaves differently from typing directly into the Shell.\n\nPurpose: Show the round trip of code and data between Thonny (running on a laptop) and the Pico 2 (connected by USB), so students understand what \"the REPL\" actually is before they start typing commands into it.\n\nComponents to show (as clickable nodes in a simple left-to-right flow):\n- \"Editor Pane\" (top left) — where a `.py` script is written and saved\n- \"Run Button / F5\" (small connector node between editor and Shell)\n- \"Shell Panel (REPL)\" (middle) — shows the `>>>` prompt and output\n- \"USB Serial Connection\" (connector node between Shell and Board)\n- \"Pico 2 Board\" (right) — running the MicroPython firmware\n- \"print() output\" (small node feeding back from Board into Shell)\n\nConnections:\n- Editor Pane → Run Button → Shell Panel (script sent for execution)\n- Shell Panel ⇄ USB Serial Connection ⇄ Pico 2 Board (two-way arrow, code down, output back)\n- Pico 2 Board → print() output → Shell Panel (labeled \"printed text returns here\")\n- A separate direct arrow from a \"Type directly here\" label into Shell Panel, showing the REPL also accepts commands with no editor/Run step at all\n\nInteractive features:\n- Hovering any node shows a one-sentence definition of that term pulled from this chapter's vocabulary (Editor Pane, Shell Panel/REPL, USB Serial Connection, MicroPython Firmware)\n- Clicking \"Run Button / F5\" highlights the full path a saved script takes, dimming the direct-typing path\n- Clicking \"Type directly here\" highlights the direct REPL path instead, dimming the script path\n- Zoom and pan enabled; layout is left-to-right hierarchical\n\nVisual style: Simple horizontal flowchart, rounded rectangle nodes, arrows labeled with what travels along them (\"code\", \"text output\")\n\nColor scheme: Software-side nodes (Editor Pane, Shell Panel) in blue; hardware-side nodes (Pico 2 Board) in orange; the USB Serial Connection edge in gray with a small USB icon\n\nImplementation: vis-network, responsive to container width, canvas height 500px"
+}

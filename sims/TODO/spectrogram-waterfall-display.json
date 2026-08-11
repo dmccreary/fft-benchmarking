@@ -1,0 +1,15 @@
+{
+  "sim_id": "spectrogram-waterfall-display",
+  "diagram_name": "Spectrogram / Waterfall Display",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, interpret",
+  "learning_objective": "Let students examine a scrolling waterfall spectrogram built from a sequence of example spectra and interpret how a changing pitch appears as a moving, colored trace over time.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** spectrogram-waterfall-display<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, interpret\n\nLearning objective: Let students examine a scrolling waterfall spectrogram built from a sequence of example spectra and interpret how a changing pitch appears as a moving, colored trace over time.\n\nCanvas layout:\n- Full-width scrolling 2D plot, frequency on the vertical axis, time scrolling horizontally (newest data at the right edge), magnitude shown as color intensity (dark = quiet, bright = loud)\n- Controls below: play/pause and a selector for a small set of example sound sequences\n\nVisual elements:\n- A continuously scrolling color-mapped grid, each new column representing the latest processed frame's spectrum\n- A color legend mapping intensity to magnitude in dB\n\nInteractive controls:\n- Dropdown: example sequence (\"Rising whistle\", \"Falling whistle\", \"Two-tone chord\", \"Silence then a clap\")\n- Play/Pause button\n- Hovering any point on the waterfall shows its exact frequency, time offset, and magnitude in a tooltip\n\nBehavior:\n- Selecting an example sequence and pressing play scrolls a precomputed series of spectra across the display in real time, visibly tracing a rising or falling bright line for a swept whistle, or a broadband vertical flash for a clap\n- Hovering pauses the scroll and reveals the exact tooltip value at that point\n\nInstructional Rationale: An Analyze-level examination pattern is appropriate because the objective is interpreting patterns across combined frequency-and-time data — a scrolling color-mapped display, paired with recognizable example sounds, lets students connect a familiar sound (a rising whistle) to its visual signature directly.\n\nImplementation notes:\n- Use p5.js; precompute each example sequence's frame-by-frame spectra and render as a scrolling texture or pixel grid\n- Responsive width; waterfall plot and controls scale to container width on resize"
+}

@@ -1,0 +1,84 @@
+{
+  "title": "Thonny REPL Workflow",
+  "description": "An interactive vis-network flow diagram of the round trip of code and text between the Thonny editor, the Shell/REPL, and the Pico 2 board over USB serial.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Development Tools"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "thonny-repl-workflow",
+  "library": "vis-network",
+  "canvasHeight": 500,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, summarize",
+  "completion_status": "implemented",
+  "chapter_number": 1,
+  "chapter_title": "Hello World",
+  "chapter_dir": "01-hello-world",
+  "chapter_rel_dir": "chapters/01-hello-world",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Host-to-microcontroller development workflow",
+    "learningObjectives": [
+      "Explain the relationship between the editor pane, the Shell/REPL, and the board",
+      "Summarize why Run behaves differently from typing at the prompt",
+      "Identify the USB serial link as the return route for print() output"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": [
+      "Thonny installed with a Pico 2 connected",
+      "A .py file holds Python source code"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "vis-network",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["vis-network standalone UMD CDN", "vis-network CSS"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Script Path", "purpose": "Highlight the route a saved script takes and dim the direct-typing route" },
+      { "type": "button", "label": "Direct REPL", "purpose": "Highlight the direct-typing route and dim the script route" },
+      { "type": "button", "label": "Reset", "purpose": "Restore all nodes and edges to their normal colors" },
+      { "type": "hover", "label": "Any node", "purpose": "Show a one-sentence definition of that term" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Annotated directed flow graph",
+    "variables": ["active path"],
+    "equations": [],
+    "assumptions": [
+      "The USB link is presented as a single logical channel rather than a full serial protocol stack"
+    ],
+    "limitations": [
+      "Does not model soft reboots, paste mode, or the raw REPL protocol Thonny uses internally"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Compare-and-contrast path tracing",
+    "keyQuestions": [
+      "Which nodes appear on the script path but not the direct path?",
+      "Where does a print() statement actually execute?"
+    ],
+    "commonMisconceptions": [
+      "That the script runs on the laptop and results are sent to the board",
+      "That the Shell is a separate program from the board's interpreter"
+    ],
+    "assessmentOpportunities": [
+      "Explain where print(2+2) is evaluated and how the result reaches the screen"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Benchmark Results Chart MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2 class="heading">Same Three Implementations, Two Statistics</h2>
+        <div class="chart-box">
+            <canvas id="benchChart"></canvas>
+        </div>
+        <div class="controls">
+            <label><input type="radio" name="stat" value="mean" checked> Mean ± std dev</label>
+            <label><input type="radio" name="stat" value="best"> Best of N</label>
+            <span class="hint">Hover any bar for exact values</span>
+        </div>
+        <div class="callout" id="callout"></div>
+    </main>
+    <script src="benchmark-results-chart.js"></script>
+</body>
+</html>

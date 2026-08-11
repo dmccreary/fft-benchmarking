@@ -1,0 +1,80 @@
+{
+  "title": "Linear Sqrt Decibel Scaling Chart",
+  "description": "One fixed 16-bin power spectrum redrawn under linear, square-root, and decibel scaling, with a dynamic caption naming which bins become invisible.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Spectrum Display", "Data Visualization"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "linear-sqrt-decibel-scaling-chart",
+  "library": "Chart.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Evaluate",
+  "bloomVerb": "Judge, compare",
+  "completion_status": "implemented",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Spectrum display scaling choices",
+    "learningObjectives": [
+      "Compare the same spectrum under three scalings",
+      "Judge which scaling reveals quiet content best",
+      "Recognize what each scaling costs"
+    ],
+    "bloomsTaxonomy": "Evaluate",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A spectrum is magnitude per bin", "Logarithms and decibels"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "4.4.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "radio", "label": "Scaling mode", "options": ["Linear (power)", "Square root (magnitude)", "Decibel"] },
+      { "type": "hover", "label": "Any bar", "purpose": "Tooltip with raw power and displayed value" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Display-only rescaling of a fixed spectrum",
+    "variables": ["scaling mode"],
+    "equations": [
+      "linear: value = p",
+      "sqrt: value = sqrt(p)",
+      "dB: value = max(-60, 10 * log10(p / p_max))"
+    ],
+    "assumptions": [
+      "A single fixed 16-bin power spectrum",
+      "Decibels referenced to the peak bin, floored at -60 dB"
+    ],
+    "limitations": [
+      "Uses a synthetic spectrum chosen to make the contrast clear; real spectra vary in how starkly the modes differ"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Same-data-different-scaling judgment task",
+    "keyQuestions": [
+      "Which bins disappear under linear scaling despite carrying real power?",
+      "What does the decibel view understate?"
+    ],
+    "commonMisconceptions": [
+      "That decibel scaling is universally the right choice",
+      "That an invisible bar means no energy at that frequency"
+    ],
+    "assessmentOpportunities": [
+      "Convert a 1%-of-peak component to dB and judge its visibility"
+    ]
+  }
+}

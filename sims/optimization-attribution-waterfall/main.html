@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Optimization Attribution Waterfall MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2 class="heading">Where the Speedup Actually Came From <em>(illustrative)</em></h2>
+        <div class="chart-box">
+            <canvas id="waterfallChart"></canvas>
+        </div>
+        <div class="controls">
+            <label><input type="radio" name="units" value="us" checked> Show as raw &micro;s</label>
+            <label><input type="radio" name="units" value="pct"> Show as percentage of baseline</label>
+            <span class="key"><span class="sw down"></span>step decreased time</span>
+            <span class="key"><span class="sw up"></span>step increased time</span>
+        </div>
+        <div class="infobox" id="infobox"></div>
+        <div class="callout">Each step was measured by re-running the full harness with only that one
+            change added &mdash; this is optimization attribution in practice.</div>
+    </main>
+    <script src="optimization-attribution-waterfall.js"></script>
+</body>
+</html>

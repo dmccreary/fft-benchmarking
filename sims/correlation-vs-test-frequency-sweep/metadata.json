@@ -1,0 +1,79 @@
+{
+  "title": "Correlation vs Test Frequency Sweep",
+  "description": "A Chart.js line sweep of correlation magnitude against test frequency, showing a sharp peak at the captured signal's frequency and near-zero response elsewhere.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Correlation", "Frequency Analysis"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "correlation-vs-test-frequency-sweep",
+  "library": "Chart.js",
+  "canvasHeight": 450,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, distinguish",
+  "completion_status": "implemented",
+  "chapter_number": 8,
+  "chapter_title": "Correlation",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Correlation as a frequency detector",
+    "learningObjectives": [
+      "Examine correlation magnitude across a swept test frequency",
+      "Distinguish the true-frequency peak from near-zero off-peak response",
+      "Relate peak width to window length"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Multiply-and-sum correlation", "Reading a line chart"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "4.4.0",
+    "canvasDimensions": { "width": "responsive", "height": 450 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Captured signal frequency", "min": 100, "max": 1000, "default": 440, "step": 5, "units": "Hz" },
+      { "type": "hover", "label": "Any point on the line", "purpose": "Tooltip with exact test frequency and correlation" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Swept correlation detector",
+    "variables": ["captured signal frequency", "test frequency", "correlation magnitude"],
+    "equations": [
+      "I = sum x[n] sin(2 pi f n / fs)",
+      "Q = sum x[n] cos(2 pi f n / fs)",
+      "magnitude = sqrt(I^2 + Q^2) / (N/2)"
+    ],
+    "assumptions": [
+      "A single unit-amplitude sinusoid with no noise",
+      "Rectangular window of 256 samples at 8 kHz",
+      "200 sweep points across 100-1000 Hz"
+    ],
+    "limitations": [
+      "Sidelobes and scalloping loss shown here are genuine consequences of the rectangular window; windowing to reduce them is covered in Chapter 15"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Swept-parameter response curve with a marked ground truth",
+    "keyQuestions": [
+      "How large is the peak compared with a typical off-peak value?",
+      "What sets the width of the peak?"
+    ],
+    "commonMisconceptions": [
+      "That off-peak correlation is exactly zero at every frequency",
+      "That the peak always reaches exactly 1.0"
+    ],
+    "assessmentOpportunities": ["Predict the effect of shortening the window to 64 samples"]
+  }
+}

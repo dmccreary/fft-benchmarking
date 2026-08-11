@@ -1,0 +1,81 @@
+{
+  "title": "DFT Validation Dashboard",
+  "description": "A pass/fail validation dashboard comparing computed DFT peaks against ground truth across a swept frequency range at an adjustable numerical tolerance.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Software Validation", "DFT"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "dft-validation-dashboard",
+  "library": "p5.js",
+  "canvasHeight": 595,
+  "bloomLevel": "Evaluate",
+  "bloomVerb": "Judge, validate",
+  "completion_status": "implemented",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Numerical validation of a DFT implementation",
+    "learningObjectives": [
+      "Judge pass/fail against a stated numerical tolerance",
+      "Distinguish a resolution limit from an implementation bug",
+      "Propose a validation criterion that catches real defects"
+    ],
+    "bloomsTaxonomy": "Evaluate",
+    "duration": "15 minutes",
+    "prerequisites": ["DFT bin width and centers", "Relative error"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 595 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Run full frequency sweep", "purpose": "Evaluate every test case at the current tolerance" },
+      { "type": "slider", "label": "Test frequency", "purpose": "Step through the swept cases one at a time" },
+      { "type": "slider", "label": "Numerical tolerance", "min": 0.01, "max": 5, "default": 0.1, "step": 0.01, "units": "percent" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Direct DFT with ground-truth comparison",
+    "variables": ["test frequency", "tolerance", "peak bin", "relative error"],
+    "equations": [
+      "expected bin = round(f / (fs/N))",
+      "relative error = |peak bin frequency - f| / f * 100"
+    ],
+    "assumptions": [
+      "N = 64 at 16 kHz, bin spacing 250 Hz",
+      "Noise-free single-tone test signals",
+      "Peak detection by simple maximum, with no interpolation"
+    ],
+    "limitations": [
+      "Peak-bin comparison cannot resolve better than half a bin; parabolic interpolation, covered in Chapter 15, would change these verdicts"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Evaluate against a standard, with a deliberately ambiguous failure pattern",
+    "keyQuestions": [
+      "Do the failures correlate with bin alignment?",
+      "Would a real implementation bug fail differently?"
+    ],
+    "commonMisconceptions": [
+      "That any FAIL means the implementation is wrong",
+      "That loosening the tolerance until everything passes is a fix"
+    ],
+    "assessmentOpportunities": [
+      "Diagnose a uniform 2x magnitude error as a bug rather than a resolution limit"
+    ]
+  }
+}

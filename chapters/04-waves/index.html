@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/04-waves/">
       
       
-        <link rel="prev" href="../03-peripherals/">
+        <link rel="prev" href="../03-peripherals/references/">
       
       
-        <link rel="next" href="../05-capturing-real-audio/">
+        <link rel="next" href="quiz/">
       
       
       <link rel="icon" href="../../img/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Waves: Amplitude, Frequency, Phase, and Harmonics - FFT Benchmarking</title>
+        <title>Waves: Amplitude, Frequency, Phase, and Harmonics - Real-Time DSP on a $5 Microcontroller</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../../img/logo.png" alt="logo">
 
@@ -109,7 +109,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            FFT Benchmarking
+            Real-Time DSP on a $5 Microcontroller
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -205,12 +205,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../../img/logo.png" alt="logo">
 
     </a>
-    FFT Benchmarking
+    Real-Time DSP on a $5 Microcontroller
   </label>
   
     <div class="md-nav__source">
@@ -304,6 +304,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -475,9 +481,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../01-hello-world/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../01-hello-world/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -486,7 +517,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -498,9 +535,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../02-know-your-board/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../02-know-your-board/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -509,7 +571,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -521,9 +589,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../03-peripherals/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../03-peripherals/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -532,7 +625,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -546,16 +645,33 @@
   
   
   
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
+        
+          
+        
       
         
       
+        
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        
           
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
   
   
   <span class="md-ellipsis">
@@ -564,169 +680,42 @@
   </span>
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            4. Waves: Amplitude, Frequency, Phase, and Harmonics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quiz/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    Quiz
     
   </span>
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#concepts-covered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concepts Covered
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-simplest-wave" class="md-nav__link">
-    <span class="md-ellipsis">
-      The Simplest Wave
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#describing-a-wave" class="md-nav__link">
-    <span class="md-ellipsis">
-      Describing a Wave
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Describing a Wave">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#period-and-frequency" class="md-nav__link">
-    <span class="md-ellipsis">
-      Period and Frequency
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#general-sine-wave" class="md-nav__link">
-    <span class="md-ellipsis">
-      General Sine Wave
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sine-wave-with-phase" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sine Wave With Phase
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagram-sine-wave-parameter-explorer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Diagram: Sine Wave Parameter Explorer
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#seeing-a-wave" class="md-nav__link">
-    <span class="md-ellipsis">
-      Seeing a Wave
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-two-instruments-sound-different" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why Two Instruments Sound Different
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Why Two Instruments Sound Different">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#diagram-harmonic-stack-synthesizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Diagram: Harmonic Stack Synthesizer
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -739,8 +728,64 @@
   
   
     <li class="md-nav__item">
-      <a href="../05-capturing-real-audio/" class="md-nav__link">
+      <a href="references/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    Annotated References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../05-capturing-real-audio/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -749,7 +794,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -761,9 +812,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -772,7 +848,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -784,9 +866,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -795,7 +902,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -807,9 +920,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../08-correlation/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../08-correlation/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -818,7 +956,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -830,9 +974,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -841,7 +1010,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -853,9 +1028,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -864,7 +1064,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -876,9 +1082,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../11-from-dft-to-fft/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../11-from-dft-to-fft/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -887,7 +1118,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -899,9 +1136,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../12-building-the-fft/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../12-building-the-fft/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -910,7 +1172,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -922,9 +1190,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -933,7 +1226,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -945,9 +1244,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -956,7 +1280,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -968,9 +1298,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -979,7 +1334,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -991,9 +1352,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1002,7 +1388,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1014,9 +1406,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../17-measuring-time/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../17-measuring-time/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1025,7 +1442,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1037,9 +1460,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../18-benchmarking-methodology/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1048,7 +1496,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1060,9 +1514,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1071,7 +1550,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1083,9 +1568,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1094,7 +1604,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1106,9 +1622,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../21-your-first-assembly-function/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1117,7 +1658,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1129,9 +1676,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1140,7 +1712,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1152,9 +1730,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1163,7 +1766,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1175,9 +1784,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1186,7 +1820,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1198,9 +1838,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../25-beyond-the-assembler/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1209,7 +1874,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1221,9 +1892,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../26-competing-variants/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../26-competing-variants/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1232,7 +1928,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1244,9 +1946,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../27-capstone/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../27-capstone/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1255,7 +1982,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1368,6 +2101,124 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -1917,7 +2768,7 @@ No hardware in this chapter — just math, and it's the math that makes everythi
 <p>Phase is exactly what distinguishes sine from cosine mathematically: a cosine wave is precisely a sine wave with a phase of <span class="arithmatex">\( \frac{\pi}{2} \)</span> radians (90°) — <span class="arithmatex">\( \cos(x) = \sin\left(x + \frac{\pi}{2}\right) \)</span>. Two waves with identical frequency and amplitude but different phase will not add together the same way two perfectly aligned waves do — a fact that becomes critically important when this course reaches correlation and the Discrete Fourier Transform in Module 3.</p>
 <p>Before the interactive explorer below, it's worth naming exactly what each of its three sliders controls, since they map directly onto the equation just introduced: amplitude scales the wave's height, frequency scales how fast it repeats, and phase slides the whole wave left or right in time without changing its shape.</p>
 <h4 id="diagram-sine-wave-parameter-explorer">Diagram: Sine Wave Parameter Explorer</h4>
-<iframe src="../../sims/sine-wave-parameter-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/sine-wave-parameter-explorer/main.html" width="100%" height="502px" scrolling="no"></iframe>
 
 <details>
 <summary>Sine Wave Parameter Explorer</summary>
@@ -2002,7 +2853,7 @@ Here's the idea worth holding onto: pitch is a single number (the fundamental fr
 </div>
 <p>Building a wave out of a fundamental plus overtones is easiest to understand by doing it yourself, one harmonic at a time, and watching the combined shape change while the fundamental frequency — and therefore the pitch — stays fixed.</p>
 <h4 id="diagram-harmonic-stack-synthesizer">Diagram: Harmonic Stack Synthesizer</h4>
-<iframe src="../../sims/harmonic-stack-synthesizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/harmonic-stack-synthesizer/main.html" width="100%" height="587px" scrolling="no"></iframe>
 
 <details>
 <summary>Harmonic Stack Synthesizer</summary>
@@ -2070,6 +2921,7 @@ Four new Greek-letter-adjacent terms in one chapter — amplitude, frequency, ph
 <p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
 Amplitude, frequency, phase, harmonics, timbre — that's the complete vocabulary this course uses to talk about sound from here forward, and you built it without touching a single wire. Next stop: capturing a real sound with the I²S microphone and watching these exact shapes appear in your own recorded audio. Time to transform!</p>
 </div>
+<p><a href="references/">See Annotated References</a></p>
 
 
 
@@ -2108,7 +2960,7 @@ Amplitude, frequency, phase, harmonics, timbre — that's the complete vocabular
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../03-peripherals/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code">
+          <a href="../03-peripherals/references/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Annotated References">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2118,20 +2970,20 @@ Amplitude, frequency, phase, harmonics, timbre — that's the complete vocabular
                 Previous
               </span>
               <div class="md-ellipsis">
-                3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+                Annotated References
               </div>
             </div>
           </a>
         
         
           
-          <a href="../05-capturing-real-audio/" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Capturing Real Audio: The I2S Microphone">
+          <a href="quiz/" class="md-footer__link md-footer__link--next" aria-label="Next: Quiz">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                5. Capturing Real Audio: The I2S Microphone
+                Quiz
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -1,0 +1,82 @@
+{
+  "title": "Multiply and Sum Correlator",
+  "description": "A sample-by-sample correlation walkthrough with two aligned waveforms, per-sample product arithmetic, and a zero-centered running-total bar.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Correlation", "Signals and Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "multiply-and-sum-correlator",
+  "library": "p5.js",
+  "canvasHeight": 540,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 8,
+  "chapter_title": "Correlation",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Multiply-and-sum correlation",
+    "learningObjectives": [
+      "Calculate a correlation sum sample by sample",
+      "Demonstrate why matching frequencies accumulate and mismatched ones cancel",
+      "Relate bin spacing to exact orthogonality"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "12-15 minutes",
+    "prerequisites": ["A signal is an array of samples", "Signed multiplication"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 540 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Step one sample", "purpose": "Accumulate one more product" },
+      { "type": "button", "label": "Run to completion", "purpose": "Animate through all remaining samples" },
+      { "type": "button", "label": "Reset", "purpose": "Clear the running sum" },
+      { "type": "select", "label": "Captured signal", "options": ["Matches test frequency", "Offset by +250 Hz", "Offset by +500 Hz"] },
+      { "type": "slider", "label": "Test frequency", "min": 200, "max": 800, "default": 440, "step": 10, "units": "Hz" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Discrete correlation accumulator",
+    "variables": ["sample index", "running sum", "signal frequency", "test frequency"],
+    "equations": [
+      "sum = sum over n of x[n] * t[n]",
+      "bin spacing = fs / N = 8000 / 32 = 250 Hz",
+      "normalized correlation = |sum| / (N/2)"
+    ],
+    "assumptions": [
+      "Both signals are unit-amplitude sines starting at zero phase",
+      "A single 32-sample window at 8 kHz",
+      "No noise"
+    ],
+    "limitations": [
+      "Real correlation must also test the quadrature component to be phase-independent; that is handled by the in-phase/quadrature sim"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Step-through calculation with visible intermediate arithmetic",
+    "keyQuestions": [
+      "Why is every product non-negative when the frequencies match?",
+      "What does the running total do when they do not match?"
+    ],
+    "commonMisconceptions": [
+      "That correlation is a complicated operation rather than multiply-and-add",
+      "That a mismatched frequency gives a small positive value rather than cancellation"
+    ],
+    "assessmentOpportunities": ["Sketch the running total for a one-bin-offset test frequency"]
+  }
+}

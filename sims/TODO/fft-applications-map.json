@@ -1,0 +1,15 @@
+{
+  "sim_id": "fft-applications-map",
+  "diagram_name": "Applications of Real-Time FFT",
+  "chapter_number": 27,
+  "chapter_title": "\"Capstone: Applications, Design, and Reporting\"",
+  "chapter_dir": "27-capstone",
+  "chapter_rel_dir": "chapters/27-capstone",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — exemplify, connect",
+  "bloom_verb": null,
+  "learning_objective": "Connect each of six real-world FFT application domains back to the specific course chapter that taught its underlying technique.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** fft-applications-map<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — exemplify, connect\nLearning objective: Connect each of six real-world FFT application domains back to the specific course chapter that taught its underlying technique.\n\nCanvas layout:\n- A 2×3 grid of six cards, one per application domain, each with an icon and short label\n- A details panel below the grid that fills in when a card is clicked\n\nVisual elements:\n- Six cards: Voice Recognition, Noise Cancellation, Machine Monitoring / Vibration Analysis, Radar Processing, Software Defined Radio, Communication Systems\n- Each card has a simple representative icon (microphone, headphone, gear, radar dish, antenna, signal bars)\n\nInteractive controls:\n- Click any card to reveal: a one-sentence description of the application, which earlier chapter's technique it relies on most directly, and one open-ended capstone project idea in that domain\n- Hover any card for a one-line tooltip preview\n\nBehavior:\n- Clicking \"Machine Monitoring / Vibration Analysis\" reveals: \"Rotating machinery vibration, sampled by an accelerometer, analyzed for fault-specific frequency peaks — builds directly on Chapter 15's peak detection. Capstone idea: build a bearing-fault classifier using peak frequency and window choice.\"\n- Each of the six reveals follows the same three-part structure (description / chapter link / project idea)\n\nInstructional Rationale: An Understand-level \"exemplify and connect\" objective is well\nserved by a clickable card grid — it lets the learner explore all six domains at their\nown pace and explicitly ties each one back to a specific, already-learned technique,\nreinforcing that these applications are extensions of skills already built, not new\nmaterial.\n\nImplementation: p5.js, six card objects with associated detail text, click detection via bounding boxes"
+}

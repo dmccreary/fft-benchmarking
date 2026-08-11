@@ -1,0 +1,3050 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/26-competing-variants/quiz/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../references/">
+      
+      
+      <link rel="icon" href="../../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Quiz - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quiz-competing-variants-predict-measure-explain" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quiz
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../01-hello-world/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../02-know-your-board/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../03-peripherals/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../04-waves/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../05-capturing-real-audio/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../08-correlation/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../09-computing-and-validating-the-dft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../10-why-the-dft-is-too-slow/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../11-from-dft-to-fft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../12-building-the-fft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../17-measuring-time/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../18-benchmarking-methodology/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../19-the-abstraction-ladder/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../21-your-first-assembly-function/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../22-talking-to-the-fpu/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../23-the-butterfly-in-assembly/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../24-specialization-and-branchless-code/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../25-beyond-the-assembler/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_27" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_27" id="__nav_5_27_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_27_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_27">
+            <span class="md-nav__icon md-icon"></span>
+            26. Competing Variants: Predict, Measure, Explain
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Quiz
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quiz
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-a-comparison-matrix-as-this-chapter-uses-the-term" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is a comparison matrix, as this chapter uses the term?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-a-controlled-variable-in-the-context-of-a-variant-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What is a controlled variable in the context of a variant comparison?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-do-kernel-time-and-total-time-differ-when-comparing-fft-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. How do kernel time and total time differ when comparing FFT variants?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-does-combining-a-2x-speedup-optimization-with-a-3x-speedup-optimization-usually-yield-less-than-the-naively-expected-6x-combined-speedup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Why does combining a 2x speedup optimization with a 3x speedup optimization usually yield less than the naively expected 6x combined speedup?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-comparison-matrix-shows-the-specialized-assembly-variant-has-by-far-the-fastest-kernel-time-but-its-total-time-advantage-over-viper-is-much-smaller-than-the-kernel-time-gap-would-suggest-what-is-the-most-likely-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. A comparison matrix shows the specialized assembly variant has by far the fastest kernel time, but its total-time advantage over @viper is much smaller than the kernel-time gap would suggest. What is the most likely explanation?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-a-student-predicts-before-measuring-that-hand-written-assembly-will-beat-viper-on-every-metric-after-measuring-viper-turns-out-faster-on-total-time-specifically-though-not-on-kernel-time-how-should-this-courses-methodology-treat-this-outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. A student predicts, before measuring, that hand-written assembly will beat @viper on every metric. After measuring, @viper turns out faster on total time specifically, though not on kernel time. How should this course's methodology treat this outcome?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-two-variants-report-identical-kernel-times-in-a-comparison-matrix-yet-one-variant-consistently-loses-on-total-time-applying-kernel-versus-total-time-reasoning-which-additional-column-in-the-matrix-would-most-directly-help-explain-the-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Two variants report identical kernel times in a comparison matrix, yet one variant consistently loses on total time. Applying kernel-versus-total-time reasoning, which additional column in the matrix would most directly help explain the gap?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-hypothetical-fixed-point-fft-variant-is-20-faster-than-the-courses-floating-point-assembly-variant-on-kernel-time-but-does-not-guarantee-a-bit-for-bit-match-against-the-python-reference-how-should-a-comparison-matrix-that-reports-only-speed-handle-this-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. A hypothetical fixed-point FFT variant is 20% faster than the course's floating-point assembly variant on kernel time, but does not guarantee a bit-for-bit match against the Python reference. How should a comparison matrix that reports only speed handle this situation?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-a-performance-dashboard-lets-a-team-switch-between-four-metrics-kernel-time-total-time-code-size-and-memory-usage-and-the-winner-variant-changes-depending-on-which-metric-is-selected-for-a-product-that-calls-the-fft-once-per-audio-frame-in-a-real-time-pipeline-which-metric-best-answers-which-variant-should-we-actually-ship-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. A performance dashboard lets a team switch between four metrics — kernel time, total time, code size, and memory usage — and the "winner" variant changes depending on which metric is selected. For a product that calls the FFT once per audio frame in a real-time pipeline, which metric best answers "which variant should we actually ship," and why?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-you-are-designing-a-comparison-matrix-for-a-battery-powered-wearable-device-that-calls-the-fft-continuously-and-where-every-joule-matters-as-much-as-every-microsecond-which-additional-column-would-best-extend-this-chapters-comparison-matrix-to-support-that-specific-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. You are designing a comparison matrix for a battery-powered wearable device that calls the FFT continuously and where every joule matters as much as every microsecond. Which additional column would best extend this chapter's comparison matrix to support that specific decision?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Annotated References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../27-capstone/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-is-a-comparison-matrix-as-this-chapter-uses-the-term" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What is a comparison matrix, as this chapter uses the term?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-is-a-controlled-variable-in-the-context-of-a-variant-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What is a controlled variable in the context of a variant comparison?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-how-do-kernel-time-and-total-time-differ-when-comparing-fft-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. How do kernel time and total time differ when comparing FFT variants?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-does-combining-a-2x-speedup-optimization-with-a-3x-speedup-optimization-usually-yield-less-than-the-naively-expected-6x-combined-speedup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Why does combining a 2x speedup optimization with a 3x speedup optimization usually yield less than the naively expected 6x combined speedup?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-comparison-matrix-shows-the-specialized-assembly-variant-has-by-far-the-fastest-kernel-time-but-its-total-time-advantage-over-viper-is-much-smaller-than-the-kernel-time-gap-would-suggest-what-is-the-most-likely-explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. A comparison matrix shows the specialized assembly variant has by far the fastest kernel time, but its total-time advantage over @viper is much smaller than the kernel-time gap would suggest. What is the most likely explanation?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-a-student-predicts-before-measuring-that-hand-written-assembly-will-beat-viper-on-every-metric-after-measuring-viper-turns-out-faster-on-total-time-specifically-though-not-on-kernel-time-how-should-this-courses-methodology-treat-this-outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. A student predicts, before measuring, that hand-written assembly will beat @viper on every metric. After measuring, @viper turns out faster on total time specifically, though not on kernel time. How should this course's methodology treat this outcome?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-two-variants-report-identical-kernel-times-in-a-comparison-matrix-yet-one-variant-consistently-loses-on-total-time-applying-kernel-versus-total-time-reasoning-which-additional-column-in-the-matrix-would-most-directly-help-explain-the-gap" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Two variants report identical kernel times in a comparison matrix, yet one variant consistently loses on total time. Applying kernel-versus-total-time reasoning, which additional column in the matrix would most directly help explain the gap?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-hypothetical-fixed-point-fft-variant-is-20-faster-than-the-courses-floating-point-assembly-variant-on-kernel-time-but-does-not-guarantee-a-bit-for-bit-match-against-the-python-reference-how-should-a-comparison-matrix-that-reports-only-speed-handle-this-situation" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. A hypothetical fixed-point FFT variant is 20% faster than the course's floating-point assembly variant on kernel time, but does not guarantee a bit-for-bit match against the Python reference. How should a comparison matrix that reports only speed handle this situation?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-a-performance-dashboard-lets-a-team-switch-between-four-metrics-kernel-time-total-time-code-size-and-memory-usage-and-the-winner-variant-changes-depending-on-which-metric-is-selected-for-a-product-that-calls-the-fft-once-per-audio-frame-in-a-real-time-pipeline-which-metric-best-answers-which-variant-should-we-actually-ship-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. A performance dashboard lets a team switch between four metrics — kernel time, total time, code size, and memory usage — and the "winner" variant changes depending on which metric is selected. For a product that calls the FFT once per audio frame in a real-time pipeline, which metric best answers "which variant should we actually ship," and why?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-you-are-designing-a-comparison-matrix-for-a-battery-powered-wearable-device-that-calls-the-fft-continuously-and-where-every-joule-matters-as-much-as-every-microsecond-which-additional-column-would-best-extend-this-chapters-comparison-matrix-to-support-that-specific-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. You are designing a comparison matrix for a battery-powered wearable device that calls the FFT continuously and where every joule matters as much as every microsecond. Which additional column would best extend this chapter's comparison matrix to support that specific decision?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/26-competing-variants/quiz.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="quiz-competing-variants-predict-measure-explain">Quiz: Competing Variants: Predict, Measure, Explain</h1>
+<p>Test your understanding of variant comparison, kernel versus total time, sub-linear composition, and honest prediction-versus-measurement reporting with these review questions.</p>
+<hr />
+<h4 id="1-what-is-a-comparison-matrix-as-this-chapter-uses-the-term">1. What is a comparison matrix, as this chapter uses the term?</h4>
+<div class="upper-alpha">
+<ol>
+<li>A single number summarizing the fastest variant's speedup over the slowest</li>
+<li>A list of controlled variables held constant during a benchmark</li>
+<li>A table with variants as rows and consistent metrics — such as kernel time, total time, code size, and memory usage — as columns</li>
+<li>A chart showing only kernel time for a single variant across multiple runs</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>C</strong>. A comparison matrix extends Chapter 18's single-metric comparison table to several metrics at once, organizing every variant's results as rows against consistent columns like kernel time, total time, code size, and memory usage. A performance dashboard then turns that same matrix data into bar charts, one per metric, for a quicker visual comparison. Options A, B, and D each describe only a fragment of what the matrix actually contains.</p>
+<p><strong>Concept Tested:</strong> Comparison Matrix</p>
+</details>
+<hr />
+<h4 id="2-what-is-a-controlled-variable-in-the-context-of-a-variant-comparison">2. What is a controlled variable in the context of a variant comparison?</h4>
+<div class="upper-alpha">
+<ol>
+<li>A factor deliberately held constant across every variant being compared, so that any measured difference can be attributed only to the implementation itself</li>
+<li>The single metric chosen to represent overall performance, such as total time</li>
+<li>Any variable whose value is randomized between runs to increase statistical confidence</li>
+<li>The specific FFT variant selected as the baseline for computing speedup ratios</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>A</strong>. A variant comparison holds every dimension except "which implementation is running" fixed — same FFT size, same clock speed, same sample size and statistic — as controlled variables, so that any difference in the resulting numbers can be attributed to the implementation and nothing else. Randomizing a variable (C) would work against this goal, not support it.</p>
+<p><strong>Concept Tested:</strong> Controlled Variable</p>
+</details>
+<hr />
+<h4 id="3-how-do-kernel-time-and-total-time-differ-when-comparing-fft-variants">3. How do kernel time and total time differ when comparing FFT variants?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Kernel time includes setup and I/O; total time measures only the hot loop</li>
+<li>Kernel time and total time are two names for the same measurement, used interchangeably in this course</li>
+<li>Kernel time is always larger than total time, since it includes compilation overhead</li>
+<li>Kernel time is the raw execution time of just the core computation in isolation; total time adds everything surrounding it, including data marshalling and integration cost</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. Kernel time measures only the core computation — the hot loop running in isolation — while total time includes everything surrounding it: converting data into the format a variant expects, calling into it, and collecting the result. Conflating the two is a common source of misleading variant comparisons, which is exactly why the chapter's comparison matrix reports them as separate columns.</p>
+<p><strong>Concept Tested:</strong> Kernel Versus Total Time</p>
+</details>
+<hr />
+<h4 id="4-why-does-combining-a-2x-speedup-optimization-with-a-3x-speedup-optimization-usually-yield-less-than-the-naively-expected-6x-combined-speedup">4. Why does combining a 2x speedup optimization with a 3x speedup optimization usually yield less than the naively expected 6x combined speedup?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Because MicroPython caps the maximum possible speedup at 4x regardless of what is applied</li>
+<li>Because optimizations frequently compete for the same limited resource, such as register pressure or instruction cache capacity, or address overlapping parts of the same bottleneck, so their gains partially cancel rather than stack cleanly</li>
+<li>Because only one optimization can be active at a time on the Cortex-M33</li>
+<li>Because measuring two optimizations together always doubles the measurement noise, masking the true combined gain</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>B</strong>. Optimization composition is the general question of how multiple optimizations behave when applied together; sub-linear composition describes the far more common outcome than the naive product-of-speedups expectation, because combined optimizations frequently compete for the same limited resource or overlap in what they are each trying to save, so their gains partially cancel instead of stacking. This is precisely why the specialized, fully-optimized assembly variant rarely hits the product of every individual Chapter 24 technique's measured gain.</p>
+<p><strong>Concept Tested:</strong> Sub Linear Composition</p>
+</details>
+<hr />
+<h4 id="5-a-comparison-matrix-shows-the-specialized-assembly-variant-has-by-far-the-fastest-kernel-time-but-its-total-time-advantage-over-viper-is-much-smaller-than-the-kernel-time-gap-would-suggest-what-is-the-most-likely-explanation">5. A comparison matrix shows the specialized assembly variant has by far the fastest kernel time, but its total-time advantage over <code>@viper</code> is much smaller than the kernel-time gap would suggest. What is the most likely explanation?</h4>
+<div class="upper-alpha">
+<ol>
+<li>The variant comparison's harness must be broken, since kernel time and total time should always scale together</li>
+<li>Viper's boxed values make its kernel time artificially fast, masking assembly's true advantage</li>
+<li>Data marshalling cost and integration cost — converting input into a typed array and crossing the Python-assembly boundary — eat into the kernel's raw speed advantage once counted in total time</li>
+<li>The specialized assembly variant must contain a bug, since a fast kernel should always produce the fastest total time</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>C</strong>. Data marshalling cost (converting data into the shape a variant requires) and integration cost (the overhead of wiring a variant into the surrounding pipeline, such as crossing the Python-assembly boundary) are paid on every call and do not shrink just because the kernel itself is fast. A blazing-fast kernel can still lose much of its total-time advantage once these costs are counted, which is exactly why the chapter reports kernel and total time as separate columns rather than assuming they track together.</p>
+<p><strong>Concept Tested:</strong> Data Marshalling Cost</p>
+</details>
+<hr />
+<h4 id="6-a-student-predicts-before-measuring-that-hand-written-assembly-will-beat-viper-on-every-metric-after-measuring-viper-turns-out-faster-on-total-time-specifically-though-not-on-kernel-time-how-should-this-courses-methodology-treat-this-outcome">6. A student predicts, before measuring, that hand-written assembly will beat <code>@viper</code> on every metric. After measuring, <code>@viper</code> turns out faster on total time specifically, though not on kernel time. How should this course's methodology treat this outcome?</h4>
+<div class="upper-alpha">
+<ol>
+<li>As proof that the benchmark harness is unreliable and should be discarded</li>
+<li>As evidence that the ranking prediction step should be skipped in future chapters, since predictions are unreliable</li>
+<li>As a result that should be quietly re-measured until it matches the original prediction</li>
+<li>As a surprising result worth investigating and explaining — for instance, checking whether integration cost or data marshalling cost ate into assembly's kernel advantage — rather than something to hide or dismiss</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. This ranking prediction exercise — committing to a fastest-to-slowest guess before measuring — sets up exactly this kind of divergence. A surprising result is any measured outcome that diverges meaningfully from that prediction, and this course treats it as valuable evidence about why the prediction failed, not something to fix or hide. Every quantitative prediction made while building this course turned out optimistic in a similar way — the point of ranking prediction is not to be right, but to create something concrete to explain once reality disagrees with it.</p>
+<p><strong>Concept Tested:</strong> Surprising Result</p>
+</details>
+<hr />
+<h4 id="7-two-variants-report-identical-kernel-times-in-a-comparison-matrix-yet-one-variant-consistently-loses-on-total-time-applying-kernel-versus-total-time-reasoning-which-additional-column-in-the-matrix-would-most-directly-help-explain-the-gap">7. Two variants report identical kernel times in a comparison matrix, yet one variant consistently loses on total time. Applying kernel-versus-total-time reasoning, which additional column in the matrix would most directly help explain the gap?</h4>
+<div class="upper-alpha">
+<ol>
+<li>A column breaking out data marshalling cost and integration cost separately from kernel time</li>
+<li>A column reporting each variant's code size in bytes</li>
+<li>A column reporting the board's clock speed, since both variants presumably ran on the same board</li>
+<li>A column reporting which programming language was used to write each variant</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>A</strong>. If kernel times match but total times diverge, the gap must live in what total time adds on top of the kernel — data marshalling cost and integration cost. Breaking those out as their own column turns an unexplained gap into a specific, attributable cause, rather than leaving the difference buried inside one combined "total time" number. Code size, clock speed, and language choice do not directly explain a kernel-time-versus-total-time gap.</p>
+<p><strong>Concept Tested:</strong> Integration Cost</p>
+</details>
+<hr />
+<h4 id="8-a-hypothetical-fixed-point-fft-variant-is-20-faster-than-the-courses-floating-point-assembly-variant-on-kernel-time-but-does-not-guarantee-a-bit-for-bit-match-against-the-python-reference-how-should-a-comparison-matrix-that-reports-only-speed-handle-this-situation">8. A hypothetical fixed-point FFT variant is 20% faster than the course's floating-point assembly variant on kernel time, but does not guarantee a bit-for-bit match against the Python reference. How should a comparison matrix that reports only speed handle this situation?</h4>
+<div class="upper-alpha">
+<ol>
+<li>It should simply report the fixed-point variant as the winner, since kernel time is the only metric that matters</li>
+<li>It should omit the fixed-point variant entirely, since any accuracy difference makes it disqualified from comparison</li>
+<li>It should recognize a speed accuracy tradeoff and include a column acknowledging whether each variant preserves bit-for-bit correctness, since a matrix reporting only speed is an incomplete comparison</li>
+<li>It should average the fixed-point variant's speed with its accuracy loss into a single combined score</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>C</strong>. A speed accuracy tradeoff exists whenever a faster variant achieves its speed by giving up some precision or correctness guarantee. A comparison matrix that reports only speed, with no column acknowledging this question, is an incomplete comparison — the chapter is explicit that this question is worth asking for every variant, not only the hypothetical fixed-point case.</p>
+<p><strong>Concept Tested:</strong> Speed Accuracy Tradeoff</p>
+</details>
+<hr />
+<h4 id="9-a-performance-dashboard-lets-a-team-switch-between-four-metrics-kernel-time-total-time-code-size-and-memory-usage-and-the-winner-variant-changes-depending-on-which-metric-is-selected-for-a-product-that-calls-the-fft-once-per-audio-frame-in-a-real-time-pipeline-which-metric-best-answers-which-variant-should-we-actually-ship-and-why">9. A performance dashboard lets a team switch between four metrics — kernel time, total time, code size, and memory usage — and the "winner" variant changes depending on which metric is selected. For a product that calls the FFT once per audio frame in a real-time pipeline, which metric best answers "which variant should we actually ship," and why?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Code size, because flash usage is always the most business-critical constraint regardless of application</li>
+<li>Total time, because it captures the full per-call cost — including data marshalling and integration cost — that the real-time pipeline actually pays on every frame</li>
+<li>Kernel time, because it isolates the core algorithm's raw speed independent of any implementation detail</li>
+<li>Memory usage, because a variant with lower memory usage is always preferable in an embedded system</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>B</strong>. Kernel time answers "how fast is the core idea," not "how fast is this in my actual program." A real-time pipeline that calls the FFT once per frame pays the full per-call cost every time, including data marshalling and integration cost, so total time is the metric that reflects what actually happens in production — exactly the distinction a variant comparison is built to expose rather than obscure behind one flattering number.</p>
+<p><strong>Concept Tested:</strong> Variant Comparison</p>
+</details>
+<hr />
+<h4 id="10-you-are-designing-a-comparison-matrix-for-a-battery-powered-wearable-device-that-calls-the-fft-continuously-and-where-every-joule-matters-as-much-as-every-microsecond-which-additional-column-would-best-extend-this-chapters-comparison-matrix-to-support-that-specific-decision">10. You are designing a comparison matrix for a battery-powered wearable device that calls the FFT continuously and where every joule matters as much as every microsecond. Which additional column would best extend this chapter's comparison matrix to support that specific decision?</h4>
+<div class="upper-alpha">
+<ol>
+<li>A column listing each variant's original author, to give credit for the implementation</li>
+<li>A column listing the GitHub star count of any library each variant depends on</li>
+<li>A column recording the total number of lines of source code for each variant</li>
+<li>A column recording energy consumed per call (or per frame), alongside the existing kernel time, total time, code size, and memory columns, since neither raw speed nor code size alone captures power draw</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. The comparison matrix's whole design principle is choosing columns that make the actual decision visible — kernel time, total time, code size, and memory usage answer speed and footprint questions, but none of them capture energy per call. For a battery-constrained wearable, extending the matrix with a measured energy column follows the same logic the chapter applies to speed and accuracy: report the dimension that actually matters for the decision at hand, rather than assuming faster always means better.</p>
+<p><strong>Concept Tested:</strong> Performance Dashboard</p>
+</details>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Content">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Content
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../references/" class="md-footer__link md-footer__link--next" aria-label="Next: Annotated References">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Annotated References
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

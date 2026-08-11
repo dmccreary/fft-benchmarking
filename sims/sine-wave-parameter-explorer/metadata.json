@@ -1,0 +1,85 @@
+{
+  "title": "Sine Wave Parameter Explorer",
+  "description": "A live sine plot with independent amplitude, frequency, and phase sliders, a color-matched equation readout, and a cosine overlay demonstrating the quarter-cycle relationship.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": [
+    "Digital Signal Processing",
+    "Signals and Systems",
+    "Mathematics"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "sine-wave-parameter-explorer",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Demonstrate, calculate",
+  "completion_status": "implemented",
+  "chapter_number": 4,
+  "chapter_title": "Waves",
+  "chapter_dir": "04-waves",
+  "chapter_rel_dir": "chapters/04-waves",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Mathematics",
+    "topic": "Sine wave parameters: amplitude, frequency, phase",
+    "learningObjectives": [
+      "Demonstrate which visual feature each of A, f, and phi controls",
+      "Calculate y(0) for given parameter values",
+      "Explain the sine/cosine quarter-cycle relationship"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-15 minutes",
+    "prerequisites": [
+      "The sine function on the unit circle",
+      "Reading a plot with labeled axes"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Amplitude (A)", "min": 0.2, "max": 2.0, "default": 1.0, "step": 0.05 },
+      { "type": "slider", "label": "Frequency (f)", "min": 0.5, "max": 5.0, "default": 1.0, "step": 0.1, "units": "Hz" },
+      { "type": "slider", "label": "Phase (phi)", "min": 0, "max": 360, "default": 0, "step": 5, "units": "degrees" },
+      { "type": "checkbox", "label": "Overlay cosine wave", "purpose": "Draw the same wave with phase pinned at 90 degrees" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Closed-form continuous function plot",
+    "variables": ["amplitude", "frequency", "phase", "time"],
+    "equations": ["y(t) = A * sin(2*pi*f*t + phi)"],
+    "assumptions": [
+      "A single pure sinusoid with no noise or damping",
+      "The plot is resampled per pixel column rather than at a fixed sample rate"
+    ],
+    "limitations": [
+      "Shows a continuous idealization; sampling and aliasing are covered separately in Chapter 6"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "One-variable-at-a-time isolation",
+    "keyQuestions": [
+      "Which parameter changes peak spacing without changing peak height?",
+      "Why do the two curves coincide when phase is set to 90 degrees?"
+    ],
+    "commonMisconceptions": [
+      "That changing frequency also changes amplitude",
+      "That phase and frequency both 'move the wave sideways' in the same way"
+    ],
+    "assessmentOpportunities": [
+      "Identify the differing parameter between two waves given a described shift"
+    ]
+  }
+}

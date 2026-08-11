@@ -1,0 +1,15 @@
+{
+  "sim_id": "divide-and-conquer-recursion-tree",
+  "diagram_name": "Divide-and-Conquer Recursion Tree",
+  "chapter_number": 11,
+  "chapter_title": "'From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly'",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "library": "p5.js",
+  "bloom_level": "Understand",
+  "bloom_verb": "Explain, interpret",
+  "learning_objective": "Let students interpret how an 8-sample DFT problem is recursively split by decimation in time into even- and odd-indexed halves, down to trivial size-1 problems, explaining what happens at each level of the tree.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** divide-and-conquer-recursion-tree<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand\nBloom Taxonomy Verb: Explain, interpret\n\nLearning objective: Let students interpret how an 8-sample DFT problem is recursively split by decimation in time into even- and odd-indexed halves, down to trivial size-1 problems, explaining what happens at each level of the tree.\n\nCanvas layout:\n- Full-width tree diagram, root at top (400px tall), growing downward through 4 levels\n- Infobox panel below the tree, populated on click\n\nVisual elements:\n- Root node: \"8 samples: x[0]...x[7]\"\n- Level 1: two child nodes — \"Even: x[0],x[2],x[4],x[6]\" and \"Odd: x[1],x[3],x[5],x[7]\"\n- Level 2: four nodes, each splitting its parent again by even/odd index within that subsequence\n- Level 3 (leaves): eight single-sample nodes, each labeled with its original index\n- Lines connecting each parent to its two children, labeled \"even\" and \"odd\"\n\nInteractive elements:\n- Clicking any node highlights the path from that node back to the root and displays in the infobox: \"This subsequence contains [N] samples. Splitting it costs one comparison of index parity, an operation done once regardless of N.\"\n- A \"Play split animation\" button that visually animates the split happening level by level, top to bottom\n\nInstructional Rationale: An Understand-level clickable infographic is appropriate because the objective is explaining the recursive structure itself, not performing a calculation — seeing the full tree at once, with click-triggered path highlighting, makes the \"keep splitting until trivial\" idea concrete before any butterfly arithmetic is introduced.\n\nImplementation notes:\n- Use p5.js; the tree structure and its 8-sample example are fixed for clarity, matching the eight-point DFT worked example from the previous chapter\n- Responsive width; tree nodes and connecting lines scale proportionally, with horizontal scrolling as a fallback on very narrow viewports"
+}

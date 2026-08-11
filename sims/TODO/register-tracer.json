@@ -1,0 +1,15 @@
+{
+  "sim_id": "register-tracer",
+  "diagram_name": "Register Tracer",
+  "chapter_number": 21,
+  "chapter_title": "\"Your First Assembly Function: Registers and Loops\"",
+  "chapter_dir": "21-your-first-assembly-function",
+  "chapter_rel_dir": "chapters/21-your-first-assembly-function",
+  "library": "p5.js",
+  "bloom_level": "Understand (L2) — interpret, trace",
+  "bloom_verb": null,
+  "learning_objective": "Interpret a short assembly loop by tracing register contents and status flags one instruction at a time, building the \"reading assembly code\" skill.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** register-tracer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Understand (L2) — interpret, trace\nLearning objective: Interpret a short assembly loop by tracing register contents and status flags one instruction at a time, building the \"reading assembly code\" skill.\n\nCanvas layout:\n- Top (300px): The five-instruction loop source code shown line by line, with the currently executing line highlighted\n- Bottom (200px): A register panel showing r0 and the Z (zero) status flag, updating live\n\nVisual elements:\n- Source listing exactly matching the loop example in the chapter text (MOV r0 #5, loop_start:, SUB r0 r0 #1, CMP r0 #0, BNE loop_start)\n- Highlighted current-instruction indicator (an arrow or highlighted background)\n- r0 value shown as a large readable number\n- Z flag shown as a lit/unlit indicator with the label \"Zero flag\"\n\nData Visibility Requirements:\n  Stage 1: Show initial state — r0 undefined, Z flag off, arrow at MOV instruction\n  Stage 2: After MOV — r0 = 5\n  Stage 3: After first SUB — r0 = 4\n  Stage 4: After first CMP — Z flag off (4 != 0)\n  Stage 5: After first BNE — arrow jumps back to loop_start, taken because Z was off\n  ... continues through iterations until r0 reaches 0, Z flag turns on, BNE is NOT taken, arrow falls through to end\n\nInteractive controls:\n- Button: \"Step\" — advances exactly one instruction\n- Button: \"Run to completion\" — auto-steps at a readable pace\n- Button: \"Reset\"\n\nInstructional Rationale: A Bloom Understand-level \"trace and interpret\" objective calls\nfor step-through with visible concrete state at every stage, not continuous animation —\nthe learner must see r0 and the Z flag update after every single instruction to build a\nmental model of how CMP and BNE cooperate.\n\nImplementation: p5.js, instruction list as an array with a program-counter index, register/flag state as simple variables updated per step() call"
+}

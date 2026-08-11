@@ -1,0 +1,15 @@
+{
+  "sim_id": "stage-profiling-breakdown-chart",
+  "diagram_name": "Stage Profiling Breakdown Chart",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "library": "Chart.js",
+  "bloom_level": "Evaluate",
+  "bloom_verb": "Judge, prioritize",
+  "learning_objective": "Let students judge, from a stacked breakdown of capture, compute, and draw time, which stage should be prioritized for optimization, using the measured percentages rather than intuition.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: chart\n**sim-id:** stage-profiling-breakdown-chart<br/>\n**Library:** Chart.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Evaluate\nBloom Taxonomy Verb: Judge, prioritize\n\nLearning objective: Let students judge, from a stacked breakdown of capture, compute, and draw time, which stage should be prioritized for optimization, using the measured percentages rather than intuition.\n\nChart type: Horizontal stacked bar (single bar, three segments) plus a companion pie chart toggle\n\nPurpose: Make the true bottleneck (compute time) visually unmistakable against the other two stages combined\n\nData: Capture time ~1%, Compute time ~66%, Draw time ~33% (remainder), of one total pipeline cycle\n\nInteractive elements:\n- Clicking any segment (Capture / Compute / Draw) displays an infobox: \"This stage takes [X]% of total frame time. [Note on whether this is a bottleneck.]\"\n- Toggle: \"Stacked bar\" / \"Pie chart\" view\n\nTitle: \"Where Does the Frame Time Actually Go?\"\nAnnotations: A callout arrow pointing at the Compute segment reading \"The clear bottleneck — this is what the next module optimizes\"\n\nImplementation: Chart.js with a stacked horizontal bar dataset and an alternate pie dataset toggled via a button"
+}

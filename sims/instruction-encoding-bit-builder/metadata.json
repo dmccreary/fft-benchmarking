@@ -1,0 +1,93 @@
+{
+  "title": "Instruction Encoding Bit Builder",
+  "description": "A 32-bit Thumb-2 bit grid for VFMA.F32, colored by encoding bit field, built live from three register selectors, hand-editable bit by bit, with a disassembler that decodes the result back.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Assembly Language", "Computer Architecture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "instruction-encoding-bit-builder",
+  "library": "p5.js",
+  "canvasHeight": 470,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Construct, calculate",
+  "completion_status": "implemented",
+  "chapter_number": 25,
+  "chapter_title": "Beyond the Assembler: Hand-Encoding and Instruction Formats",
+  "chapter_dir": "25-beyond-the-assembler",
+  "chapter_rel_dir": "chapters/25-beyond-the-assembler",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Hand-encoding a Thumb-2 floating-point instruction and verifying it",
+    "learningObjectives": [
+      "Construct a 32-bit machine word from encoding-table bit-field positions",
+      "Calculate the split V and low-bit encoding of a single-precision register",
+      "Verify a hand-encoded word by disassembling it back"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "Binary and hexadecimal notation",
+      "An instruction is a number the processor interprets",
+      "Thumb-2 instructions are one or two 16-bit halfwords"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 470 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "select", "label": "Sd (dest)", "options": ["s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7"], "purpose": "Choose the destination register" },
+      { "type": "select", "label": "Sn (op 1)", "options": ["s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7"], "purpose": "Choose the first operand register" },
+      { "type": "select", "label": "Sm (op 2)", "options": ["s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7"], "purpose": "Choose the second operand register" },
+      { "type": "button", "label": "Assemble word", "purpose": "Rebuild the canonical encoding and discard hand edits" },
+      { "type": "button", "label": "Disassemble", "purpose": "Decode the current word back to a mnemonic and operands" },
+      { "type": "checkbox", "label": "Flip one random bit", "purpose": "Corrupt a single bit to show that the result still decodes" },
+      { "type": "click", "label": "Bit cell", "purpose": "Toggle any individual bit by hand" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Bidirectional encoder and disassembler for the ARMv8-M floating-point three-register instruction space",
+    "variables": ["Sd", "Sn", "Sm", "32-bit word", "per-bit field assignment"],
+    "equations": [
+      "Vx = x >> 1 and low bit = x & 1 for a single-precision register Sx",
+      "word = 0xEE << 24 | 1 << 23 | D << 22 | 1 << 21 | Vn << 16 | Vd << 12 | 5 << 9 | N << 7 | M << 5 | Vm",
+      "mnemonic is selected by bit 23, bits 21-20 and bit 6"
+    ],
+    "assumptions": [
+      "Registers are limited to s0-s7 so every field fits on screen",
+      "Single precision only; sz = 1 is detected on decode but not fully named",
+      "The condition field is 1110, as it always is for 32-bit Thumb"
+    ],
+    "limitations": [
+      "Covers the three-register floating-point space only, not the whole VFP encoding",
+      "Does not model the IT-block conditional forms of these instructions"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Construct on paper, verify in the simulation, then break deliberately and observe that nothing complains",
+    "keyQuestions": [
+      "Which bits hold the destination register?",
+      "What happens to a program containing a hand-encoded word with one wrong bit?"
+    ],
+    "commonMisconceptions": [
+      "That register fields are contiguous",
+      "That a wrong bit pattern will fail to assemble or fail to run",
+      "That the disassembly check is a formality"
+    ],
+    "assessmentOpportunities": [
+      "Encode VFMA.F32 s5, s3, s6 by hand and check against the simulation",
+      "Describe how to diagnose a plausible-looking wrong FFT result"
+    ]
+  }
+}

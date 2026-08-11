@@ -1,0 +1,74 @@
+{
+  "title": "Divide and Conquer Recursion Tree",
+  "description": "A four-level decimation-in-time tree splitting eight samples by index parity down to single samples, with click-to-highlight paths and a staged reveal animation.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "FFT", "Algorithms"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "divide-and-conquer-recursion-tree",
+  "library": "p5.js",
+  "canvasHeight": 475,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 11,
+  "chapter_title": "From DFT to FFT",
+  "chapter_dir": "11-from-dft-to-fft",
+  "chapter_rel_dir": "chapters/11-from-dft-to-fft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Science",
+    "topic": "Decimation-in-time recursive decomposition",
+    "learningObjectives": [
+      "Interpret the recursive even/odd split of a DFT problem",
+      "Explain what happens at each level and why recursion stops at size 1",
+      "Recognize the bit-reversed leaf ordering"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10 minutes",
+    "prerequisites": ["A DFT maps N inputs to N outputs", "Binary representation"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 475 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Play split animation", "purpose": "Reveal the tree one level at a time" },
+      { "type": "button", "label": "Show whole tree", "purpose": "Reveal all levels immediately" },
+      { "type": "click", "label": "Any node", "purpose": "Highlight the path back to the root and describe the subsequence" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Recursive tree decomposition",
+    "variables": ["subsequence indices", "level", "selected node"],
+    "equations": ["depth = log2(N)", "even/odd split by position within the subsequence"],
+    "assumptions": ["N = 8, a power of two", "Decimation in time rather than in frequency"],
+    "limitations": [
+      "Shows the split only; the recombination butterflies that follow appear in the FFT stage sims"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Whole-structure diagram with click-triggered path highlighting",
+    "keyQuestions": [
+      "Why does the recursion stop at a single sample?",
+      "Why is the bottom row not in sorted order?"
+    ],
+    "commonMisconceptions": [
+      "That the splitting itself is where the computational saving comes from",
+      "That FFT output arrives in natural index order"
+    ],
+    "assessmentOpportunities": [
+      "Predict tree depth and leaf position for a 16-point FFT"
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "title": "Variance Source Explorer",
+  "description": "A live histogram of simulated FFT timings with a tight baseline cluster and a one-sided interrupt tail, alongside running mean, standard deviation, and minimum.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Statistics"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "variance-source-explorer",
+  "library": "p5.js",
+  "canvasHeight": 490,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 18,
+  "chapter_title": "Benchmarking Methodology",
+  "chapter_dir": "18-benchmarking-methodology",
+  "chapter_rel_dir": "chapters/18-benchmarking-methodology",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Timing variance and one-sided interference",
+    "learningObjectives": [
+      "Interpret a histogram of repeated timing measurements",
+      "Explain why interrupt interference is right-skewed rather than symmetric",
+      "Justify the minimum as an estimator of intrinsic cost"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Mean, std dev, minimum", "Interrupts steal CPU time"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 490 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Run 1 more sample", "purpose": "Add one timing measurement" },
+      { "type": "button", "label": "Run 20 more samples", "purpose": "Add twenty measurements" },
+      { "type": "button", "label": "Reset", "purpose": "Clear all samples" },
+      { "type": "slider", "label": "Interrupt interference rate", "min": 0, "max": 30, "default": 8, "units": "percent" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Mixture distribution: Gaussian baseline plus one-sided outliers",
+    "variables": ["interference rate", "sample set"],
+    "equations": [
+      "clean run = 400 + N(0, 5) microseconds",
+      "interfered run = clean run + uniform(50, 150) microseconds",
+      "P(interfered) = interference rate"
+    ],
+    "assumptions": [
+      "Interference is strictly additive, never subtractive",
+      "Baseline jitter is Gaussian via Box-Muller"
+    ],
+    "limitations": [
+      "Real interference has structure — periodic timer ticks produce clustered rather than independent outliers"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Accumulating live distribution with contrasting robust and non-robust statistics",
+    "keyQuestions": [
+      "Why can the tail only be on the right?",
+      "Which statistic estimates the code's intrinsic cost?"
+    ],
+    "commonMisconceptions": [
+      "That timing variation is symmetric measurement noise",
+      "That the mean is always the best summary"
+    ],
+    "assessmentOpportunities": [
+      "Infer interrupt activity from the presence or absence of a tail"
+    ]
+  }
+}

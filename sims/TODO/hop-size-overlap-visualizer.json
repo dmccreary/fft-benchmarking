@@ -1,0 +1,15 @@
+{
+  "sim_id": "hop-size-overlap-visualizer",
+  "diagram_name": "Hop Size and Overlap Processing Visualizer",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, compare",
+  "learning_objective": "Let students adjust the hop size relative to a fixed frame size and examine how much consecutive frames overlap, comparing the resulting update frequency against the extra recomputation cost overlap introduces.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** hop-size-overlap-visualizer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, compare\n\nLearning objective: Let students adjust the hop size relative to a fixed frame size and examine how much consecutive frames overlap, comparing the resulting update frequency against the extra recomputation cost overlap introduces.\n\nCanvas layout:\n- A horizontal timeline of the continuous sample stream, with successive frame windows drawn as overlapping colored bars beneath it\n- Controls and a readout panel below\n\nVisual elements:\n- A long horizontal strip representing the continuous incoming sample stream\n- Several semi-transparent colored bars beneath it, each representing one processed frame's window, positioned according to the current hop size (adjacent bars overlapping visually when hop size < frame size)\n- Readout: \"Frame size: [N] samples | Hop size: [value] samples | Overlap: [percentage]% | Updates per second: [value]\"\n\nInteractive controls:\n- Slider: Frame size, fixed at 512 for this example (labeled, not adjustable, to isolate hop size's effect)\n- Slider: Hop size, range 64 to 512 samples, default 512 (no overlap)\n\nBehavior:\n- Reducing hop size below frame size visibly increases the overlap between adjacent frame-window bars and increases the \"updates per second\" readout, while a caption notes that total FFT computations per second rises proportionally\n- Setting hop size equal to frame size returns to the simple non-overlapping case, with bars sitting exactly edge to edge\n\nInstructional Rationale: An Analyze-level comparison pattern is appropriate because the objective is examining the tradeoff between update smoothness and computational cost as hop size changes — a visual, adjustable overlap display makes this tradeoff concrete rather than requiring students to reason about it abstractly.\n\nImplementation notes:\n- Use p5.js; draw frame-window bars procedurally based on the current hop size and a fixed total stream length\n- Responsive width; timeline strip and controls scale to container width on resize"
+}

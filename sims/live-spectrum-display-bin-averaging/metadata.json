@@ -1,0 +1,79 @@
+{
+  "title": "Live Spectrum Display Bin Averaging",
+  "description": "A simulated 128x64 OLED spectrum above the full 256-bin reference, with shaded bands showing which bins average into each displayed bar.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Spectrum Display", "Embedded Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "live-spectrum-display-bin-averaging",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Bin averaging for constrained displays",
+    "learningObjectives": [
+      "Examine how display bar count relates to underlying bin count",
+      "Compare averaging behavior across different signal shapes",
+      "Explain why averaging flattens narrow peaks"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12 minutes",
+    "prerequisites": ["An FFT produces a magnitude per bin", "Bin width and resolution"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Displayed bars", "values": [8, 16, 32, 64, 128, 256], "default": 32 },
+      { "type": "button", "label": "Next simulated frame", "purpose": "Cycle through single tone, chord, and white noise" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Group-mean downsampling of a fixed spectrum",
+    "variables": ["display bar count", "example signal"],
+    "equations": [
+      "bins per bar = 256 / bars",
+      "bar value = mean of its group of bins"
+    ],
+    "assumptions": [
+      "Bar counts are powers of two so groups divide evenly",
+      "Example spectra are precomputed and deterministic"
+    ],
+    "limitations": [
+      "Uses group mean; many real displays use group maximum, which preserves peak height and is discussed in the documentation"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Synchronized constrained-display and full-resolution comparison",
+    "keyQuestions": [
+      "Why is the peak shorter on the OLED than in the reference?",
+      "Which signal shape survives heavy averaging best?"
+    ],
+    "commonMisconceptions": [
+      "That a shorter averaged bar means less energy is present",
+      "That more display bars always improves the display"
+    ],
+    "assessmentOpportunities": [
+      "Judge whether two tones a given number of bins apart remain separable"
+    ]
+  }
+}

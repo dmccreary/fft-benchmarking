@@ -1,0 +1,84 @@
+{
+  "title": "Standalone Deployment Workflow",
+  "description": "A six-step vis-network sequence taking a program from Thonny-attached execution to standalone autorun, with per-step commands and the three silent failure points flagged on demand.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Deployment"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "standalone-deployment-workflow",
+  "library": "vis-network",
+  "canvasHeight": 500,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Summarize, explain",
+  "completion_status": "implemented",
+  "chapter_number": 3,
+  "chapter_title": "Peripherals",
+  "chapter_dir": "03-peripherals",
+  "chapter_rel_dir": "chapters/03-peripherals",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Standalone MicroPython deployment",
+    "learningObjectives": [
+      "Summarize the ordered steps for standalone deployment",
+      "Diagnose which step was skipped from a failure symptom",
+      "Explain why these failures produce no visible traceback"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": [
+      "Has run a program from Thonny with the board attached",
+      "Knows that import looks for a module by name"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "vis-network",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["vis-network standalone UMD CDN", "vis-network CSS"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Common failures", "purpose": "Flag the three steps that fail silently" },
+      { "type": "button", "label": "Reset", "purpose": "Clear flags and restore the default panel text" },
+      { "type": "click", "label": "Any step", "purpose": "Show what it accomplishes, the command, and the common mistake" },
+      { "type": "hover", "label": "Any step", "purpose": "One-line summary" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Ordered procedure graph",
+    "variables": ["failure flags visible"],
+    "equations": [],
+    "assumptions": [
+      "Deployment uses either mpremote or Thonny's Save As; other tooling is not shown"
+    ],
+    "limitations": [
+      "Does not cover boot.py, frozen modules, or filesystem-corruption recovery"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Ordered procedure with failure-mode triage",
+    "keyQuestions": [
+      "Why do all three common mistakes produce the same symptom?",
+      "Which step would you check first given 'nothing happens on power-up'?"
+    ],
+    "commonMisconceptions": [
+      "That any filename will autorun, not just main.py",
+      "That code working under Thonny proves it will work standalone"
+    ],
+    "assessmentOpportunities": [
+      "Given a symptom, name every step that could be responsible and how to distinguish them"
+    ]
+  }
+}

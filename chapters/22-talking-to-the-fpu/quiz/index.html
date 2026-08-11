@@ -1,0 +1,3050 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/22-talking-to-the-fpu/quiz/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../references/">
+      
+      
+      <link rel="icon" href="../../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>Quiz - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#quiz-talking-to-the-fpu-floating-point-assembly" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quiz
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../../img/logo.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../course-description/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Course Description
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../learning-graph/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Learning Graph
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Chapters
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../01-hello-world/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../02-know-your-board/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../03-peripherals/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../04-waves/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../05-capturing-real-audio/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../08-correlation/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../09-computing-and-validating-the-dft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../10-why-the-dft-is-too-slow/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../11-from-dft-to-fft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../12-building-the-fft/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../17-measuring-time/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../18-benchmarking-methodology/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../19-the-abstraction-ladder/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../21-your-first-assembly-function/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_23" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_23" id="__nav_5_23_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_23_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_23">
+            <span class="md-nav__icon md-icon"></span>
+            22. Talking to the FPU: Floating-Point Assembly
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Quiz
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quiz
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-does-it-mean-that-arm-cores-use-a-load-store-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What does it mean that ARM cores use a load-store architecture?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-many-dedicated-floating-point-registers-does-the-fpus-register-bank-provide-and-what-does-each-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. How many dedicated floating-point registers does the FPU's register bank provide, and what does each hold?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-which-statement-correctly-distinguishes-vldr-and-vstr-from-vadd-vsub-and-vmul" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Which statement correctly distinguishes VLDR and VSTR from VADD, VSUB, and VMUL?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-must-the-offset-in-vldr-s1-r0-4-be-expressed-in-bytes-rather-than-in-array-element-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Why must the offset in VLDR s1, [r0, #4] be expressed in bytes rather than in array element positions?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-does-the-byte-offset-formula-base_address-i-4-only-work-reliably-on-a-micropython-typed-array-not-a-plain-python-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Why does the byte-offset formula base_address + i * 4 only work reliably on a MicroPython typed array, not a plain Python list?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-a-typed-array-of-32-bit-floats-begins-at-the-address-in-r0-which-instruction-correctly-loads-element-index-5-into-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. A typed array of 32-bit floats begins at the address in r0. Which instruction correctly loads element index 5 into s3?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-does-the-instruction-vmla-s2-s0-s1-compute-and-why-is-it-typically-preferred-over-issuing-vmul-followed-by-vadd-separately" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What does the instruction VMLA s2, s0, s1 compute, and why is it typically preferred over issuing VMUL followed by VADD separately?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-student-benchmarks-an-assembly-dot-product-routine-but-calls-arrayarrayf-0128-to-create-a-fresh-output-buffer-inside-the-timed-loop-once-per-iteration-what-is-the-most-likely-consequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. A student benchmarks an assembly dot-product routine but calls array.array('f', [0]*128) to create a fresh output buffer inside the timed loop, once per iteration. What is the most likely consequence?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-in-a-routine-modeled-on-dot_product_fpu-a-programmer-writes-addr0-r0-8-to-advance-the-pointer-into-a-buffer-of-single-precision-floats-after-each-vldr-what-is-the-effect-on-the-second-iterations-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. In a routine modeled on dot_product_fpu, a programmer writes add(r0, r0, 8) to advance the pointer into a buffer of single-precision floats after each VLDR. What is the effect on the second iteration's load?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Annotated References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../23-the-butterfly-in-assembly/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../24-specialization-and-branchless-code/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../25-beyond-the-assembler/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../26-competing-variants/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../27-capstone/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../labs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cornell-labs/pico-example.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cornel Labs FFT on the Pico
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../sims/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    MicroSims
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../plans/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Plans
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../../appendices/benchmark-comparison/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    Appendices
+    
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Glossary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../instructors-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../how-we-built-this-site/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How We Built This Site
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../references/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../license/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contact
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-does-it-mean-that-arm-cores-use-a-load-store-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What does it mean that ARM cores use a load-store architecture?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-how-many-dedicated-floating-point-registers-does-the-fpus-register-bank-provide-and-what-does-each-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. How many dedicated floating-point registers does the FPU's register bank provide, and what does each hold?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-which-statement-correctly-distinguishes-vldr-and-vstr-from-vadd-vsub-and-vmul" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Which statement correctly distinguishes VLDR and VSTR from VADD, VSUB, and VMUL?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-why-must-the-offset-in-vldr-s1-r0-4-be-expressed-in-bytes-rather-than-in-array-element-positions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Why must the offset in VLDR s1, [r0, #4] be expressed in bytes rather than in array element positions?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-why-does-the-byte-offset-formula-base_address-i-4-only-work-reliably-on-a-micropython-typed-array-not-a-plain-python-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Why does the byte-offset formula base_address + i * 4 only work reliably on a MicroPython typed array, not a plain Python list?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-a-typed-array-of-32-bit-floats-begins-at-the-address-in-r0-which-instruction-correctly-loads-element-index-5-into-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. A typed array of 32-bit floats begins at the address in r0. Which instruction correctly loads element index 5 into s3?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-what-does-the-instruction-vmla-s2-s0-s1-compute-and-why-is-it-typically-preferred-over-issuing-vmul-followed-by-vadd-separately" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. What does the instruction VMLA s2, s0, s1 compute, and why is it typically preferred over issuing VMUL followed by VADD separately?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-a-student-benchmarks-an-assembly-dot-product-routine-but-calls-arrayarrayf-0128-to-create-a-fresh-output-buffer-inside-the-timed-loop-once-per-iteration-what-is-the-most-likely-consequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. A student benchmarks an assembly dot-product routine but calls array.array('f', [0]*128) to create a fresh output buffer inside the timed loop, once per iteration. What is the most likely consequence?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-in-a-routine-modeled-on-dot_product_fpu-a-programmer-writes-addr0-r0-8-to-advance-the-pointer-into-a-buffer-of-single-precision-floats-after-each-vldr-what-is-the-effect-on-the-second-iterations-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. In a routine modeled on dot_product_fpu, a programmer writes add(r0, r0, 8) to advance the pointer into a buffer of single-precision floats after each VLDR. What is the effect on the second iteration's load?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/chapters/22-talking-to-the-fpu/quiz.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="quiz-talking-to-the-fpu-floating-point-assembly">Quiz: Talking to the FPU: Floating-Point Assembly</h1>
+<p>Test your understanding of the FPU's register bank, load-store architecture, and floating-point instructions with these review questions.</p>
+<hr />
+<h4 id="1-what-does-it-mean-that-arm-cores-use-a-load-store-architecture">1. What does it mean that ARM cores use a load-store architecture?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Every instruction automatically loads its operands from memory and stores results back without any register use</li>
+<li>Arithmetic instructions like <code>ADD</code> or <code>VMUL</code> can only operate on values already in registers; a value in memory must be explicitly loaded into a register before computing with it, then stored back afterward</li>
+<li>Only floating-point instructions require explicit loads and stores; integer instructions can operate directly on memory</li>
+<li>Load and store instructions are optional convenience features that assembly programmers may skip</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>B</strong>. A load-store architecture keeps arithmetic instructions register-only, so a value in memory must be explicitly loaded into a register, computed on, and explicitly stored back when finished. This deliberate design lets each arithmetic instruction execute in a single, predictable cycle, with all slower memory-access work concentrated into dedicated load and store instructions like <code>VLDR</code> and <code>VSTR</code>. It applies equally to integer and floating-point instructions.</p>
+<p><strong>Concept Tested:</strong> Load Store Architecture</p>
+</details>
+<hr />
+<h4 id="2-how-many-dedicated-floating-point-registers-does-the-fpus-register-bank-provide-and-what-does-each-hold">2. How many dedicated floating-point registers does the FPU's register bank provide, and what does each hold?</h4>
+<div class="upper-alpha">
+<ol>
+<li>13 registers, r0 through r12, each holding a 32-bit integer or address</li>
+<li>16 registers, shared between integer and floating-point values</li>
+<li>8 registers, each holding a 64-bit double-precision float</li>
+<li>32 registers, s0 through s31, each holding one 32-bit single-precision float</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. The FPU has its own completely separate register bank, <code>s0</code> through <code>s31</code>, thirty-two registers each exactly wide enough to hold one single-precision float — a 32-bit IEEE 754 value. This is distinct from the thirteen general-purpose integer registers <code>r0</code>-<code>r12</code>; general-purpose instructions like <code>ADD</code> cannot touch the <code>s</code> registers, and FPU instructions cannot touch <code>r0</code>-<code>r12</code> for arithmetic.</p>
+<p><strong>Concept Tested:</strong> Register Bank s0 to s31</p>
+</details>
+<hr />
+<h4 id="3-which-statement-correctly-distinguishes-vldr-and-vstr-from-vadd-vsub-and-vmul">3. Which statement correctly distinguishes <code>VLDR</code> and <code>VSTR</code> from <code>VADD</code>, <code>VSUB</code>, and <code>VMUL</code>?</h4>
+<div class="upper-alpha">
+<ol>
+<li><code>VLDR</code> and <code>VSTR</code> move floats between memory and floating-point registers, while <code>VADD</code>, <code>VSUB</code>, and <code>VMUL</code> perform arithmetic entirely between floating-point registers</li>
+<li><code>VLDR</code> and <code>VSTR</code> perform arithmetic, while <code>VADD</code>, <code>VSUB</code>, and <code>VMUL</code> move data between memory and registers</li>
+<li><code>VLDR</code> and <code>VSTR</code> only work on integers, while <code>VADD</code>, <code>VSUB</code>, and <code>VMUL</code> only work on floats</li>
+<li><code>VLDR</code> and <code>VSTR</code> are optional aliases for <code>VADD</code> and <code>VSUB</code> with no functional difference</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>A</strong>. <code>VLDR</code> ("vector load register") and <code>VSTR</code> ("vector store register") move single-precision floats between memory and a floating point register, while <code>VADD</code>, <code>VSUB</code>, and <code>VMUL</code> perform arithmetic directly between values already sitting in <code>s</code> registers, writing the result into a third <code>s</code> register. This mirrors the load-store pattern from general-purpose registers, applied to the FPU's separate register bank.</p>
+<p><strong>Concept Tested:</strong> FPU Operations</p>
+</details>
+<hr />
+<h4 id="4-why-must-the-offset-in-vldr-s1-r0-4-be-expressed-in-bytes-rather-than-in-array-element-positions">4. Why must the offset in <code>VLDR s1, [r0, #4]</code> be expressed in bytes rather than in array element positions?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Because MicroPython silently converts byte offsets to element indices before assembling</li>
+<li>Because <code>VLDR</code> can only address the first four bytes of any buffer</li>
+<li>Because memory addresses count individual bytes regardless of data type, so software must convert an element index into a byte offset by multiplying by the element's size</li>
+<li>Because array elements are always exactly one byte wide on the Cortex-M33</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>C</strong>. Hardware has no concept of "the third float" — memory addresses always count individual bytes. Software is entirely responsible for converting an element index into a byte offset by multiplying by the element size, which is 4 bytes for a single-precision float. <code>VLDR s1, [r0, #4]</code> therefore reaches element index 1 in a buffer of 4-byte floats, not element index 4.</p>
+<p><strong>Concept Tested:</strong> Byte Offset</p>
+</details>
+<hr />
+<h4 id="5-why-does-the-byte-offset-formula-base_address-i-4-only-work-reliably-on-a-micropython-typed-array-not-a-plain-python-list">5. Why does the byte-offset formula <code>base_address + i * 4</code> only work reliably on a MicroPython typed array, not a plain Python list?</h4>
+<div class="upper-alpha">
+<ol>
+<li>Because plain Python lists cannot hold floating-point numbers at all</li>
+<li>Because a typed array stores its values contiguously with a fixed, predictable stride, while a plain list holds boxed values scattered across the heap with no fixed distance between elements</li>
+<li>Because typed arrays are always exactly 32 elements long, matching the FPU's register bank</li>
+<li>Because a plain list stores its values contiguously but a typed array does not</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>B</strong>. A typed array, created with <code>array.array('f', ...)</code>, stores its values contiguously and back to back in memory, each exactly 4 bytes wide with no wrapper — a fixed, predictable stride that makes the byte-offset formula valid. A plain list holds boxed values scattered across the heap with no fixed distance between elements, so no consistent multiplier could locate a given element's address.</p>
+<p><strong>Concept Tested:</strong> Typed Array</p>
+</details>
+<hr />
+<h4 id="6-a-typed-array-of-32-bit-floats-begins-at-the-address-in-r0-which-instruction-correctly-loads-element-index-5-into-s3">6. A typed array of 32-bit floats begins at the address in <code>r0</code>. Which instruction correctly loads element index 5 into <code>s3</code>?</h4>
+<div class="upper-alpha">
+<ol>
+<li><code>VLDR s3, [r0, #20]</code></li>
+<li><code>VLDR s3, [r0, #5]</code></li>
+<li><code>VLDR s3, [r0, #4]</code></li>
+<li><code>VLDR s3, [r0, #32]</code></li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>A</strong>. Each single-precision float occupies 4 bytes, so the address of element index 5 is <code>base_address + 5 * 4 = base_address + 20</code>. The base address itself comes from the address of buffer operation, which MicroPython exposes and passes into <code>r0</code> per Chapter 21's calling convention. Option B uses the element index directly as a byte count, ignoring element size; C computes the offset for element index 1 instead of 5; D uses an unrelated multiple.</p>
+<p><strong>Concept Tested:</strong> Pointer Arithmetic</p>
+</details>
+<hr />
+<h4 id="7-what-does-the-instruction-vmla-s2-s0-s1-compute-and-why-is-it-typically-preferred-over-issuing-vmul-followed-by-vadd-separately">7. What does the instruction <code>VMLA s2, s0, s1</code> compute, and why is it typically preferred over issuing <code>VMUL</code> followed by <code>VADD</code> separately?</h4>
+<div class="upper-alpha">
+<ol>
+<li>It computes <code>s2 = s0 * s1</code>, discarding whatever was previously in s2, and is preferred because it uses fewer registers</li>
+<li>It computes <code>s2 = s0 / s1</code>, and is preferred because division is otherwise unavailable on this FPU</li>
+<li>It computes <code>s2 = s2 - (s0 * s1)</code>, matching the subtract-then-multiply pattern used in the butterfly operation</li>
+<li>It computes <code>s2 = s2 + (s0 * s1)</code> as one fused operation, saving a cycle and avoiding an extra rounding step compared to a separate multiply and add</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. <code>VMLA</code> is this FPU's MAC (multiply-accumulate) instruction, powered by the same hardware multiplier that drives <code>VMUL</code>, and it computes <code>d = d + (a * b)</code> as a single fused operation. Fusing the two steps saves a cycle compared to separate <code>VMUL</code> and <code>VADD</code> instructions, and avoids rounding the intermediate product before adding, which is slightly more numerically accurate — exactly the pattern at the heart of every butterfly operation.</p>
+<p><strong>Concept Tested:</strong> MAC Instruction</p>
+</details>
+<hr />
+<h4 id="8-a-student-benchmarks-an-assembly-dot-product-routine-but-calls-arrayarrayf-0128-to-create-a-fresh-output-buffer-inside-the-timed-loop-once-per-iteration-what-is-the-most-likely-consequence">8. A student benchmarks an assembly dot-product routine but calls <code>array.array('f', [0]*128)</code> to create a fresh output buffer inside the timed loop, once per iteration. What is the most likely consequence?</h4>
+<div class="upper-alpha">
+<ol>
+<li>The FPU will refuse to execute any instruction that references a newly allocated buffer</li>
+<li>Nothing — allocation only affects plain Python code, never assembly routines</li>
+<li>The new allocation may trigger MicroPython's garbage collector at an unpredictable moment inside the timed region, silently inflating the measured time with cycles unrelated to the algorithm</li>
+<li>The typed array's stride will become unpredictable, breaking the byte-offset formula</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>C</strong>. MicroPython's garbage collector can only run in response to allocations, so a fresh <code>array.array</code> call inside a timed loop risks a collector pause landing inside the measured region — exactly the hidden variance source "no allocation in timed region" is meant to prevent. The fix is allocating every buffer a routine needs before starting the timer and passing in only pre-allocated buffers.</p>
+<p><strong>Concept Tested:</strong> No Allocation In Timed Region</p>
+</details>
+<hr />
+<h4 id="9-in-a-routine-modeled-on-dot_product_fpu-a-programmer-writes-addr0-r0-8-to-advance-the-pointer-into-a-buffer-of-single-precision-floats-after-each-vldr-what-is-the-effect-on-the-second-iterations-load">9. In a routine modeled on <code>dot_product_fpu</code>, a programmer writes <code>add(r0, r0, 8)</code> to advance the pointer into a buffer of single-precision floats after each <code>VLDR</code>. What is the effect on the second iteration's load?</h4>
+<div class="upper-alpha">
+<ol>
+<li>It has no effect, because <code>VLDR</code> ignores the address in r0 after the first load</li>
+<li>It skips one element and loads element index 2 instead of element index 1, because the pointer advances by 8 bytes (two elements) instead of 4</li>
+<li>It correctly loads the next float, because single-precision floats are 8 bytes wide</li>
+<li>It reads the same element twice, because 8 is a multiple of the register bank size</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>B</strong>. A single-precision float is 4 bytes, so the correct per-element step is <code>add(r0, r0, 4)</code>. Advancing by 8 bytes instead moves the pointer two elements forward each time, so the second <code>VLDR</code> reads element index 2 instead of element index 1, silently skipping every other element in the buffer — the same byte-offset-versus-element-count mistake the chapter's own worked example warns about, applied here to a doubled rather than reduced step.</p>
+<p><strong>Concept Tested:</strong> Memory Address</p>
+</details>
+<hr />
+<h4 id="10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering">10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?</h4>
+<div class="upper-alpha">
+<ol>
+<li>SIMD instructions are not supported on the Cortex-M33 at all, so they are irrelevant to this course</li>
+<li>Vectorized code is always slower than scalar code for floating-point work, so SIMD is skipped entirely</li>
+<li>SIMD instructions require a hardware multiplier that the FPU does not have</li>
+<li>Establishing a working, validated scalar (one-value-at-a-time) version first is part of writing correct code before writing fast code, and SIMD is a genuinely more advanced optimization layered on afterward</li>
+</ol>
+</div>
+<details class="question">
+<summary>Show Answer</summary>
+<p>The correct answer is <strong>D</strong>. The chapter names SIMD (Single Instruction, Multiple Data) explicitly to signal that a faster path exists, while deliberately choosing not to reach for it yet — every instruction in this chapter, including the multiply-accumulate that uses the same hardware multiplier as <code>VMUL</code>, still operates on one float at a time. Knowing a faster path exists and choosing correctness first is itself part of the engineering discipline this course teaches, distinct from claiming SIMD is unsupported or always worse.</p>
+<p><strong>Concept Tested:</strong> SIMD Instructions</p>
+</details>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Content">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Content
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../references/" class="md-footer__link md-footer__link--next" aria-label="Next: Annotated References">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Annotated References
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

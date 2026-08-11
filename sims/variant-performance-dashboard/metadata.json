@@ -1,0 +1,93 @@
+{
+  "title": "Variant Performance Dashboard",
+  "description": "Five kernel implementations compared across kernel time, total time, code size, and memory, with a drag-to-reorder prediction overlay scored against the measured ranking for whichever metric is active.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Benchmarking", "Performance Engineering"],
+  "type": "Interactive Chart",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "variant-performance-dashboard",
+  "library": "Chart.js",
+  "canvasHeight": 564,
+  "bloomLevel": "Evaluate",
+  "bloomVerb": "Assess, critique",
+  "completion_status": "implemented",
+  "chapter_number": 26,
+  "chapter_title": "Competing Variants: Predict, Measure, Explain",
+  "chapter_dir": "26-competing-variants",
+  "chapter_rel_dir": "chapters/26-competing-variants",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Multi-metric comparison and the metric-dependence of a ranking",
+    "learningObjectives": [
+      "Assess a predicted ranking against a measured ranking",
+      "Critique which metric answers the shipping decision",
+      "Explain why fixed overhead caps an end-to-end speedup"
+    ],
+    "bloomsTaxonomy": "Evaluate",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "Familiarity with the five implementation strategies",
+      "Kernel time versus end-to-end time",
+      "Flash and RAM budgets on an embedded part"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 564 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "select", "label": "Metric", "options": ["Kernel time", "Total time", "Code size", "Memory usage"], "purpose": "Re-render the bars and the measured ranking in the chosen metric" },
+      { "type": "checkbox", "label": "Overlay my ranking prediction", "purpose": "Show the prediction row and its score" },
+      { "type": "drag", "label": "Prediction chip", "purpose": "Reorder the predicted ranking" },
+      { "type": "button", "label": "Move up / move down", "purpose": "Reorder without dragging" },
+      { "type": "hover", "label": "Bar", "purpose": "Exact value and rank on the active metric" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Fixed multi-metric measurement table with a learner-supplied ranking scored against it",
+    "variables": ["variant", "active metric", "predicted order", "measured order", "positions correct"],
+    "equations": [
+      "measured order = variants sorted ascending, since every metric is lower-is-better",
+      "score = count of positions where predicted index equals measured index",
+      "overhead = total time - kernel time",
+      "end-to-end speedup = 21050 / 950 = 22.2x versus kernel speedup 21000 / 710 = 29.6x"
+    ],
+    "assumptions": [
+      "All four metrics are lower-is-better, stated in the controls bar",
+      "Values are illustrative and internally consistent",
+      "Ties are possible and are shown rather than broken"
+    ],
+    "limitations": [
+      "Kernel time and total time happen to produce the same ranking in this data set",
+      "No variance or repeated runs; each value is a single point",
+      "Metrics are not combined into a weighted score, deliberately"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Commit to a prediction first, then re-score the same prediction under every metric",
+    "keyQuestions": [
+      "Which metric were you ranking by when you made your prediction?",
+      "Why does the overhead grow relative to the kernel as the kernel gets faster?"
+    ],
+    "commonMisconceptions": [
+      "That there is one performance ranking",
+      "That kernel speedup and end-to-end speedup are the same number",
+      "That a tie is a missing measurement rather than a real result"
+    ],
+    "assessmentOpportunities": [
+      "Choose a variant to ship under two different flash budgets and justify each",
+      "List three questions to ask someone who reports a 30x speedup"
+    ]
+  }
+}

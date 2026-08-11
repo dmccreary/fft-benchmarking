@@ -1,0 +1,15 @@
+{
+  "sim_id": "dft-validation-dashboard",
+  "diagram_name": "DFT Validation Dashboard",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "library": "p5.js",
+  "bloom_level": "Evaluate",
+  "bloom_verb": "Judge, validate",
+  "learning_objective": "Let students judge whether a DFT implementation passes validation by comparing a computed spectrum's peak against an expected peak within a chosen numerical tolerance, across a swept range of test frequencies.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** dft-validation-dashboard<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Evaluate\nBloom Taxonomy Verb: Judge, validate\n\nLearning objective: Let students judge whether a DFT implementation passes validation by comparing a computed spectrum's peak against an expected peak within a chosen numerical tolerance, across a swept range of test frequencies.\n\nCanvas layout:\n- Top (250px): computed spectrum bar chart for the currently selected test frequency, expected peak bin marked with a dashed line\n- Bottom (200px): pass/fail summary table across a full frequency sweep, plus a tolerance slider\n\nVisual elements:\n- Bar chart of spectrum magnitude by bin index, for the current known test signal\n- Dashed vertical marker at the expected peak bin, computed from ground truth\n- Color-coded pass (green) / fail (red) indicator based on whether relative error at the expected peak is within the chosen tolerance\n- Summary table: one row per swept test frequency, showing expected bin, actual detected bin, relative error, and pass/fail\n\nInteractive controls:\n- Slider: \"Test frequency\" (manually move through the swept range one at a time)\n- Slider: \"Numerical tolerance\" (0.01% to 5%), default 0.1%\n- Button: \"Run full frequency sweep\" — automatically steps through the full range and populates the summary table\n\nBehavior:\n- Selecting a test frequency updates the spectrum bar chart and shows whether that specific case passes or fails at the current tolerance\n- Running the full sweep populates every row of the summary table at once, letting students see at a glance whether validation passes uniformly across the entire usable frequency range or fails at specific points\n\nInstructional Rationale: An Evaluate-level pattern is appropriate because the objective is judging pass/fail against a defined standard (numerical tolerance) — a dashboard that surfaces the comparison explicitly, rather than hiding it inside a script's exit code, makes the judgment process itself visible and teachable.\n\nImplementation notes:\n- Use p5.js; compute the DFT of each synthesized test signal directly in JavaScript for the swept frequencies\n- Responsive width; chart and summary table stack vertically below 700px width"
+}

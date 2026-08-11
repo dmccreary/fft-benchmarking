@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/11-from-dft-to-fft/">
       
       
-        <link rel="prev" href="../10-why-the-dft-is-too-slow/">
+        <link rel="prev" href="../10-why-the-dft-is-too-slow/references/">
       
       
-        <link rel="next" href="../12-building-the-fft/">
+        <link rel="next" href="quiz/">
       
       
       <link rel="icon" href="../../img/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly - FFT Benchmarking</title>
+        <title>From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly - Real-Time DSP on a $5 Microcontroller</title>
       
     
     
@@ -96,7 +96,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="FFT Benchmarking" class="md-header__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../../img/logo.png" alt="logo">
 
@@ -109,7 +109,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            FFT Benchmarking
+            Real-Time DSP on a $5 Microcontroller
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -205,12 +205,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="FFT Benchmarking" class="md-nav__button md-logo" aria-label="FFT Benchmarking" data-md-component="logo">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
   <img src="../../img/logo.png" alt="logo">
 
     </a>
-    FFT Benchmarking
+    Real-Time DSP on a $5 Microcontroller
   </label>
   
     <div class="md-nav__source">
@@ -304,6 +304,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -475,9 +481,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../01-hello-world/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../01-hello-world/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -486,7 +517,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -498,9 +535,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../02-know-your-board/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../02-know-your-board/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -509,7 +571,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -521,9 +589,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../03-peripherals/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../03-peripherals/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -532,7 +625,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -544,9 +643,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../04-waves/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../04-waves/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -555,7 +679,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -567,9 +697,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../05-capturing-real-audio/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../05-capturing-real-audio/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -578,7 +733,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -590,9 +751,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -601,7 +787,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -613,9 +805,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -624,7 +841,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -636,9 +859,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../08-correlation/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../08-correlation/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -647,7 +895,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -659,9 +913,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -670,7 +949,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -682,9 +967,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -693,7 +1003,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -707,16 +1023,33 @@
   
   
   
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
+        
+          
+        
       
         
       
+        
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" checked>
+        
           
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
   
   
   <span class="md-ellipsis">
@@ -725,226 +1058,42 @@
   </span>
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_12">
+            <span class="md-nav__icon md-icon"></span>
+            11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quiz/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+    Quiz
     
   </span>
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#concepts-covered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concepts Covered
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#preparing-a-signal-before-transforming" class="md-nav__link">
-    <span class="md-ellipsis">
-      Preparing a Signal Before Transforming
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#a-fast-idea-rediscovered" class="md-nav__link">
-    <span class="md-ellipsis">
-      A Fast Idea, Rediscovered
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#divide-and-conquer-splitting-the-problem-in-half" class="md-nav__link">
-    <span class="md-ellipsis">
-      Divide and Conquer: Splitting the Problem in Half
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Divide and Conquer: Splitting the Problem in Half">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#diagram-divide-and-conquer-recursion-tree" class="md-nav__link">
-    <span class="md-ellipsis">
-      Diagram: Divide-and-Conquer Recursion Tree
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#roots-of-unity-the-numbers-that-combine-the-pieces" class="md-nav__link">
-    <span class="md-ellipsis">
-      Roots of Unity: The Numbers That Combine the Pieces
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Roots of Unity: The Numbers That Combine the Pieces">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#twiddle-factor" class="md-nav__link">
-    <span class="md-ellipsis">
-      Twiddle Factor
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagram-roots-of-unity-on-the-unit-circle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Diagram: Roots of Unity on the Unit Circle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multiplying-complex-numbers-efficiently" class="md-nav__link">
-    <span class="md-ellipsis">
-      Multiplying Complex Numbers Efficiently
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Multiplying Complex Numbers Efficiently">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#complex-multiplication" class="md-nav__link">
-    <span class="md-ellipsis">
-      Complex Multiplication
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-butterfly-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      The Butterfly Operation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The Butterfly Operation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#butterfly-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Butterfly Operation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagram-butterfly-operation-visualizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Diagram: Butterfly Operation Visualizer
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bit-reversal-and-computing-in-place" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bit Reversal and Computing in Place
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stages-and-a-first-optimization-habit" class="md-nav__link">
-    <span class="md-ellipsis">
-      Stages and a First Optimization Habit
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chapter-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Chapter Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -957,8 +1106,64 @@
   
   
     <li class="md-nav__item">
-      <a href="../12-building-the-fft/" class="md-nav__link">
+      <a href="references/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    Annotated References
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../12-building-the-fft/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -967,7 +1172,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -979,9 +1190,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -990,7 +1226,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1002,9 +1244,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1013,7 +1280,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1025,9 +1298,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1036,7 +1334,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1048,9 +1352,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1059,7 +1388,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1071,9 +1406,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../17-measuring-time/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../17-measuring-time/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1082,7 +1442,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1094,9 +1460,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../18-benchmarking-methodology/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../18-benchmarking-methodology/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1105,7 +1496,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1117,9 +1514,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1128,7 +1550,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1140,9 +1568,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1151,7 +1604,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1163,9 +1622,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../21-your-first-assembly-function/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../21-your-first-assembly-function/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1174,7 +1658,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1186,9 +1676,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1197,7 +1712,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1209,9 +1730,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1220,7 +1766,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1232,9 +1784,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1243,7 +1820,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1255,9 +1838,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../25-beyond-the-assembler/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../25-beyond-the-assembler/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1266,7 +1874,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1278,9 +1892,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../26-competing-variants/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../26-competing-variants/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1289,7 +1928,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1301,9 +1946,34 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../27-capstone/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../27-capstone/" class="md-nav__link">
+      
   
   
   <span class="md-ellipsis">
@@ -1312,7 +1982,13 @@
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -1425,6 +2101,124 @@
       
         
           
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2042,7 +2836,7 @@
 <p>The specific restructuring this course builds is called <strong>decimation in time</strong>: a Cooley-Tukey strategy that splits an <span class="arithmatex">\( N \)</span>-sample input signal into two smaller sequences — one containing every even-indexed sample, one containing every odd-indexed sample — computes a smaller DFT on each, and combines the two results back into the full-size answer. Each of those two smaller DFTs can itself be split the same way, and the one after that, all the way down to trivially small problems — this repeated halving is exactly the <strong>radix-2 FFT</strong>: an FFT variant that always splits the current problem into exactly two equal halves at every stage, which requires the input size <span class="arithmatex">\( N \)</span> to be a power of two (256, 512, 1024, and so on) for the splitting to divide evenly all the way down.</p>
 <p>Before the diagram below, it's worth being explicit about why splitting helps at all: a size-<span class="arithmatex">\( N \)</span> DFT costs <span class="arithmatex">\( N^2 \)</span> operations, but two size-<span class="arithmatex">\( \frac{N}{2} \)</span> DFTs together cost only <span class="arithmatex">\( 2 \times \left(\frac{N}{2}\right)^2 = \frac{N^2}{2} \)</span> operations — already half the work, before even reaching the combination step. Splitting recursively, all the way down, is what eventually produces the dramatic <span class="arithmatex">\( O(N \log N) \)</span> result the next chapter proves in full.</p>
 <h4 id="diagram-divide-and-conquer-recursion-tree">Diagram: Divide-and-Conquer Recursion Tree</h4>
-<iframe src="../../sims/divide-and-conquer-recursion-tree/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/divide-and-conquer-recursion-tree/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details>
 <summary>Divide-and-Conquer Recursion Tree</summary>
@@ -2088,7 +2882,7 @@ Notice that dividing the samples into even and odd groups costs almost nothing �
 </ul>
 <p>Because twiddle factors depend only on <span class="arithmatex">\( N \)</span> and <span class="arithmatex">\( k \)</span> — never on the actual input signal's values — they are exactly the same for every FFT computed at a given size. Computing them freshly, with a sine and cosine call, every single time an FFT runs would waste effort recalculating an answer that never changes. <strong>Precomputation</strong> is the general strategy of calculating a value once, in advance, and reusing the stored result instead of recalculating it every time it's needed. Applied here, a <strong>twiddle factor table</strong> is a precomputed array holding every twiddle factor value an FFT of a given size will need, calculated once (often when a program starts) and simply looked up by index during every actual transform — a direct, high-value application of precomputation that every FFT implementation in this course relies on.</p>
 <h4 id="diagram-roots-of-unity-on-the-unit-circle">Diagram: Roots of Unity on the Unit Circle</h4>
-<iframe src="../../sims/roots-of-unity-unit-circle/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/roots-of-unity-unit-circle/main.html" width="100%" height="477px" scrolling="no"></iframe>
 
 <details>
 <summary>Roots of Unity on the Unit Circle</summary>
@@ -2137,7 +2931,7 @@ Bloom Taxonomy Verb: Calculate, demonstrate</p>
 <p>Notice that both outputs reuse the <em>identical</em> product <span class="arithmatex">\( W \cdot b \)</span> — computed once, then simply added for one output and subtracted for the other. This single-multiply, double-reuse structure is the specific reason the butterfly is so cheap: it produces two frequency-domain values from one complex multiplication and two complex additions, not two.</p>
 <p>The characteristic X-shaped diagram used to draw this operation gives it its name. A <strong>butterfly diagram</strong> is the standard visual representation of a butterfly operation, showing two input values on the left, two output values on the right, and crossing lines between them — with the twiddle-factor multiplication marked on the line feeding into the subtraction — resembling a butterfly's wings. A butterfly diagram is itself one small example of a broader kind of diagram used throughout computing: a <strong>data flow graph</strong> is a diagram representing how data moves through and is transformed by a sequence of operations, with nodes representing computations and edges representing data moving between them — an entire FFT, once fully assembled in the next chapter, can be drawn as one large data flow graph built from many connected butterfly diagrams.</p>
 <h4 id="diagram-butterfly-operation-visualizer">Diagram: Butterfly Operation Visualizer</h4>
-<iframe src="../../sims/butterfly-operation-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/butterfly-operation-visualizer/main.html" width="100%" height="462px" scrolling="no"></iframe>
 
 <details>
 <summary>Butterfly Operation Visualizer</summary>
@@ -2281,6 +3075,7 @@ Twenty-four new terms is a lot, but look at what they actually are: split in hal
 <p><img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
 Divide and conquer, twiddle factors, the butterfly, bit reversal — you now understand every mechanism a real FFT implementation needs. Next chapter, all of it comes together into one working, validated function, and you'll watch the operation count fall off a cliff. Time to transform!</p>
 </div>
+<p><a href="references/">See Annotated References</a></p>
 
 
 
@@ -2319,7 +3114,7 @@ Divide and conquer, twiddle factors, the butterfly, bit reversal — you now und
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../10-why-the-dft-is-too-slow/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10. Why the DFT Is Too Slow">
+          <a href="../10-why-the-dft-is-too-slow/references/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Annotated References">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2329,20 +3124,20 @@ Divide and conquer, twiddle factors, the butterfly, bit reversal — you now und
                 Previous
               </span>
               <div class="md-ellipsis">
-                10. Why the DFT Is Too Slow
+                Annotated References
               </div>
             </div>
           </a>
         
         
           
-          <a href="../12-building-the-fft/" class="md-footer__link md-footer__link--next" aria-label="Next: 12. Building the FFT: A Complete Recursive Implementation">
+          <a href="quiz/" class="md-footer__link md-footer__link--next" aria-label="Next: Quiz">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                12. Building the FFT: A Complete Recursive Implementation
+                Quiz
               </div>
             </div>
             <div class="md-footer__button md-icon">

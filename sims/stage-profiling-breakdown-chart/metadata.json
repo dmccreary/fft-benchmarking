@@ -1,0 +1,76 @@
+{
+  "title": "Stage Profiling Breakdown Chart",
+  "description": "A stacked bar and pie view of capture, compute, and draw time as shares of one pipeline cycle, with a click-through verdict on each stage's optimization payoff.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Performance Analysis", "Profiling"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "stage-profiling-breakdown-chart",
+  "library": "Chart.js",
+  "canvasHeight": 470,
+  "bloomLevel": "Evaluate",
+  "bloomVerb": "Judge, prioritize",
+  "completion_status": "implemented",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Profiling and optimization prioritization",
+    "learningObjectives": [
+      "Judge which pipeline stage to optimize from measured shares",
+      "Apply Amdahl's bound to each stage",
+      "Explain why intuition is a poor guide to bottlenecks"
+    ],
+    "bloomsTaxonomy": "Evaluate",
+    "duration": "8-10 minutes",
+    "prerequisites": ["The pipeline has three stages", "Percentages of a total"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "4.4.0",
+    "canvasDimensions": { "width": "responsive", "height": 470 },
+    "responsive": true,
+    "dependencies": ["Chart.js 4.4.0 CDN"],
+    "accessibility": { "hasAltText": false, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "radio", "label": "View", "options": ["Stacked bar", "Pie chart"] },
+      { "type": "click", "label": "Any segment", "purpose": "Show that stage's share and optimization verdict" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Fixed measured profile",
+    "variables": ["stage shares"],
+    "equations": ["max overall saving from a stage = that stage's share"],
+    "assumptions": [
+      "Representative profile: capture 1%, compute 66%, draw 33%",
+      "Stages are sequential and non-overlapping"
+    ],
+    "limitations": [
+      "Real profiles vary with FFT size, display size, and SPI clock; these proportions are illustrative of the common case"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Measurement-driven prioritization with per-segment verdicts",
+    "keyQuestions": [
+      "What is the maximum saving available from each stage?",
+      "Why is optimizing capture a waste of effort?"
+    ],
+    "commonMisconceptions": [
+      "That the most interesting code is the most expensive code",
+      "That any speedup in any stage is worth having"
+    ],
+    "assessmentOpportunities": [
+      "Compute the overall effect of a 40% capture-stage speedup"
+    ]
+  }
+}

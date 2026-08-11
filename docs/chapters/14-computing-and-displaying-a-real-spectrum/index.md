@@ -79,7 +79,7 @@ A complex bin carries a second piece of information beyond strength — its posi
 
 #### Diagram: Magnitude and Phase from a Complex Bin
 
-<iframe src="../../sims/magnitude-phase-from-complex-bin/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/magnitude-phase-from-complex-bin/main.html" width="100%" height="462px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Magnitude and Phase from a Complex Bin</summary>

@@ -244,7 +244,7 @@ where:
 
 #### Diagram: Parabolic Interpolation Peak Finder
 
-<iframe src="../../sims/parabolic-interpolation-peak-finder/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/parabolic-interpolation-peak-finder/main.html" width="100%" height="437px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Parabolic Interpolation Peak Finder</summary>

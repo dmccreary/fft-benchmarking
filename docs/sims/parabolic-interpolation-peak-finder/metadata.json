@@ -1,0 +1,81 @@
+{
+  "title": "Parabolic Interpolation Peak Finder",
+  "description": "Three adjustable bin magnitudes with a fitted parabola and a marker at the interpolated sub-bin peak position, with the formula worked out numerically.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Peak Detection", "Numerical Methods"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "parabolic-interpolation-peak-finder",
+  "library": "p5.js",
+  "canvasHeight": 435,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Sub-bin peak interpolation",
+    "learningObjectives": [
+      "Calculate the parabolic interpolation offset from three magnitudes",
+      "Demonstrate how the estimated peak shifts between bins",
+      "Verify the symmetric case gives zero offset"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A spectrum is magnitude per bin", "Quadratic vertex"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 435 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "alpha (bin below peak)", "min": 0, "max": 100, "default": 60, "step": 1 },
+      { "type": "slider", "label": "beta (peak bin)", "min": 0, "max": 100, "default": 100, "step": 1 },
+      { "type": "slider", "label": "gamma (bin above peak)", "min": 0, "max": 100, "default": 70, "step": 1 }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Three-point quadratic fit",
+    "variables": ["alpha", "beta", "gamma", "offset"],
+    "equations": [
+      "delta = 0.5 * (alpha - gamma) / (alpha - 2*beta + gamma)",
+      "interpolated magnitude = beta - 0.25 * (alpha - gamma) * delta",
+      "parabola: y(t) = ((alpha+gamma)/2 - beta) t^2 + ((gamma-alpha)/2) t + beta"
+    ],
+    "assumptions": [
+      "The centre bin is the local maximum",
+      "The peak shape is approximately quadratic near its top, which holds for windowed data"
+    ],
+    "limitations": [
+      "Least accurate for a rectangular window, where the peak is not well approximated by a parabola; the denominator is guarded against the collinear case"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Formula plus geometric consequence, manipulated directly",
+    "keyQuestions": [
+      "What offset do symmetric neighbours give, and why must that be so?",
+      "What check must precede this formula in real code?"
+    ],
+    "commonMisconceptions": [
+      "That the nearest bin is the best available frequency estimate",
+      "That better resolution always requires a larger N"
+    ],
+    "assessmentOpportunities": [
+      "Compute delta for a given triple and state the peak's direction"
+    ]
+  }
+}

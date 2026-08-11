@@ -1,0 +1,15 @@
+{
+  "sim_id": "parabolic-interpolation-peak-finder",
+  "diagram_name": "Parabolic Interpolation Peak Finder",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students adjust three neighboring bin magnitude values and calculate the resulting parabolic interpolation offset, observing how the estimated true peak shifts smoothly within the space between bins.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** parabolic-interpolation-peak-finder<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students adjust three neighboring bin magnitude values and calculate the resulting parabolic interpolation offset, observing how the estimated true peak shifts smoothly within the space between bins.\n\nCanvas layout:\n- Top (300px): three bin bars (peak bin and its two neighbors) with a fitted parabola curve overlaid, and a marker showing the interpolated true peak position\n- Bottom (150px): sliders for each bin's magnitude and a live formula readout\n\nVisual elements:\n- Three bar chart bars representing alpha, beta, gamma\n- A smooth parabola curve fitted through the tops of the three bars\n- A vertical marker at the parabola's true peak, positioned between bins according to the calculated offset\n\nInteractive controls:\n- Slider: alpha (magnitude of bin below peak), range 0-100, default 60\n- Slider: beta (magnitude of peak bin), range 0-100, default 100\n- Slider: gamma (magnitude of bin above peak), range 0-100, default 70\n\nBehavior:\n- Adjusting any slider immediately recalculates the offset using the parabolic interpolation formula and moves the marker to the new estimated true-peak position\n- Setting alpha exactly equal to gamma (symmetric case) places the marker exactly at the peak bin's center, with an offset of zero\n\nInstructional Rationale: An Apply-level calculator is appropriate because the objective is calculating a specific numeric offset from chosen input values — direct manipulation with an immediately visible geometric result (the marker's position) connects the formula to its geometric meaning.\n\nImplementation notes:\n- Use p5.js; implement the parabolic interpolation formula directly and redraw the fitted parabola using the three bar heights each frame\n- Responsive width; bar/parabola panel and sliders stack vertically below 600px width"
+}

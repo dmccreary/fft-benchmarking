@@ -1,0 +1,80 @@
+{
+  "title": "Eight Point DFT By Hand Calculator",
+  "description": "A fully worked 8-point DFT showing every per-sample real and imaginary product, the running sums, and a results table of all eight bins on an exact whole-number example.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "DFT", "Numerical Methods"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "eight-point-dft-by-hand-calculator",
+  "library": "p5.js",
+  "canvasHeight": 550,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 9,
+  "chapter_title": "Computing and Validating the DFT",
+  "chapter_dir": "09-computing-and-validating-the-dft",
+  "chapter_rel_dir": "chapters/09-computing-and-validating-the-dft",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Worked evaluation of the DFT definition",
+    "learningObjectives": [
+      "Explain how the DFT sum produces a specific numeric result",
+      "Interpret real, imaginary, and magnitude values per bin",
+      "Use the result as a test vector for validating an implementation"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "15 minutes",
+    "prerequisites": ["The DFT definition", "Trig values at multiples of pi/4"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 550 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Previous bin", "purpose": "Step back one bin" },
+      { "type": "button", "label": "Next bin", "purpose": "Step forward one bin" },
+      { "type": "checkbox", "label": "Show all 8 products for this bin", "purpose": "Expand or collapse the per-sample detail" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Direct evaluation of the DFT definition",
+    "variables": ["bin index", "per-sample products", "real and imaginary sums"],
+    "equations": [
+      "X[k] = sum over n of x[n] * (cos(2 pi k n / N) - i sin(2 pi k n / N))",
+      "x[n] = 1 + 2 cos(2 pi n / 8)"
+    ],
+    "assumptions": [
+      "N = 8 with a fixed real-valued input",
+      "No normalization factor applied to the forward transform"
+    ],
+    "limitations": [
+      "Different conventions place the 1/N scaling on the forward transform; this one does not, so magnitudes are N/2 times the amplitude"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Fully visible worked example, stepped by bin",
+    "keyQuestions": [
+      "Why is bin 0 equal to 8?",
+      "Which bins pair up as mirrors, and why?"
+    ],
+    "commonMisconceptions": [
+      "That a DFT bin's value is opaque or requires special machinery to obtain",
+      "That all N bins carry independent information for a real input"
+    ],
+    "assessmentOpportunities": [
+      "Predict which bin changes if the DC offset changes from 1 to 3"
+    ]
+  }
+}

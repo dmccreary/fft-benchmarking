@@ -201,7 +201,7 @@ where:
 
 #### Diagram: In-Phase / Quadrature Phase Independence Explorer
 
-<iframe src="../../sims/in-phase-quadrature-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/in-phase-quadrature-explorer/main.html" width="100%" height="492px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>In-Phase / Quadrature Phase Independence Explorer</summary>

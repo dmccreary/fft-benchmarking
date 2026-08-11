@@ -1,0 +1,15 @@
+{
+  "sim_id": "in-phase-quadrature-explorer",
+  "diagram_name": "In-Phase / Quadrature Phase Independence Explorer",
+  "chapter_number": 8,
+  "chapter_title": "'Correlation: Does My Signal Contain This Note?'",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "library": "p5.js",
+  "bloom_level": "Analyze",
+  "bloom_verb": "Examine, compare",
+  "learning_objective": "Let students adjust a captured signal's phase offset and compare how the in-phase component and quadrature component individually rise and fall, while the combined correlation magnitude stays constant — demonstrating phase independence directly.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** in-phase-quadrature-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze\nBloom Taxonomy Verb: Examine, compare\n\nLearning objective: Let students adjust a captured signal's phase offset and compare how the in-phase component and quadrature component individually rise and fall, while the combined correlation magnitude stays constant — demonstrating phase independence directly.\n\nCanvas layout:\n- Top (250px): three live bar meters side by side, labeled \"I (in-phase)\", \"Q (quadrature)\", \"Magnitude\"\n- Bottom (200px): captured signal waveform with a phase-offset slider\n\nVisual elements:\n- I bar and Q bar, each ranging from -1 to +1, updating live as phase changes\n- Magnitude bar, ranging from 0 to 1.4 (max possible), shown in a distinguishing color\n- Small readout under the magnitude bar confirming its formula: \"sqrt(I² + Q²)\"\n\nInteractive controls:\n- Slider: Captured signal phase offset, range 0 to 2π radians, default 0\n\nBehavior:\n- As the phase slider moves through a full cycle, the I bar traces a cosine-shaped path and the Q bar traces a sine-shaped path — each individually rising and falling, and each hitting zero at different phase values\n- The magnitude bar, computed from both, stays essentially flat throughout the full slider range, visually proving that phase independence holds even though I and Q individually do not\n\nInstructional Rationale: An Analyze-level comparison pattern is appropriate because the objective requires examining and comparing three related live quantities to see which one (magnitude) remains invariant under a transformation (phase change) that strongly affects the other two — the side-by-side bar meters make the contrast immediate and visual.\n\nImplementation notes:\n- Use p5.js; compute I and Q directly from the multiply-and-sum formula against sine and cosine test waves each frame the phase slider changes\n- Responsive width; meters and waveform plot stack vertically below 600px width"
+}

@@ -1,0 +1,79 @@
+{
+  "title": "In-Phase Quadrature Explorer",
+  "description": "Three live bar meters for the in-phase component, quadrature component, and combined magnitude, plus a plot of all three across the full phase range showing magnitude invariance.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Correlation", "Signals and Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "in-phase-quadrature-explorer",
+  "library": "p5.js",
+  "canvasHeight": 490,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, compare",
+  "completion_status": "implemented",
+  "chapter_number": 8,
+  "chapter_title": "Correlation",
+  "chapter_dir": "08-correlation",
+  "chapter_rel_dir": "chapters/08-correlation",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "In-phase and quadrature components; phase independence",
+    "learningObjectives": [
+      "Examine how I and Q vary with phase",
+      "Compare their variation against the invariant magnitude",
+      "Explain why a frequency bin must carry two numbers"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Multiply-and-sum correlation", "Sine and cosine differ by a quarter cycle"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 490 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Captured signal phase offset", "min": 0, "max": 6.283, "default": 0, "step": 0.01, "units": "radians" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Numerical quadrature correlation",
+    "variables": ["phase offset", "I", "Q", "magnitude"],
+    "equations": [
+      "I = (2/N) sum x[n] sin(2 pi f n / fs)",
+      "Q = (2/N) sum x[n] cos(2 pi f n / fs)",
+      "magnitude = sqrt(I^2 + Q^2)"
+    ],
+    "assumptions": [
+      "Signal at 500 Hz with a 128-sample window at 8 kHz, exactly 8 bins",
+      "Unit amplitude, no noise"
+    ],
+    "limitations": [
+      "Off-bin frequencies give a magnitude slightly below 1 due to scalloping loss; this sim sits exactly on a bin to isolate the phase effect"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Side-by-side invariance comparison",
+    "keyQuestions": [
+      "At what phase does I alone report zero?",
+      "Why must a frequency bin carry two numbers?"
+    ],
+    "commonMisconceptions": [
+      "That a zero correlation against a sine means the frequency is absent",
+      "That phase must be known in advance to detect a tone"
+    ],
+    "assessmentOpportunities": [
+      "Name two situations producing a zero in-phase reading and how to distinguish them"
+    ]
+  }
+}

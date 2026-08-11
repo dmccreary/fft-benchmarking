@@ -173,7 +173,7 @@ folded into a single block rather than passed one at a time.
 
 #### Diagram: FFT Stage Architecture — Python and Assembly Boundary
 
-<iframe src="../../sims/fft-stage-architecture/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/fft-stage-architecture/main.html" width="100%" height="517px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>FFT Stage Architecture — Python and Assembly Boundary</summary>

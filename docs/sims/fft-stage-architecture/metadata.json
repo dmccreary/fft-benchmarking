@@ -1,0 +1,90 @@
+{
+  "title": "FFT Stage Architecture",
+  "description": "A two-band diagram showing the three Python-side pieces of an FFT above the single hand-written assembly hot loop, with a highlighted language boundary and live execution counts for any FFT size.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Assembly Language", "Software Architecture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "fft-stage-architecture",
+  "library": "p5.js",
+  "canvasHeight": 515,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Differentiate, examine",
+  "completion_status": "implemented",
+  "chapter_number": 23,
+  "chapter_title": "The Butterfly in Assembly: A Complete FFT and Production Libraries",
+  "chapter_dir": "23-the-butterfly-in-assembly",
+  "chapter_rel_dir": "chapters/23-the-butterfly-in-assembly",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Deciding which code to hand-optimize by execution frequency",
+    "learningObjectives": [
+      "Differentiate the Python-side and assembly-side parts of an FFT",
+      "Justify each placement using how often the code runs",
+      "Explain why the language boundary is crossed per stage rather than per butterfly"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A radix-2 FFT has log2(N) stages of N/2 butterflies",
+      "Assembly costs far more developer time than Python",
+      "Cross-language calls carry overhead"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 515 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "select", "label": "FFT size N", "options": ["256", "512", "1024"], "purpose": "Rescale every execution count" },
+      { "type": "click", "label": "Architecture box", "purpose": "Reveal what a piece does, how often it runs, and why it sits on that side" },
+      { "type": "click", "label": "Boundary arrow", "purpose": "Reveal what crosses the language boundary" },
+      { "type": "button", "label": "Clear selection", "purpose": "Return to the overview text" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Static architecture diagram with frequency counts derived from FFT size",
+    "variables": ["N", "stage count", "butterflies per stage", "total butterflies"],
+    "equations": [
+      "stages = log2(N)",
+      "butterflies per stage = N / 2",
+      "total butterflies = (N / 2) * log2(N)",
+      "hot-loop instructions = 8 * total butterflies"
+    ],
+    "assumptions": [
+      "Radix-2 decimation-in-time, so every stage does exactly N/2 butterflies",
+      "The butterfly kernel is eight instructions, matching the chapter's listing",
+      "The twiddle table is computed once at startup rather than per transform"
+    ],
+    "limitations": [
+      "Counts instructions, not cycles; memory stalls are not modeled",
+      "Radix-4 and split-radix variants change the counts and are not shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Side-by-side comparison of execution frequency, with the payoff of optimizing each piece made explicit",
+    "keyQuestions": [
+      "If you made this piece twice as fast, how many cycles would one transform save?",
+      "What would happen if assembly were called once per butterfly instead of once per stage?"
+    ],
+    "commonMisconceptions": [
+      "That the trigonometry is the expensive part because it looks expensive",
+      "That more assembly always means more speed"
+    ],
+    "assessmentOpportunities": [
+      "Argue against rewriting the bit-reversal permutation in assembly",
+      "Recompute every count for N = 2048"
+    ]
+  }
+}

@@ -93,7 +93,7 @@ in and the frequency domain a receiver needs to decode the signal.
 
 #### Diagram: Applications of Real-Time FFT
 
-<iframe src="../../sims/fft-applications-map/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/fft-applications-map/main.html" width="100%" height="487px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Applications of Real-Time FFT</summary>

@@ -1,0 +1,77 @@
+{
+  "title": "Boxed vs Unboxed Memory Explorer",
+  "description": "Side-by-side boxed and unboxed memory diagrams for the same float addition, stepped in lockstep with a running memory-operation tally.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Memory Layout", "Optimization"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "boxed-unboxed-memory-explorer",
+  "library": "p5.js",
+  "canvasHeight": 500,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, compare",
+  "completion_status": "implemented",
+  "chapter_number": 19,
+  "chapter_title": "The Abstraction Ladder",
+  "chapter_dir": "19-the-abstraction-ladder",
+  "chapter_rel_dir": "chapters/19-the-abstraction-ladder",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Science",
+    "topic": "Boxed versus unboxed value representation",
+    "learningObjectives": [
+      "Explain why boxed arithmetic needs more memory accesses",
+      "Compare boxed and unboxed memory layouts step by step",
+      "Explain why the result allocation matters most for real-time code"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10-12 minutes",
+    "prerequisites": ["Pointers and heap allocation", "Variables occupy memory"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 500 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Step back / Step forward", "purpose": "Advance both paths in lockstep" },
+      { "type": "button", "label": "Run both to completion", "purpose": "Jump to the final tallies" },
+      { "type": "checkbox", "label": "Show operation tally", "purpose": "Show or hide the running counts" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Staged memory-layout comparison",
+    "variables": ["stage", "boxed op count", "unboxed op count"],
+    "equations": [],
+    "assumptions": [
+      "Operation counts are illustrative, not a precise cycle count",
+      "Both operands are floats already resident in memory"
+    ],
+    "limitations": [
+      "Does not model interpreter dispatch overhead, which adds further cost to the boxed path beyond the memory operations shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Lockstep step-through of two representations with a running tally",
+    "keyQuestions": [
+      "Which step allocates, and why does that matter most?",
+      "What safety property does unboxing remove?"
+    ],
+    "commonMisconceptions": [
+      "That a float variable holds a float",
+      "That the cost difference is only about speed rather than also about predictability"
+    ],
+    "assessmentOpportunities": [
+      "Estimate allocations per butterfly and their cumulative consequence"
+    ]
+  }
+}

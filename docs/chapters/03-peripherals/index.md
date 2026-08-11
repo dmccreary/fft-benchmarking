@@ -189,7 +189,7 @@ Before the interactive debounce visualizer below, it is worth naming exactly wha
 
 #### Diagram: Switch Bounce and Debounce Visualizer
 
-<iframe src="../../sims/switch-bounce-debounce-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/switch-bounce-debounce-visualizer/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Switch Bounce and Debounce Visualizer</summary>

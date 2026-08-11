@@ -1,0 +1,87 @@
+{
+  "title": "Switch Bounce Debounce Visualizer",
+  "description": "Two time-aligned strip charts showing a bouncing switch signal and the result of applying a student-chosen debounce delay, with a logical press counter that exposes the too-short-delay failure mode.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Digital Input"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "switch-bounce-debounce-visualizer",
+  "library": "p5.js",
+  "canvasHeight": 480,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Demonstrate, apply",
+  "completion_status": "implemented",
+  "chapter_number": 3,
+  "chapter_title": "Peripherals",
+  "chapter_dir": "03-peripherals",
+  "chapter_rel_dir": "chapters/03-peripherals",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Contact bounce and debounce logic",
+    "learningObjectives": [
+      "Apply a debounce delay to a noisy switch signal",
+      "Demonstrate that too short a delay admits extra press events",
+      "Justify a debounce delay given a bounce duration and latency budget"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10-15 minutes",
+    "prerequisites": [
+      "A GPIO pin reads a digital high or low",
+      "Reading a pin in a loop"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 480 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Simulate one press", "purpose": "Generate a new random bounce pattern of 3-6 bounces within 15 ms" },
+      { "type": "slider", "label": "Debounce delay", "min": 0, "max": 60, "default": 30, "step": 1, "units": "ms" },
+      { "type": "checkbox", "label": "Show bounce count", "purpose": "Display raw transitions versus filtered events" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Discrete-time state machine over a sampled signal",
+    "variables": ["raw pin state", "candidate level", "stable level", "debounce delay"],
+    "equations": [
+      "accept candidate when (t - candidateSince) >= debounceDelay"
+    ],
+    "assumptions": [
+      "Bounce activity is confined to the first 15 ms",
+      "The signal is sampled every 0.1 ms with no sampling jitter",
+      "The press always settles in the pressed state"
+    ],
+    "limitations": [
+      "Real bounce patterns vary with switch age, contact material, and press force; the release edge also bounces and is not modeled here"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Discover-the-failure parameter exploration",
+    "keyQuestions": [
+      "How many logical presses does a 5 ms delay produce?",
+      "Why is the press registered later than the physical press?"
+    ],
+    "commonMisconceptions": [
+      "That a switch closes cleanly once",
+      "That any nonzero debounce delay is sufficient"
+    ],
+    "assessmentOpportunities": [
+      "Choose a debounce delay for a stated bounce duration and justify the latency cost"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="schema" content="https://dmccreary.github.io/intelligent-textbooks/ns/microsim/v1">
+    <title>Stage Profiling Breakdown Chart MicroSim using Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2 class="heading">Where Does the Frame Time Actually Go?</h2>
+        <div class="chart-box">
+            <canvas id="stageChart"></canvas>
+        </div>
+        <div class="controls">
+            <label><input type="radio" name="view" value="bar" checked> Stacked bar</label>
+            <label><input type="radio" name="view" value="pie"> Pie chart</label>
+            <span class="hint">Click any segment for detail</span>
+        </div>
+        <div class="infobox" id="infobox"></div>
+    </main>
+    <script src="stage-profiling-breakdown-chart.js"></script>
+</body>
+</html>

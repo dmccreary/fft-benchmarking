@@ -180,7 +180,7 @@ Stage profiling turns the abstract idea of a performance bottleneck from Chapter
 
 #### Diagram: Stage Profiling Breakdown Chart
 
-<iframe src="../../sims/stage-profiling-breakdown-chart/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/stage-profiling-breakdown-chart/main.html" width="100%" height="472px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Stage Profiling Breakdown Chart</summary>

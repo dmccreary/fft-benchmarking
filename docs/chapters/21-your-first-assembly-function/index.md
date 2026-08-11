@@ -137,7 +137,7 @@ This pattern — initialize, label, do work, decrement, compare, conditionally b
 
 #### Diagram: Register Tracer
 
-<iframe src="../../sims/register-tracer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/register-tracer/main.html" width="100%" height="442px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Register Tracer</summary>

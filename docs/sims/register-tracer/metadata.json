@@ -1,0 +1,81 @@
+{
+  "title": "Register Tracer",
+  "description": "A five-instruction ARM countdown loop stepped one instruction at a time, with live register r0, the zero flag, and an explanation of each executed instruction.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Assembly Language", "Computer Architecture"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "register-tracer",
+  "library": "p5.js",
+  "canvasHeight": 440,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Interpret, trace",
+  "completion_status": "implemented",
+  "chapter_number": 21,
+  "chapter_title": "Your First Assembly Function",
+  "chapter_dir": "21-your-first-assembly-function",
+  "chapter_rel_dir": "chapters/21-your-first-assembly-function",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Tracing an assembly loop and its status flags",
+    "learningObjectives": [
+      "Trace register and flag state one instruction at a time",
+      "Interpret how CMP and BNE cooperate through the Z flag",
+      "Explain why a label costs nothing at run time"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10-12 minutes",
+    "prerequisites": ["A register holds a value", "Loops and conditional branches"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 440 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Step", "purpose": "Execute exactly one instruction" },
+      { "type": "button", "label": "Run to completion", "purpose": "Auto-step at a readable pace" },
+      { "type": "button", "label": "Reset", "purpose": "Return to the initial state" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Instruction-level interpreter with a program counter",
+    "variables": ["program counter", "r0", "Z flag"],
+    "equations": [
+      "SUB: r0 <- r0 - 1",
+      "CMP: Z <- (r0 - 0 == 0), result discarded",
+      "BNE: branch taken when Z is clear"
+    ],
+    "assumptions": [
+      "Only the Z flag is modeled; N, C, and V are not shown",
+      "MOV does not affect flags, matching the non-S form"
+    ],
+    "limitations": [
+      "A single-register example; real assembly juggles many registers and the full flag set"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Instruction-level step-through with concrete state after every step",
+    "keyQuestions": [
+      "Which instruction writes the Z flag and which reads it?",
+      "Why does a label execute nothing?"
+    ],
+    "commonMisconceptions": [
+      "That CMP stores a result",
+      "That BNE performs a comparison"
+    ],
+    "assessmentOpportunities": [
+      "Predict the behaviour if the CMP instruction were deleted"
+    ]
+  }
+}

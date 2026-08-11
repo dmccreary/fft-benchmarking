@@ -103,7 +103,7 @@ Before the interactive demonstration below, it's worth being concrete about what
 
 #### Diagram: Aliasing Demonstrator
 
-<iframe src="../../sims/aliasing-demonstrator/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/aliasing-demonstrator/main.html" width="100%" height="467px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Aliasing Demonstrator</summary>

@@ -1,5 +1,5 @@
-site_name: FFT Benchmarking
-site_description: 'A collection of resources for learning about FFTs and benchmarking techniques.'
+site_name: Real-Time DSP on a $5 Microcontroller
+site_description: 'A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.'
 site_author: 'Dan McCreary'
 repo_name: 'GitHub Repo'
 site_url: 'https://dmccreary.github.io/fft-benchmarking/'
@@ -19,6 +19,8 @@ nav:
     - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
     - Quality Metrics: learning-graph/quality-metrics.md
     - Mascot Style Guide: learning-graph/mascot-test.md
+    - FAQ Quality Report: learning-graph/faq-quality-report.md
+    - FAQ Coverage Gaps: learning-graph/faq-coverage-gaps.md
 
   - Chapters:
     - List of Chapters: chapters/index.md
@@ -100,16 +102,81 @@ nav:
   - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
   
   - MicroSims:
-    - MicroSims Overview: sims/index.md
-    - Graph Viewer: sims/graph-viewer/index.md
+    - List of MicroSims: sims/index.md
+    - Address and Byte Offset Explorer: sims/address-byte-offset-explorer/index.md
+    - Aliasing Demonstrator: sims/aliasing-demonstrator/index.md
+    - Applications of Real-Time FFT: sims/fft-applications-map/index.md
+    - Benchmark Results Chart: sims/benchmark-results-chart/index.md
+    - Blink Timing Explorer: sims/blink-timing-explorer/index.md
+    - Boxed vs. Unboxed Memory Layout Explorer: sims/boxed-unboxed-memory-explorer/index.md
+    - Branch Misprediction Visualizer: sims/branch-misprediction-visualizer/index.md
+    - Butterfly Operation Visualizer: sims/butterfly-operation-visualizer/index.md
+    - Complete 8-Point FFT Flow Graph: sims/complete-8-point-fft-flow-graph/index.md
+    - Complex Plane Euler Visualizer: sims/complex-plane-euler-visualizer/index.md
+    - Correlation vs Test Frequency Sweep: sims/correlation-vs-test-frequency-sweep/index.md
+    - Counter Wraparound Visualizer: sims/counter-wraparound-visualizer/index.md
+    - Cycle Budget Calculator: sims/cycle-budget-calculator/index.md
+    - DFT Frequency Bin Explorer: sims/dft-frequency-bin-explorer/index.md
+    - DFT Scaling Behavior Chart: sims/dft-scaling-behavior-chart/index.md
+    - DFT Validation Dashboard: sims/dft-validation-dashboard/index.md
+    - Divide and Conquer Recursion Tree: sims/divide-and-conquer-recursion-tree/index.md
+    - Double Buffering Pipeline: sims/double-buffering-pipeline/index.md
+    - DWT Register Explorer: sims/dwt-register-explorer/index.md
+    - Dynamic Range Ladder: sims/dynamic-range-ladder/index.md
+    - Eight Point DFT By Hand Calculator: sims/eight-point-dft-by-hand-calculator/index.md
+    - Experimental Design Anatomy: sims/experimental-design-anatomy/index.md
     - FFT History Timeline: sims/timeline/index.md
+    - FFT Stage Architecture — Python and Assembly Boundary: sims/fft-stage-architecture/index.md
+    - FPU Capability Probe Simulator: sims/fpu-capability-probe/index.md
+    - Framebuffer Draw Refresh Pipeline: sims/framebuffer-draw-refresh-pipeline/index.md
+    - Frequency To Musical Note Calculator: sims/frequency-to-musical-note-calculator/index.md
+    - Harmonic Stack Synthesizer: sims/harmonic-stack-synthesizer/index.md
+    - Hop Size Overlap Visualizer: sims/hop-size-overlap-visualizer/index.md
+    - I2S Protocol Timing Explorer: sims/i2s-protocol-timing-explorer/index.md
+    - In-Phase Quadrature Explorer: sims/in-phase-quadrature-explorer/index.md
+    - Instruction Encoding Bit Field Builder: sims/instruction-encoding-bit-builder/index.md
+    - Iterative FFT Stage Loop Visualizer: sims/iterative-fft-stage-loop-visualizer/index.md
+    - Learning Graph Viewer: sims/graph-viewer/index.md
+    - Linear Sqrt Decibel Scaling Chart: sims/linear-sqrt-decibel-scaling-chart/index.md
+    - Live Spectrum Display Bin Averaging: sims/live-spectrum-display-bin-averaging/index.md
+    - Magnitude Phase From Complex Bin: sims/magnitude-phase-from-complex-bin/index.md
+    - MEMS Microphone Cross Section: sims/mems-microphone-cross-section/index.md
+    - Multiply and Sum Correlator: sims/multiply-and-sum-correlator/index.md
+    - Normalization Factor Explorer: sims/normalization-factor-explorer/index.md
+    - Optimization Attribution Waterfall: sims/optimization-attribution-waterfall/index.md
+    - Parabolic Interpolation Peak Finder: sims/parabolic-interpolation-peak-finder/index.md
+    - Performance Metrics Calculator: sims/performance-metrics-calculator/index.md
+    - Periodic Assumption Edge Discontinuity: sims/periodic-assumption-edge-discontinuity/index.md
+    - Pico 2 Memory Map Explorer: sims/pico2-memory-map-explorer/index.md
+    - Register Tracer: sims/register-tracer/index.md
+    - Roots of Unity Unit Circle: sims/roots-of-unity-unit-circle/index.md
+    - Sine Wave Parameter Explorer: sims/sine-wave-parameter-explorer/index.md
+    - Spectrogram Waterfall Display: sims/spectrogram-waterfall-display/index.md
+    - Spectrum Symmetry Mirror: sims/spectrum-symmetry-mirror/index.md
+    - Stage Profiling Breakdown Chart: sims/stage-profiling-breakdown-chart/index.md
+    - Standalone Deployment Workflow: sims/standalone-deployment-workflow/index.md
+    - Switch Bounce Debounce Visualizer: sims/switch-bounce-debounce-visualizer/index.md
+    - The Abstraction Ladder: sims/abstraction-ladder-diagram/index.md
+    - Thonny REPL Workflow: sims/thonny-repl-workflow/index.md
+    - Unit Circle Radians Explorer: sims/unit-circle-radians-explorer/index.md
+    - Variance Source Explorer: sims/variance-source-explorer/index.md
+    - Variant Performance Dashboard: sims/variant-performance-dashboard/index.md
+    - Wave Superposition Beats Simulator: sims/wave-superposition-beats-simulator/index.md
+    - Window Function Comparison: sims/window-function-comparison/index.md
+
+
   
   - Plans:
     - List of Plans: plans/index.md
     - Plan 1: plans/01-fft-test-plan.md
     - Plan 2: plans/02-competing-variants.md
-  
+
+  - Appendices:
+    - Benchmark Comparison: appendices/benchmark-comparison/index.md
+
+  - FAQ: faq.md
   - Glossary: glossary.md
+  - Instructor's Guide: instructors-guide/index.md
   - How We Built This Site: how-we-built-this-site.md
   - References: references.md
   - License: license.md

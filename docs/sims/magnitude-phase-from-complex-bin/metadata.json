@@ -1,0 +1,71 @@
+{
+  "title": "Magnitude Phase From Complex Bin",
+  "description": "A live complex-plane vector driven by real and imaginary sliders, with magnitude and phase formulas worked out numerically alongside the geometry.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Complex Analysis", "Spectrum Display"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "magnitude-phase-from-complex-bin",
+  "library": "p5.js",
+  "canvasHeight": 460,
+  "bloomLevel": "Apply",
+  "bloomVerb": "Calculate, demonstrate",
+  "completion_status": "implemented",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Electrical Engineering",
+    "topic": "Magnitude and phase of an FFT bin",
+    "learningObjectives": [
+      "Calculate magnitude from real and imaginary parts",
+      "Calculate phase using atan2",
+      "Explain why atan2 is required rather than atan"
+    ],
+    "bloomsTaxonomy": "Apply",
+    "duration": "10 minutes",
+    "prerequisites": ["Complex numbers in rectangular form", "Pythagorean theorem"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 460 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "Real part (re)", "min": -10, "max": 10, "default": 6, "step": 0.1 },
+      { "type": "slider", "label": "Imaginary part (im)", "min": -10, "max": 10, "default": 8, "step": 0.1 }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Direct formula evaluation",
+    "variables": ["real part", "imaginary part", "magnitude", "phase"],
+    "equations": ["magnitude = sqrt(re^2 + im^2)", "phase = atan2(im, re)"],
+    "assumptions": ["A single bin considered in isolation"],
+    "limitations": ["Does not show how these values arise from the transform itself"]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Paired geometric and algebraic views with live numbers",
+    "keyQuestions": [
+      "Why must phase use atan2 rather than atan?",
+      "What information does a magnitude-only spectrum plot discard?"
+    ],
+    "commonMisconceptions": [
+      "That atan(im/re) is equivalent to atan2(im, re)",
+      "That a bin carries a single number"
+    ],
+    "assessmentOpportunities": [
+      "Compute magnitude and phase for a third-quadrant bin and contrast with atan"
+    ]
+  }
+}

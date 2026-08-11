@@ -1,0 +1,15 @@
+{
+  "sim_id": "magnitude-phase-from-complex-bin",
+  "diagram_name": "Magnitude and Phase from a Complex Bin",
+  "chapter_number": 14,
+  "chapter_title": "Computing and Displaying a Real Spectrum",
+  "chapter_dir": "14-computing-and-displaying-a-real-spectrum",
+  "chapter_rel_dir": "chapters/14-computing-and-displaying-a-real-spectrum",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students adjust a complex bin's real and imaginary parts and calculate the resulting magnitude and phase, connecting the complex-plane point to both formulas simultaneously.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** magnitude-phase-from-complex-bin<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students adjust a complex bin's real and imaginary parts and calculate the resulting magnitude and phase, connecting the complex-plane point to both formulas simultaneously.\n\nCanvas layout:\n- Left (350px): a complex plane with a point at (re, im), a vector from the origin, and the angle theta marked\n- Right (300px): input controls and live formula readouts\n\nVisual elements:\n- Complex plane with real/imaginary axes\n- A vector from the origin to the point (re, im), its length visually representing magnitude\n- An arc showing the angle theta from the positive real axis to the vector\n\nInteractive controls:\n- Slider: Real part (re), range -10 to 10, default 6\n- Slider: Imaginary part (im), range -10 to 10, default 8\n\nBehavior:\n- Moving either slider immediately redraws the vector and updates two live readouts: \"Magnitude = sqrt(re² + im²) = [value]\" and \"Phase = atan2(im, re) = [value] radians\"\n\nInstructional Rationale: An Apply-level calculator is appropriate because the objective is calculating magnitude and phase from specific chosen values — a live, directly manipulable complex-plane point ties the geometric picture to both formulas at once.\n\nImplementation notes:\n- Use p5.js; compute magnitude and phase directly from the slider values every frame\n- Responsive width; complex plane and controls stack vertically below 600px width"
+}

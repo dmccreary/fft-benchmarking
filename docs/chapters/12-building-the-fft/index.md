@@ -239,7 +239,7 @@ def fft_iterative(x):
 
 #### Diagram: Iterative FFT Stage Loop Visualizer
 
-<iframe src="../../sims/iterative-fft-stage-loop-visualizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/iterative-fft-stage-loop-visualizer/main.html" width="100%" height="447px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Iterative FFT Stage Loop Visualizer</summary>

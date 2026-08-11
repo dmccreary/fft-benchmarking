@@ -1,0 +1,86 @@
+{
+  "title": "Pico 2 Memory Map Explorer",
+  "description": "A clickable vertical model of the Pico 2 address space with flash, RAM, and memory-mapped register bands, so students can classify data by region and explain why register reads differ from RAM reads.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-10",
+  "subject": [
+    "Digital Signal Processing",
+    "Embedded Systems",
+    "Computer Architecture"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "pico2-memory-map-explorer",
+  "library": "p5.js",
+  "canvasHeight": 510,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, classify",
+  "completion_status": "implemented",
+  "chapter_number": 2,
+  "chapter_title": "Know Your Board",
+  "chapter_dir": "02-know-your-board",
+  "chapter_rel_dir": "chapters/02-know-your-board",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Microcontroller address space and memory-mapped I/O",
+    "learningObjectives": [
+      "Classify data as belonging to flash, RAM, or memory-mapped registers",
+      "Explain why reading a register differs from reading RAM",
+      "Identify which memory region a given MicroPython call reads"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "10 minutes",
+    "prerequisites": [
+      "Variables live somewhere in memory",
+      "A program is stored as a file before it runs"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 510 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any band or sub-block", "purpose": "Open the full definition, example, and volatility" },
+      { "type": "hover", "label": "Any band", "purpose": "One-line summary tooltip" },
+      { "type": "button", "label": "gc.mem_free()", "purpose": "Highlight RAM" },
+      { "type": "button", "label": "machine.unique_id()", "purpose": "Highlight the Unique Device ID register" },
+      { "type": "button", "label": "open(\"main.py\")", "purpose": "Highlight flash" },
+      { "type": "button", "label": "Reset", "purpose": "Return to the default selection" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Labeled spatial classification diagram",
+    "variables": ["selected region"],
+    "equations": [],
+    "assumptions": [
+      "Band heights are illustrative, not proportional to real region sizes"
+    ],
+    "limitations": [
+      "Shows no numeric addresses or the XIP cache; the full RP2350 map has many more peripheral blocks than the four shown"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Click-to-classify with code-snippet anchoring",
+    "keyQuestions": [
+      "Which regions survive a power cycle?",
+      "Why does the volatile/non-volatile question not apply to registers?"
+    ],
+    "commonMisconceptions": [
+      "That a register address stores a value the way a RAM address does",
+      "That everything reachable by an address is storage"
+    ],
+    "assessmentOpportunities": [
+      "Classify a sample buffer, a saved file, and a GPIO pin state into the correct bands"
+    ]
+  }
+}

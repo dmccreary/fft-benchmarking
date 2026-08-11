@@ -1,0 +1,76 @@
+{
+  "title": "Abstraction Ladder Diagram",
+  "description": "Five implementation approaches ranked as a ladder with illustrative relative execution times, each clickable to reveal what runs the code, how values are represented, and what that rung costs.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Programming Languages", "Optimization"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "abstraction-ladder-diagram",
+  "library": "p5.js",
+  "canvasHeight": 470,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Organize, differentiate",
+  "completion_status": "implemented",
+  "chapter_number": 19,
+  "chapter_title": "The Abstraction Ladder",
+  "chapter_dir": "19-the-abstraction-ladder",
+  "chapter_rel_dir": "chapters/19-the-abstraction-ladder",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Science",
+    "topic": "Implementation approaches and their tradeoffs",
+    "learningObjectives": [
+      "Organize five approaches into a ranked ladder",
+      "Differentiate what each rung gives up for speed",
+      "Choose a rung appropriate to a stated constraint"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10 minutes",
+    "prerequisites": ["MicroPython runs on the board", "Compiled versus interpreted"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 470 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "click", "label": "Any rung", "purpose": "Show runner, value representation, and what it costs" },
+      { "type": "button", "label": "Clear selection", "purpose": "Return to the prompt state" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Ranked comparison diagram",
+    "variables": ["selected rung"],
+    "equations": [],
+    "assumptions": [
+      "Bar lengths are illustrative relative times, labeled as such on the canvas",
+      "Ordering reflects the typical case; specific workloads vary"
+    ],
+    "limitations": [
+      "Ratios are indicative rather than measured; the chapter's own benchmarks supply real figures"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Ranked ladder with a cost column beside the speed column",
+    "keyQuestions": [
+      "At which rung does the value representation change?",
+      "Which loss would matter most to your project?"
+    ],
+    "commonMisconceptions": [
+      "That faster is always better regardless of what is given up",
+      "That the largest speedup requires leaving Python"
+    ],
+    "assessmentOpportunities": [
+      "Select a rung for a stated deadline miss and maintainability constraint"
+    ]
+  }
+}

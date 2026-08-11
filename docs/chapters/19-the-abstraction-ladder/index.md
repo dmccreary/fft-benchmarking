@@ -313,7 +313,7 @@ with the next chapter, teaches this skill from zero.
 
 #### Diagram: The Abstraction Ladder
 
-<iframe src="../../sims/abstraction-ladder-diagram/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/abstraction-ladder-diagram/main.html" width="100%" height="472px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>The Abstraction Ladder</summary>

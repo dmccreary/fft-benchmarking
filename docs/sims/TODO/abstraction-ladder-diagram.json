@@ -1,0 +1,15 @@
+{
+  "sim_id": "abstraction-ladder-diagram",
+  "diagram_name": "The Abstraction Ladder",
+  "chapter_number": 19,
+  "chapter_title": "\"The Abstraction Ladder: Python, C, and Assembly Compared\"",
+  "chapter_dir": "19-the-abstraction-ladder",
+  "chapter_rel_dir": "chapters/19-the-abstraction-ladder",
+  "library": "p5.js",
+  "bloom_level": "Analyze (L4) — organize, differentiate",
+  "bloom_verb": null,
+  "learning_objective": "Organize the five approaches into a ranked ladder and differentiate what each rung gives up in exchange for speed.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: infographic\n**sim-id:** abstraction-ladder-diagram<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Analyze (L4) — organize, differentiate\nLearning objective: Organize the five approaches into a ranked ladder and differentiate what each rung gives up in exchange for speed.\n\nCanvas layout:\n- Full canvas: five horizontal rungs stacked vertically, labeled top to bottom: \"MicroPython (bytecode)\", \"MicroPython @native\", \"MicroPython @viper\", \"C\", \"Assembly\"\n- Right margin: a details panel that fills in when a rung is clicked\n\nVisual elements:\n- Each rung drawn as a horizontal bar, width proportional to illustrative relative execution time (longest bar for bytecode, shortest for assembly) — labeled \"illustrative, not measured\" in small text\n- Each rung colored on a gradient from cool (interpreted) to warm (hand-written machine code)\n- A small icon per rung: interpreter loop icon, gear icon, wrench icon, compiler icon, chip icon\n\nInteractive controls:\n- Click any rung to open its details panel with: what runs the code (interpreter / compiler / you), value representation (boxed / unboxed), and one sentence on what you give up moving to this rung from the one above\n- Hover any rung for a one-line tooltip summary\n\nBehavior:\n- Clicking \"MicroPython @viper\" for example reveals: \"Values are unboxed machine types you declare yourself. You give up automatic memory safety for values you've annotated.\"\n- Clicking \"Assembly\" reveals: \"You write every instruction. You give up the compiler entirely — every optimization decision is now yours.\"\n\nInstructional Rationale: A clickable ranked ladder matches the Analyze-level objective of\norganizing five approaches and differentiating their tradeoffs; requiring a click to\nreveal each tradeoff (rather than showing all text at once) encourages the learner to\nengage with each rung individually before moving to the next.\n\nImplementation: p5.js, rungs as an array of rectangle objects with associated detail text, click detection via mouseX/mouseY bounds"
+}

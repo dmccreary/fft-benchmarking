@@ -1,0 +1,15 @@
+{
+  "sim_id": "normalization-factor-explorer",
+  "diagram_name": "Normalization Factor Explorer",
+  "chapter_number": 13,
+  "chapter_title": "FFT Variants, Complexity, and Correctness",
+  "chapter_dir": "13-fft-variants-complexity-and-correctness",
+  "chapter_rel_dir": "chapters/13-fft-variants-complexity-and-correctness",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Demonstrate, calculate",
+  "learning_objective": "Let students select different FFT scaling conventions and calculate how the same underlying spectrum's displayed magnitude values change purely due to normalization choice, not due to any actual difference in the signal.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** normalization-factor-explorer<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Demonstrate, calculate\n\nLearning objective: Let students select different FFT scaling conventions and calculate how the same underlying spectrum's displayed magnitude values change purely due to normalization choice, not due to any actual difference in the signal.\n\nCanvas layout:\n- Top (300px): a fixed example spectrum bar chart, magnitude by bin\n- Bottom (150px): scaling convention selector and a readout showing the applied normalization factor\n\nVisual elements:\n- Bar chart of a fixed example spectrum's magnitude values\n- Readout: \"Forward scaling: [value] | Inverse scaling: [value] | Round-trip scaling: [value]\"\n\nInteractive controls:\n- Radio buttons: \"No forward scaling, 1/N inverse\" / \"1/sqrt(N) both directions (unitary)\" / \"1/N forward, no inverse scaling\"\n- N selector: 8, 512, 1024\n\nBehavior:\n- Selecting a different scaling convention rescales every bar in the chart according to that convention's forward-transform factor, while a small annotation confirms that a full forward-then-inverse round trip always reconstructs the original signal exactly, regardless of which convention is chosen\n\nInstructional Rationale: An Apply-level calculator is appropriate because the objective is calculating how a chosen scaling convention changes displayed numbers — direct, immediate recalculation on selection lets students confirm that scaling is a display/convention choice, not a correctness issue.\n\nImplementation notes:\n- Use p5.js; use a single fixed example spectrum's unscaled values as the source of truth, multiplying by the selected convention's factor for display only\n- Responsive width; chart and controls stack vertically below 600px width"
+}

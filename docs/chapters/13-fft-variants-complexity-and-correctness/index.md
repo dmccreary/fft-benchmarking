@@ -82,7 +82,7 @@ That final division by \( N \), mentioned almost in passing above, is actually t
 
 #### Diagram: Normalization Factor Explorer
 
-<iframe src="../../sims/normalization-factor-explorer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/normalization-factor-explorer/main.html" width="100%" height="482px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Normalization Factor Explorer</summary>

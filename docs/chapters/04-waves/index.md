@@ -186,7 +186,7 @@ Building a wave out of a fundamental plus overtones is easiest to understand by 
 
 #### Diagram: Harmonic Stack Synthesizer
 
-<iframe src="../../sims/harmonic-stack-synthesizer/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/harmonic-stack-synthesizer/main.html" width="100%" height="557px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Harmonic Stack Synthesizer</summary>

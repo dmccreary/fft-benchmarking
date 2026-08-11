@@ -1,0 +1,91 @@
+{
+  "title": "Harmonic Stack Synthesizer",
+  "description": "Five harmonic amplitude sliders over a fixed 440 Hz fundamental, with instrument presets and a per-period marker showing that timbre changes while pitch does not.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": [
+    "Digital Signal Processing",
+    "Acoustics",
+    "Signals and Systems"
+  ],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "harmonic-stack-synthesizer",
+  "library": "p5.js",
+  "canvasHeight": 555,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Examine, differentiate",
+  "completion_status": "implemented",
+  "chapter_number": 4,
+  "chapter_title": "Waves",
+  "chapter_dir": "04-waves",
+  "chapter_rel_dir": "chapters/04-waves",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Physics",
+    "topic": "Harmonics, timbre, and pitch",
+    "learningObjectives": [
+      "Examine how overtone mixture changes waveform shape",
+      "Differentiate pitch (repetition rate) from timbre (shape)",
+      "Predict which frequencies appear in the spectrum of a given mix"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "12-15 minutes",
+    "prerequisites": [
+      "A sine wave has an amplitude and a frequency",
+      "Waves add point by point"
+    ],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 555 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "1st harmonic (440 Hz)", "min": 0, "max": 100, "default": 100, "step": 1, "units": "percent" },
+      { "type": "slider", "label": "2nd harmonic (880 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
+      { "type": "slider", "label": "3rd harmonic (1320 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
+      { "type": "slider", "label": "4th harmonic (1760 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
+      { "type": "slider", "label": "5th harmonic (2200 Hz)", "min": 0, "max": 100, "default": 0, "step": 1, "units": "percent" },
+      { "type": "button", "label": "Flute / Violin / Clarinet / Pure tone", "purpose": "Apply an instrument-like overtone mixture" },
+      { "type": "checkbox", "label": "Show individual harmonics overlay", "purpose": "Draw each component sine faintly under the sum" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Additive synthesis (Fourier sum)",
+    "variables": ["harmonic amplitudes", "time"],
+    "equations": [
+      "y(t) = sum over n=1..5 of A_n * sin(2*pi*n*440*t)"
+    ],
+    "assumptions": [
+      "All harmonics are exactly in phase",
+      "Only the first five harmonics are modeled",
+      "The plot is normalized to its own peak so shape stays visible at any mix"
+    ],
+    "limitations": [
+      "Real instruments have inharmonic content, attack transients, and time-varying spectra; none of these are modeled"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Parameter exploration with instrument presets for comparison",
+    "keyQuestions": [
+      "Do the cycle markers move when you raise an overtone?",
+      "What distinguishes the clarinet mixture from the violin mixture?"
+    ],
+    "commonMisconceptions": [
+      "That adding overtones raises the pitch",
+      "That a different-sounding instrument is playing a different frequency"
+    ],
+    "assessmentOpportunities": [
+      "Explain what is the same and what differs between two waveforms of equal period but different shape"
+    ]
+  }
+}

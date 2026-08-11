@@ -1,0 +1,77 @@
+{
+  "title": "Double Buffering Pipeline",
+  "description": "Two buffer boxes swapping between capture and processing roles each cycle, with a timeline strip showing that exactly one buffer is capturing at every instant.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-11",
+  "subject": ["Digital Signal Processing", "Real-Time Systems", "Embedded Systems"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "double-buffering-pipeline",
+  "library": "p5.js",
+  "canvasHeight": 425,
+  "bloomLevel": "Understand",
+  "bloomVerb": "Explain, interpret",
+  "completion_status": "implemented",
+  "chapter_number": 16,
+  "chapter_title": "Building a Real-Time Spectrum Analyzer",
+  "chapter_dir": "16-building-a-real-time-spectrum-analyzer",
+  "chapter_rel_dir": "chapters/16-building-a-real-time-spectrum-analyzer",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Double buffering in a real-time pipeline",
+    "learningObjectives": [
+      "Interpret how two buffers alternate roles",
+      "Explain why capture never has to pause",
+      "State the timing constraint double buffering does not remove"
+    ],
+    "bloomsTaxonomy": "Understand",
+    "duration": "8-10 minutes",
+    "prerequisites": ["A buffer holds samples", "An FFT takes measurable time"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 425 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": false }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "button", "label": "Advance one cycle", "purpose": "Swap the two buffers' roles and extend the timeline" },
+      { "type": "button", "label": "Auto-play / Pause", "purpose": "Advance continuously" },
+      { "type": "button", "label": "Reset", "purpose": "Return to cycle 0" }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Two-state alternation",
+    "variables": ["cycle number", "role assignment"],
+    "equations": ["Buffer A captures when cycle is even"],
+    "assumptions": [
+      "Processing always completes within one capture period",
+      "Buffer swap is instantaneous"
+    ],
+    "limitations": [
+      "Does not model the overrun case where processing exceeds one capture period, though the documentation raises it"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Steppable mechanism with a checkable invariant",
+    "keyQuestions": [
+      "Is any column of the timeline without a capturing buffer?",
+      "What must be true about FFT time for this to work?"
+    ],
+    "commonMisconceptions": [
+      "That one buffer is permanently the capture buffer",
+      "That double buffering removes all timing constraints"
+    ],
+    "assessmentOpportunities": [
+      "Judge whether double buffering rescues a 40 ms pipeline with a 32 ms capture period"
+    ]
+  }
+}

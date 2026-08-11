@@ -74,7 +74,7 @@ The standard fix uses two buffers instead of one. **Double buffering** is a memo
 
 #### Diagram: Double Buffering Pipeline
 
-<iframe src="../../sims/double-buffering-pipeline/main.html" width="100%" height="500px" scrolling="no"></iframe>
+<iframe src="../../sims/double-buffering-pipeline/main.html" width="100%" height="427px" scrolling="no"></iframe>
 
 <details markdown="1">
 <summary>Double Buffering Pipeline</summary>

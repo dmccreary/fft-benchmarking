@@ -1,0 +1,15 @@
+{
+  "sim_id": "frequency-to-musical-note-calculator",
+  "diagram_name": "Frequency-to-Musical-Note Calculator",
+  "chapter_number": 15,
+  "chapter_title": "Windowing, Spectral Leakage, and Peak Detection",
+  "chapter_dir": "15-windowing-spectral-leakage-and-peak-detection",
+  "chapter_rel_dir": "chapters/15-windowing-spectral-leakage-and-peak-detection",
+  "library": "p5.js",
+  "bloom_level": "Apply",
+  "bloom_verb": "Calculate, demonstrate",
+  "learning_objective": "Let students adjust a frequency value and calculate the nearest musical note name and octave, demonstrating the mapping between Hertz and standard note naming anchored at A4 = 440 Hz.",
+  "completion_status": "specified",
+  "extracted_date": "2026-08-10",
+  "specification": "Type: microsim\n**sim-id:** frequency-to-musical-note-calculator<br/>\n**Library:** p5.js<br/>\n**Status:** Specified\n\nBloom Taxonomy: Apply\nBloom Taxonomy Verb: Calculate, demonstrate\n\nLearning objective: Let students adjust a frequency value and calculate the nearest musical note name and octave, demonstrating the mapping between Hertz and standard note naming anchored at A4 = 440 Hz.\n\nCanvas layout:\n- Top (200px): a piano-keyboard-style strip spanning several octaves, with the currently matched key highlighted\n- Bottom (150px): a frequency slider/input and a live readout\n\nVisual elements:\n- A simplified piano keyboard strip (white and black keys) spanning roughly 3 octaves\n- The nearest matching key highlighted in a distinct color as the frequency changes\n- Readout: \"Frequency: [value] Hz → Nearest note: [note name][octave] ([cents] cents off exact)\"\n\nInteractive controls:\n- Slider or numeric input: Frequency, range 80-2000 Hz, default 440 Hz\n\nBehavior:\n- Moving the frequency slider recalculates and highlights the nearest note on the keyboard strip live, along with the exact note name, octave number, and how many cents sharp or flat the input frequency is from that note's exact standard value\n\nInstructional Rationale: An Apply-level calculator is appropriate because the objective is calculating a specific note and octave from a chosen frequency — a visual keyboard mapping makes the abstract Hertz-to-note formula concrete and immediately checkable against familiar musical intuition.\n\nImplementation notes:\n- Use p5.js; compute note number as round(12 * log2(frequency / 440) + 49), matching standard piano key numbering with A4 = key 49\n- Responsive width; keyboard strip and controls scale proportionally, remaining usable down to mobile widths"
+}

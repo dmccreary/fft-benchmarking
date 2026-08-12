@@ -1,7 +1,6 @@
 # Device Code — What Runs on the Pico
 
-Everything in this directory executes on the Raspberry Pi Pico 2 under stock MicroPython. No
-custom firmware, no cross-compiler.
+Everything in this directory executes on the Raspberry Pi Pico 2 under stock MicroPython. No custom firmware, no cross-compiler.
 
 ## Files
 

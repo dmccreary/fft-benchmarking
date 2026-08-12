@@ -43,6 +43,12 @@ compares to our V9 (621.7 µs) is discussed in [Analysis](#analysis) below, not 
 | [ulab_samples](https://github.com/rcolistete/ulab_samples) | 1024-pt FFT, float32, best board | OpenMV H7 (Cortex-M7 @ 480 MHz) | CircuitPython (C module) | 0.397 ms | not scaled — 3.2× our clock |
 | [Adafruit ulab guide](https://learn.adafruit.com/ulab-crunch-numbers-fast-with-circuitpython/a-simple-benchmark) | general ulab speed claims | various CircuitPython boards | CircuitPython | no FFT-specific number found | — |
 
+The chart below isolates the three rows above that share the same board and
+clock speed (RP2350 @ 150 MHz), so their bar lengths are directly comparable
+without the scaling caveats that apply across chips.
+
+<iframe src="../../sims/rp2350-fft-comparison/main.html" height="442px" width="100%" scrolling="no"></iframe>
+
 ## Analysis
 
 - **The one apples-to-apples MicroPython comparison** is Peter Hinch's `micropython-fourier`,

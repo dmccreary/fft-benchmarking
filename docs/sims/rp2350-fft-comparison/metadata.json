@@ -1,0 +1,52 @@
+{
+  "title": "512-Point FFT Time on RP2350 @ 150 MHz: Our Result vs. Published Libraries",
+  "creator": "Dan McCreary",
+  "subject": "Digital Signal Processing / Embedded Systems",
+  "description": "Horizontal bar chart comparing 512-point FFT execution time on the RP2350 @ 150 MHz across our best assembly kernel and two published implementations",
+  "date": "2026-08-11",
+  "educational": {
+    "gradeLevel": [
+      "13",
+      "14",
+      "15",
+      "16"
+    ],
+    "subjectArea": "Computer Engineering",
+    "topic": "512-Point FFT Time on RP2350 @ 150 MHz: Our Result vs. Published Libraries",
+    "learningObjectives": [
+      "Compare FFT execution time across implementations only when the board and clock speed are held constant",
+      "Explain why scaling a benchmark from a different transform size (N log2 N) produces an estimate, not a measurement",
+      "Interpret the performance gap between hand-tuned assembly, bare-metal C++, and interpreted MicroPython on the same core"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "5-10 minutes",
+    "prerequisites": ["FFT computational complexity O(N log N)", "Benchmarking methodology"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "Chart.js",
+    "version": "1.0",
+    "canvasDimensions": {
+      "width": "responsive",
+      "height": 420
+    },
+    "responsive": true,
+    "dependencies": [],
+    "accessibility": {
+      "hasAltText": false,
+      "keyboardNavigable": false
+    }
+  },
+  "pedagogical": {
+    "teachingStrategy": "Interactive exploration",
+    "keyQuestions": [
+      "Why is it only fair to compare these three implementations because they share a board and clock speed?",
+      "What does it mean that two of the three bars are 'scaled' rather than directly measured?"
+    ],
+    "commonMisconceptions": [
+      "Assuming any two published FFT benchmarks are comparable regardless of board, clock speed, or transform size"
+    ],
+    "assessmentOpportunities": []
+  },
+  "chapter": ""
+}

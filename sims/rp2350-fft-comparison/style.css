@@ -1,0 +1,21 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; background-color: aliceblue; }
+main { padding: 8px 12px; }
+
+.heading { font-size: 16px; text-align: center; color: #444; margin-bottom: 6px; }
+
+.chart-box {
+    height: 290px;
+    background-color: white;
+    border: 1px solid silver;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.callout {
+    margin-top: 8px;
+    background-color: white; border: 1px solid silver; border-radius: 6px;
+    padding: 9px 12px; font-size: 13px; line-height: 1.5;
+}
+.callout strong { color: #2e7d32; }
+.callout .scaled-note { color: #757575; font-size: 12px; display: block; margin-top: 4px; }

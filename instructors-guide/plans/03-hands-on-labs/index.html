@@ -6,30 +6,34 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
+        <meta name="description" content="An interactive intelligent textbook for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.">
       
       
         <meta name="author" content="Dan McCreary">
       
       
-        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/plans/03-hands-on-labs/">
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/instructors-guide/plans/03-hands-on-labs/">
       
       
+        <link rel="prev" href="../02-competing-variants/">
       
       
-      <link rel="icon" href="../../img/favicon.png">
+        <link rel="next" href="../../../references/">
+      
+      
+      <link rel="icon" href="../../../img/favicon.ico">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
-        <title>Test Plan 03: Hands-On Lab Series - Real-Time DSP on a $5 Microcontroller</title>
+        <title>Plan 3 - Real-Time DSP on a $5 Microcontroller</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="../../css/extra.css">
+      <link rel="stylesheet" href="../../../css/extra.css">
     
-      <link rel="stylesheet" href="../../css/mascot.css">
+      <link rel="stylesheet" href="../../../css/mascot.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -92,9 +96,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
-  <img src="../../img/logo.png" alt="logo">
+  <img src="../../../img/mascot/welcome.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -111,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Test Plan 03: Hands-On Lab Series
+              Plan 3
             
           </span>
         </div>
@@ -201,9 +205,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+    <a href="../../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
       
-  <img src="../../img/logo.png" alt="logo">
+  <img src="../../../img/mascot/welcome.png" alt="logo">
 
     </a>
     Real-Time DSP on a $5 Microcontroller
@@ -230,7 +234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -252,7 +256,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../about/" class="md-nav__link">
+      <a href="../../../about/" class="md-nav__link">
         
   
   
@@ -274,7 +278,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../course-description/" class="md-nav__link">
+      <a href="../../../course-description/" class="md-nav__link">
         
   
   
@@ -324,77 +328,6 @@
       
         
       
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-      
-        
-  
-  
-  
-    <a href="../../learning-graph/" class="md-nav__link">
-      
-  
-  
-  <span class="md-ellipsis">
-    Learning Graph
-    
-  </span>
-  
-
-      
-        <span class="md-nav__icon md-icon"></span>
-      
-    </a>
-  
-
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-          
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
         
       
         
@@ -442,7 +375,7 @@
   
   
   
-    <a href="../../chapters/" class="md-nav__link">
+    <a href="../../../chapters/" class="md-nav__link">
       
   
   
@@ -509,7 +442,7 @@
   
   
   
-    <a href="../../labs/" class="md-nav__link">
+    <a href="../../../labs/" class="md-nav__link">
       
   
   
@@ -526,28 +459,6 @@
   
 
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../cornell-labs/pico-example.md" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Cornel Labs FFT on the Pico
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -702,7 +613,7 @@
   
   
   
-    <a href="../../sims/" class="md-nav__link">
+    <a href="../../../sims/" class="md-nav__link">
       
   
   
@@ -740,6 +651,24 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -755,12 +684,12 @@
   
   
   
-    <a href="../" class="md-nav__link">
+    <a href="../../../learning-graph/" class="md-nav__link">
       
   
   
   <span class="md-ellipsis">
-    Plans
+    Learning Graph
     
   </span>
   
@@ -789,6 +718,8 @@
           
         
       
+        
+      
     
     
     
@@ -804,7 +735,7 @@
   
   
   
-    <a href="../../appendices/benchmark-comparison/" class="md-nav__link">
+    <a href="../../../appendices/benchmark-comparison/" class="md-nav__link">
       
   
   
@@ -832,29 +763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    FAQ
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../glossary/" class="md-nav__link">
+      <a href="../../../glossary/" class="md-nav__link">
         
   
   
@@ -876,8 +785,54 @@
   
   
     <li class="md-nav__item">
-      <a href="../../instructors-guide/" class="md-nav__link">
+      <a href="../../../faq/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -886,24 +841,100 @@
   </span>
   
 
-      </a>
-    </li>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11" id="__nav_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            Instructor's Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
   
-
+  
+    
+  
+  
+  
+    
     
       
+        
+          
+        
       
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    AI Plans
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_11_2" id="__nav_11_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_11_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_11_2">
+            <span class="md-nav__icon md-icon"></span>
+            AI Plans
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../how-we-built-this-site/" class="md-nav__link">
+      <a href="../01-fft-test-plan/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    How We Built This Site
+    Plan 1
     
   </span>
   
@@ -912,6 +943,389 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-competing-variants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plan 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Plan 3
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plan 3
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-goal-and-audience" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Goal and Audience
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-what-the-previous-kit-taught-us" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. What the Previous Kit Taught Us
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. What the Previous Kit Taught Us">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-got-right-and-we-should-keep" class="md-nav__link">
+    <span class="md-ellipsis">
+      What it got right, and we should keep
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-failures-we-must-not-repeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      The failures we must not repeat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lineage-worth-stating-in-the-labs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lineage worth stating in the labs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-instructional-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Instructional Design Principles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-hardware-and-shared-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hardware and Shared Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-lab-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Lab Sequence
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. The Lab Sequence">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-0-environment-week-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 0 — Environment (Week 1)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-1-peripherals-week-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 1 — Peripherals (Week 2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2-sound-as-numbers-week-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 2 — Sound as Numbers (Week 3)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3-discovering-frequency-weeks-45-the-cliff-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 3 — Discovering Frequency (Weeks 4–5) — the cliff-fix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-4-the-fft-week-6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 4 — The FFT (Week 6)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-5-real-spectra-week-7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 5 — Real Spectra (Week 7)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-6-measuring-performance-week-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 6 — Measuring Performance (Week 8)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-7-assembly-language-week-9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 7 — Assembly Language (Week 9)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-8-optimization-and-capstone-week-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Module 8 — Optimization and Capstone (Week 10)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-lab-document-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Lab Document Template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-learning-graph-expansion" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Learning Graph Expansion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Learning Graph Expansion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#five-new-taxonomy-categories-12-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Five new taxonomy categories (12 → 17)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expansion-of-existing-categories-145-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expansion of existing categories (~145 concepts)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-existing-issue-to-resolve-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-existing issue to resolve first
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-course-description-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Course Description Updates
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-microsim-and-visual-asset-opportunities" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. MicroSim and Visual Asset Opportunities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-repository-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Repository Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-milestones" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Milestones
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-open-questions-for-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Open Questions for Review
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
@@ -920,7 +1334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../references/" class="md-nav__link">
+      <a href="../../../references/" class="md-nav__link">
         
   
   
@@ -942,7 +1356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../license/" class="md-nav__link">
+      <a href="../../../license/" class="md-nav__link">
         
   
   
@@ -964,7 +1378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contact/" class="md-nav__link">
+      <a href="../../../contact/" class="md-nav__link">
         
   
   
@@ -1300,7 +1714,7 @@
 
 
   
-    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/plans/03-hands-on-labs.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/instructors-guide/plans/03-hands-on-labs.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1312,8 +1726,8 @@
 <p><strong>Status:</strong> Draft for review — design document, no lab content written yet.
 <strong>Depends on:</strong> <a href="../01-fft-test-plan/">Plan 01</a> (assembly FFT), <a href="../02-competing-variants/">Plan 02</a> (variants).
 <strong>Deliverable:</strong> 32 hands-on labs in <code>docs/labs/NN-name/</code>, plus updates to
-<a href="../../course-description/"><code>course-description.md</code></a> and the
-<a href="../../learning-graph/">learning graph</a>.</p>
+<a href="../course-description.md"><code>course-description.md</code></a> and the
+<a href="../learning-graph/index.md">learning graph</a>.</p>
 <h2 id="1-goal-and-audience">1. Goal and Audience</h2>
 <p>Build a lab series that takes a student from <strong>"I have never opened Thonny"</strong> to
 <strong>"I hand-wrote an ARM assembly FFT, benchmarked it against five competing variants, and can
@@ -1968,7 +2382,7 @@ pipe-separated) and rendered via <code>csv-to-json.py</code>.</p>
 reporting <strong>0 cycles detected</strong>. That contradiction should be diagnosed and fixed <em>before</em>
 adding 350 concepts on top, or we will not be able to tell new breakage from old.</p>
 <h2 id="8-course-description-updates">8. Course Description Updates</h2>
-<p><a href="../../course-description/"><code>course-description.md</code></a> predates the lab series and this session's
+<p><a href="../course-description.md"><code>course-description.md</code></a> predates the lab series and this session's
 work. Proposed changes:</p>
 <ul>
 <li><strong>Add a Hardware Kit section</strong> listing the Pico 2, OLED, buttons and INMP441 with approximate
@@ -2137,6 +2551,44 @@ output screenshots for expected-output sections.</p>
         <footer class="md-footer">
   
     
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-competing-variants/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plan 2">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Plan 2
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../references/" class="md-footer__link md-footer__link--next" aria-label="Next: References">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                References
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -2162,12 +2614,12 @@ output screenshots for expected-output sections.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
       
-        <script src="../../javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       

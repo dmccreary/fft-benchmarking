@@ -8,7 +8,7 @@ description: A complete guide for instructors adopting FFT Benchmarking - featur
 Welcome to the instructor's guide for *FFT Benchmarking: Real-Time Signal Processing on a $5 Microcontroller*. This guide explains every feature of the textbook, how to run its 35 hands-on hardware labs in a classroom, and how to customize the site for your own course. No prior technical knowledge of the underlying web tools is assumed — every technical term is defined before it is used.
 
 !!! info "Where this book stands today"
-    This is an actively developed textbook. As of this writing, all **27 chapters** and all **35 hands-on labs** have full text content, and the **learning graph** (574 concepts, 874 dependency relationships) is complete. The **mascot** (Echo the Dolphin) is fully illustrated and woven through every chapter and lab. The **glossary**, **FAQ**, **per-chapter quizzes**, and most of the **58 specified MicroSims** are still in progress — see [Using the MicroSims](#using-the-microsims) and [Using the Glossary](#using-the-glossary) below for what's live right now versus what's planned. If you're evaluating this book for an upcoming semester, read those two sections before committing to a start date.
+    This is an actively developed textbook. As of this writing, all **27 chapters** and all **35 hands-on labs** have full text content, and the **learning graph** (574 concepts, 874 dependency relationships) is complete. The **mascot** (Echo the Dolphin) is fully illustrated and woven through every chapter and lab. The **MicroSim library** is complete and embedded throughout the chapters. The **glossary**, **FAQ**, and **per-chapter quizzes** are still in progress — see [Using the MicroSims](#using-the-microsims) and [Using the Glossary](#using-the-glossary) below for what's live right now versus what's planned. If you're evaluating this book for an upcoming semester, read those two sections before committing to a start date.
 
 ## About This Interactive Intelligent Textbook
 
@@ -31,7 +31,7 @@ Not all digital textbooks are created equal. We categorize intelligent textbooks
 | **Level 4** | AI-Assisted | Includes an AI tutor that can answer student questions | Chatbot integration, automated feedback |
 | **Level 5** | Fully Adaptive AI | Continuously learns from student interactions and optimizes the experience | Real-time content generation, predictive analytics |
 
-**This textbook is a Level 2 Intelligent Textbook**, with its MicroSim library still being built out chapter by chapter (see the development note above).
+**This textbook is a Level 2 Intelligent Textbook**, with a complete MicroSim library embedded throughout every chapter (see the development note above).
 
 ### What Makes This Textbook Different
 
@@ -170,14 +170,15 @@ A **MicroSim** (short for "micro-simulation") is a small, interactive simulation
 
 ### Current Development Status
 
-This book currently has **2 fully built MicroSims**, both live in the main navigation under **MicroSims**:
+The MicroSim library is **complete**. All specified MicroSims are fully built and embedded in their corresponding chapters, live in the main navigation under **MicroSims**:
 
 | Technology | What It's Good For | Example MicroSims |
 |-----------|-------------------|-------------------|
+| **p5.js** | Interactive diagrams with sliders and live animation | Sine wave, FFT butterfly, and windowing simulations |
 | **vis-network** | Interactive graph diagrams | Learning Graph Viewer |
 | **Timeline** | Chronological event exploration | FFT History Timeline |
 
-Beyond those two, **58 additional MicroSims have been fully specified inside the chapters** — each with a documented learning objective, Bloom's Taxonomy level, canvas layout, and interactive controls — but their code has not been written yet, so the `<iframe>` embeds for those will not render until they're built. Of the 58 specified, 49 are planned as p5.js simulations (sliders and live animation), 7 as Chart.js visualizations, and 2 as vis-network diagrams. If you spot a blank space where a diagram should be while previewing a chapter, that's a specified-but-not-yet-built MicroSim, not a bug in your local setup.
+Every one of the 27 chapters has its MicroSims embedded directly in the text via `<iframe>`. Each sim has a documented learning objective, Bloom's Taxonomy level, canvas layout, and interactive controls. There are no remaining blank placeholders — if you previously bookmarked a chapter with a gap where a diagram should be, that gap has since been filled.
 
 ### Tips for Using MicroSims in Class
 
@@ -464,7 +465,7 @@ Echo appears no more than 5–6 times per chapter or lab to avoid overuse, and i
 
 ### A MicroSim shows as a blank box
 
-Check the [Current Development Status](#current-development-status) table above — most chapters reference MicroSims that are specified but not yet built. This is expected for now, not a broken install.
+The MicroSim library is complete, so a blank box usually indicates a local loading issue rather than a missing sim — try reloading the page or clearing your browser cache. If the problem persists, report it via [Reporting Issues and Suggestions](#reporting-issues-and-suggestions) below.
 
 ### A student's board won't run Labs 30–34
 

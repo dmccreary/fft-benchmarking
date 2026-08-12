@@ -1,5 +1,5 @@
 site_name: Real-Time DSP on a $5 Microcontroller
-site_description: 'A collection of resources for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.'
+site_description: 'An interactive intelligent textbook for learning about and optimizing digital signal processing, FFTs and benchmarking techniques.'
 site_author: 'Dan McCreary'
 repo_name: 'GitHub Repo'
 site_url: 'https://dmccreary.github.io/fft-benchmarking/'
@@ -10,20 +10,6 @@ nav:
   - Home: index.md
   - About: about.md
   - Course Description: course-description.md
-
-  - Learning Graph:
-    - Introduction: learning-graph/index.md
-    - Course Description Assessment: learning-graph/course-description-assessment.md
-    - Concept List: learning-graph/concept-list.md
-    - Concept Taxonomy: learning-graph/concept-taxonomy.md
-    - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
-    - Quality Metrics: learning-graph/quality-metrics.md
-    - Book Metrics: learning-graph/book-metrics.md
-    - Chapter Metrics: learning-graph/chapter-metrics.md
-    - Mascot Style Guide: learning-graph/mascot-test.md
-    - FAQ Quality Report: learning-graph/faq-quality-report.md
-    - FAQ Coverage Gaps: learning-graph/faq-coverage-gaps.md
-    - Quiz Generation Report: learning-graph/quiz-generation-report.md
 
   - Chapters:
     - List of Chapters: chapters/index.md
@@ -182,11 +168,10 @@ nav:
           - 'Lab 33: Beyond the Assembler: Hand-Encoding': labs/33-hand-encoding/index.md
           - 'Lab 34: Competing Variants: Predict, Measure, Explain': labs/34-variants/index.md
           - 'Lab 35: Capstone': labs/35-capstone/index.md
-  
-  - Cornel Labs FFT on the Pico: cornell-labs/pico-example.md
-  
+    
   - MicroSims:
     - List of MicroSims: sims/index.md
+    - "512-Point FFT Time on RP2350 @ 150 MHz: Our Result vs. Published Libraries": sims/rp2350-fft-comparison/index.md
     - Abstraction Ladder Diagram: sims/abstraction-ladder-diagram/index.md
     - Address and Byte Offset Explorer: sims/address-byte-offset-explorer/index.md
     - Aliasing Demonstrator: sims/aliasing-demonstrator/index.md
@@ -251,26 +236,34 @@ nav:
 
 
 
-
-
-
-
-
-
-
-  
-  - Plans:
-    - List of Plans: plans/index.md
-    - Plan 1: plans/01-fft-test-plan.md
-    - Plan 2: plans/02-competing-variants.md
-
   - Appendices:
+    - List of Appendices: appendices/index.md
     - Benchmark Comparison: appendices/benchmark-comparison/index.md
+    - Cornel Labs FFT on the Pico: appendices/cornell-labs/pico-example.md
+  - Learning Graph:
+    - Introduction: learning-graph/index.md
+    - Course Description Assessment: learning-graph/course-description-assessment.md
+    - Concept List: learning-graph/concept-list.md
+    - Concept Taxonomy: learning-graph/concept-taxonomy.md
+    - Taxonomy Distribution: learning-graph/taxonomy-distribution.md
+    - Quality Metrics: learning-graph/quality-metrics.md
+    - Book Metrics: learning-graph/book-metrics.md
+    - Chapter Metrics: learning-graph/chapter-metrics.md
+    - Mascot Style Guide: learning-graph/mascot-test.md
+    - FAQ Quality Report: learning-graph/faq-quality-report.md
+    - FAQ Coverage Gaps: learning-graph/faq-coverage-gaps.md
+    - Quiz Generation Report: learning-graph/quiz-generation-report.md
 
-  - FAQ: faq.md
   - Glossary: glossary.md
-  - Instructor's Guide: instructors-guide/index.md
-  - How We Built This Site: how-we-built-this-site.md
+  - FAQ: faq.md
+  - Instructor's Guide:
+    - Introduction: instructors-guide/index.md
+    - Purchasing Parts: instructors-guide/purchasing-parts.md
+    - AI Plans:
+      - List of Plans: instructors-guide/plans/index.md
+      - Plan 1: instructors-guide/plans/01-fft-test-plan.md
+      - Plan 2: instructors-guide/plans/02-competing-variants.md
+      - Plan 3: instructors-guide/plans/03-hands-on-labs.md
   - References: references.md
   - License: license.md
   - Contact: contact.md
@@ -281,8 +274,8 @@ theme:
   name: material
   extra_css:
     - styles/custom.css
-  logo: img/logo.png
-  favicon: img/favicon.png
+  logo: img/mascot/welcome.png
+  favicon: img/favicon.ico
   palette:
     primary: 'blue'
     accent: 'orange'
@@ -303,6 +296,7 @@ plugins:
 #  - social
 markdown_extensions:
   - admonition
+  - footnotes
   - md_in_html
   - pymdownx.details
   - pymdownx.superfences

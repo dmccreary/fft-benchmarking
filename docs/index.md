@@ -37,7 +37,7 @@ The payoff is a real number you measure yourself, on your own board:
 | Brute-force DFT | ~21,000 ms | 530x over budget |
 | Pure-Python FFT | 140 ms | 3.5x over budget |
 | Hand-written assembly FFT | 0.85 ms | 2.1% of budget |
-| Best optimized variant | **0.59 ms** | 1.5% of budget |
+| Best optimized variant | **0.622 ms** | 1.5% of budget |
 
 That's a **35,000x** speedup from first working code to final assembly, and the assembly
 version alone runs **165x faster** than its pure-Python counterpart — while agreeing with it
@@ -52,10 +52,10 @@ breadboard in an afternoon:
 | Component | Approx. cost | Purpose |
 |---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Cortex-M33 core, 150 MHz, hardware FPU |
-| SSD1306 OLED, 128x64, SPI | $5 | Live spectrum display |
-| Two momentary push buttons | $1 | Mode switching |
+| SSD1306 OLED, 128x64, SPI | $5 to $17 | Live spectrum display on a bright screen |
+| Two momentary push buttons | $1 | Mode switching or changing parameters |
 | INMP441 I2S MEMS microphone | $3 | Real audio capture |
-| Breadboard and jumper wires | $5 | Connections |
+| Breadboard and jumper wires | $2 | Building kit and making connections |
 
 That kit carries you through **35 hands-on labs**, and they're built to be genuinely fun, not
 just correct:
@@ -74,11 +74,19 @@ you need **zero prior experience** with FFTs, DSP, or assembly language to start
 
 ## The book at a glance
 
-| | |
-|---|---|
-| **27** chapters | **35** hands-on labs |
-| **61** interactive MicroSims | **550** glossary terms |
-| **91** FAQ answers | **10 weeks**, or self-paced |
+| Metric | Value | What it means |
+|---|---|---|
+| Chapters | **27** | Major content divisions, from your first correlation-based DFT to hand-written ARM assembly. |
+| Hands-on labs | **35** | Step-by-step exercises you run yourself on the $19 hardware kit. |
+| Interactive MicroSims | **61** | Browser-based simulations for exploring butterflies, twiddle factors, aliasing, and more. |
+| Concepts | **574** | Individual ideas tracked in the [learning graph](learning-graph/index.md), each linked to the concepts it depends on. |
+| Glossary terms | **550** | Precise, one-sentence definitions for every technical term used in the book. |
+| FAQ answers | **91** | Quick answers to common student questions, cross-linked to the chapter that covers them. |
+| Diagrams | **59** | Figures illustrating signal-processing concepts, from block diagrams to spectral plots. |
+| Equations | **147** | Worked formulas, from the DFT sum to fixed-point scaling factors. |
+| Words | **234,394** | Roughly 982 print-equivalent pages of running text. |
+| Internal links | **1,017** | Cross-references tying chapters, labs, sims, glossary, and FAQ together. |
+| Course length | **10 weeks** | Sized for a standard academic term, but every lab works fine self-paced. |
 
 ## Who this book is for
 

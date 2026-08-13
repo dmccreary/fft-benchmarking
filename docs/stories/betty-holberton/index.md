@@ -10,7 +10,7 @@ social:
 
 # Wired by Hand: Betty Holberton and the ENIAC Six
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -71,7 +71,7 @@ forty years.
 
 ## Panel 1: The Computers Before the Machine
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the
@@ -106,7 +106,7 @@ hall was being built to solve.
 
 ## Panel 2: Six Names, No Explanation
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm 1940s American illustrated style depicting panel
@@ -136,7 +136,7 @@ how.
 
 ## Panel 3: Reading the Machine Like a Book
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm 1940s American illustrated style depicting panel
@@ -165,7 +165,7 @@ at all.
 
 ## Panel 4: Wiring the Trajectory
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm 1940s American illustrated style depicting panel
@@ -196,7 +196,7 @@ system, no assembler, no abstraction of any kind to hide behind.
 
 ## Panel 5: Chasing the Bad Tube
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm 1940s American illustrated style depicting panel
@@ -225,7 +225,7 @@ machine gave a trustworthy answer.
 
 ## Panel 6: The Demonstration
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm 1940s American illustrated style depicting panel
@@ -261,7 +261,7 @@ beside a new kitchen appliance in an advertisement.
 
 ## Panel 7: Building the Next Machine
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in a cleaner mid-century-modern American illustrated style,
@@ -291,7 +291,7 @@ helped invent several of the ones that came next.
 
 ## Panel 8: Written Out of the Story
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in a muted mid-century-modern American illustrated style depicting
@@ -317,7 +317,7 @@ almost entirely. Photographs of them survived. Their names, for the most part, d
 
 ## Panel 9: The Question That Would Not Let Go
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warmer 1980s American illustrated style depicting panel 9 of
@@ -346,7 +346,7 @@ technical contributions to the historical record that had left them out.
 
 ## Panel 10: Recognition, Decades Late
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Please generate a 16:9 image in a bright, dignified 1990s American illustrated style depicting

@@ -10,7 +10,7 @@ social:
 
 # William Kahan and the Fight for Honest Floating-Point Math
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -65,7 +65,7 @@ phone call that would let him do something about it for the entire industry at o
 
 ## Panel 1: Anarchy on Every Machine
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the images
@@ -98,7 +98,7 @@ lever large enough to fix the whole industry at once.
 
 ## Panel 2: A Call from the Valley
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 2 of 8. Make
@@ -129,7 +129,7 @@ programmer.
 
 ## Panel 3: Best, Not Cheapest
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 3 of 8. Make
@@ -159,7 +159,7 @@ correctness they hadn't been trained to verify themselves.
 
 ## Panel 4: The Committee Convenes
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 4 of 8. Make
@@ -189,7 +189,7 @@ any shared love of correct arithmetic.
 
 ## Panel 5: The Holdouts
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 5 of 8. Make
@@ -218,7 +218,7 @@ standards.
 
 ## Panel 6: Proof on a Circuit Board
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 6 of 8. Make
@@ -247,7 +247,7 @@ answered by an independent expert and a working circuit board, not by Kahan's ow
 
 ## Panel 7: Ratification
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 7 of 8. Make
@@ -275,7 +275,7 @@ computing industry chose to honor voluntarily before it was even official.
 
 ## Panel 8: The Turing Award and the Standard That Outlived the Room
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in warm illustrated-realism period style depicting panel 8 of 8. Make

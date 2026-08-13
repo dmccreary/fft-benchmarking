@@ -10,7 +10,7 @@ social:
 
 # The Number Nobody Could Fake: Jack Dongarra's Honest Benchmark
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -71,7 +71,7 @@ argue with the result.
 
 ## Panel 1: A Mathematician Among the Machines
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the images
@@ -104,7 +104,7 @@ machine ran it.
 
 ## Panel 2: One Fair Test for Every Machine
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -133,7 +133,7 @@ for long.
 
 ## Panel 3: The Peak That No Program Ever Reached
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -163,7 +163,7 @@ but pointed rebuttal to that entire way of doing business.
 
 ## Panel 4: Twenty Machines and Growing
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -191,7 +191,7 @@ closest thing the field had to an independent referee.
 
 ## Panel 5: Merging Two Lists Into One
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -221,7 +221,7 @@ measured number instead of a dozen conflicting claims.
 
 ## Panel 6: A List Anyone Could Check
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -248,7 +248,7 @@ field. For the first time, bragging about performance meant showing your work.
 
 ## Panel 7: Two Decades of Honest Competition
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
@@ -275,7 +275,7 @@ itself against.
 
 ## Panel 8: Recognition, Finally
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel

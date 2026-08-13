@@ -10,7 +10,7 @@ social:
 
 # Alec Reeves and the Signal That Waited Fifty Years
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -71,7 +71,7 @@ to decide that the whole approach was the wrong idea entirely.
 
 ## Panel 1: The Noise That Would Not Stop Climbing
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel.
@@ -108,7 +108,7 @@ static eventually drowns the words it was built to carry.
 
 ## Panel 2: A Different Question
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
@@ -142,7 +142,7 @@ piled onto the original.
 
 ## Panel 3: Filing the Idea
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
@@ -172,7 +172,7 @@ for a generation.
 
 ## Panel 4: The Machine the Idea Needs Does Not Exist
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
@@ -203,7 +203,7 @@ correct, waiting for electronics that do not yet exist.
 
 ## Panel 5: Years Pass, Quietly
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in a 1940s-1950s transitional illustrated
@@ -236,7 +236,7 @@ starts to look like something a company could actually build.
 
 ## Panel 6: The Idea Finally Fits Its Century
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in a clean early-1960s illustrated style with

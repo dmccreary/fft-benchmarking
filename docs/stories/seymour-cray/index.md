@@ -10,7 +10,7 @@ social:
 
 # Cooling the Fire: Seymour Cray's Obsession with Honest Speed
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -72,7 +72,7 @@ In 1964, a small computer laboratory tucked into the pine forests of Chippewa Fa
 
 ## Panel 1: A Technician Under Fire
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel.
@@ -103,7 +103,7 @@ Seymour Cray traded a Chippewa Falls, Wisconsin, high school classroom for a U.S
 
 ## Panel 2: A Bench of His Own
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century Atomic Age illustration style
@@ -129,7 +129,7 @@ At Engineering Research Associates in Saint Paul, Minnesota, the young engineer 
 
 ## Panel 3: Betting Against the Vacuum Tube
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century Atomic Age illustration style
@@ -156,7 +156,7 @@ Restless after his employer was absorbed into a larger corporation, Cray grew ti
 
 ## Panel 4: An Answer Written in a Memo
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century Atomic Age illustration style
@@ -184,7 +184,7 @@ By 1964, that small team's newest machine was running rings around computers bui
 
 ## Panel 5: Fewer Hands, Fewer Words
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century Atomic Age illustration style
@@ -209,7 +209,7 @@ Cray ran his design group like a workshop, not a corporation. He kept engineerin
 
 ## Panel 6: Measure It Yourself
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century Atomic Age illustration style
@@ -234,7 +234,7 @@ Sales brochures across the industry were full of theoretical peak speeds, number
 
 ## Panel 7: North to the Pines
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in transitional Mid-Century to Space-Age
@@ -259,7 +259,7 @@ In 1972, tired of the bureaucracy that had grown up around him at his old compan
 
 ## Panel 8: The Bench Around the Machine
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in Space-Age, NASA-adjacent illustration
@@ -286,7 +286,7 @@ The machine Cray delivered in 1976 looked as unconventional as the man who desig
 
 ## Panel 9: Prove It, Then Publish It
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in Space-Age, NASA-adjacent illustration
@@ -312,7 +312,7 @@ When that machine shipped to a national research laboratory in the American Sout
 
 ## Panel 10: Colder Still
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Please generate a 16:9 image in Space-Age illustration style depicting
@@ -338,7 +338,7 @@ By the mid-1980s, Cray's newest design faced a problem that speed itself had cre
 
 ## Panel 11: Elves in the Tunnel
 
-<!-- ![](./panel-11.png) -->
+![](./panel-11.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 11. Do not include the panel number in the image.)
 Please generate a 16:9 image in Mid-Century illustration style depicting
@@ -363,7 +363,7 @@ Away from the lab, Cray kept a private, almost eccentric habit: digging a tunnel
 
 ## Panel 12: The Standard He Left Behind
 
-<!-- ![](./panel-12.png) -->
+![](./panel-12.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 12. Do not include the panel number in the image.)
 Please generate a 16:9 image in Space-Age illustration style depicting

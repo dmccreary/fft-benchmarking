@@ -10,7 +10,7 @@ social:
 
 # The Case for Simplicity: Patterson, Hennessy, and the Rise of RISC
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -82,7 +82,7 @@ By 1980, the computer industry had spent two decades adding instructions to its 
 
 ## Panel 1: An Industry Betting on Complexity
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic
@@ -111,7 +111,7 @@ Through the 1970s, processor designers had kept adding instructions the way a sh
 
 ## Panel 2: A Question in Cory Hall
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -138,7 +138,7 @@ At Berkeley, David Patterson set his graduate students an unglamorous task: go t
 
 ## Panel 3: Wire and Silicon
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -164,7 +164,7 @@ Patterson's answer was not an argument but a chip. His research group set out to
 
 ## Panel 4: Six Hundred Miles South, the Same Question
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -192,7 +192,7 @@ Neither Patterson nor his Berkeley team had any contact with what was happening 
 
 ## Panel 5: "That's Not How Real Computers Are Built"
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -218,7 +218,7 @@ Both teams ran into the same wall of doubt. To engineers who had spent careers m
 
 ## Panel 6: The Stopwatch Doesn't Lie
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -245,7 +245,7 @@ Rather than keep arguing philosophy, both teams did the thing this course itself
 
 ## Panel 7: Simple Wins
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -272,7 +272,7 @@ The results favored the simpler machines. Both research chips matched or beat es
 
 ## Panel 8: An Idea Loose in the World
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
@@ -298,7 +298,7 @@ Through the mid-1980s, the reduced-instruction philosophy stopped being two univ
 
 ## Panel 9: Two Professors, One Legacy
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Generate a 16:9 image in a fully contemporary photorealistic

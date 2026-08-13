@@ -10,7 +10,7 @@ social:
 
 # The Machine in the Living Room: Konrad Zuse's Lonely Invention
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -68,7 +68,7 @@ notice.
 
 ## Panel 1: The Tedium of the Slide Rule
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the
@@ -102,7 +102,7 @@ could do the thinking.
 
 ## Panel 2: Quitting the Job Nobody Quits
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -130,7 +130,7 @@ the stubborn belief that logic itself could be built out of moving parts.
 
 ## Panel 3: The Z1 Takes Shape
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -158,7 +158,7 @@ next, rather than rewired by hand for every new problem.
 
 ## Panel 4: From Metal Plates to Telephone Relays
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -185,7 +185,7 @@ by feeding it a new punched tape, instead of being rebuilt from scratch each tim
 
 ## Panel 5: The Z3 Comes Alive
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -214,7 +214,7 @@ could do, built by an engineer still largely unknown outside his own small circl
 
 ## Panel 6: Building in the Shadow of War
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -244,7 +244,7 @@ language, decades ahead of any machine that could run it.
 
 ## Panel 7: Ash and Silence
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -274,7 +274,7 @@ faced from the beginning: rebuild, or stop.
 
 ## Panel 8: Carrying the Machine Out of the City
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting
@@ -301,7 +301,7 @@ everything computing would become after the war.
 
 ## Panel 9: A Quiet Vindication
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same muted early-modern German illustrated style depicting

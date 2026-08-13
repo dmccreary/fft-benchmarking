@@ -10,7 +10,7 @@ social:
 
 # Amazing Grace: From Naval Officer to the First Compiler
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -72,7 +72,7 @@ which makes her origin story less a detour than a mirror held up to the whole cl
 
 ## Panel 1: A Professor Waiting for a War to Need Her
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make
@@ -103,7 +103,7 @@ the profile the recruiters were looking for.
 
 ## Panel 2: Talking Her Way Past the Recruiting Chart
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1940s wartime documentary-noir style depicting panel 2
@@ -131,7 +131,7 @@ pushing on it.
 
 ## Panel 3: Meeting the Machine That Filled a Room
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1940s wartime documentary-noir style depicting panel 3
@@ -160,7 +160,7 @@ job title existed.
 
 ## Panel 4: The Moth in Relay Seventy
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1940s wartime documentary-noir style depicting panel 4
@@ -189,7 +189,7 @@ came to credit her with the word itself.
 
 ## Panel 5: A Room Full of Vacuum Tubes and Doubters
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1950s Mid-Century Modern "Atomic Age" illustration
@@ -219,7 +219,7 @@ build the thing they insisted could not be built.
 
 ## Panel 6: The Machine That Translates Itself
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1950s Mid-Century Modern "Atomic Age" illustration
@@ -247,7 +247,7 @@ push considerably further.
 
 ## Panel 7: Teaching a Computer to Read English
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1950s Mid-Century Modern "Atomic Age" illustration
@@ -275,7 +275,7 @@ actually said.
 
 ## Panel 8: The Committee That Didn't Trust Plain English
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in 1950s Mid-Century Modern "Atomic Age" illustration
@@ -304,7 +304,7 @@ decade into more business computing installations than any language before it.
 
 ## Panel 9: Eleven and Three-Quarters Inches of Light
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warmer, more naturalistic late-20th-century
@@ -334,7 +334,7 @@ processor's case.
 
 ## Panel 10: Recalled, Again
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Please generate a 16:9 image in warmer late-20th-century documentary illustration
@@ -362,7 +362,7 @@ machine logic was too valuable to actually let go.
 
 ## Panel 11: The Oldest Officer in the Fleet
 
-<!-- ![](./panel-11.png) -->
+![](./panel-11.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 11. Do not include the panel number in the image.)
 Please generate a 16:9 image in warmer late-20th-century documentary illustration
@@ -390,7 +390,7 @@ most decorated and celebrated technical officers.
 
 ## Panel 12: The Ladder She Left Standing
 
-<!-- ![](./panel-12.png) -->
+![](./panel-12.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 12. Do not include the panel number in the image.)
 Please generate a 16:9 image in warmer late-20th-century documentary illustration

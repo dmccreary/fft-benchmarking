@@ -10,7 +10,7 @@ social:
 
 # Five Dollars of Computer: Eben Upton and the Raspberry Pi
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -69,7 +69,7 @@ most of a decade to find out.
 
 ## Panel 1: The Thinning Stack
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the
@@ -102,7 +102,7 @@ price.
 
 ## Panel 2: Sealed Boxes
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -132,7 +132,7 @@ was a machine cheap enough that breaking it did not matter.
 
 ## Panel 3: A Board on a Cluttered Desk
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -160,7 +160,7 @@ specification: how far the price could fall before the computer stopped being a 
 
 ## Panel 4: Chasing the Number
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -190,7 +190,7 @@ defeat.
 
 ## Panel 5: The Websites Go Down
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -220,7 +220,7 @@ had simply been waiting for someone to build it.
 
 ## Panel 6: A Movement, Not a Product
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -252,7 +252,7 @@ people building things themselves again.
 
 ## Panel 7: Keeping the Mission Small
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style
@@ -282,7 +282,7 @@ inexpensive microcontroller boards built for embedding directly into other peopl
 
 ## Panel 8: The Same Question, Twenty Years Later
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm contemporary graphic-novel illustration style

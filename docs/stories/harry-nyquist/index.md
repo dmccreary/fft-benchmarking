@@ -10,7 +10,7 @@ social:
 
 # The Theorem Nobody Needed Yet: Harry Nyquist and the Sampling Limit
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -71,7 +71,7 @@ In 1928, a Swedish-born engineer in a New York research laboratory published a d
 
 ## Panel 1: A Passage Earned in Four Years of Labor
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic
@@ -98,7 +98,7 @@ Harry Nyquist was fourteen when he decided his family could never afford the sch
 
 ## Panel 2: The Problem on the Wire
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Generate a 16:9 image in a 1910s-1920s Art Deco / Modernist illustrated
@@ -124,7 +124,7 @@ Fresh out of Yale, Nyquist went to work for the American Telephone and Telegraph
 
 ## Panel 3: Bandwidth and Speed, Worked Out on a Blackboard
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Generate a 16:9 image in a 1920s Art Deco / Modernist illustrated style
@@ -151,7 +151,7 @@ Nyquist was not working the bandwidth problem alone. Down the same research corr
 
 ## Panel 4: The Number That Would Not Change
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Generate a 16:9 image in a 1920s Art Deco / Modernist illustrated style
@@ -178,7 +178,7 @@ The full result arrived in Nyquist's 1928 paper "Certain Topics in Telegraph Tra
 
 ## Panel 5: A Result Waiting in the Journal Stacks
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Generate a 16:9 image in a 1930s-1940s Art Deco / Modernist illustrated
@@ -205,7 +205,7 @@ For more than two decades, Nyquist's sampling limit sat exactly where he had lef
 
 ## Panel 6: The Theorem Finds Its Machine
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Generate a 16:9 image in a style that bridges 1970s technical
@@ -231,7 +231,7 @@ By the 1970s and 1980s, digital audio had finally arrived — pulse-code modulat
 
 ## Panel 7: The Same Rule, on a Five-Dollar Board
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Generate a 16:9 image in a fully contemporary photorealistic

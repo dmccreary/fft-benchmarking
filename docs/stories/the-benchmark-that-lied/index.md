@@ -10,7 +10,7 @@ social:
 
 # The Benchmark That Lied
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -75,7 +75,7 @@ warning students about.
 
 ## Panel 1: A Number That Doesn't Add Up
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make
@@ -107,7 +107,7 @@ hand-tuned in assembly.
 
 ## Panel 2: Checking Her Own Work Twice
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 2 of
@@ -133,7 +133,7 @@ and it was reproducible.
 
 ## Panel 3: A Different Question
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 3 of
@@ -161,7 +161,7 @@ when the real mystery was sitting inside someone else's.
 
 ## Panel 4: The Buried Appendix
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 4 of
@@ -190,7 +190,7 @@ all of that cost, honestly, and theirs had quietly excluded every bit of it.
 
 ## Panel 5: Rebuilding the Comparison
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 5 of
@@ -217,7 +217,7 @@ proved it fairly, not one that assumed it.
 
 ## Panel 6: The Gap That Remains
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 6 of
@@ -243,7 +243,7 @@ had been a number that never told her what it left out.
 
 ## Panel 7: Two Numbers, One Honest Report
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in contemporary photorealistic style depicting panel 7 of

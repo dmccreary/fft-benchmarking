@@ -10,7 +10,7 @@ social:
 
 # Sophie Wilson, Steve Furber, and the Chip Built on Almost Nothing
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -72,7 +72,7 @@ in this course.
 
 ## Panel 1: A Small Company Wins a Big Contract
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the images
@@ -104,7 +104,7 @@ let Intel or Motorola staff entire floors of chip designers.
 
 ## Panel 2: The Programmer Who Knew What Software Needed
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -133,7 +133,7 @@ of expertise a processor designer could bring to the table.
 
 ## Panel 3: Pricing Out the Alternatives
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -163,7 +163,7 @@ long run.
 
 ## Panel 4: Two Engineers, No Committee
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -192,7 +192,7 @@ turned out, exactly small enough to actually finish.
 
 ## Panel 5: Borrowing an Idea From California
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -220,7 +220,7 @@ argument about efficiency became, in Cambridge, a practical survival strategy.
 
 ## Panel 6: Wilson's Ruthless Instruction Set
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -247,7 +247,7 @@ enough that its correctness could actually be checked by the people who had desi
 
 ## Panel 7: Furber Builds the Hardware
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -275,7 +275,7 @@ simply did not have.
 
 ## Panel 8: First Silicon, and a Puzzling Multimeter
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -305,7 +305,7 @@ processors of the era would simply have wasted.
 
 ## Panel 9: The Chip Goes to Market
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -333,7 +333,7 @@ dollar, per square millimeter of silicon.
 
 ## Panel 10: Spinning Out, Licensing In
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with 1980s British
@@ -363,7 +363,7 @@ exactly the right one for what was coming next.
 
 ## Panel 11: The Right Chip for a Market That Didn't Exist Yet
 
-<!-- ![](./panel-11.png) -->
+![](./panel-11.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 11. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same contemporary graphic-novel style with a slightly more
@@ -394,7 +394,7 @@ graph paper.
 
 ## Panel 12: Still Running, Decades Later
 
-<!-- ![](./panel-12.png) -->
+![](./panel-12.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 12. Do not include the panel number in the image.)
 Please generate a 16:9 image in a contemporary graphic-novel style, slightly brighter and more

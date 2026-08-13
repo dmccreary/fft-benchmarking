@@ -10,7 +10,7 @@ social:
 
 # One Job, Done Fast: Gene Frantz and the Birth of the DSP Chip
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -28,7 +28,7 @@ In 1976, a small group of engineers at a Dallas semiconductor company set out to
 
 ## Panel 1: A Voice With No Chip to Live In
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the images have a consistent style and consistent characters. Do not ask any clarifying questions. Just generate the image immediately when asked.
@@ -39,7 +39,7 @@ The team's assignment sounds almost simple on paper: take a human voice, compres
 
 ## Panel 2: The Math That Outran the Machine
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 2 of 8. Keep the characters and style consistent with the prior panel. The lead engineer, mid-30s with short dark hair and black plastic-frame glasses in a light-blue short-sleeve shirt, sits alone at a lab bench late at night in the same Dallas, Texas semiconductor lab, 1976. He stares at an oscilloscope screen where a reconstructed speech waveform lags visibly behind a reference trace, breaking into a stuttering, distorted shape. Stacks of green-and-white striped printout paper covered in assembly-language code spill across the desk. A small evaluation board for a general-purpose microprocessor sits open beside a hand-held stopwatch showing an unfavorable elapsed time. The color palette is deep midnight blue-black for the room with warm amber desk-lamp light pooling on the bench and cool green oscilloscope glow on his face. The emotional tone is quiet frustration tipping toward realization. Include at least these specific visual details: a desk lamp with a metal shade throwing a tight cone of light, a wall clock reading well past midnight, an ashtray with a spent cigarette, a coffee cup with a ring stain on the printout paper, a small chalkboard equation reading "sum of a times x" circled twice, and a discarded crumpled printout in a wastebasket. Generate the image immediately without asking clarifying questions.
@@ -48,7 +48,7 @@ Late one night, the lead engineer runs the numbers again, certain he has made an
 
 ## Panel 3: Sketching a Chip That Does One Thing
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 3 of 8. Keep the characters and style consistent with prior panels. The lead engineer and the quieter sketching engineer lean over a large sheet of vellum on a drafting table in the Dallas, Texas semiconductor lab, 1977. The lead engineer, still in his light-blue short-sleeve shirt and black plastic-frame glasses, points with a mechanical pencil at a hand-drawn block diagram showing a single wide arrow looping from a multiplier block into an adder block into a register, labeled "one pass, one clock." The quieter engineer, in a muted olive cardigan, holds a set of drafting compasses and a T-square. Rolls of blueprint paper lean against the drafting table's legs, and a shelf behind them holds labeled ceramic chip packages and ferrite-core memory samples. The color palette is warm vellum cream, graphite gray, olive green, and brass drafting-tool tones under bright afternoon window light. The emotional tone is focused, almost giddy invention. Include at least these specific visual details: a mechanical pencil with a worn eraser, a circular slide rule beside the vellum sheet, a cork board pinned with smaller circuit sketches, a desk fan mid-spin in the corner, a half-full glass bottle of soda on the drafting table, and a small hand-lettered note reading "forget the rest, just make this part fast." Generate the image immediately without asking clarifying questions.
@@ -57,7 +57,7 @@ If no existing chip can multiply and accumulate fast enough, the team decides, t
 
 ## Panel 4: A Room Full of Reasons to Say No
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 4 of 8. Keep the characters and style consistent with prior panels. Inside a wood-paneled corporate conference room in Dallas, Texas, 1977, the lead engineer, in his light-blue short-sleeve shirt and dark narrow tie, stands at the head of a table presenting a hand-drawn chip diagram on an easel pad. Around the table, three skeptical company managers in dark suits and wide 1970s ties sit with arms crossed or hands steepled; one taps a mechanical calculator, another studies a budget ledger full of columns of numbers. The mustached project leader from earlier panels sits near the engineer, arms folded but supportive. A large wall clock and a framed photograph of a factory building hang behind the table. The color palette is muted brown, gray, and dark green with cool fluorescent overhead lighting replacing the warm lab lighting of earlier scenes. The emotional tone is tense, quietly adversarial. Include at least these specific visual details: a glass ashtray with a curl of cigarette smoke, a stack of budget printouts fanned across the table, a rotary desk phone at the manager's elbow, a half-empty carafe of coffee with mismatched cups, a "return on investment" figure circled in red pencil on a chart, and rain streaking the conference-room window. Generate the image immediately without asking clarifying questions.
@@ -66,7 +66,7 @@ Not everyone in the building shares the team's enthusiasm. Designing and fabrica
 
 ## Panel 5: The Toy That Finally Spoke
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 5 of 8. Keep the characters and style consistent with prior panels. In the Dallas, Texas semiconductor lab, 1978, all four engineers crowd around a finished hand-held learning toy on the workbench, its plastic case now fully assembled with a phonetic keyboard and a narrow red LED display glowing with letters. The lead engineer, light-blue short-sleeve shirt and black plastic-frame glasses, leans in close with a proud half-smile as the toy's small speaker grille sits inches from his ear. Beside him, the mustached project leader claps a hand on his shoulder, the curly-haired speech scientist holds up a small black ceramic chip package triumphantly, and the quieter engineer snaps a photograph with a boxy 1970s camera. Discarded prototype circuit boards and empty solder-reel spools clutter the bench around the finished toy. The color palette shifts warmer and brighter than earlier panels: gold, cream, and cheerful red LED glow against the same wood-paneled lab. The emotional tone is triumphant, warm relief. Include at least these specific visual details: a small United States flag pin on the project leader's shirt pocket, a hand-drawn "IT WORKS" sign taped to the wall, a box of blank product packaging waiting to be filled, a stopwatch now discarded face-down on the bench, a half-drunk celebratory bottle of soda being raised in a toast, and the toy's cardboard shipping box printed with a simple line-drawing mascot. Generate the image immediately without asking clarifying questions.
@@ -75,7 +75,7 @@ Months later, the finished chip sits inside a plastic learning toy on the same w
 
 ## Panel 6: One Chip Becomes a Family
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm early-1980s technical-illustration style depicting panel 6 of 8. Keep the lead engineer's appearance consistent: now in his late 30s, still with black plastic-frame glasses, wearing a slightly more modern short-sleeve shirt with a wider tie, standing in a brighter, more modern engineering lab in 1983. He holds a new rectangular black chip package up to the light while a large technical poster behind him shows a family tree branching from one chip design into several labeled variants feeding into diagrams of a telephone modem, a factory control panel, and a reel-to-reel audio mixing console. A younger colleague at a nearby desk tests a modem circuit board wired to an oscilloscope showing a clean, fast waveform, a visible contrast to the stuttering trace from panel 2. The color palette brightens further: crisp white lab surfaces, silver chip packaging, and confident primary-color accents on the technical poster. The emotional tone is expansive pride and momentum. Include at least these specific visual details: a wall calendar showing the year prominently, a cardboard box labeled for shipment to a telecommunications customer, a technical reference manual open on the desk, a desktop terminal with a green-phosphor screen, a second engineer on a wall-mounted telephone taking an order, and a small model telephone handset sitting on the desk beside the modem board. Generate the image immediately without asking clarifying questions.
@@ -84,7 +84,7 @@ The architecture proven inside a children's toy does not stay a novelty for long
 
 ## Panel 7: The Engineer Who Kept Arguing for Speed
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in a warm late-1990s technical-illustration style depicting panel 7 of 8. The lead engineer, now a distinguished figure in his 50s with silver hair but the same black plastic-frame glasses, wears a tweed jacket over a collared shirt and stands at a lectern in a conference hall, gesturing toward a large projection screen showing a diagram of a signal-processing chip architecture with a highlighted fast multiply-and-accumulate block at its center. Rows of younger engineers in business-casual clothing sit taking notes, some with laptops, in a modern auditorium with soft blue ambient lighting. A banner behind the lectern reads "Signal Processing Engineering Symposium" in generic conference typography. The color palette shifts to cool blues and grays with warm spotlight on the speaker, signaling the passage of decades from the earlier warm 1970s lab scenes. The emotional tone is authoritative, mentoring warmth. Include at least these specific visual details: a water pitcher and glass on the lectern, a laser pointer in the speaker's hand, a conference name badge clipped to his jacket lapel, a row of audience members with an early laptop computer open, a small potted plant at the edge of the stage, and a printed conference program visible on a front-row seat. Generate the image immediately without asking clarifying questions.
@@ -93,7 +93,7 @@ Decades pass, and the engineer who once sketched a one-trick chip on vellum beco
 
 ## Panel 8: The Same Idea, Now the Size of a Fingernail
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in a bright, clean contemporary illustration style depicting panel 8 of 8, transitioning visually from the warm 1970s palette of earlier panels into crisp present-day lighting. A present-day engineering student, casually dressed in a plain hoodie, sits at a modern desk holding a tiny credit-card-sized circuit board between two fingers, small enough that a single fingertip nearly covers it. On the laptop screen in front of the student, a chip datasheet diagram is open showing a small highlighted block inside a modern processor core labeled with a fast multiply-and-accumulate icon, echoing the same block diagram from panel 3's vellum sketch, which appears faintly as a ghosted overlay in the corner of the screen for visual continuity. A framed black-and-white photograph on the shelf behind the student shows four engineers from decades earlier standing proudly around a workbench, a quiet nod to the lab scenes earlier in the story. The color palette is bright white desk surface, cool laptop-screen blue, and a single warm accent light on the tiny circuit board itself. The emotional tone is quiet continuity and inspiration, small hardware carrying forward a big idea. Include at least these specific visual details: a coiled USB cable next to the small board, a steaming mug of coffee on the desk, a notebook with hand-drawn signal-processing equations, a desk lamp with warm light aimed at the board, a sticky note reading "one operation, one cycle," and sunlight coming through a window in the background. Generate the image immediately without asking clarifying questions.

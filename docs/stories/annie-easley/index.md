@@ -10,7 +10,7 @@ social:
 
 # Self-Taught at NASA: Annie Easley's Path to Programming
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -79,7 +79,7 @@ to run the machines instead. What she taught herself would end up guiding rocket
 
 ## Panel 1: A Mother's Instruction
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the
@@ -114,7 +114,7 @@ knew, with total conviction, that she intended to have one.
 
 ## Panel 2: The Pharmacy That Wasn't
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same warm, muted mid-century American realist style
@@ -143,7 +143,7 @@ answer.
 
 ## Panel 3: Two Weeks Later, She Was Working
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in a style now beginning to blend Space Age technical illustration
@@ -173,7 +173,7 @@ let stop her. She did not come, she would say later, to be a pioneer. She came t
 
 ## Panel 4: Clonk, Clonk, Clonk
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in a blended Space Age technical-illustration and mid-century
@@ -204,7 +204,7 @@ down. If she couldn't work with somebody's prejudice, she decided, she would wor
 
 ## Panel 5: Teaching Herself the Machine
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in a Space Age technical-illustration style depicting panel 5 of 10.
@@ -233,7 +233,7 @@ almost anyone told her to.
 
 ## Panel 6: From Computer to Coder
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in a Space Age technical-illustration style depicting panel 6 of 10.
@@ -260,7 +260,7 @@ that had ended other careers at the laboratory became the foundation of hers.
 
 ## Panel 7: Paying Her Own Way
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in a blended Space Age and mid-century realist style depicting
@@ -291,7 +291,7 @@ terms.
 
 ## Panel 8: The Rocket That Wouldn't Fail
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in a Space Age technical-illustration style depicting panel 8 of 10.
@@ -319,7 +319,7 @@ possible.
 
 ## Panel 9: Opening the Next Door
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in a Space Age technical-illustration style depicting panel 9 of 10.
@@ -349,7 +349,7 @@ happened to her. She could make sure the next person did not have to solve it al
 
 ## Panel 10: The Crater and the Hall of Fame
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Please generate a 16:9 image in a style that shifts to cooler, contemporary technical

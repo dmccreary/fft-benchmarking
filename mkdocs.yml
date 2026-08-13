@@ -234,7 +234,25 @@ nav:
     - Wave Superposition Beats Simulator: sims/wave-superposition-beats-simulator/index.md
     - Window Function Comparison: sims/window-function-comparison/index.md
 
-
+  - Stories:
+    - Overview: stories/index.md
+    - Story Ideas: stories/story-ideas.md
+    - Harry Nyquist - The Sampling Limit: stories/harry-nyquist/index.md
+    - Alec Reeves - Digital Audio Fifty Years Early: stories/alec-reeves/index.md
+    - Grace Hopper - Amazing Grace: stories/grace-hopper/index.md
+    - Konrad Zuse - The Machine in the Living Room: stories/konrad-zuse/index.md
+    - Betty Holberton - Wired by Hand: stories/betty-holberton/index.md
+    - Seymour Cray - Cooling the Fire: stories/seymour-cray/index.md
+    - William Kahan - Honest Floating-Point Math: stories/william-kahan/index.md
+    - Annie Easley - Self-Taught at NASA: stories/annie-easley/index.md
+    - Margaret Hamilton - 1201 Alarm: stories/margaret-hamilton/index.md
+    - Gene Frantz - One Job, Done Fast: stories/gene-frantz/index.md
+    - Patterson and Hennessy - The Case for Simplicity: stories/patterson-hennessy/index.md
+    - Jack Dongarra - The Number Nobody Could Fake: stories/jack-dongarra/index.md
+    - Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing: stories/sophie-wilson-steve-furber/index.md
+    - Eben Upton - Five Dollars of Computer: stories/eben-upton/index.md
+    - The Benchmark That Lied (fiction): stories/the-benchmark-that-lied/index.md
+    - 0.59 Milliseconds (capstone): stories/059-milliseconds/index.md
 
   - Appendices:
     - List of Appendices: appendices/index.md

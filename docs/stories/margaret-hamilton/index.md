@@ -10,7 +10,7 @@ social:
 
 # 1201 Alarm: Margaret Hamilton and the Software That Landed on the Moon
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -67,7 +67,7 @@ later be given a name of its own: software engineering.
 
 ## Panel 1: Chasing Weather, Learning Real Time
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic novel. Please make the
@@ -99,7 +99,7 @@ kind of unglamorous, disciplined rigor that would matter far more than anyone co
 
 ## Panel 2: Recruited to Reach the Moon
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -127,7 +127,7 @@ rising to direct the division responsible for the flight software itself.
 
 ## Panel 3: "The Software Must Never Simply Trust"
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -156,7 +156,7 @@ and no second try, "the crew won't make that mistake" is not an engineering plan
 
 ## Panel 4: Lauren's Afternoon at the Console
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -183,7 +183,7 @@ told the safeguard was unnecessary, because a trained astronaut would never make
 
 ## Panel 5: Building the Executive That Refuses to Panic
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -210,7 +210,7 @@ long ago that a real-time system that runs out of time has already failed.
 
 ## Panel 6: Program Alarm, Twelve Minutes From the Moon
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -237,7 +237,7 @@ insisting the software must be able to survive.
 
 ## Panel 7: Twenty Seconds in Mission Control
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -264,7 +264,7 @@ or the crew would have to abandon the landing they had trained years for.
 
 ## Panel 8: The Computer Keeps Its Head
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel
@@ -292,7 +292,7 @@ alive under a load nobody had planned for.
 
 ## Panel 9: Touchdown, and a Name for the Discipline
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Please generate a 16:9 image in the same Space Age technical-illustration style depicting panel

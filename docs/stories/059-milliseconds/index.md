@@ -10,7 +10,7 @@ social:
 
 # 0.59 Milliseconds: One Student's Capstone Journey
 
-<!-- ![](./cover.png) -->
+![](./cover.png)
 <details>
 <summary>Cover Image Prompt</summary>
 (This is the Cover Image. Do not include this label in the image.)
@@ -80,7 +80,7 @@ On the first day of the lab, Maya Ortiz taped an index card above her desk with 
 
 ## Panel 1: The Index Card
 
-<!-- ![](./panel-01.png) -->
+![](./panel-01.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 01. Do not include the panel number in the image.)
 I am about to ask you to generate a series of images for a graphic
@@ -108,7 +108,7 @@ Maya's kit arrived in a small static bag: a green thumbnail-sized board, a handf
 
 ## Panel 2: A Signal Answers a Question
 
-<!-- ![](./panel-02.png) -->
+![](./panel-02.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 02. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -132,7 +132,7 @@ The breakthrough was almost embarrassingly simple. To find out whether a signal 
 
 ## Panel 3: Five Hundred Thirty Times Too Slow
 
-<!-- ![](./panel-03.png) -->
+![](./panel-03.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 03. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -157,7 +157,7 @@ The number on the screen was almost funny, if it hadn't been her own code: 21 se
 
 ## Panel 4: Cutting the Problem in Half, Again and Again
 
-<!-- ![](./panel-04.png) -->
+![](./panel-04.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 04. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -181,7 +181,7 @@ The fix, once she saw it, felt like cheating: a transform split cleanly in half 
 
 ## Panel 5: Fast Isn't Enough Until It's Also Right
 
-<!-- ![](./panel-05.png) -->
+![](./panel-05.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 05. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -204,7 +204,7 @@ A faster answer that is also a wrong answer is not an improvement, so before May
 
 ## Panel 6: The Language Itself Is the Bottleneck
 
-<!-- ![](./panel-06.png) -->
+![](./panel-06.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 06. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -227,7 +227,7 @@ The FFT's remaining slowness turned out not to be the algorithm's fault at all. 
 
 ## Panel 7: Climbing the Abstraction Ladder
 
-<!-- ![](./panel-07.png) -->
+![](./panel-07.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 07. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -250,7 +250,7 @@ The course called it the abstraction ladder, and Maya started climbing it one ru
 
 ## Panel 8: The Tax Hiding Inside Every Multiply
 
-<!-- ![](./panel-08.png) -->
+![](./panel-08.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 08. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -273,7 +273,7 @@ Buried inside every single multiply in Maya's FFT was a cost she hadn't known to
 
 ## Panel 9: Reading the Chip's Own Signature
 
-<!-- ![](./panel-09.png) -->
+![](./panel-09.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 09. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -295,7 +295,7 @@ Rather than trust the datasheet or her own assumption, Maya wrote a short probe 
 
 ## Panel 10: Learning the Machine's Own Words
 
-<!-- ![](./panel-10.png) -->
+![](./panel-10.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 10. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -317,7 +317,7 @@ Writing her first loop directly in the processor's own instruction set felt like
 
 ## Panel 11: Speaking Directly to the Hardware
 
-<!-- ![](./panel-11.png) -->
+![](./panel-11.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 11. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -340,7 +340,7 @@ The real jump came when Maya's hand-written instructions stopped asking the proc
 
 ## Panel 12: The Butterfly, Written by Hand
 
-<!-- ![](./panel-12.png) -->
+![](./panel-12.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 12. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -364,7 +364,7 @@ The butterfly operation at the heart of the FFT — the small, repeated combine-
 
 ## Panel 13: Earning the Number Honestly
 
-<!-- ![](./panel-13.png) -->
+![](./panel-13.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 13. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated
@@ -387,7 +387,7 @@ Getting a fast number was no longer the hard part; trusting it was. Maya had lea
 
 ## Panel 14: Every Order of Magnitude, Named
 
-<!-- ![](./panel-14.png) -->
+![](./panel-14.png)
 <details><summary>Image Prompt</summary>
 (This is Panel 14. Do not include the panel number in the image.)
 Generate a 16:9 image in a contemporary photorealistic illustrated

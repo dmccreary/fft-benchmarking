@@ -1,0 +1,2391 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Seymour Cray built the world's fastest computers by refusing to trust any performance claim he had not personally measured and reproduced on real hardware.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/seymour-cray/">
+      
+      
+        <link rel="prev" href="../betty-holberton/">
+      
+      
+        <link rel="next" href="../william-kahan/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Cooling the Fire: Seymour Cray's Obsession with Honest Speed - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cooling-the-fire-seymour-crays-obsession-with-honest-speed" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cooling the Fire: Seymour Cray's Obsession with Honest Speed
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../story-ideas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alec-reeves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-number-he-wouldnt-sign-off-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Number He Wouldn't Sign Off On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-technician-under-fire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Technician Under Fire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-bench-of-his-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Bench of His Own
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-betting-against-the-vacuum-tube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Betting Against the Vacuum Tube
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-an-answer-written-in-a-memo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: An Answer Written in a Memo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-fewer-hands-fewer-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Fewer Hands, Fewer Words
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-measure-it-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: Measure It Yourself
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-north-to-the-pines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: North to the Pines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-the-bench-around-the-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: The Bench Around the Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-9-prove-it-then-publish-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 9: Prove It, Then Publish It
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-10-colder-still" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 10: Colder Still
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-11-elves-in-the-tunnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 11: Elves in the Tunnel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-12-the-standard-he-left-behind" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 12: The Standard He Left Behind
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 12: The Standard He Left Behind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-cray-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Cray Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gene-frantz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterson-hennessy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jack-dongarra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-number-he-wouldnt-sign-off-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Number He Wouldn't Sign Off On
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-technician-under-fire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Technician Under Fire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-bench-of-his-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Bench of His Own
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-betting-against-the-vacuum-tube" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Betting Against the Vacuum Tube
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-an-answer-written-in-a-memo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: An Answer Written in a Memo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-fewer-hands-fewer-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Fewer Hands, Fewer Words
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-measure-it-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: Measure It Yourself
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-north-to-the-pines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: North to the Pines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-the-bench-around-the-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: The Bench Around the Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-9-prove-it-then-publish-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 9: Prove It, Then Publish It
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-10-colder-still" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 10: Colder Still
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-11-elves-in-the-tunnel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 11: Elves in the Tunnel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-12-the-standard-he-left-behind" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 12: The Standard He Left Behind
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 12: The Standard He Left Behind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-cray-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Cray Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/seymour-cray/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="cooling-the-fire-seymour-crays-obsession-with-honest-speed">Cooling the Fire: Seymour Cray's Obsession with Honest Speed</h1>
+<p><img alt="" src="cover.png" /></p>
+<details>
+<summary>Cover Image Prompt</summary>
+(This is the Cover Image. Do not include this label in the image.)
+Please generate a wide-landscape 16:9 cover image in a Mid-Century Atomic
+Age illustration style transitioning toward Space-Age NASA-adjacent design.
+Depict a tall, lean American engineer in his late forties — sandy-brown
+hair graying at the temples, horn-rimmed glasses, sleeves of a plain white
+button-down shirt rolled to the elbow, narrow dark tie loosened — standing
+alone in a dim computer room in front of a squat, C-shaped mainframe
+cabinet ringed by a cushioned bench. He holds a handheld stopwatch in one
+hand and an oscilloscope probe in the other, watching a trace on a round
+green screen rather than looking at the machine itself. Thin coils of
+tubing loop from the base of the cabinet across the concrete floor,
+suggesting a liquid cooling system. The room is lit by warm incandescent
+work-lamps against cool blue-gray shadows, with a wall of hand-drawn
+circuit schematics pinned up behind him and a single tall window showing
+dark pine trees outside, evening light. Render the title text "Cooling the
+Fire: Seymour Cray's Obsession with Honest Speed" in a period-appropriate
+bold sans-serif technical typeface, like 1960s engineering-manual
+lettering, along the lower third of the image. Color palette: muted grays,
+steel blues, and warm amber lamp light, with a single small red
+indicator-light accent. Emotional tone: quiet, solitary concentration —
+a craftsman checking his own work rather than celebrating it. Generate the
+image immediately without asking clarifying questions.
+</details>
+
+<details>
+<summary>Narrative Prompt</summary>
+This story spans the career of an American electrical engineer, born 1925
+in rural Wisconsin, from his World War II military service through his
+death in 1996. The setting moves through the American Midwest — Minnesota
+and Wisconsin — and later Colorado, spanning roughly 1943 to 1996. Render
+every panel in a consistent Mid-Century (1950s-1970s) Atomic Age /
+Bell-Labs-modernism illustration style — hand-drawn technical linework,
+oscilloscopes, hand-lettered circuit schematics, reel-to-reel tape drives,
+drafting tables — gradually shifting toward a Space-Age, NASA-adjacent
+palette and lighting as the story moves into the 1970s and 1980s
+supercomputer era. Central themes: obsessive engineering discipline,
+radical simplicity, solitary focus, and above all a refusal to accept any
+performance number that has not been personally measured and reproduced.
+Character consistency: the central figure is tall and lean with sandy-
+brown hair (graying and thinning across the decades), horn-rimmed glasses,
+and a plain, unfashionable wardrobe — white or pale-blue button-down
+shirts with rolled sleeves and a narrow dark tie in the earlier panels,
+shifting to plaid or flannel shirts in the later, more rural panels. He
+should look the same age-appropriate person in every panel: early
+twenties in the wartime panel, thirties in the 1950s-60s panels, forties
+to fifties in the 1970s-80s panels, and elderly but still lean and
+alert in the final panels of the 1990s. Palette across the whole story:
+muted institutional grays, steel blues, warm amber work-lighting, with
+occasional cool green (oscilloscope traces) or blue-white (cooling liquid)
+accent lighting. No modern technology, clothing, or architecture should
+appear anywhere in the story.
+</details>
+
+<h3 id="prologue-the-number-he-wouldnt-sign-off-on">Prologue – The Number He Wouldn't Sign Off On</h3>
+<p>In 1964, a small computer laboratory tucked into the pine forests of Chippewa Falls, Wisconsin, shipped a machine that outran anything the far larger engineering divisions of the world's dominant computer company had ever built. Its designer had no marketing department, no advertising budget, and no real interest in either. What he did have was a private, almost monastic conviction: a machine's speed meant nothing until he had timed it himself, on real hardware, with instruments he trusted completely. That conviction — more than any single circuit he ever patented — was his true invention, and it is the same discipline this course asks of you every time you report a cycle count for your own FFT.</p>
+<h2 id="panel-1-a-technician-under-fire">Panel 1: A Technician Under Fire</h2>
+<p><img alt="" src="panel-01.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 01. Do not include the panel number in the image.)
+I am about to ask you to generate a series of images for a graphic novel.
+Please make the images have a consistent style and consistent characters.
+Do not ask any clarifying questions. Just generate the image immediately
+when asked.
+
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 1 of 12. The scene shows a lean American soldier in his
+late teens, sandy-brown hair cropped short under a canvas field cap, U.S.
+Army fatigues with sleeves rolled up, kneeling inside a canvas field tent
+in the Pacific theater in 1944. He is adjusting the dial of a bulky
+vacuum-tube radio receiver by hand, headphones pressed to one ear, a
+grease-pencil notepad of Morse code and signal readings open on a wooden
+crate beside him. A second soldier in the tent's shadowed background
+monitors a second receiver. Outside the tent flap, tropical foliage and a
+sliver of dusk sky are visible. Color palette: olive drab greens, dull
+brass and copper tones, warm lantern light against deep shadow. Emotional
+tone: alert, focused competence under quiet pressure. Include at least six
+specific visual details: glowing vacuum tubes visible through receiver
+vents, a coiled field-telephone wire on the ground, a canvas cot in the
+corner, a hand-drawn signal log, condensation on a metal water canteen,
+and a single bare bulb strung from the tent's ridgepole. Generate the
+image immediately without asking clarifying questions.
+</details>
+
+<p>Seymour Cray traded a Chippewa Falls, Wisconsin, high school classroom for a U.S. Army radio unit in 1943, at the age of eighteen. Across postings in the Pacific and European theaters, he spent long nights hunched over vacuum-tube receivers, learning by touch and static how a real signal pulled apart from noise under conditions no classroom could simulate. The Army also set him to work on cryptographic equipment, an early brush with the idea that a machine's job is to reveal a hidden truth buried inside electrical chaos. He came home in 1945 with steady hands, a technician's patience, and no illusions about what any piece of equipment could do until someone had actually tested it.</p>
+<h2 id="panel-2-a-bench-of-his-own">Panel 2: A Bench of His Own</h2>
+<p><img alt="" src="panel-02.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 02. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 2 of 12. Make the characters and style consistent with the
+prior panel. The scene shows the same young man, now in his mid-twenties,
+sandy-brown hair neatly combed, wearing a white short-sleeved button-down
+shirt and narrow dark tie, alone at a cluttered engineering workbench in a
+research laboratory in Saint Paul, Minnesota, in 1952. He leans over a
+half-built vacuum-tube logic chassis with a soldering iron in hand, hand-
+drawn circuit diagrams taped to the wall behind him covered in dense
+pencil annotations. Other engineers work at distant benches in the
+background, but he is visibly isolated by an empty workbench on either
+side of him. Color palette: institutional gray-green walls, warm amber
+desk-lamp light, brass and gunmetal equipment tones. Emotional tone:
+absorbed solitary concentration. Include at least six specific visual
+details: rows of glass vacuum tubes in open racks, a slide rule beside his
+notebook, a wall clock reading late evening, a coffee cup gone cold, spare
+resistors sorted into labeled tins, and a punch-card tray stacked nearby.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>At Engineering Research Associates in Saint Paul, Minnesota, the young engineer found a company built around one unglamorous mission: building cryptographic computing machines for the U.S. Navy correctly, the first time. Cray finished an electrical engineering degree and a master's in applied mathematics at the University of Minnesota, then walked into the company's drafting rooms in 1951 and asked for the hardest, least-supervised problems on the shelf. Colleagues remembered him disappearing for days at a stretch, filling notebooks with his own hand-drawn logic diagrams rather than trusting anyone else's math. By 1953 he had helped deliver one of the first commercially produced scientific computers in the country, and he had already decided that committees slowed machines down.</p>
+<h2 id="panel-3-betting-against-the-vacuum-tube">Panel 3: Betting Against the Vacuum Tube</h2>
+<p><img alt="" src="panel-03.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 03. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 3 of 12. Make the characters and style consistent with the
+prior panels. The scene shows the same man, now in his early thirties,
+horn-rimmed glasses added, white shirt sleeves rolled to the elbow, tie
+loosened, standing in a converted barn workshop in rural Minnesota in
+1957. He and two colleagues in similar shirts crowd around a workbench
+scattered with small transistor components, comparing a hand-drawn
+schematic against a partially wired circuit board under a bare hanging
+bulb. A chalkboard on the exposed wooden wall reads a simple diagram of
+circuit paths. Weathered barn siding and a single tall barn window showing
+snow outside are visible. Color palette: raw wood browns, cool winter
+light through the window, warm bulb light on the workbench. Emotional
+tone: determined, scrappy ambition. Include at least six specific visual
+details: loose transistors in a cigar box, a soldering iron resting on a
+metal stand, drifted snow visible through the window, a coffee percolator
+on a hot plate, rolled blueprints in a corner, and exposed barn rafters
+overhead. Generate the image immediately without asking clarifying
+questions.
+</details>
+
+<p>Restless after his employer was absorbed into a larger corporation, Cray grew tired of watching engineering decisions get made in meetings instead of on lab benches. In 1957 he left with a handful of colleagues to help start a new company, betting that the fragile, power-hungry vacuum tube was already an obsolete idea. Working out of borrowed, unglamorous space, his small team wired early transistor circuits by hand, chasing one goal above all others: build the fastest scientific computer in the world, not the most profitable or the most feature-laden. Cray insisted on doing much of the physical layout himself, certain that no engineer who had never held the soldering iron could really judge whether a design was fast.</p>
+<h2 id="panel-4-an-answer-written-in-a-memo">Panel 4: An Answer Written in a Memo</h2>
+<p><img alt="" src="panel-04.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 04. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 4 of 12. Make the characters and style consistent with the
+prior panels. The scene shows the same man, now in his late thirties, in
+a spare computer room in Chippewa Falls, Wisconsin, in 1964, standing
+beside a large freshly wired mainframe cabinet studded with indicator
+lights. He watches a teletype printer chattering out a strip of paper
+covered in numbers, a faint, satisfied half-smile on his face, while two
+younger engineers in shirtsleeves lean in to read the printout over his
+shoulder. In the far background, through an open doorway, a courier in a
+suit is shown handing an unmarked envelope to a distant, distressed-
+looking executive at a rival company's polished corporate office, rendered
+smaller and grayer to suggest distance and contrast. Color palette: cool
+fluorescent grays in the executive office contrasted with warm incandescent
+tones in the lab. Emotional tone: quiet vindication rather than triumph.
+Include at least six specific visual details: a spooling paper-tape
+printer, rows of blinking indicator lights, a wall-mounted rotary phone,
+a half-finished cup of coffee on a console, a hand-drawn performance graph
+pinned to the wall, and a window showing pine trees outside the lab.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>By 1964, that small team's newest machine was running rings around computers built by companies with a hundred times the staff and budget. Word reached a rival company's front office that the fastest computer in the world had come out of a Wisconsin lab employing only a few dozen people, and an exasperated executive's internal memo eventually made its way back to Cray, asking how such a small group could out-engineer a research division many times its size. Cray's reported reply was characteristically short: the executive, he said, had already answered his own question. A small team doing verifiable, disciplined work had simply out-thought a much larger one that had never tested its own assumptions.</p>
+<h2 id="panel-5-fewer-hands-fewer-words">Panel 5: Fewer Hands, Fewer Words</h2>
+<p><img alt="" src="panel-05.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 05. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 5 of 12. Make the characters and style consistent with the
+prior panels. The scene shows the same man in his late thirties standing
+at a drafting table late at night in a small design office, alone except
+for one colleague packing up to leave in the background. He is sketching
+directly onto a large sheet of vellum with a mechanical pencil, a
+half-erased circuit diagram beside a much simpler redrawn version. A small
+hand-lettered sign taped above the table reads only "SIMPLER" in blocky
+capital letters. A wall clock shows nearly midnight. Color palette: deep
+navy shadow, a single warm cone of drafting-lamp light, muted olive and
+gray office furnishings. Emotional tone: disciplined, unhurried
+resolve. Include at least six specific visual details: a stack of
+discarded circuit sketches in a wastebasket, a slide rule and compass on
+the table, a coat draped over an empty chair, a rotary desk fan switched
+off, a thermos of coffee, and rolled blueprints leaning in the corner.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>Cray ran his design group like a workshop, not a corporation. He kept engineering teams deliberately small, avoided multi-layered approval chains, and refused to let a feature onto a machine unless it earned its cost in measured performance. Where competitors added complexity to chase every possible customer, Cray stripped circuits down to the smallest number of components that could still do the job reliably. His famous, half-joking comparison of two strong oxen to a thousand chickens captured the whole philosophy: a few powerful, well-understood parts working in tight coordination beat a sprawling swarm of weaker ones every time.</p>
+<h2 id="panel-6-measure-it-yourself">Panel 6: Measure It Yourself</h2>
+<p><img alt="" src="panel-06.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 06. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century Atomic Age illustration style
+depicting panel 6 of 12. Make the characters and style consistent with the
+prior panels. The scene shows the same man, in his early forties, alone in
+a dim lab at night, seated on a rolling stool in front of a round green
+oscilloscope screen, a stopwatch held in one hand and a probe in the
+other. Loose sheets of graph paper covered in hand-plotted timing curves
+are spread across the desk and pinned to the wall behind him, several
+crossed out and redone. A punched paper tape loops down from a reader
+beside the scope. Color palette: dark navy background, glowing green
+oscilloscope trace, warm amber desk light. Emotional tone: rigorous,
+almost meditative scrutiny. Include at least six specific visual details:
+a glowing green sine-wave trace on the scope, a mechanical stopwatch face
+frozen mid-click, hand-plotted graph paper with crossed-out data points, a
+punched paper tape reader, a pencil tucked behind his ear, and a coffee
+ring stain on the desk. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>Sales brochures across the industry were full of theoretical peak speeds, numbers computed on paper rather than proven on real silicon, and Cray treated every one of them with open suspicion. Before he would let a performance claim leave the building, he wanted to see it happen: real code, real clock cycles, a stopwatch and an oscilloscope trace he had read with his own eyes. Engineers who worked for him recalled him rerunning other people's benchmark results from scratch, unwilling to repeat a number he had not personally reproduced. It was an unglamorous, time-consuming habit, and it was also the reason his machines' reputations for speed almost never turned out to be exaggerated.</p>
+<h2 id="panel-7-north-to-the-pines">Panel 7: North to the Pines</h2>
+<p><img alt="" src="panel-07.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 07. Do not include the panel number in the image.)
+Please generate a 16:9 image in transitional Mid-Century to Space-Age
+illustration style depicting panel 7 of 12. Make the characters and style
+consistent with the prior panels. The scene shows the same man, now in his
+mid-forties with the first traces of gray at his temples, wearing a plaid
+flannel shirt instead of a dress shirt, standing outside a modest single-
+story brick building surrounded by tall pine trees and a gravel parking
+lot in Chippewa Falls, Wisconsin, in 1972. A moving truck's rear doors
+stand open behind him, with a single unmarked cardboard box in his arms.
+A hand-lettered wooden sign is being mounted beside the entrance by another
+worker on a ladder, its text obscured from view. Color palette: deep pine
+greens, overcast sky grays, warm brick red. Emotional tone: quiet resolve
+and relief. Include at least six specific visual details: stacked
+cardboard moving boxes, a gravel lot with puddles, tall pines framing the
+building, a station wagon parked nearby, a ladder against the building
+wall, and distant lake water visible past the trees. Generate the image
+immediately without asking clarifying questions.
+</details>
+
+<p>In 1972, tired of the bureaucracy that had grown up around him at his old company, Cray walked away from a comfortable, senior position to start over on his own terms. He chose to build his new company not in a city but in Chippewa Falls, Wisconsin, the small logging town near where he had grown up, surrounded by lakes and pine forest rather than corporate campuses. The physical distance was the point: fewer visitors, fewer meetings, fewer people who could pressure him to ship a number he had not verified himself. Within a few years, the quiet Wisconsin buildings he set up there would produce the machine that redefined what the word "supercomputer" meant.</p>
+<h2 id="panel-8-the-bench-around-the-machine">Panel 8: The Bench Around the Machine</h2>
+<p><img alt="" src="panel-08.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 08. Do not include the panel number in the image.)
+Please generate a 16:9 image in Space-Age, NASA-adjacent illustration
+style depicting panel 8 of 12. Make the characters and style consistent
+with the prior panels. The scene shows the same man, now approaching fifty
+with visibly graying hair, kneeling beside a large C-shaped mainframe
+cabinet in a bright engineering lab in 1976, tracing a bundle of colored
+wires with one finger while a younger engineer in a flannel shirt checks a
+clipboard beside him. The cabinet's iconic curved silhouette is wrapped by
+a low cushioned bench at its base, and clear tubing carrying pale blue
+coolant loops from the cabinet's underside across the floor to a chiller
+unit. Overhead fluorescent panels reflect off polished floor tile. Color
+palette: cool institutional whites and grays, pale blue coolant glow, warm
+skin tones and flannel plaid for contrast. Emotional tone: focused pride
+in a finished, elegant design. Include at least six specific visual
+details: the distinctive curved cabinet silhouette, exposed wire bundles
+color-coded by function, the cushioned bench seating built into the base,
+looping coolant tubing, a wall-mounted power gauge, and a clipboard of
+handwritten test results. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>The machine Cray delivered in 1976 looked as unconventional as the man who designed it: a squat, C-shaped tower ringed by a cushioned bench where engineers could sit while they worked, its internal wiring intentionally kept short enough that an electrical signal could cross the whole machine within a single clock cycle. Cooling the densely packed circuit boards took a network of chilled coolant lines running through the machine's core, engineered with the same obsessive attention as the logic itself. Every design choice, from the curve of the cabinet to the length of a single wire, served one measurable goal: a verified, sustained computation speed that no one else in the world could yet match. The bench was not an afterthought of furniture design — it was a byproduct of physics taken seriously.</p>
+<h2 id="panel-9-prove-it-then-publish-it">Panel 9: Prove It, Then Publish It</h2>
+<p><img alt="" src="panel-09.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 09. Do not include the panel number in the image.)
+Please generate a 16:9 image in Space-Age, NASA-adjacent illustration
+style depicting panel 9 of 12. Make the characters and style consistent
+with the prior panels. The scene shows a bright, high-ceilinged national
+research laboratory computer room in the American Southwest in 1976, with
+sandstone-colored mesas faintly visible through a high window. A scientist
+in a white lab coat reviews a long printout of real physics simulation
+results at a console beside the C-shaped cabinet from the previous panel,
+while the same graying engineer stands slightly apart, arms crossed,
+watching the scientist's own reaction rather than presenting the machine
+himself. Color palette: warm desert light through the window, cool
+interior fluorescent tones, pale blue coolant glow from the cabinet.
+Emotional tone: expectant, quietly confident. Include at least six
+specific visual details: a long fan-fold printout draped across the
+console, the mesa landscape framed in the high window, a wall clock, a
+row of labeled tape reels, safety glasses hanging from the scientist's
+coat pocket, and a hand-written logbook open on the console. Generate the
+image immediately without asking clarifying questions.
+</details>
+
+<p>When that machine shipped to a national research laboratory in the American Southwest, Cray refused to let its reputation rest on advertised numbers alone. He insisted the laboratory's own scientists run their own real scientific codes on it and publish what they actually measured, not what a data sheet had promised. That habit of demanding independent, reproducible proof — rather than trusting a vendor's claim — set the tone for how the entire industry would eventually judge supercomputers. For most of a decade afterward, this was simply the machine people meant when they said the word "fastest."</p>
+<h2 id="panel-10-colder-still">Panel 10: Colder Still</h2>
+<p><img alt="" src="panel-10.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 10. Do not include the panel number in the image.)
+Please generate a 16:9 image in Space-Age illustration style depicting
+panel 10 of 12. Make the characters and style consistent with the prior
+panels. The scene shows the same man, now in his late fifties with mostly
+gray hair, in a laboratory in the mid-1980s, standing beside a transparent
+rectangular tank filled with clear, faintly glowing cooling liquid in
+which densely packed circuit boards are fully submerged, small bubbles
+rising past the boards. He watches through safety goggles pushed up on his
+forehead while a colleague adjusts a valve on tubing connected to the
+tank. The room resembles a chemistry laboratory as much as a computer
+room, with glass beakers of the same clear liquid on a nearby shelf for
+testing. Color palette: cool blue-white glow from the tank, dark
+surrounding lab shadows, glinting steel fittings. Emotional tone:
+inventive, slightly eerie fascination. Include at least six specific
+visual details: rising bubbles inside the tank, submerged circuit boards
+visible through the liquid, a valve and tubing assembly, safety goggles,
+glass beakers on a shelf, and a hand-written temperature log clipboard.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>By the mid-1980s, Cray's newest design faced a problem that speed itself had created: circuits packed dense enough to run faster also produced more heat than air or coolant lines could easily carry away. His answer was almost startling in its directness — immerse the circuit boards themselves in a clear, inert cooling liquid, submerging the machine's beating heart in a tank instead of building elaborate ductwork around it. It looked more like a chemistry laboratory than a computer room, and it worked exactly as measured. Once again, Cray had refused to accept a physical limit as fixed, choosing to redesign the machine's enclosure itself rather than compromise the logic inside it.</p>
+<h2 id="panel-11-elves-in-the-tunnel">Panel 11: Elves in the Tunnel</h2>
+<p><img alt="" src="panel-11.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 11. Do not include the panel number in the image.)
+Please generate a 16:9 image in Mid-Century illustration style depicting
+panel 11 of 12. Make the characters and style consistent with the prior
+panels. The scene shows the same man, now in his sixties with fully gray
+hair, alone in work clothes and rubber boots, standing at the entrance of
+a narrow hand-dug tunnel beneath his rural property at dusk in the late
+1980s, a shovel in one hand and a lantern in the other. The tunnel entrance
+is shored up with rough-cut wooden beams, cedar boards lining the visible
+floor just inside, with excavated earth piled beside the opening. Tall
+pine trees and a modest wood-frame house are visible in the background
+under a darkening sky. Color palette: earthy browns, deep dusk blues,
+warm lantern glow. Emotional tone: solitary, contemplative, quietly
+whimsical. Include at least six specific visual details: rough wooden
+tunnel shoring, a pile of freshly dug earth, a lantern casting long
+shadows, work gloves tucked into a back pocket, a wheelbarrow nearby, and
+the first stars visible in the dusk sky. Generate the image immediately
+without asking clarifying questions.
+</details>
+
+<p>Away from the lab, Cray kept a private, almost eccentric habit: digging a tunnel by hand beneath his own property, board by board, over years of weekends. When a hard design problem stalled him at his desk, he would walk outside and dig for an hour, later joking that unseen "elves" solved his problems while he worked underground. Whether or not anyone believed the joke, the habit itself was real, and it revealed something true about the man: problems that resisted committees and deadlines sometimes only yielded to solitary, physical, unhurried attention. It was the same patience that had once kept a young radio operator steady through a long, static-filled night.</p>
+<h2 id="panel-12-the-standard-he-left-behind">Panel 12: The Standard He Left Behind</h2>
+<p><img alt="" src="panel-12.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 12. Do not include the panel number in the image.)
+Please generate a 16:9 image in Space-Age illustration style depicting
+panel 12 of 12. Make the characters and style consistent with the prior
+panels. The scene shows the same man, now elderly with thinning white
+hair but still lean and alert, seated at a drafting table in a modest
+Colorado workshop in the mid-1990s, blueprints spread before him and
+mountains visible through a large window behind him. Overlaid faintly in
+the upper corner of the image, rendered like a ghosted architectural
+sketch rather than a solid object, is a simple line-drawn rack of modern
+computing equipment with a small printed graph, suggesting a legacy
+passing forward in time without depicting any specific real product.
+Color palette: warm late-afternoon light, cool mountain blue-grays in the
+window, soft sepia tones for the ghosted overlay. Emotional tone:
+reflective, quietly proud, forward-looking. Include at least six specific
+visual details: hand-drawn blueprints on the table, reading glasses pushed
+up on his forehead, a distant mountain range through the window, a mug of
+coffee, a bookshelf of technical notebooks, and the faint ghosted overlay
+sketch in the corner. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>Cray kept designing new, faster machines into his seventies, chasing the same standard he had set decades earlier: nothing counted as fast until someone had measured it honestly and could measure it again. He died in October 1996 from injuries sustained in a car accident, but the culture he had insisted on — verify it yourself, publish only what you can reproduce — outlived him. Within a few years, the industry formalized exactly that standard into public benchmark suites and ranked lists that any laboratory in the world could run and check, turning Cray's private obsession into a shared professional discipline.</p>
+<h3 id="epilogue-what-made-cray-different">Epilogue – What Made Cray Different?</h3>
+<p>Seymour Cray never had access to a standardized benchmark suite — the LINPACK benchmark did not yet exist, and the TOP500 list that now ranks the world's fastest computers was still decades away. What he had instead was a personal, almost stubborn refusal to let any performance number pass through his hands unverified. That refusal, repeated across four decades and half a dozen record-setting machines, did more to define "honest engineering" in computing than any single circuit design he ever patented. The instruments have changed since his era; the underlying discipline has not.</p>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>How Cray Responded</th>
+<th>Lesson for Today</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A rival with vastly more engineers and budget claimed the performance lead</td>
+<td>Kept his own teams tiny and focused, betting that depth of understanding beats headcount</td>
+<td>A small team that verifies its own numbers can out-engineer a large one that doesn't</td>
+</tr>
+<tr>
+<td>No independent benchmark existed to prove a machine's real speed</td>
+<td>Timed his own code on real hardware before ever quoting a performance figure</td>
+<td>An unreproduced number is a hope, not a measurement</td>
+</tr>
+<tr>
+<td>Corporate layers and committees slowed down design and verification</td>
+<td>Left to build in a small, remote town where he controlled the pace of his own testing</td>
+<td>Protect the conditions that let you check your own work, not just the work itself</td>
+</tr>
+<tr>
+<td>Physical limits like heat and wire length threatened to cap speed gains</td>
+<td>Redesigned the machine's physical form — its shape, its cooling — rather than accept the ceiling</td>
+<td>When a limit blocks you, question the enclosure around the problem, not only the algorithm inside it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call-to-action">Call to Action</h3>
+<p>When you sit down in Chapters 17-18 and 25-26 to report your own FFT's cycle count on real Cortex-M hardware, you are practicing exactly the discipline Cray built his career on: refusing to let an unverified number stand in for a measured one. Time it yourself. Reproduce it yourself. Only then, trust it.</p>
+<hr />
+<p><em>"If you were plowing a field, which would you rather use? Two strong oxen or 1024 chickens?"</em>
+—Seymour Cray</p>
+<p><em>"It seems like Mr. Watson has answered his own question."</em>
+—Seymour Cray</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Seymour_Cray">Wikipedia: Seymour Cray</a> - Biography covering his education, wartime service, career at Engineering Research Associates, Control Data Corporation, and Cray Research, and his death in 1996.</li>
+<li><a href="https://en.wikipedia.org/wiki/Cray-1">Wikipedia: Cray-1</a> - Technical and historical overview of the 1976 supercomputer, its distinctive C-shaped cabinet, and its cooling system.</li>
+<li><a href="https://en.wikipedia.org/wiki/CDC_6600">Wikipedia: CDC 6600</a> - History of the 1964 machine widely regarded as the first true supercomputer, including the IBM reaction it provoked.</li>
+<li><a href="https://www.computerhistory.org/revolution/supercomputers/10/33">Computer History Museum: CDC 6600's Five Year Reign</a> - Museum exhibit on the CDC 6600 and Thomas Watson Jr.'s internal memo prompted by its performance.</li>
+<li><a href="https://www.britannica.com/biography/Seymour-R-Cray">Encyclopaedia Britannica: Seymour R. Cray</a> - Overview of Cray's life, engineering career, and supercomputer designs.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../betty-holberton/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Betty Holberton - Wired by Hand">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Betty Holberton - Wired by Hand
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../william-kahan/" class="md-footer__link md-footer__link--next" aria-label="Next: William Kahan - Honest Floating-Point Math">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                William Kahan - Honest Floating-Point Math
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

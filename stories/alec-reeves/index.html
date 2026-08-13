@@ -1,0 +1,2191 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="In 1930s Paris, engineer Alec Reeves invented pulse-code modulation to defeat telephone noise, an idea so far ahead of vacuum-tube technology it waited decades to reshape digital audio forever.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/alec-reeves/">
+      
+      
+        <link rel="prev" href="../harry-nyquist/">
+      
+      
+        <link rel="next" href="../grace-hopper/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Alec Reeves and the Signal That Waited Fifty Years - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#alec-reeves-and-the-signal-that-waited-fifty-years" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Alec Reeves and the Signal That Waited Fifty Years
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../story-ideas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-a-voice-lost-in-the-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – A Voice Lost in the Wire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-the-noise-that-would-not-stop-climbing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: The Noise That Would Not Stop Climbing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-different-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Different Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-filing-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Filing the Idea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-the-machine-the-idea-needs-does-not-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: The Machine the Idea Needs Does Not Exist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-years-pass-quietly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Years Pass, Quietly
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-the-idea-finally-fits-its-century" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: The Idea Finally Fits Its Century
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 6: The Idea Finally Fits Its Century">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-reeves-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Reeves Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seymour-cray/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gene-frantz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterson-hennessy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jack-dongarra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-a-voice-lost-in-the-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – A Voice Lost in the Wire
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-the-noise-that-would-not-stop-climbing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: The Noise That Would Not Stop Climbing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-different-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Different Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-filing-the-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Filing the Idea
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-the-machine-the-idea-needs-does-not-exist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: The Machine the Idea Needs Does Not Exist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-years-pass-quietly" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Years Pass, Quietly
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-the-idea-finally-fits-its-century" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: The Idea Finally Fits Its Century
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 6: The Idea Finally Fits Its Century">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-reeves-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Reeves Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/alec-reeves/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="alec-reeves-and-the-signal-that-waited-fifty-years">Alec Reeves and the Signal That Waited Fifty Years</h1>
+<p><img alt="" src="cover.png" /></p>
+<details>
+<summary>Cover Image Prompt</summary>
+(This is the Cover Image. Do not include this label in the image.)
+Please generate a wide-landscape 16:9 cover image in a 1930s Art Deco
+illustrated style, like a period technical poster crossed with a graphic
+novel cover. A composed English engineer in his mid-thirties, dark hair
+combed back, wire-rimmed round glasses, wearing a charcoal three-piece suit
+with a narrow tie, stands at a brass-fitted drafting table in a Paris
+telecommunications laboratory. Behind him, tall glass vacuum tubes glow
+faintly amber inside a brass and dark-wood equipment rack, and a
+round-faced oscilloscope displays a jagged, noisy analog waveform on one
+side of the table that transforms into a clean row of evenly spaced pulses
+on a hand-drawn diagram in front of him. Art Deco geometric border
+ornamentation frames the image in brass and deep green. Color palette:
+deep browns, brass gold, muted teal, and warm amber tube-glow against a
+dim slate-blue laboratory background. Emotional tone: quiet, confident
+foresight, a man seeing decades into the future. Render the title text
+"ALEC REEVES AND THE SIGNAL THAT WAITED FIFTY YEARS" in a bold period
+Art Deco sans-serif typeface across the top or bottom third of the image.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<details>
+<summary>Narrative Prompt</summary>
+This story is set in France and England between 1927 and the 1960s,
+centered on English telecommunications engineer Alec Reeves. The visual
+language throughout is Early Modern / Art Deco (1900-1950): 1930s Paris
+industrial-research interiors, brass telephone equipment, glass vacuum
+tubes glowing amber, round analog oscilloscope faces, drafting tables with
+hand-inked circuit diagrams, wool three-piece suits, and geometric Art
+Deco linework. The central theme is a man being technically correct
+decades before the hardware of his era can prove it: he invents a noise-
+proof way of sending sound as digital pulses, watches the electronics of
+his day fail to keep up with the idea, and lives just long enough to see
+the first signs of the transistor era that will eventually make his
+invention the foundation of digital audio. Character consistency note:
+Reeves is depicted consistently across all six panels as a lean,
+bespectacled man who ages from his mid-thirties (dark hair, round wire
+glasses, three-piece suit) in Panels 1-3 to his early sixties (grayer,
+slightly heavier, still wearing round glasses but in a more modern 1960s
+suit) in Panel 6. The color palette shifts from warm brass/amber/teal in
+the 1930s Paris panels to cooler blues and grays as the story moves into
+the wartime and postwar decades, then warms again in the final panel to
+signal the payoff.
+</details>
+
+<h3 id="prologue-a-voice-lost-in-the-wire">Prologue – A Voice Lost in the Wire</h3>
+<p>In the 1930s, a long-distance telephone call was a fragile thing. Every
+mile of copper wire bled a little signal into heat and static, so
+engineers built repeater stations every so often to catch the fading
+voice and amplify it back to strength. The trouble was that an amplifier
+cannot tell the difference between a voice and the hiss riding along with
+it — it boosts both together. Send a call through enough repeaters and
+the noise piles up faster than the words survive it. In a research
+laboratory in Paris, a young English engineer named Alec Reeves was about
+to decide that the whole approach was the wrong idea entirely.</p>
+<h2 id="panel-1-the-noise-that-would-not-stop-climbing">Panel 1: The Noise That Would Not Stop Climbing</h2>
+<p><img alt="" src="panel-01.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 01. Do not include the panel number in the image.)
+I am about to ask you to generate a series of images for a graphic novel.
+Please make the images have a consistent style and consistent characters.
+Do not ask any clarifying questions. Just generate the image immediately
+when asked.
+
+Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
+panel 1 of 6. The scene is a telecommunications research laboratory in
+Paris, France, in 1936. A lean English engineer in his mid-thirties, dark
+hair combed back, round wire-rimmed glasses, charcoal three-piece suit
+with sleeves rolled, leans over a large brass-cased test telephone set
+wired to a wall of humming vacuum-tube repeater equipment. Beside him, two
+French laboratory technicians in white lab coats watch a round-faced
+oscilloscope screen showing a badly distorted, jagged waveform with visible
+noise spikes. A hand-cranked long-distance switchboard with cloth-covered
+cords sits in the background. Brass gauges, glass vacuum tubes glowing
+amber, and a large wall map of European telephone routes with red string
+lines add period detail. Color palette: warm brass, deep mahogany wood,
+amber tube-glow, muted teal accents. The emotional tone is frustrated
+concentration — a technical problem that keeps getting worse the harder
+they try to fix it with brute amplification. Generate the image immediately
+without asking clarifying questions.
+</details>
+
+<p>Reeves listens through a pair of heavy Bakelite headphones as a test call
+crackles in from London, each repeater along the line adding its own
+grain of hiss to the signal. His technicians have tried every trick the
+company's engineers know: better tubes, tighter filters, more careful
+spacing between amplifiers. None of it changes the fundamental problem.
+An amplifier that strengthens a voice will just as faithfully strengthen
+the noise riding beside it, and over enough repeaters the accumulated
+static eventually drowns the words it was built to carry.</p>
+<h2 id="panel-2-a-different-question">Panel 2: A Different Question</h2>
+<p><img alt="" src="panel-02.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 02. Do not include the panel number in the image.)
+Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
+panel 2 of 6. Keep the same English engineer from panel 1 — mid-thirties,
+dark hair, round wire glasses, charcoal three-piece suit, now with his
+jacket off and shirtsleeves rolled — seated alone at a wide wooden
+drafting table late at night in the same Paris laboratory, a single brass
+desk lamp casting a warm pool of light. He is sketching by hand on
+drafting paper: on the left side of the page a smooth, continuous wavy
+line labeled with small tick marks; on the right side, the same wave
+redrawn as a neat staircase of discrete evenly spaced vertical bars of
+varying height. Scattered around him are crumpled paper balls, a slide
+rule, a cup of cooling coffee, and an ashtray with one cigarette burning
+down. Tall dark laboratory windows behind him show the silhouette of
+Parisian rooftops at night. Color palette: warm amber lamplight against
+deep blue-black night shadows, brass and dark wood tones. Emotional tone:
+quiet, electric realization — the moment an idea clicks into place.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>Alone after the technicians have gone home, Reeves keeps returning to the
+same sketch. If a repeater could regenerate a clean new pulse instead of
+amplifying whatever arrived at its door, accumulated noise would stop
+being the enemy. Instead of pushing a continuous, infinitely delicate
+wave down the line, he could sample the sound at regular instants,
+round each sample to the nearest of a fixed set of quantized levels, and
+send that as a sequence of on-off pulses. A repeater would not need to
+preserve a fragile shape at all — it would only need to recognize a pulse
+was there and stamp out a fresh one, indifferent to whatever static had
+piled onto the original.</p>
+<h2 id="panel-3-filing-the-idea">Panel 3: Filing the Idea</h2>
+<p><img alt="" src="panel-03.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 03. Do not include the panel number in the image.)
+Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
+panel 3 of 6. Same English engineer, mid-thirties, dark hair, round wire
+glasses, now back in his full charcoal three-piece suit, standing at a
+polished wooden counter inside a formal French patent office in Paris in
+1938, sliding a leather document folder of technical drawings across to a
+mustached clerk in a dark waistcoat who is stamping paperwork with a brass
+seal. Through a doorway behind them, a glimpse of the laboratory shows a
+prototype apparatus: a row of glass vacuum tubes, a sampling switch made
+of rotating brass contacts, and a paper tape punched with a repeating
+pattern of dots representing quantized pulses. Art Deco ceiling light
+fixtures and marble floor tiles complete the setting. Color palette: brass
+gold, dark wood, cream document paper, muted red official stamps. The
+emotional tone is formal satisfaction, a private triumph made official.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>By 1938, Reeves has turned the sketch into a working method and a formal
+filing: sample the signal at a steady rate, quantize each sample against
+a fixed ladder of amplitude levels, and encode the result as a pulse
+sequence a receiver can decode back into sound. He calls it pulse-code
+modulation. The French patent office stamps his application that October;
+a corresponding United States patent follows the next year. On paper, he
+has just solved the noise problem that has plagued long-distance telephony
+for a generation.</p>
+<h2 id="panel-4-the-machine-the-idea-needs-does-not-exist">Panel 4: The Machine the Idea Needs Does Not Exist</h2>
+<p><img alt="" src="panel-04.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 04. Do not include the panel number in the image.)
+Please generate a 16:9 image in 1930s Art Deco illustrated style depicting
+panel 4 of 6. Same English engineer, mid-thirties, dark hair, round wire
+glasses, now in shirtsleeves and waistcoat, standing with arms crossed in
+a cavernous Paris laboratory workshop in 1939, surveying an enormous room-
+filling rack of hundreds of glowing glass vacuum tubes, tangled cable
+looms, and hand-wired relay panels that only manages to encode a single
+telephone channel. Two engineers in lab coats struggle to replace an
+overheated tube with heavy asbestos gloves; a wisp of smoke rises from
+one unit. A crumpled cost estimate ledger lies open on a nearby table
+showing a very large sum circled in red pencil. Dim, cooler lighting than
+prior panels, dust motes visible in a shaft of window light. Color
+palette: cooling grays and dull brass, a single small patch of amber tube-
+glow, muted red ledger ink. Emotional tone: sober disappointment, the
+weight of an idea too large for its era's technology. Generate the image
+immediately without asking clarifying questions.
+</details>
+
+<p>The gap between the idea and the machine is enormous. Sampling, quantizing,
+and encoding a single voice channel in real time demands hundreds of
+vacuum tubes, acres of relay wiring, and a budget no telephone company of
+1939 will approve for one experimental circuit. Tubes run hot, fail
+often, and take up a room where a single simple amplifier once sufficed.
+Reeves has proven pulse-code modulation works on a laboratory bench; he
+cannot come close to proving it is affordable. The patents sit filed and
+correct, waiting for electronics that do not yet exist.</p>
+<h2 id="panel-5-years-pass-quietly">Panel 5: Years Pass, Quietly</h2>
+<p><img alt="" src="panel-05.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 05. Do not include the panel number in the image.)
+Please generate a 16:9 image in a 1940s-1950s transitional illustrated
+style depicting panel 5 of 6, blending Art Deco linework with a cooler,
+more austere postwar palette. Show a triptych-style single composition
+split across the frame by faint vertical seams: on the left, the same
+engineer, now in his mid-forties with a hint of gray at the temples, in a
+wartime RAF-adjacent research office with blackout curtains and a radar
+navigation display; in the center, a dusty shelved laboratory cabinet
+holding the same brass pulse-sampling apparatus from panel 4, cobwebbed
+and unused, a calendar on the wall showing years flipping past; on the
+right, a small glass-and-metal transistor, brand new and gleaming, held
+up in a technician's tweezers under a bright inspection lamp, dwarfing
+the room-sized vacuum tube rack faintly visible behind it for scale.
+Color palette: cool wartime blues and grays fading into a brighter, cleaner
+1950s laboratory white and silver on the right side. Emotional tone:
+patient dormancy giving way to quiet renewal. Generate the image
+immediately without asking clarifying questions.
+</details>
+
+<p>The idea does not die; it simply waits. War pulls Reeves back to England,
+where he turns his energy to radio navigation for RAF bombers, and the
+pulse-code notion he patented in Paris goes largely untouched for years,
+though wartime researchers experimenting with secure voice transmission
+take some early interest in pulse techniques. Not until the transistor
+arrives in the postwar years does the arithmetic finally begin to change:
+a device the size of a pea can do the job that once needed a tube the
+size of a fist, and suddenly a circuit with hundreds of switching elements
+starts to look like something a company could actually build.</p>
+<h2 id="panel-6-the-idea-finally-fits-its-century">Panel 6: The Idea Finally Fits Its Century</h2>
+<p><img alt="" src="panel-06.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 06. Do not include the panel number in the image.)
+Please generate a 16:9 image in a clean early-1960s illustrated style with
+Art Deco linework details preserved in the architecture. Depict panel 6 of
+6. The same engineer, now in his early sixties, gray hair, round wire
+glasses, wearing a more modern dark 1960s suit, stands in a bright modern
+telecommunications laboratory holding a small circuit board dense with
+transistors, a satisfied half-smile on his face, dwarfed by a wall-sized
+bank of neatly stacked digital pulse-code equipment far smaller than the
+vacuum-tube rack from panel 4. Beside him, on a lit display pedestal, a
+compact reel-to-reel digital recording device hums quietly. Through a
+window, a modern city skyline suggests the wider world about to adopt
+digital telephone networks. Color palette: bright clean whites, silver,
+and a return of warm brass and amber accent lighting to echo panel 1.
+Emotional tone: vindication and quiet pride, decades of patience finally
+paid off. Generate the image immediately without asking clarifying
+questions.
+</details>
+
+<p>By the mid-1960s, the transistor and the integrated circuits following it
+finally give pulse-code modulation a hardware budget it can live within,
+and telephone companies begin converting their trunk lines to digital
+pulses just as Reeves once sketched them. He lives to see the recognition
+that comes with vindication, honored for a method the industry spent
+almost thirty years catching up to. The idea he filed as a young man in
+Paris outlives the vacuum tube entirely, going on to become the sampling-
+and-quantizing backbone of the compact disc, the digital telephone
+network, and every microphone that turns sound into numbers.</p>
+<h3 id="epilogue-what-made-reeves-different">Epilogue – What Made Reeves Different?</h3>
+<p>Reeves's story is not one of instant triumph; it is one of correct
+patience. He identified the actual flaw in analog telephony — that noise
+accumulates because amplifiers cannot distinguish signal from static —
+and designed a solution so structurally sound that no advance in
+electronics ever had to correct his original 1938 patents, only catch up
+to them. He kept the idea alive through a world war, a change of country,
+and decades of commercial indifference, trusting that the underlying
+logic of sampling and quantizing was right even when the vacuum tube
+could not yet afford to prove it. That is the harder kind of engineering
+courage: not the flash of invention, but the discipline to be correct
+years before anyone can act on it.</p>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>How Reeves Responded</th>
+<th>Lesson for Today</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Noise accumulates faster than repeaters can fight it</td>
+<td>Reframed the problem: stop transmitting a fragile continuous wave, transmit discrete regenerable pulses instead</td>
+<td>Sometimes the fix is not a better version of the current approach, but a different representation of the signal entirely</td>
+</tr>
+<tr>
+<td>1930s vacuum-tube electronics were too slow, bulky, and costly to build PCM at scale</td>
+<td>Patented the method anyway and let the idea wait for hardware that did not yet exist</td>
+<td>A correct design does not need to be immediately buildable to be worth recording precisely</td>
+</tr>
+<tr>
+<td>Decades of commercial indifference while transistors slowly matured</td>
+<td>Continued working in adjacent fields (radar, radio navigation, optical fiber research) without abandoning the original insight</td>
+<td>Great ideas often need an unrelated hardware revolution before they become practical — patience is part of the engineering</td>
+</tr>
+<tr>
+<td>Almost no one outside specialist circles remembers his name today</td>
+<td>His invention became invisible infrastructure — CDs, digital phone networks, every sampled microphone</td>
+<td>The most successful engineering disappears into the background of everyday life instead of staying famous</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call-to-action">Call to Action</h3>
+<p>Every time you sample a waveform in this course's labs, you are running
+Reeves's 1938 idea on hardware he could only have dreamed of: a
+microcontroller that samples, quantizes, and encodes sound thousands of
+times a second, on a board smaller than the vacuum tubes that once
+defeated him. When you write the sampling code in Chapter 6 and capture
+your first waveform with an I2S microphone in Lab 7, you are not just
+learning a technique — you are finally giving Alec Reeves's patent the
+hardware it waited fifty years to receive.</p>
+<hr />
+<p><em>"[PCM] could be the most powerful tool so far against the effects of
+interference on speech — especially on long routes with many regenerative
+repeaters, since these devices could easily be designed and spaced so as
+to make the noise nearly noncumulative."</em>
+—Alec Reeves</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Alec_Reeves">Wikipedia: Alec Reeves</a> - Biography covering his education, career at International Telephone and Telegraph's Paris laboratories, wartime radar work, and postwar research managing the team that developed optical fiber.</li>
+<li><a href="https://en.wikipedia.org/wiki/Pulse-code_modulation">Wikipedia: Pulse-code modulation</a> - Technical explanation of the sampling, quantizing, and encoding method Reeves patented in 1938, and its role as the foundation of modern digital audio.</li>
+<li><a href="https://en.wikipedia.org/wiki/Sampling_(signal_processing)">Wikipedia: Sampling (signal processing)</a> - The related concept of converting a continuous-time signal into discrete samples, the same operation this course's students perform when digitizing microphone input.</li>
+<li><a href="https://insight.ieeeusa.org/articles/your-engineering-heritage-pulse-code-modulation-it-all-started-75-years-ago-with-alec-reeves/">IEEE-USA InSight: Pulse Code Modulation — It All Started 75 Years Ago with Alec Reeves</a> - IEEE-USA engineering-heritage article on Reeves's invention, its vacuum-tube-era limitations, and its eventual adoption once transistors matured.</li>
+<li><a href="https://www.britannica.com/technology/pulse-coded-modulation">Encyclopaedia Britannica: pulse-coded modulation</a> - Overview of pulse-code modulation as an electronics technique and its central role in digital audio formats such as the compact disc.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../harry-nyquist/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Harry Nyquist - The Sampling Limit">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Harry Nyquist - The Sampling Limit
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../grace-hopper/" class="md-footer__link md-footer__link--next" aria-label="Next: Grace Hopper - Amazing Grace">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Grace Hopper - Amazing Grace
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

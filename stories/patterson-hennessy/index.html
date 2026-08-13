@@ -1,0 +1,2278 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Two university teams, working independently at Berkeley and Stanford, bet that a radically simpler chip could out-benchmark decades of industry complexity — and proved it with real data.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/patterson-hennessy/">
+      
+      
+        <link rel="prev" href="../gene-frantz/">
+      
+      
+        <link rel="next" href="../jack-dongarra/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>The Case for Simplicity: Patterson, Hennessy, and the Rise of RISC - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-case-for-simplicity-patterson-hennessy-and-the-rise-of-risc" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The Case for Simplicity: Patterson, Hennessy, and the Rise of RISC
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../story-ideas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alec-reeves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seymour-cray/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gene-frantz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-two-rooms-one-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – Two Rooms, One Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-an-industry-betting-on-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: An Industry Betting on Complexity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-question-in-cory-hall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Question in Cory Hall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-wire-and-silicon" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Wire and Silicon
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-six-hundred-miles-south-the-same-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: Six Hundred Miles South, the Same Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-thats-not-how-real-computers-are-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: "That's Not How Real Computers Are Built"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-the-stopwatch-doesnt-lie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: The Stopwatch Doesn't Lie
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-simple-wins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: Simple Wins
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-an-idea-loose-in-the-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: An Idea Loose in the World
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-9-two-professors-one-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 9: Two Professors, One Legacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 9: Two Professors, One Legacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-the-risc-approach-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made the RISC Approach Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jack-dongarra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-two-rooms-one-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – Two Rooms, One Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-an-industry-betting-on-complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: An Industry Betting on Complexity
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-a-question-in-cory-hall" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: A Question in Cory Hall
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-wire-and-silicon" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Wire and Silicon
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-six-hundred-miles-south-the-same-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: Six Hundred Miles South, the Same Question
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-thats-not-how-real-computers-are-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: "That's Not How Real Computers Are Built"
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-the-stopwatch-doesnt-lie" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: The Stopwatch Doesn't Lie
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-simple-wins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: Simple Wins
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-an-idea-loose-in-the-world" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: An Idea Loose in the World
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-9-two-professors-one-legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 9: Two Professors, One Legacy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 9: Two Professors, One Legacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-the-risc-approach-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made the RISC Approach Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/patterson-hennessy/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="the-case-for-simplicity-patterson-hennessy-and-the-rise-of-risc">The Case for Simplicity: Patterson, Hennessy, and the Rise of RISC</h1>
+<p><img alt="" src="cover.png" /></p>
+<details>
+<summary>Cover Image Prompt</summary>
+(This is the Cover Image. Do not include this label in the image.)
+Generate a wide-landscape 16:9 cover image in a warm, contemporary
+photorealistic-illustrated editorial style with early-1980s period
+detail. The composition is a diptych split down the center. On the
+left, under warm amber desk-lamp light, a trim man in his early
+thirties with light-brown wavy hair, a full mustache, and wire-rim
+glasses leans over a hand-drawn chip floorplan on a light table,
+wearing a short-sleeved plaid shirt with a loosened narrow tie. On the
+right, under cooler blue-green light, a lean clean-shaven man in his
+late twenties with straight dark hair and rectangular wire-rim
+glasses studies a wall chalkboard covered in pipeline-stage diagrams,
+wearing a collared oxford shirt under a V-neck sweater vest. Between
+the two halves, a single glowing simplified circuit diagram bridges
+both scenes, as if the same idea is passing between two separate
+rooms. Each side includes a wire-wrapped prototype circuit board and
+stacks of green-and-white striped computer printout paper. Render the
+title "THE CASE FOR SIMPLICITY" across the top third in bold, precise,
+technical-drafting sans-serif lettering, and beneath it in smaller
+matching lettering "Patterson, Hennessy, and the Rise of RISC." The
+color palette is warm amber on the left blending into cool blue-green
+on the right, with the neutral gray of chip silicon and printout paper
+throughout. The emotional tone is quiet, parallel determination — two
+people, in two cities, arriving at the same idea without knowing it.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<details>
+<summary>Narrative Prompt</summary>
+This story follows David Patterson (b. 1947), a computer science
+professor at the University of California, Berkeley, and John
+Hennessy (b. 1952), a computer science professor at Stanford
+University, in the United States. Between roughly 1980 and 1984, the
+two men led separate, unconnected research groups six hundred miles
+apart that independently concluded the computer industry's decades-long
+trend toward ever more complex processor instructions was a mistake,
+and each built a working prototype chip to prove a simpler alternative
+could win on real, measured performance. The story spans a generic
+industry engineering office in 1980, Cory Hall at UC Berkeley from
+1980–1983, a computer science building at Stanford from 1981–1984, a
+skeptical seminar room, a benchmarking terminal room, and finally a
+present-day university lab bench. Panels 1 through 8 should use a
+consistent early-1980s period illustrated style: warm institutional
+fluorescent and desk-lamp lighting, wide-collar shirts, sweater vests,
+horn-rim and wire-rim glasses, wood-paneled offices, green-and-white
+striped fan-fold computer printout paper, wire-wrapped prototype
+circuit boards, chip layouts on light tables, and green-phosphor CRT
+terminals — no flat-panel displays, smartphones, or modern laptops
+anywhere in this range. Panel 9 should bridge forward three decades to
+a fully contemporary photorealistic style with natural daylight.
+Character consistency note: Patterson should be drawn consistently as
+a trim man with light-brown wavy hair, a full mustache, and wire-rim
+glasses, in a short-sleeved plaid shirt with a loosened narrow tie,
+aging with gray temples and more formal dress by panel 9. Hennessy
+should be drawn consistently as a lean, clean-shaven man with straight
+dark hair and rectangular wire-rim glasses, in a collared oxford shirt
+under a V-neck sweater vest, aging with gray hair and a suit jacket by
+panel 9. No real company names, product names, or trademarks should
+appear as visible text or logos in any generated image; describe
+machines and settings generically (a research chip, a complex
+commercial processor, a computer manufacturer's engineering office)
+rather than naming real brands.
+</details>
+
+<h3 id="prologue-two-rooms-one-question">Prologue – Two Rooms, One Question</h3>
+<p>By 1980, the computer industry had spent two decades adding instructions to its processors, convinced that more capability meant more power, and nobody with a paycheck at stake had much reason to ask whether that trend still made sense. Six hundred miles apart, two university professors who had never worked together started asking it anyway. David Patterson, at Berkeley, was reading printouts of what compilers actually generated and noticing how much of the instruction set went untouched. John Hennessy, at Stanford, was reaching the same suspicion from his own direction, convinced that a simpler, faster pipeline would beat a longer list of clever instructions. Neither man set out to start a movement. Both were about to run the same experiment the rest of the industry had stopped bothering to run: build the thing, and measure it.</p>
+<h2 id="panel-1-an-industry-betting-on-complexity">Panel 1: An Industry Betting on Complexity</h2>
+<p><img alt="" src="panel-01.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 01. Do not include the panel number in the image.)
+I am about to ask you to generate a series of images for a graphic
+novel. Please make the images have a consistent style and consistent
+characters. Do not ask any clarifying questions. Just generate the
+image immediately when asked. Generate a 16:9 image in a warm,
+contemporary photorealistic-illustrated editorial style with
+early-1980s period detail, depicting panel 1 of 9. The scene is a
+computer manufacturer's engineering office in 1980, generic and
+unbranded. Three engineers in wide-collar shirts and ties stand proudly
+before a floor-to-ceiling wall chart showing an instruction-set
+reference sheet dense with hundreds of small entries in tiny columns.
+One engineer gestures at the chart with visible pride, holding a thick
+spiral-bound technical manual. A large open cabinet nearby reveals a
+physical control-store memory array — rows of tiny ferrite cores wired
+in a dense grid, far larger than the simple version glimpsed in the
+background. A hand-lettered internal poster on the wall reads "MORE
+INSTRUCTIONS = MORE POWER." Fluorescent office lighting, wood-veneer
+furniture, and a floor of beige linoleum tile complete the setting.
+The color palette is institutional beige, gray, and fluorescent white.
+The emotional tone is confident, unquestioning pride in complexity.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>Through the 1970s, processor designers had kept adding instructions the way a shipbuilder adds decks — each new one justified as an improvement, none of them ever removed. A single flagship minicomputer's control store, the memory that defines what a chip's instructions actually do, had grown twenty-fold in less than a decade, from 256 words to more than five thousand. Manufacturers marketed instruction counts the way car makers marketed horsepower: bigger numbers meant a better machine, and few customers asked whether a program ever actually used most of what it was paying for. It was, in 1980, simply how real computers were built.</p>
+<h2 id="panel-2-a-question-in-cory-hall">Panel 2: A Question in Cory Hall</h2>
+<p><img alt="" src="panel-02.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 02. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 2 of 9.
+Inside a university computer science building in Berkeley, California
+in 1980, a trim man in his early thirties with light-brown wavy hair,
+a full mustache, and wire-rim glasses, wearing a short-sleeved plaid
+shirt and a loosened narrow tie, stands at a green chalkboard covered
+in tally marks and a hand-drawn bar chart. Two graduate students, a
+young woman with her hair in a loose braid holding a red pen and a
+young man in a corduroy jacket, sit at a nearby desk buried under
+unfolded green-and-white striped fan-fold computer printout, circling
+specific instruction names in red ink. A small black-and-white
+terminal glows in the corner. Coffee cups and a University of
+California course catalog sit on the desk. Late-afternoon light comes
+through a tall institutional window with venetian blinds. The color
+palette is warm amber, chalk green, and printout white-and-green
+stripe. The emotional tone is quiet, focused curiosity — the first
+crack in an assumption. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>At Berkeley, David Patterson set his graduate students an unglamorous task: go through real compiled programs and count, honestly, which instructions a compiler actually chose to use. The results embarrassed the industry's marketing department. Study after study — some already sitting in the literature, others freshly run by Patterson's own group — showed a small fraction of any processor's instruction set handling the overwhelming majority of real work, while dozens of elaborate, expensively engineered instructions sat almost entirely idle. Patterson's question sharpened from a hunch into a hypothesis: if a compiler barely touches most of an instruction set, what exactly was all that complexity buying anyone?</p>
+<h2 id="panel-3-wire-and-silicon">Panel 3: Wire and Silicon</h2>
+<p><img alt="" src="panel-03.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 03. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 3 of 9.
+Make the characters and style consistent with the prior panels. In a
+university VLSI design lab in Berkeley in 1981, the same mustached man
+in a plaid shirt leans over a large backlit light table, studying a
+hand-drawn chip floorplan on translucent mylar sheets in colored pencil
+— red, blue, and green layers stacked to show circuit paths. Beside
+him, a young graduate student in a knit sweater holds up a small
+wire-wrapped prototype circuit board bristling with a dense grid of
+color-coded wires. A pinned wall diagram labeled with hand lettering
+reads "REGISTER WINDOWS" beside a simple stepped-block sketch. A
+tabletop oscilloscope with a round green screen sits nearby, its trace
+frozen mid-pulse. Cardboard boxes of chip packages sit under the table.
+The color palette is warm amber desk light against deep blue mylar
+layers. The emotional tone is intent, hands-on excitement — an idea
+becoming a physical object. Generate the image immediately without
+asking clarifying questions.
+</details>
+
+<p>Patterson's answer was not an argument but a chip. His research group set out to design a processor with a deliberately small, fast, uniform instruction set — one built for how compilers actually work rather than for how assembly programmers liked to show off. To make up for what a shorter instruction list gave away, the team leaned on techniques a complex design had no room left to use: overlapping register windows that made function calls nearly free, and a pipeline simple enough to run at full speed with no wasted cycles decoding baroque instruction formats. By 1981, that design existed as real silicon layouts and wire-wrapped prototypes, not just a proposal on paper — a chip its own designers had started calling, half-defiantly, a reduced instruction set computer.</p>
+<h2 id="panel-4-six-hundred-miles-south-the-same-question">Panel 4: Six Hundred Miles South, the Same Question</h2>
+<p><img alt="" src="panel-04.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 04. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 4 of 9.
+Make the characters and style consistent with the prior panels. Inside
+a separate university computer science building in Stanford,
+California in 1981, a lean, clean-shaven man in his late twenties with
+straight dark hair and rectangular wire-rim glasses, wearing a
+collared oxford shirt under a V-neck sweater vest, stands at his own
+chalkboard covered in a horizontal, multi-stage pipeline diagram with
+overlapping boxes labeled by hand: FETCH, DECODE, EXECUTE. Three
+graduate students sit around a cluttered table strewn with
+green-and-white striped printout and a stack of course notes, one
+pointing at a timing diagram with a mechanical pencil. A window behind
+them shows spring foliage, distinctly different scenery from the
+Berkeley panels. A small nameplate on the desk reads only "PROFESSOR"
+with no visible surname. The color palette leans cooler than the
+Berkeley panels — pale blue-gray daylight instead of warm amber. The
+emotional tone is independent, methodical confidence, unaware of the
+parallel effort underway elsewhere. Generate the image immediately
+without asking clarifying questions.
+</details>
+
+<p>Neither Patterson nor his Berkeley team had any contact with what was happening at Stanford, and that is the detail worth sitting with. John Hennessy had arrived at nearly the same conclusion from a different angle entirely: pipelining. A processor pipeline runs faster when every instruction takes a simple, predictable, uniform amount of work to decode and execute, and the complex instruction sets of the era were exactly the kind of irregular workload that broke a pipeline's rhythm. In 1981, Hennessy launched his own research effort at Stanford, built around a similarly small, compiler-friendly, pipelining-friendly instruction set. Two labs, no coordination between them, had independently bet on the same unfashionable idea within the same twelve months.</p>
+<h2 id="panel-5-thats-not-how-real-computers-are-built">Panel 5: "That's Not How Real Computers Are Built"</h2>
+<p><img alt="" src="panel-05.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 05. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 5 of 9.
+Make the characters and style consistent with the prior panels. In a
+university seminar room in 1982, the mustached man from earlier panels
+stands at the front holding a pointer toward a projected transparency
+on a wheeled overhead projector, showing a simple instruction-count bar
+chart. In the foreground, five seated senior engineers and professors
+in dark blazers and wide ties sit with arms crossed or hands steepled,
+skeptical expressions on their faces; one leans toward a colleague to
+murmur something behind a raised hand. A stack of thick, well-worn
+architecture manuals sits on the table in front of them, visibly far
+larger than the single thin folder in front of the presenter. Rows of
+empty folding chairs recede into shadow at the back of the room. The
+color palette is cool fluorescent gray with a single warm pool of
+overhead-projector light on the presenter. The emotional tone is
+tense, polite disbelief. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>Both teams ran into the same wall of doubt. To engineers who had spent careers making instruction sets more powerful, a processor with fewer, simpler instructions sounded like a step backward dressed up as a discovery — surely all that missing complexity would just reappear as slower software, or get shoved onto compiler writers who could never make up the difference. Reviewers rejected papers built on the idea. Colleagues pointed out, not unreasonably, that every successful commercial machine of the era was built the other way. Patterson and Hennessy each heard some version of the same sentence in their own seminar rooms that year: that is simply not how real computers are built. Neither team had an argument clever enough to answer that. What they had instead was a chip, and a plan to measure it.</p>
+<h2 id="panel-6-the-stopwatch-doesnt-lie">Panel 6: The Stopwatch Doesn't Lie</h2>
+<p><img alt="" src="panel-06.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 06. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 6 of 9.
+Make the characters and style consistent with the prior panels. A
+university computer terminal room at night in 1983, lit almost
+entirely by the green-phosphor glow of several CRT terminal screens
+displaying columns of scrolling numeric output. The mustached man and
+a graduate student in a knit sweater sit side by side at two adjacent
+terminals, each running an identical compiled benchmark program, a
+stopwatch and a clipboard of hand-recorded cycle counts between them
+on the desk. A whiteboard behind them lists two columns of results
+side by side under the headers "SIMPLE DESIGN" and "COMPLEX DESIGN,"
+with the simple column's numbers circled. Cold coffee cups, a bag of
+punch cards, and a rolling cart holding a second, larger reference
+minicomputer occupy the background shadows. The color palette is deep
+near-black shadow cut by green-phosphor glow and warm desk-lamp
+accents. The emotional tone is quiet, disciplined focus — the moment
+of finding out, not yet the moment of celebrating. Generate the image
+immediately without asking clarifying questions.
+</details>
+
+<p>Rather than keep arguing philosophy, both teams did the thing this course itself insists on: they measured. Patterson's group and Hennessy's group each ran real, compiled workloads — not cherry-picked demonstrations — on their research chips and on established complex-instruction-set machines, counting actual instructions executed and actual clock cycles consumed rather than trusting a spec sheet. It was slow, unglamorous work, night after night in terminal rooms lit by nothing but green phosphor, recording numbers that could just as easily have proven the skeptics right. Neither team got to choose the outcome. The benchmark would say what it said.</p>
+<h2 id="panel-7-simple-wins">Panel 7: Simple Wins</h2>
+<p><img alt="" src="panel-07.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 07. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 7 of 9.
+Make the characters and style consistent with the prior panels. A
+university lab in 1984, daylight streaming through a window. The
+mustached man pins a hand-drawn results chart to a corkboard: two
+silicon die photographs side by side, the left one visibly smaller and
+simpler than the right, with a bar graph beneath showing the smaller
+chip's total execution time noticeably lower. A small crowd of four
+graduate students, some the same ones from earlier panels, cluster
+around with expressions shifting from doubt to surprised delight; one
+raises both fists slightly in a contained, disbelieving cheer. On a
+side table, an opened packing crate reveals a small finished
+prototype chip mounted in a ceramic package, price tag string still
+attached, resting beside a much larger, more complex chip package for
+comparison. The color palette is bright, warm daylight gold with
+crisp whites. The emotional tone is earned, data-driven triumph, not
+showmanship. Generate the image immediately without asking clarifying
+questions.
+</details>
+
+<p>The results favored the simpler machines. Both research chips matched or beat established complex designs on real compiled workloads, using a small fraction of the transistors — silicon budget that had gone toward bloated instruction decoding could instead buy more registers, a faster pipeline, or both. One later analysis of the era's numbers found the pattern precisely: a complex design might execute roughly a quarter fewer instructions per program, but it needed five to six times more clock cycles to execute each one, leaving the simpler chips roughly four times faster overall. In 1984, both research groups presented finished, working silicon at the field's leading circuit conference — proof, not promise, that a few graduate students with a light table and a benchmark could out-design what industry's much larger teams had built.</p>
+<h2 id="panel-8-an-idea-loose-in-the-world">Panel 8: An Idea Loose in the World</h2>
+<p><img alt="" src="panel-08.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 08. Do not include the panel number in the image.)
+Generate a 16:9 image in a warm, contemporary photorealistic-illustrated
+editorial style with early-1980s period detail, depicting panel 8 of 9.
+Make the characters and style consistent with the prior panels. A
+mid-1980s semiconductor company engineering floor, generic and
+unbranded, filled with several drafting tables where engineers in
+short-sleeved shirts study chip floorplans clearly descended in style
+from the light-table drawings of earlier panels. A large wall map of
+the world has small pins clustered in two American regions and, faintly
+visible, one pin near a small European city, hinting at a separate,
+parallel effort happening an ocean away. A trade-show banner leaning
+against one wall reads only "SIMPLE. FAST. PROVEN." in plain block
+lettering. Rolling carts hold small finished chip packages ready for
+shipping crates. Fluorescent light floods the open floor. The color
+palette is bright industrial white and steel-gray with warm accent
+lighting at each drafting table. The emotional tone is expansive,
+energetic momentum — an idea outgrowing its original two labs.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>Through the mid-1980s, the reduced-instruction philosophy stopped being two universities' research result and became an industry direction. Companies licensed and commercialized the approach into new processor families built on the same core bet: fewer, simpler, faster instructions, more silicon spent on speed instead of decoding cleverness. Four thousand miles east, an entirely separate and even smaller team in Cambridge, England — working at a nearly bankrupt computer company that could not afford a licensed processor at any price — was arriving at a strikingly similar design from the opposite direction, driven not by benchmarking ambition but by having no budget for complexity at all. Two very different motives, on two continents, had converged on the same conclusion: simple, done well, beats complex.</p>
+<h2 id="panel-9-two-professors-one-legacy">Panel 9: Two Professors, One Legacy</h2>
+<p><img alt="" src="panel-09.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 09. Do not include the panel number in the image.)
+Generate a 16:9 image in a fully contemporary photorealistic
+illustrated style with natural daylight, depicting panel 9 of 9. The
+scene splits across a single frame: on the left, two men now in their
+sixties and seventies stand together on a formal award-ceremony stage,
+the same mustached man now gray-haired in a dark suit and the same
+once-clean-shaven man now with gray hair and reading glasses in a
+navy blazer, shaking hands and each holding an identical engraved
+glass trophy, warm stage lighting and a blurred audience behind them.
+On the right, in sharp focus, a present-day university student's hands
+rest on a small breadboard holding a tiny thumbnail-sized
+microcontroller board wired to a handful of components, a laptop
+screen nearby showing a simple assembly-language code listing. A thin
+glowing line visually connects the trophy on the left to the small
+chip on the right, tracing an unbroken thread across the frame. The
+color palette is warm gold stage light blending into cool, crisp
+desk-lamp daylight on the right. The emotional tone is quiet, earned
+legacy — an idea proven decades ago, still doing work today. Generate
+the image immediately without asking clarifying questions.
+</details>
+
+<p>Patterson and Hennessy went on to write "Computer Architecture: A Quantitative Approach" together, first published in 1990, turning their shared insistence on measurement over intuition into the textbook that trained the next several generations of chip designers. In 2018, the Association for Computing Machinery awarded them the 2017 Turing Award jointly, citing their "systematic, quantitative approach to the design and evaluation of computer architectures with enduring impact on the microprocessor industry." Today, more than ninety-nine percent of the billions of processor chips built each year trace their instruction-set philosophy back to what two independent research groups proved with a light table, a stopwatch, and a benchmark in the early 1980s. Every ARM Cortex-M core — including the one on the board this course's students hold in their own hands — inherits that same bet on simplicity, which is exactly why its instruction set fits inside a single course module instead of a career.</p>
+<h3 id="epilogue-what-made-the-risc-approach-different">Epilogue – What Made the RISC Approach Different?</h3>
+<p>What made Patterson and Hennessy's approach different was not that they had a better opinion about instruction sets — plenty of engineers had opinions. It was that they refused to let the argument stay an opinion. Each team built the chip, ran the real workload, and let the resulting number settle a question that decades of industry momentum had never bothered to ask honestly. That two independent groups, working from different motivations and never coordinating, arrived at the same measured answer made the result far harder to dismiss than either alone could have managed. Their insistence on quantitative proof over inherited assumption became, in time, its own field: computer architecture as a measured science rather than a craft of accumulated habit.</p>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>How Patterson and Hennessy Responded</th>
+<th>Lesson for Today</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An entire industry assumed more instructions meant more capability, with no one measuring whether that assumption still held</td>
+<td>Counted what compilers actually used, replacing a marketing assumption with real data from real compiled programs</td>
+<td>Question inherited wisdom with evidence, not with a better-sounding argument</td>
+</tr>
+<tr>
+<td>Skeptics warned that simpler hardware would just shift cost and complexity onto compilers and software</td>
+<td>Built working silicon and benchmarked it against established complex designs on identical, real workloads</td>
+<td>A working prototype that has been measured beats a claim that has only been argued</td>
+</tr>
+<tr>
+<td>Two labs pursued the same radical idea with no contact or coordination between them, risking wasted or contradictory effort</td>
+<td>Let each project run independently to completion, and let the converging results reinforce each other</td>
+<td>Independently reproduced results carry more weight than any single lab's claim</td>
+</tr>
+<tr>
+<td>A promising research result needed to outlive its original two prototypes to matter</td>
+<td>Co-authored a rigorous, quantitative textbook and kept publishing benchmarked evidence for decades afterward</td>
+<td>An idea only becomes a lasting principle when its evidence keeps being made available to the next generation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call-to-action">Call to Action</h3>
+<p>When you write the hand-optimized ARM assembly in this course's later chapters, you are working inside an instruction set that exists, in its exact shape, because two professors in 1981 refused to accept "that's how it's done" as an answer and measured their way to a better one. Every benchmark you run in this course's labs — timing your own FFT honestly, refusing to let a convenient number substitute for a measured one — is the same discipline Patterson and Hennessy used to settle an argument the rest of the industry had stopped questioning. Simplicity did not win because it sounded elegant. It won because someone finally ran the stopwatch.</p>
+<hr />
+<p><em>"Compilers are often unable to utilize complex instructions, nor do they use the insidious tricks in which assembly language programmers delight."</em>
+—David Patterson (with David Ditzel), "The Case for the Reduced Instruction Set Computer" (1980)</p>
+<p><em>"It was a remarkable moment when a few graduate students at Berkeley and Stanford could build microprocessors that were arguably superior to what industry could build."</em>
+—John Hennessy and David Patterson, "A New Golden Age for Computer Architecture" (2019)</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Reduced_instruction_set_computer">Wikipedia: Reduced instruction set computer</a> - Overview of the RISC design philosophy, its 1980s origins, and its industry-wide adoption</li>
+<li><a href="https://en.wikipedia.org/wiki/David_Patterson_(computer_scientist)">Wikipedia: David Patterson (computer scientist)</a> - Biography covering the Berkeley RISC project and Patterson's career at UC Berkeley</li>
+<li><a href="https://en.wikipedia.org/wiki/John_L._Hennessy">Wikipedia: John L. Hennessy</a> - Biography covering the Stanford MIPS project and Hennessy's career at Stanford University</li>
+<li><a href="https://amturing.acm.org/award_winners/patterson_2316693.cfm">ACM A.M. Turing Award: David A. Patterson</a> - Official ACM citation for the 2017 Turing Award, shared with John Hennessy, for pioneering the RISC approach</li>
+<li><a href="https://www.britannica.com/technology/RISC">Encyclopaedia Britannica: RISC</a> - Overview of reduced instruction set computing and its impact on processor design</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../gene-frantz/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Gene Frantz - One Job, Done Fast">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Gene Frantz - One Job, Done Fast
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../jack-dongarra/" class="md-footer__link md-footer__link--next" aria-label="Next: Jack Dongarra - The Number Nobody Could Fake">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Jack Dongarra - The Number Nobody Could Fake
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

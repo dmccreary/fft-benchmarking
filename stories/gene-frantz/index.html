@@ -1,0 +1,2039 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="In 1976 a Texas Instruments team hit a wall no general-purpose chip could clear. Gene Frantz helped build one built around a single fast operation, and started the DSP era.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/gene-frantz/">
+      
+      
+        <link rel="prev" href="../margaret-hamilton/">
+      
+      
+        <link rel="next" href="../patterson-hennessy/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>One Job, Done Fast: Gene Frantz and the Birth of the DSP Chip - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#one-job-done-fast-gene-frantz-and-the-birth-of-the-dsp-chip" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              One Job, Done Fast: Gene Frantz and the Birth of the DSP Chip
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../story-ideas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alec-reeves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seymour-cray/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-toy-that-had-to-learn-to-talk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Toy That Had to Learn to Talk
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-voice-with-no-chip-to-live-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Voice With No Chip to Live In
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-the-math-that-outran-the-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: The Math That Outran the Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-sketching-a-chip-that-does-one-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Sketching a Chip That Does One Thing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-a-room-full-of-reasons-to-say-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: A Room Full of Reasons to Say No
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-the-toy-that-finally-spoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: The Toy That Finally Spoke
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-one-chip-becomes-a-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: One Chip Becomes a Family
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-the-engineer-who-kept-arguing-for-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: The Engineer Who Kept Arguing for Speed
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-the-same-idea-now-the-size-of-a-fingernail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: The Same Idea, Now the Size of a Fingernail
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 8: The Same Idea, Now the Size of a Fingernail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-frantzs-team-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Frantz's Team Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterson-hennessy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jack-dongarra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-toy-that-had-to-learn-to-talk" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Toy That Had to Learn to Talk
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-voice-with-no-chip-to-live-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Voice With No Chip to Live In
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-the-math-that-outran-the-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: The Math That Outran the Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-sketching-a-chip-that-does-one-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: Sketching a Chip That Does One Thing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-a-room-full-of-reasons-to-say-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: A Room Full of Reasons to Say No
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-the-toy-that-finally-spoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: The Toy That Finally Spoke
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-one-chip-becomes-a-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: One Chip Becomes a Family
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-the-engineer-who-kept-arguing-for-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: The Engineer Who Kept Arguing for Speed
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-the-same-idea-now-the-size-of-a-fingernail" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: The Same Idea, Now the Size of a Fingernail
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 8: The Same Idea, Now the Size of a Fingernail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-frantzs-team-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Frantz's Team Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/gene-frantz/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="one-job-done-fast-gene-frantz-and-the-birth-of-the-dsp-chip">One Job, Done Fast: Gene Frantz and the Birth of the DSP Chip</h1>
+<p><img alt="" src="cover.png" /></p>
+<details>
+<summary>Cover Image Prompt</summary>
+(This is the Cover Image. Do not include this label in the image.)
+Please generate a wide-landscape 16:9 cover image in a warm, mid-century-transitioning-to-late-1970s technical-illustration style, like an engineering brochure crossed with a graphic novel. The scene: a young electronics engineer in his mid-30s, short dark hair, black plastic-frame glasses, wearing a short-sleeve light-blue collared shirt with a narrow dark tie loosened at the collar and a pocket protector full of pens, stands at a wooden drafting table in a semiconductor engineering lab. On the table sits a small dark-gray plastic learning-toy console with a phonetic keyboard and a narrow red LED display, its case open to reveal a single black chip cradled in a wire-wrapped prototype board. Behind him, a large oscilloscope glows with a jagged speech waveform, and a chalkboard is covered with hand-drawn circuit diagrams and a repeating loop labeled with multiply and add symbols. Warm incandescent overhead light pools on the table while the rest of the lab falls into cool shadow. Render the title text "One Job, Done Fast" in a bold, geometric 1970s technical-brochure typeface across the top third of the image, with "Gene Frantz and the Birth of the DSP Chip" in smaller matching type beneath it. Color palette: mustard yellow, burnt orange, olive green, warm brown wood tones, and cool oscilloscope blue-green. Emotional tone: quiet determination and the thrill of a breakthrough. Generate the image immediately without asking clarifying questions.
+</details>
+
+<details>
+<summary>Narrative Prompt</summary>
+This story is set in Dallas, Texas, United States, beginning in 1976 and extending across the following four decades. It follows a young semiconductor engineer and his small team as they discover that the general-purpose microprocessors of the era cannot perform the repeated multiply-and-accumulate math needed to filter and reconstruct human speech in real time — and respond by designing custom silicon built around exactly that one operation, done as close to a single clock cycle as possible. The visual style throughout is a mid-century-to-late-1970s technical-illustration aesthetic: engineers in short-sleeve collared shirts and narrow ties or modest blouses, thick-framed glasses, wood-paneled offices, oscilloscopes with glowing green traces, wire-wrapped prototype boards, ceramic and plastic chip packages, hand-drawn circuit diagrams on chalkboards and vellum, and warm tungsten lighting against cool blue-green instrument glow. Character consistency: the lead engineer is a man in his mid-30s with short dark hair and black plastic-frame glasses, aging visibly across later panels into a silver-haired, tweed-jacketed figure in his 60s while keeping the same glasses style and calm, attentive expression. His three teammates recur with consistent looks: an older mustached project leader with rolled shirtsleeves, a wiry curly-haired speech scientist who is often mid-gesture explaining an idea, and a quieter engineer who is usually sketching or soldering. The final panel transitions into a bright, contemporary university lab to visually bridge the era of room-sized lab benches and large chip packages with a present-day student holding a tiny modern circuit board.
+</details>
+
+<h3 id="prologue-the-toy-that-had-to-learn-to-talk">Prologue – The Toy That Had to Learn to Talk</h3>
+<p>In 1976, a small group of engineers at a Dallas semiconductor company set out to build something that had never existed as a mass-market consumer product: a device that could speak. Not a recording, not a tape loop, but a machine voice reconstructed instantly, sample by sample, from math running inside a chip small enough to fit in a child's hand. The idea sounded almost whimsical — a spelling toy for schoolchildren. The engineering problem underneath it was not whimsical at all. Every chip available to the team in 1976 was too slow to do the one calculation speech reconstruction depended on, over and over, thousands of times a second, without falling behind. What happened next would outlast the toy by decades and quietly reshape how the world builds machines that listen, filter, and respond in real time.</p>
+<h2 id="panel-1-a-voice-with-no-chip-to-live-in">Panel 1: A Voice With No Chip to Live In</h2>
+<p><img alt="" src="panel-01.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 01. Do not include the panel number in the image.)
+I am about to ask you to generate a series of images for a graphic novel. Please make the images have a consistent style and consistent characters. Do not ask any clarifying questions. Just generate the image immediately when asked.
+
+Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 1 of 8. The scene is a cluttered semiconductor engineering lab in Dallas, Texas, in 1976. Four engineers cluster around a wooden workbench: the lead figure is a man in his mid-30s with short dark hair, black plastic-frame glasses, and a light-blue short-sleeve shirt with a loosened narrow tie; beside him an older mustached project leader in rolled shirtsleeves gestures at a reel-to-reel tape recorder; a wiry, curly-haired speech scientist holds up a spool of magnetic tape while speaking animatedly; a fourth quieter engineer sits at the bench soldering a circuit board. On the workbench sits an oscilloscope displaying a jagged analog speech waveform in glowing green, next to a bulky wooden-cased tape recorder and scattered loose ceramic chip packages. A chalkboard in the background shows a hand-drawn block diagram labeled with a repeating loop of multiply and sum symbols. The color palette is mustard yellow, olive green, warm wood brown, and oscilloscope blue-green under warm overhead tungsten light. The emotional tone is curious excitement mixed with the first hint of a technical puzzle. Include at least these specific visual details: a rotary telephone on a side desk, a coffee percolator on a filing cabinet, a poster-sized graph of a speech waveform pinned to the wall, a slide rule resting on loose papers, a half-eaten sandwich on wax paper near the bench, and a small prototype toy shell with no internal electronics sitting empty on the table. Generate the image immediately without asking clarifying questions.
+</details>
+<p>The team's assignment sounds almost simple on paper: take a human voice, compress it down to a set of mathematical parameters, and rebuild that voice on demand from a machine cheap enough to sell in a toy store. Richard's tape recordings of raw speech waveforms already show the technique will work in theory. Compressing and reconstructing a waveform in real time means executing the same handful of operations, multiply a sample by a coefficient and add it to a running total, tens of thousands of times every second. On a wooden bench crowded with tape reels and hand-drawn diagrams, four engineers realize they are chasing a chip that does not yet exist.</p>
+<h2 id="panel-2-the-math-that-outran-the-machine">Panel 2: The Math That Outran the Machine</h2>
+<p><img alt="" src="panel-02.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 02. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 2 of 8. Keep the characters and style consistent with the prior panel. The lead engineer, mid-30s with short dark hair and black plastic-frame glasses in a light-blue short-sleeve shirt, sits alone at a lab bench late at night in the same Dallas, Texas semiconductor lab, 1976. He stares at an oscilloscope screen where a reconstructed speech waveform lags visibly behind a reference trace, breaking into a stuttering, distorted shape. Stacks of green-and-white striped printout paper covered in assembly-language code spill across the desk. A small evaluation board for a general-purpose microprocessor sits open beside a hand-held stopwatch showing an unfavorable elapsed time. The color palette is deep midnight blue-black for the room with warm amber desk-lamp light pooling on the bench and cool green oscilloscope glow on his face. The emotional tone is quiet frustration tipping toward realization. Include at least these specific visual details: a desk lamp with a metal shade throwing a tight cone of light, a wall clock reading well past midnight, an ashtray with a spent cigarette, a coffee cup with a ring stain on the printout paper, a small chalkboard equation reading "sum of a times x" circled twice, and a discarded crumpled printout in a wastebasket. Generate the image immediately without asking clarifying questions.
+</details>
+<p>Late one night, the lead engineer runs the numbers again, certain he has made an error. He has not. The general-purpose processors available on the market spend so many clock cycles fetching an instruction, multiplying two numbers, and storing the result that the speech simply cannot be rebuilt fast enough to sound continuous; the output stutters and breaks apart on the oscilloscope screen. The bottleneck is not clever programming or a smarter algorithm. It is raw arithmetic throughput: the chip cannot multiply and add fast enough, full stop. He circles the same equation on his scratch pad for the third time that night, because the math is not lying to him — the hardware is what has to change.</p>
+<h2 id="panel-3-sketching-a-chip-that-does-one-thing">Panel 3: Sketching a Chip That Does One Thing</h2>
+<p><img alt="" src="panel-03.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 03. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 3 of 8. Keep the characters and style consistent with prior panels. The lead engineer and the quieter sketching engineer lean over a large sheet of vellum on a drafting table in the Dallas, Texas semiconductor lab, 1977. The lead engineer, still in his light-blue short-sleeve shirt and black plastic-frame glasses, points with a mechanical pencil at a hand-drawn block diagram showing a single wide arrow looping from a multiplier block into an adder block into a register, labeled "one pass, one clock." The quieter engineer, in a muted olive cardigan, holds a set of drafting compasses and a T-square. Rolls of blueprint paper lean against the drafting table's legs, and a shelf behind them holds labeled ceramic chip packages and ferrite-core memory samples. The color palette is warm vellum cream, graphite gray, olive green, and brass drafting-tool tones under bright afternoon window light. The emotional tone is focused, almost giddy invention. Include at least these specific visual details: a mechanical pencil with a worn eraser, a circular slide rule beside the vellum sheet, a cork board pinned with smaller circuit sketches, a desk fan mid-spin in the corner, a half-full glass bottle of soda on the drafting table, and a small hand-lettered note reading "forget the rest, just make this part fast." Generate the image immediately without asking clarifying questions.
+</details>
+<p>If no existing chip can multiply and accumulate fast enough, the team decides, then the answer is not to wait for faster general-purpose chips to arrive. The answer is to stop building a general-purpose chip at all. On a sheet of vellum, the lead engineer sketches a radically narrow idea: a processor with almost no ambition beyond doing one operation, multiply and add, in as close to a single clock cycle as the era's manufacturing process will allow. Every transistor on the die will exist to serve that one loop faster than any general-purpose competitor ever could. It is a strange kind of confidence, betting an entire chip design on doing less, not more.</p>
+<h2 id="panel-4-a-room-full-of-reasons-to-say-no">Panel 4: A Room Full of Reasons to Say No</h2>
+<p><img alt="" src="panel-04.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 04. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 4 of 8. Keep the characters and style consistent with prior panels. Inside a wood-paneled corporate conference room in Dallas, Texas, 1977, the lead engineer, in his light-blue short-sleeve shirt and dark narrow tie, stands at the head of a table presenting a hand-drawn chip diagram on an easel pad. Around the table, three skeptical company managers in dark suits and wide 1970s ties sit with arms crossed or hands steepled; one taps a mechanical calculator, another studies a budget ledger full of columns of numbers. The mustached project leader from earlier panels sits near the engineer, arms folded but supportive. A large wall clock and a framed photograph of a factory building hang behind the table. The color palette is muted brown, gray, and dark green with cool fluorescent overhead lighting replacing the warm lab lighting of earlier scenes. The emotional tone is tense, quietly adversarial. Include at least these specific visual details: a glass ashtray with a curl of cigarette smoke, a stack of budget printouts fanned across the table, a rotary desk phone at the manager's elbow, a half-empty carafe of coffee with mismatched cups, a "return on investment" figure circled in red pencil on a chart, and rain streaking the conference-room window. Generate the image immediately without asking clarifying questions.
+</details>
+<p>Not everyone in the building shares the team's enthusiasm. Designing and fabricating custom silicon is slow and expensive, and to the managers reviewing the budget, it looks like an enormous investment to chase a single toy that might not sell. Skeptical executives ask the obvious, uncomfortable question: why build a whole new chip family for one children's product when a cheaper, slower, off-the-shelf solution might be good enough? The lead engineer has no sales chart to answer with, only a working bench prototype and a conviction that the underlying idea, a chip built around one fast operation, will matter far beyond the toy that first justifies its cost.</p>
+<h2 id="panel-5-the-toy-that-finally-spoke">Panel 5: The Toy That Finally Spoke</h2>
+<p><img alt="" src="panel-05.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 05. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm 1970s technical-illustration style depicting panel 5 of 8. Keep the characters and style consistent with prior panels. In the Dallas, Texas semiconductor lab, 1978, all four engineers crowd around a finished hand-held learning toy on the workbench, its plastic case now fully assembled with a phonetic keyboard and a narrow red LED display glowing with letters. The lead engineer, light-blue short-sleeve shirt and black plastic-frame glasses, leans in close with a proud half-smile as the toy's small speaker grille sits inches from his ear. Beside him, the mustached project leader claps a hand on his shoulder, the curly-haired speech scientist holds up a small black ceramic chip package triumphantly, and the quieter engineer snaps a photograph with a boxy 1970s camera. Discarded prototype circuit boards and empty solder-reel spools clutter the bench around the finished toy. The color palette shifts warmer and brighter than earlier panels: gold, cream, and cheerful red LED glow against the same wood-paneled lab. The emotional tone is triumphant, warm relief. Include at least these specific visual details: a small United States flag pin on the project leader's shirt pocket, a hand-drawn "IT WORKS" sign taped to the wall, a box of blank product packaging waiting to be filled, a stopwatch now discarded face-down on the bench, a half-drunk celebratory bottle of soda being raised in a toast, and the toy's cardboard shipping box printed with a simple line-drawing mascot. Generate the image immediately without asking clarifying questions.
+</details>
+<p>Months later, the finished chip sits inside a plastic learning toy on the same workbench where it began as a sketch on vellum, and for the first time, the machine speaks back clearly instead of stuttering apart. The team built the whole system on the cheapest, oldest manufacturing process the company had available, betting everything on architecture rather than raw fabrication speed, and it worked anyway. What ships that year as a children's spelling toy is, underneath its bright plastic shell, one of the first commercially successful single-chip digital signal processors ever sold — a fact none of the four engineers in the room fully register yet, too busy celebrating that the toy simply, finally, talks.</p>
+<h2 id="panel-6-one-chip-becomes-a-family">Panel 6: One Chip Becomes a Family</h2>
+<p><img alt="" src="panel-06.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 06. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm early-1980s technical-illustration style depicting panel 6 of 8. Keep the lead engineer's appearance consistent: now in his late 30s, still with black plastic-frame glasses, wearing a slightly more modern short-sleeve shirt with a wider tie, standing in a brighter, more modern engineering lab in 1983. He holds a new rectangular black chip package up to the light while a large technical poster behind him shows a family tree branching from one chip design into several labeled variants feeding into diagrams of a telephone modem, a factory control panel, and a reel-to-reel audio mixing console. A younger colleague at a nearby desk tests a modem circuit board wired to an oscilloscope showing a clean, fast waveform, a visible contrast to the stuttering trace from panel 2. The color palette brightens further: crisp white lab surfaces, silver chip packaging, and confident primary-color accents on the technical poster. The emotional tone is expansive pride and momentum. Include at least these specific visual details: a wall calendar showing the year prominently, a cardboard box labeled for shipment to a telecommunications customer, a technical reference manual open on the desk, a desktop terminal with a green-phosphor screen, a second engineer on a wall-mounted telephone taking an order, and a small model telephone handset sitting on the desk beside the modem board. Generate the image immediately without asking clarifying questions.
+</details>
+<p>The architecture proven inside a children's toy does not stay a novelty for long. Within a few years, the team generalizes the same one-thing-done-fast design into a standalone, programmable processor family, and this time it launches not as a hidden component but as a product other engineers can buy and design around directly. Modem makers adopt it to filter noisy telephone-line signals in real time. Telecommunications equipment makers build it into switching gear, and audio engineers reach for it to process sound with a precision earlier hardware never allowed. The chip built to make a toy talk becomes, in barely half a decade, the architecture an entire industry standardizes on for real-time signal math.</p>
+<h2 id="panel-7-the-engineer-who-kept-arguing-for-speed">Panel 7: The Engineer Who Kept Arguing for Speed</h2>
+<p><img alt="" src="panel-07.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 07. Do not include the panel number in the image.)
+Please generate a 16:9 image in a warm late-1990s technical-illustration style depicting panel 7 of 8. The lead engineer, now a distinguished figure in his 50s with silver hair but the same black plastic-frame glasses, wears a tweed jacket over a collared shirt and stands at a lectern in a conference hall, gesturing toward a large projection screen showing a diagram of a signal-processing chip architecture with a highlighted fast multiply-and-accumulate block at its center. Rows of younger engineers in business-casual clothing sit taking notes, some with laptops, in a modern auditorium with soft blue ambient lighting. A banner behind the lectern reads "Signal Processing Engineering Symposium" in generic conference typography. The color palette shifts to cool blues and grays with warm spotlight on the speaker, signaling the passage of decades from the earlier warm 1970s lab scenes. The emotional tone is authoritative, mentoring warmth. Include at least these specific visual details: a water pitcher and glass on the lectern, a laser pointer in the speaker's hand, a conference name badge clipped to his jacket lapel, a row of audience members with an early laptop computer open, a small potted plant at the edge of the stage, and a printed conference program visible on a front-row seat. Generate the image immediately without asking clarifying questions.
+</details>
+<p>Decades pass, and the engineer who once sketched a one-trick chip on vellum becomes one of the field's most persistent advocates, rising through his company's technical ranks to its most senior engineering title while writing papers, holding patents, and mentoring a generation of engineers who never touched a wire-wrapped prototype board. He argues the same point at conference after conference: the fastest way to solve a real-time signal-processing problem is rarely a faster general-purpose chip, and almost always a chip, or an instruction, built around the one operation that actually matters. By the time his peers recognize him as one of the founding figures of an entire chip category, the argument has stopped sounding radical. It has become the industry's common sense.</p>
+<h2 id="panel-8-the-same-idea-now-the-size-of-a-fingernail">Panel 8: The Same Idea, Now the Size of a Fingernail</h2>
+<p><img alt="" src="panel-08.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 08. Do not include the panel number in the image.)
+Please generate a 16:9 image in a bright, clean contemporary illustration style depicting panel 8 of 8, transitioning visually from the warm 1970s palette of earlier panels into crisp present-day lighting. A present-day engineering student, casually dressed in a plain hoodie, sits at a modern desk holding a tiny credit-card-sized circuit board between two fingers, small enough that a single fingertip nearly covers it. On the laptop screen in front of the student, a chip datasheet diagram is open showing a small highlighted block inside a modern processor core labeled with a fast multiply-and-accumulate icon, echoing the same block diagram from panel 3's vellum sketch, which appears faintly as a ghosted overlay in the corner of the screen for visual continuity. A framed black-and-white photograph on the shelf behind the student shows four engineers from decades earlier standing proudly around a workbench, a quiet nod to the lab scenes earlier in the story. The color palette is bright white desk surface, cool laptop-screen blue, and a single warm accent light on the tiny circuit board itself. The emotional tone is quiet continuity and inspiration, small hardware carrying forward a big idea. Include at least these specific visual details: a coiled USB cable next to the small board, a steaming mug of coffee on the desk, a notebook with hand-drawn signal-processing equations, a desk lamp with warm light aimed at the board, a sticky note reading "one operation, one cycle," and sunlight coming through a window in the background. Generate the image immediately without asking clarifying questions.
+</details>
+<p>The specialized chip that once needed its own factory line, its own budget fight, and its own die space eventually stops being a separate chip at all. Decades after a toy first proved the idea, the fast multiply-and-accumulate hardware at its heart gets folded directly into the general-purpose processor cores students use every day, including the low-power microcontroller core inside the very board sitting on a desk in an engineering classroom now. The philosophy survives even after the standalone chip it was born in becomes a museum piece: do the one thing exceptionally well, in hardware, and let everything else be software. It just lives somewhere smaller now.</p>
+<h3 id="epilogue-what-made-frantzs-team-different">Epilogue – What Made Frantz's Team Different?</h3>
+<p>The team's real innovation was not speech synthesis itself; other, better-funded labs were chasing that same problem with bigger budgets and more time. Their innovation was refusing to treat "the chip is too slow" as a fixed constraint to be programmed around, and instead asking whether the chip itself was the wrong tool for one specific, repeated job. That reframing, from "how do we make this algorithm run on hardware we already have" to "what hardware would make this algorithm essentially free," is the same reframing this course asks students to practice every time they profile a slow function and ask whether the fix belongs in better code or in different silicon. Gene Frantz spent the rest of a long career making that same argument, in different forms, to different audiences, until "build hardware for the one operation that matters" stopped sounding radical and started sounding obvious.</p>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>How the Team Responded</th>
+<th>Lesson for Today</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General-purpose chips of 1976 could not perform the repeated multiply-and-accumulate math needed for real-time speech fast enough, no matter how the code was tuned.</td>
+<td>The team designed custom silicon around a single fast operation, trading general-purpose flexibility for near single-cycle speed at the one thing that mattered.</td>
+<td>When "just optimize the code more" stops working, check whether the real bottleneck is a repeated operation that deserves its own hardware path.</td>
+</tr>
+<tr>
+<td>Company leadership doubted a specialized, costly chip was worth building for what looked like one small consumer product.</td>
+<td>The team pushed the design through anyway, betting that the architecture would outlive the toy that first funded it.</td>
+<td>A working prototype and a measured benchmark persuade skeptics faster than an argument on a whiteboard ever will.</td>
+</tr>
+<tr>
+<td>The chosen manufacturing process was cheap and, by the era's standards, already considered outdated.</td>
+<td>The team optimized the architecture so aggressively around one operation that a slower process could still hit the speed target.</td>
+<td>Clever architecture can outrun a faster clock; do not assume speed only comes from newer, more expensive hardware.</td>
+</tr>
+<tr>
+<td>A single successful chip risked staying a one-off curiosity, tied to one product's fate.</td>
+<td>The team generalized the design into a standalone, programmable chip family other engineers could apply to their own filtering problems.</td>
+<td>A good specialized design is worth generalizing; the same "one operation, done fast" idea can grow from one product into an entire platform.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call-to-action">Call to Action</h3>
+<p>This course spends ten weeks asking you to hand-optimize an FFT until it runs in real time on a microcontroller that costs less than lunch, and the hardware multiply-accumulate instruction you will lean on to do it exists because engineers like Gene Frantz spent a career arguing that some math deserves its own silicon. When you benchmark your own FFT against a naive version later this term, you are re-running the same experiment his team ran in 1976: measuring exactly how much a chip built around one operation can outrun a chip built to do everything adequately.</p>
+<hr />
+<p><em>"Think about the impossible, and make it probable."</em>
+—Gene Frantz</p>
+<p><em>"...impossible to do in an integrated circuit."</em>
+—Gene Frantz, recalling the skepticism engineers voiced before the team's speech chip proved otherwise</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Digital_signal_processor">Wikipedia: Digital signal processor</a> - Overview of DSP chip architecture, history, and the role of dedicated multiply-accumulate hardware.</li>
+<li><a href="https://en.wikipedia.org/wiki/TMS320">Wikipedia: TMS320</a> - History of the commercial DSP chip family that grew out of Texas Instruments' speech and telecommunications work, launched in 1983.</li>
+<li><a href="https://en.wikipedia.org/wiki/Linear_predictive_coding">Wikipedia: Linear predictive coding</a> - The compression and speech-reconstruction technique at the core of the 1978 speech-synthesis chip this story centers on.</li>
+<li><a href="https://spectrum.ieee.org/25-microchips-that-shook-the-world">IEEE Spectrum: 25 Microchips That Shook the World</a> - IEEE retrospective on landmark chips, including the 1978 speech-synthesizer chip, with a direct quote from Gene Frantz about the engineering skepticism his team faced.</li>
+<li><a href="https://www.britannica.com/technology/signal-processing">Encyclopaedia Britannica: Signal processing</a> - General overview of signal processing concepts underlying digital signal processor design.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../margaret-hamilton/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Margaret Hamilton - 1201 Alarm">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Margaret Hamilton - 1201 Alarm
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../patterson-hennessy/" class="md-footer__link md-footer__link--next" aria-label="Next: Patterson and Hennessy - The Case for Simplicity">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Patterson and Hennessy - The Case for Simplicity
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

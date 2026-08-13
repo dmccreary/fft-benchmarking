@@ -1,0 +1,2639 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Curated graphic-novel story ideas connecting this course's hardware, algorithms, and benchmarking ethic to the people who built them.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/story-ideas/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../harry-nyquist/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Story Ideas - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#story-ideas-for-real-time-dsp-on-a-5-microcontroller" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Story Ideas
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selection-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Story Ideas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Story Ideas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-two-in-a-garden-shed-how-sophie-wilson-and-steve-furber-invented-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Two in a Garden Shed: How Sophie Wilson and Steve Furber Invented ARM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-machine-in-the-living-room-konrad-zuse-and-the-first-programmable-computer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Machine in the Living Room: Konrad Zuse and the First Programmable Computer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-man-who-wouldnt-let-floating-point-lie" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Man Who Wouldn't Let Floating Point Lie
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-amazing-grace-from-naval-officer-to-the-first-compiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Amazing Grace: From Naval Officer to the First Compiler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-the-telephone-engineer-who-invented-digital-audio-fifty-years-too-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Telephone Engineer Who Invented Digital Audio Fifty Years Too Early
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-built-for-sound-gene-frantz-and-the-first-dsp-chip" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Built for Sound: Gene Frantz and the First DSP Chip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-1201-alarm-margaret-hamilton-and-the-software-that-landed-on-the-moon" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 1201 Alarm: Margaret Hamilton and the Software That Landed on the Moon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-self-taught-at-nasa-annie-easleys-path-from-human-computer-to-programmer" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Self-Taught at NASA: Annie Easley's Path from Human Computer to Programmer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-cooling-the-fire-seymour-crays-obsession-with-honest-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Cooling the Fire: Seymour Cray's Obsession with Honest Speed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-risc-vs-cisc-the-architecture-debate-that-decided-how-chips-would-be-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. RISC vs. CISC: The Architecture Debate That Decided How Chips Would Be Built
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-the-list-that-made-benchmarking-honest-jack-dongarra-and-linpack" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. The List That Made Benchmarking Honest: Jack Dongarra and LINPACK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-five-dollars-of-computer-eben-upton-and-the-raspberry-pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Five Dollars of Computer: Eben Upton and the Raspberry Pi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-the-benchmark-that-lied-fictional-case-study" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. The Benchmark That Lied (fictional case study)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-059-milliseconds-fictional-synthesis-capstone" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. 0.59 Milliseconds (fictional synthesis capstone)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-the-six-who-programmed-by-hand-betty-holberton-and-the-first-programmers" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. The Six Who Programmed by Hand: Betty Holberton and the First Programmers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-the-theorem-nobody-needed-yet-harry-nyquist-and-the-sampling-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. The Theorem Nobody Needed Yet: Harry Nyquist and the Sampling Limit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-generate-a-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Generate a Story
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alec-reeves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seymour-cray/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gene-frantz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterson-hennessy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jack-dongarra/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#selection-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Selection Criteria
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-ideas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Story Ideas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Story Ideas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-two-in-a-garden-shed-how-sophie-wilson-and-steve-furber-invented-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Two in a Garden Shed: How Sophie Wilson and Steve Furber Invented ARM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-machine-in-the-living-room-konrad-zuse-and-the-first-programmable-computer" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Machine in the Living Room: Konrad Zuse and the First Programmable Computer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-man-who-wouldnt-let-floating-point-lie" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The Man Who Wouldn't Let Floating Point Lie
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-amazing-grace-from-naval-officer-to-the-first-compiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Amazing Grace: From Naval Officer to the First Compiler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-the-telephone-engineer-who-invented-digital-audio-fifty-years-too-early" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Telephone Engineer Who Invented Digital Audio Fifty Years Too Early
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-built-for-sound-gene-frantz-and-the-first-dsp-chip" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Built for Sound: Gene Frantz and the First DSP Chip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-1201-alarm-margaret-hamilton-and-the-software-that-landed-on-the-moon" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 1201 Alarm: Margaret Hamilton and the Software That Landed on the Moon
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-self-taught-at-nasa-annie-easleys-path-from-human-computer-to-programmer" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Self-Taught at NASA: Annie Easley's Path from Human Computer to Programmer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-cooling-the-fire-seymour-crays-obsession-with-honest-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Cooling the Fire: Seymour Cray's Obsession with Honest Speed
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-risc-vs-cisc-the-architecture-debate-that-decided-how-chips-would-be-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. RISC vs. CISC: The Architecture Debate That Decided How Chips Would Be Built
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-the-list-that-made-benchmarking-honest-jack-dongarra-and-linpack" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. The List That Made Benchmarking Honest: Jack Dongarra and LINPACK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-five-dollars-of-computer-eben-upton-and-the-raspberry-pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Five Dollars of Computer: Eben Upton and the Raspberry Pi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-the-benchmark-that-lied-fictional-case-study" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. The Benchmark That Lied (fictional case study)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-059-milliseconds-fictional-synthesis-capstone" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. 0.59 Milliseconds (fictional synthesis capstone)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-the-six-who-programmed-by-hand-betty-holberton-and-the-first-programmers" class="md-nav__link">
+    <span class="md-ellipsis">
+      15. The Six Who Programmed by Hand: Betty Holberton and the First Programmers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-the-theorem-nobody-needed-yet-harry-nyquist-and-the-sampling-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      16. The Theorem Nobody Needed Yet: Harry Nyquist and the Sampling Limit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-generate-a-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to Generate a Story
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/story-ideas.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="story-ideas-for-real-time-dsp-on-a-5-microcontroller">Story Ideas for Real-Time DSP on a $5 Microcontroller</h1>
+<p>These mini-graphic novel ideas are designed to inspire readers by connecting the subject matter
+of this course — ARM Cortex-M architecture, floating point, digital audio, the FFT, and honest
+benchmarking — to the real people (and one deliberately fictional case study) who shaped those
+ideas. Each story can be generated using the book-media-generator story route, with the
+suggested panel count or your own override via <code>--panels N</code>.</p>
+<p><strong>Note on the FFT itself:</strong> the definitive story of Cooley and Tukey's 1965 FFT algorithm
+already exists in the <em>Signal Processing</em> textbook and is linked, not duplicated, from
+<a href="../">Stories</a> — see that page for the cross-link. The ideas below deliberately cover
+different people and moments so the two books' Stories sections complement rather than repeat
+each other.</p>
+<h2 id="selection-criteria">Selection Criteria</h2>
+<p>Stories were selected for:</p>
+<ul>
+<li><strong>Relevance</strong> — direct connection to this course's chapters and labs (ARM architecture,
+  floating point, sampling, DSP hardware, assembly language, and benchmarking methodology)</li>
+<li><strong>Diversity</strong> — range of backgrounds, cultures, genders, and time periods</li>
+<li><strong>Inspiration</strong> — themes that resonate with students learning to go "down the abstraction
+  ladder" from Python to bare metal</li>
+<li><strong>Drama</strong> — compelling narrative arcs with conflict and resolution</li>
+</ul>
+<h2 id="story-ideas">Story Ideas</h2>
+<h3 id="1-two-in-a-garden-shed-how-sophie-wilson-and-steve-furber-invented-arm">1. Two in a Garden Shed: How Sophie Wilson and Steve Furber Invented ARM</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Sophie Wilson (b. 1957) and Steve Furber (b. 1953), United Kingdom</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Doing more with less — elegance forced by a tiny budget</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Every board in this course's kit runs an ARM Cortex-M33 core. This is the origin story of the instruction set architecture itself — the "R" in ARM's original RISC design philosophy that Chapters 2, 21–25 depend on.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>12</strong> — full origin-to-legacy arc, from Acorn's cash crisis through the ARM1 prototype to today's billions of shipped cores</td>
+</tr>
+</tbody>
+</table>
+<p>In 1983, Acorn Computers needed a processor for the BBC Micro's successor and could not afford
+one from Intel or Motorola. Sophie Wilson and Steve Furber designed the Acorn RISC Machine from
+scratch with a two-person team and almost no budget, discovering that a radically simple
+instruction set could outperform far more expensive chips. Forty years later that same design
+philosophy — few instructions, low power, done exceptionally well — is why a $5 board can run a
+real-time FFT.</p>
+<p><em>Why this inspires:</em> the chip in every student's hand was designed by two people with a tiny
+budget who refused to accept that "powerful" had to mean "expensive."</p>
+<hr />
+<h3 id="2-the-machine-in-the-living-room-konrad-zuse-and-the-first-programmable-computer">2. The Machine in the Living Room: Konrad Zuse and the First Programmable Computer</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Konrad Zuse (1910–1995), Germany</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Building alone, and rebuilding after everything is destroyed</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Zuse's Z3 (1941) was the first working programmable computer and used binary floating-point arithmetic — the direct ancestor of the IEEE 754 format this course's FPU chapters (20–22) depend on.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>9</strong> — mystery (why does no one believe him), setback (the machine is destroyed), and reveal (floating point survives)</td>
+</tr>
+</tbody>
+</table>
+<p>Working nights and weekends in his parents' Berlin apartment with no institutional support, Zuse
+built a calculating machine that used binary floating-point numbers years before anyone else saw
+the need. Allied bombing destroyed his early machines and most of his records, and for decades
+his work was barely known outside Germany. Only later did historians confirm the Z3 was Turing-
+complete — a genuinely programmable computer, built essentially alone.</p>
+<p><em>Why this inspires:</em> an idea this course now teaches in an afternoon — floating point in binary
+— took one person years of solitary, repeatedly-destroyed work to discover first.</p>
+<hr />
+<h3 id="3-the-man-who-wouldnt-let-floating-point-lie">3. The Man Who Wouldn't Let Floating Point Lie</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>William Kahan (b. 1933), Canada / United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Standing alone against an industry that wanted a cheaper, sloppier answer</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Kahan's IEEE 754 standard is the exact floating-point format the Cortex-M33's hardware FPU implements — the subject of Chapters 20–22 and Labs 28–31.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>8</strong> — linear discovery: the committee fight, the holdouts, the standard that won anyway</td>
+</tr>
+</tbody>
+</table>
+<p>In the early 1980s, chip makers wanted incompatible, cost-cutting floating-point formats that
+would have made numerical results unpredictable across machines. William Kahan, hired by Intel
+as a consultant, pushed through a rigorous, mathematically complete standard over the objections
+of manufacturers who thought it was overengineered. IEEE 754 became the standard implemented
+in virtually every FPU built since — including the one on a $5 board.</p>
+<p><em>Why this inspires:</em> one uncompromising mathematician's insistence on doing arithmetic
+correctly, not just cheaply, is why every <code>float</code> a student writes behaves predictably.</p>
+<hr />
+<h3 id="4-amazing-grace-from-naval-officer-to-the-first-compiler">4. Amazing Grace: From Naval Officer to the First Compiler</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Grace Hopper (1906–1992), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Building the ladder this course asks students to climb back down</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Hopper invented the first compiler and pushed computing toward human-readable languages — the top of the "abstraction ladder" this course explores in Chapter 19, which students then deliberately descend toward assembly.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>12</strong> — full life arc: Navy service, the Mark I, the first bug, the compiler, COBOL</td>
+</tr>
+</tbody>
+</table>
+<p>Grace Hopper joined the Navy in WWII and worked on the Harvard Mark I, one of the first large-
+scale computer. Convinced that programmers shouldn't have to write in raw machine code, she built
+the first compiler in 1952 against widespread skepticism that a machine could reliably translate
+human instructions into correct code. Her work led directly to COBOL and the entire idea of
+high-level programming languages.</p>
+<p><em>Why this inspires:</em> Hopper spent a career building the abstraction layers between humans and
+machine code — this course asks readers to appreciate what those layers cost by walking back
+down through them.</p>
+<hr />
+<h3 id="5-the-telephone-engineer-who-invented-digital-audio-fifty-years-too-early">5. The Telephone Engineer Who Invented Digital Audio Fifty Years Too Early</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Alec Reeves (1902–1971), United Kingdom</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Being right before the technology exists to prove it</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Reeves invented pulse-code modulation (PCM) — the exact technique this course's sampling and bit-depth chapters (6, Labs 7–10) use to turn a microphone's analog wiggle into numbers.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>6</strong> — tight before/after: analog telephony's noise problem, and Reeves's digital solution</td>
+</tr>
+</tbody>
+</table>
+<p>In 1937, working for International Telephone and Telegraph in Paris, Alec Reeves patented pulse-
+code modulation as a way to make telephone signals immune to noise by converting sound into
+discrete digital samples. The vacuum-tube electronics of the era were far too slow and expensive
+to make PCM practical, and the idea sat mostly dormant for decades until transistors and
+integrated circuits finally caught up.</p>
+<p><em>Why this inspires:</em> every I²S microphone sample this course's students capture in Lab 7 uses an
+idea one engineer got right in 1937, decades before hardware existed that could use it.</p>
+<hr />
+<h3 id="6-built-for-sound-gene-frantz-and-the-first-dsp-chip">6. Built for Sound: Gene Frantz and the First DSP Chip</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Gene Frantz (b. 1941), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Purpose-built hardware versus general-purpose compromise</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This course explicitly frames its story as "for decades this superpower needed expensive dedicated hardware" — Frantz's TMS320 at Texas Instruments (1978–1983) was that dedicated hardware, the direct ancestor of the DSP instructions now built into the Cortex-M33.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>8</strong> — linear discovery: the speech-synthesis problem, the chip that couldn't do multiply fast enough, the custom silicon that fixed it</td>
+</tr>
+</tbody>
+</table>
+<p>Gene Frantz and his team at Texas Instruments were building a speech-synthesis toy — eventually
+the Speak &amp; Spell — and kept hitting a wall: general-purpose processors of the era could not
+multiply numbers fast enough to filter audio in real time. Their solution was a chip built around
+a single job: one multiply-and-accumulate operation per clock cycle. That chip, the TMS320, created
+the entire category of dedicated digital signal processors.</p>
+<p><em>Why this inspires:</em> the DSP instructions the Cortex-M33 has built in exist because one team
+decided a toy needed a chip that did one thing extremely well.</p>
+<hr />
+<h3 id="7-1201-alarm-margaret-hamilton-and-the-software-that-landed-on-the-moon">7. 1201 Alarm: Margaret Hamilton and the Software That Landed on the Moon</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Margaret Hamilton (b. 1936), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Real-time systems have no second chances</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This course revolves around a hard real-time budget — 6,000,000 CPU cycles per audio frame (Chapter 17, Lab 25). Hamilton's Apollo Guidance Computer software operated under an equally unforgiving real-time deadline, with human lives on the line.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>9</strong> — mystery and reveal: an alarm nobody expected, minutes to decide, a landing that almost didn't happen</td>
+</tr>
+</tbody>
+</table>
+<p>As director of the Software Engineering Division at MIT's Instrumentation Laboratory, Margaret
+Hamilton insisted the Apollo Guidance Computer's software handle overload gracefully rather than
+crash — a decision NASA managers initially resisted as unnecessary. Minutes before the Apollo 11
+lunar landing, a 1201 program alarm fired exactly the kind of overload Hamilton had designed for;
+the software shed lower-priority tasks and kept running, and the landing proceeded.</p>
+<p><em>Why this inspires:</em> a system that has been engineered to fail gracefully under a real-time
+deadline can save a mission — the same discipline this course applies to a 40-millisecond audio
+frame.</p>
+<hr />
+<h3 id="8-self-taught-at-nasa-annie-easleys-path-from-human-computer-to-programmer">8. Self-Taught at NASA: Annie Easley's Path from Human Computer to Programmer</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Annie Easley (1933–2011), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Teaching yourself the machine when no one will teach you</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This course's binding design constraint is that "you need no prior experience... Lab 1 assumes only that you own a computer." Easley taught herself programming from scratch, mid-career, exactly the leap this course asks every reader to make.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>10</strong> — life arc: hired as a "human computer," self-taught programming, decades of energy-systems code at NASA</td>
+</tr>
+</tbody>
+</table>
+<p>Annie Easley was hired by the NACA (soon to become NASA) in 1955 as one of the agency's few
+Black "human computers," doing calculations by hand. When electronic computers arrived, she
+taught herself to program them rather than be replaced by them, and spent the next three decades
+writing code for battery and energy-conversion research that underpins hybrid and electric
+vehicle technology today.</p>
+<p><em>Why this inspires:</em> Easley turned a technology that threatened to end her career into the tool
+that defined it — proof that self-teaching a machine from zero is a career-long superpower, not
+just a first course.</p>
+<hr />
+<h3 id="9-cooling-the-fire-seymour-crays-obsession-with-honest-speed">9. Cooling the Fire: Seymour Cray's Obsession with Honest Speed</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Seymour Cray (1925–1996), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Refusing to let marketing numbers substitute for measured performance</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This course's central discipline — "benchmarking honestly... a harder and rarer skill than writing the code itself" — was Cray's obsession decades before it had a name; his supercomputers were engineered and measured, never marketed on paper specs alone.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>12</strong> — full life arc: CDC 6600, the freon-cooled Cray-1, a career of chasing real, verified cycles</td>
+</tr>
+</tbody>
+</table>
+<p>Seymour Cray built some of the fastest computers in the world, and cared as much about how a
+machine's speed was proven as about the machine itself — famously skeptical of any performance
+claim he could not personally verify. His Cray-1, cooled by liquid freon coursing through its
+distinctive C-shaped cabinet, became the standard against which "supercomputer" was measured for
+a decade.</p>
+<p><em>Why this inspires:</em> Cray's insistence on verified, reproducible speed over a spec sheet is the
+same standard this course's benchmarking chapters (17–18, 25–26) hold students to.</p>
+<hr />
+<h3 id="10-risc-vs-cisc-the-architecture-debate-that-decided-how-chips-would-be-built">10. RISC vs. CISC: The Architecture Debate That Decided How Chips Would Be Built</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>David Patterson (b. 1947) and John Hennessy (b. 1952), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>A simpler idea, proven with data, beating decades of accumulated complexity</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>The reduced instruction set philosophy Patterson and Hennessy proved out at Berkeley and Stanford in the early 1980s is the direct architectural ancestor of the ARM core inside every board this course's students hold — and the reason Chapters 21–25's assembly instructions are so learnable in a single course module.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>9</strong> — mystery and reveal: an industry convinced complex instructions were the future, a research result that said otherwise, a debate settled by benchmarks</td>
+</tr>
+</tbody>
+</table>
+<p>Through the early 1980s, chip makers kept adding ever more complex instructions to their
+processors, assuming complexity meant capability. Patterson at Berkeley and Hennessy at Stanford
+independently built research chips using a small, fast, simple instruction set instead, and
+measured them against the industry's complex designs — the simpler chips won on real workloads.
+Their "RISC" philosophy reshaped how nearly every modern processor, including ARM, is designed.</p>
+<p><em>Why this inspires:</em> two research teams changed an entire industry by trusting a measured
+benchmark over decades of received wisdom about what a good processor needed.</p>
+<hr />
+<h3 id="11-the-list-that-made-benchmarking-honest-jack-dongarra-and-linpack">11. The List That Made Benchmarking Honest: Jack Dongarra and LINPACK</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Jack Dongarra (b. 1950), United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Fighting misinformation with a standard everyone has to run the same way</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This course's own material states that it demonstrates "four ways benchmarks lie" and that "a benchmark's exclusions can reverse its conclusion" (Chapters 17–18, 26) — exactly the problem Dongarra's LINPACK benchmark and TOP500 list were built to solve for an entire industry.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>8</strong> — linear discovery: vendors quoting best-case numbers, a benchmark anyone can run and verify, a public list that ends the guessing</td>
+</tr>
+</tbody>
+</table>
+<p>In the 1970s and 80s, computer vendors routinely advertised performance numbers that only ever
+held under artificial best-case conditions. Jack Dongarra built LINPACK, a benchmark any lab
+could run identically on any machine, and later co-founded the TOP500 list ranking the world's
+fastest computers by that single honest measurement rather than marketing claims.</p>
+<p><em>Why this inspires:</em> Dongarra proved that the fix for misleading performance claims isn't a
+better argument — it's a benchmark rigorous enough that everyone has to agree on the number.</p>
+<hr />
+<h3 id="12-five-dollars-of-computer-eben-upton-and-the-raspberry-pi">12. Five Dollars of Computer: Eben Upton and the Raspberry Pi</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Eben Upton (b. 1978), United Kingdom</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Democratizing capability that used to require a budget</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>This is the direct lineage story behind the course's own hardware kit — the Pico 2 that every student uses descends from the same Cambridge engineering culture and mission that produced the Raspberry Pi: real computing power at a price any student can afford.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>8</strong> — linear discovery: a shrinking pool of students who'd ever touched real hardware, a $25 computer built to fix it, unexpected global demand</td>
+</tr>
+</tbody>
+</table>
+<p>Eben Upton, a Cambridge computer science lecturer, watched university applicants arrive each year
+with less and less hands-on hardware experience, because home computers had become sealed
+appliances instead of things you could program down to the metal. He and colleagues built the
+Raspberry Pi as a $25 computer capable of teaching real programming and hardware interaction —
+and demand from students, hobbyists, and engineers worldwide outstripped every projection.</p>
+<p><em>Why this inspires:</em> the same "why should powerful hardware be expensive" instinct that produced
+a $25 computer now, a decade later, puts a real-time DSP-capable chip in this course's $5 board.</p>
+<hr />
+<h3 id="13-the-benchmark-that-lied-fictional-case-study">13. The Benchmark That Lied <em>(fictional case study)</em></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Setting</strong></td>
+<td>A university embedded-systems lab, present day</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>The gap between a number and the truth it claims to measure</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>Dramatizes exactly the trap this course warns against in Chapters 17–18 and 26: a vendor's FFT library claims a blazing time-per-transform, and a student has to figure out why their own honestly-measured code can't get close — until they find what the vendor's number quietly left out.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>7</strong> — single-technique mystery: the suspicious number, the investigation, the fix that makes the comparison fair</td>
+</tr>
+</tbody>
+</table>
+<p>A student benchmarking their own FFT implementation against a vendor's published number can't
+explain a 40× gap, until digging into the vendor's test harness reveals it discarded the first
+several runs, used a pre-warmed cache, and never counted the memory transfer required to get real
+data into place. Rerunning both benchmarks under identical, fully-accounted conditions closes
+most of the gap — and reveals the real, smaller, honestly-earned difference.</p>
+<p><em>Why this inspires:</em> the most common form of dishonesty in engineering isn't a lie, it's a
+benchmark that quietly measures the wrong thing — and this course trains students to notice.</p>
+<hr />
+<h3 id="14-059-milliseconds-fictional-synthesis-capstone">14. 0.59 Milliseconds <em>(fictional synthesis capstone)</em></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Setting</strong></td>
+<td>This course itself, told as a single connected journey</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Every layer of speed has a name, a reason, and a person who discovered it</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>A montage capstone dramatizing the course's own headline result — a 512-point transform going from 21 seconds to 0.59 milliseconds — tying together the DFT, the FFT, benchmarking discipline, the FPU, and hand-written assembly into one visual timeline.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>14</strong> — synthesis montage: one panel per major optimization step, so students can see the whole 165× journey as a single connected story</td>
+</tr>
+</tbody>
+</table>
+<p>A single student's project retraces the entire course in miniature: a brute-force DFT that takes
+21 seconds, the divide-and-conquer insight that turns it into an FFT, the discovery that
+MicroPython's own overhead is the next bottleneck, the leap to hardware floating point, and
+finally hand-written ARM assembly that lands the same transform at 0.59 milliseconds — a factor
+of 35,000 improvement, each step named and measured.</p>
+<p><em>Why this inspires:</em> seeing the entire 35-lab arc compressed into one connected visual story
+makes the scale of what a single student accomplishes in this course viscerally clear.</p>
+<hr />
+<h3 id="15-the-six-who-programmed-by-hand-betty-holberton-and-the-first-programmers">15. The Six Who Programmed by Hand: Betty Holberton and the First Programmers</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Frances "Betty" Holberton (1917–2001) and the "ENIAC Six," United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>Programming so close to the hardware that there was no abstraction to hide behind</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>The ENIAC programmers wired plugboards and set switches by hand with no operating system, no assembler, and no manual — the same "nothing between you and the hardware" experience this course's assembly-language module (Chapters 21–25, Labs 28–31) deliberately recreates.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>10</strong> — life arc: recruited without being told what they'd build, learning ENIAC's logic from its wiring diagrams alone, a public demonstration with no formal recognition</td>
+</tr>
+</tbody>
+</table>
+<p>In 1945, six women — recruited as "computers" without being told they would program the first
+general-purpose electronic computer — learned ENIAC's operation entirely from its logical wiring
+diagrams, since no manual or programming language yet existed. Betty Holberton and her colleagues
+physically wired the machine to calculate ballistic trajectories, then later demonstrated it
+successfully to the press, with their essential role uncredited for decades afterward.</p>
+<p><em>Why this inspires:</em> the ENIAC programmers had nothing but the hardware itself to reason about —
+exactly the skill this course asks students to rebuild by hand in its assembly-language labs.</p>
+<hr />
+<h3 id="16-the-theorem-nobody-needed-yet-harry-nyquist-and-the-sampling-limit">16. The Theorem Nobody Needed Yet: Harry Nyquist and the Sampling Limit</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subject</strong></td>
+<td>Harry Nyquist (1889–1976), Sweden / United States</td>
+</tr>
+<tr>
+<td><strong>Theme</strong></td>
+<td>A mathematical limit discovered decades before the technology that would make it matter</td>
+</tr>
+<tr>
+<td><strong>Connection</strong></td>
+<td>The Nyquist limit is the exact rule this course's aliasing chapter (6) and Lab 9 teach students to respect: sample below twice the highest frequency present, or the signal lies to you.</td>
+</tr>
+<tr>
+<td><strong>Panels</strong></td>
+<td><strong>7</strong> — single-technique arc: the telegraph-bandwidth problem, the theorem, decades of dormancy before digital audio made it essential</td>
+</tr>
+</tbody>
+</table>
+<p>Working at Bell Labs in 1928 on the entirely analog problem of how much telegraph signal a
+limited-bandwidth line could carry, Harry Nyquist derived the precise mathematical limit on how
+fast a signal must be sampled to be reconstructed without loss. The result sat as a piece of
+communications theory for decades until digital audio and, later, every microphone this course's
+students wire up made it a rule they hit directly.</p>
+<p><em>Why this inspires:</em> a limit worked out for 1920s telegraph wires turns out to be the exact law
+that governs whether a $3 microphone captures a clean signal or a distorted one.</p>
+<hr />
+<h2 id="how-to-generate-a-story">How to Generate a Story</h2>
+<p>To turn any of these ideas into a full graphic novel with generated images, use:</p>
+<blockquote>
+<p>book-media-generator (story route): {Story Title} --panels {N}</p>
+</blockquote>
+<p>Provide the subject's name (and optionally <code>--panels N</code> to override the suggested count) and the
+skill will handle the rest — writing the narrative, creating image prompts, and optionally
+generating all panel images via a text-to-image API (currently Google Gemini 2.5 Flash Image).
+Current cost for high-quality images with accurate text placement is approximately <strong>$0.039 per
+image</strong>, so $0.039 × (N + 1) per story — from about $0.27 for a 6-panel story up to $0.66 for the
+16-panel capstone montage.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../harry-nyquist/" class="md-footer__link md-footer__link--next" aria-label="Next: Harry Nyquist - The Sampling Limit">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Harry Nyquist - The Sampling Limit
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

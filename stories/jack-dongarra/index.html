@@ -1,0 +1,2248 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A young Argonne mathematician grew tired of vendors' inflated "peak" performance claims, so he built a benchmark everyone could run the same way, then a public list nobody could rig.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/stories/jack-dongarra/">
+      
+      
+        <link rel="prev" href="../patterson-hennessy/">
+      
+      
+        <link rel="next" href="../sophie-wilson-steve-furber/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>The Number Nobody Could Fake: Jack Dongarra's Honest Benchmark - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-number-nobody-could-fake-jack-dongarras-honest-benchmark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The Number Nobody Could Fake: Jack Dongarra's Honest Benchmark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Stories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../story-ideas/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Story Ideas
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harry-nyquist/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Harry Nyquist - The Sampling Limit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alec-reeves/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Alec Reeves - Digital Audio Fifty Years Early
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../grace-hopper/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Grace Hopper - Amazing Grace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../konrad-zuse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Konrad Zuse - The Machine in the Living Room
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../betty-holberton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Betty Holberton - Wired by Hand
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seymour-cray/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Seymour Cray - Cooling the Fire
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../william-kahan/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    William Kahan - Honest Floating-Point Math
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annie-easley/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annie Easley - Self-Taught at NASA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../margaret-hamilton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Margaret Hamilton - 1201 Alarm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gene-frantz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gene Frantz - One Job, Done Fast
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterson-hennessy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Patterson and Hennessy - The Case for Simplicity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Jack Dongarra - The Number Nobody Could Fake
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-number-everyone-argued-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Number Everyone Argued About
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-mathematician-among-the-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Mathematician Among the Machines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-one-fair-test-for-every-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: One Fair Test for Every Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-the-peak-that-no-program-ever-reached" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: The Peak That No Program Ever Reached
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-twenty-machines-and-growing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: Twenty Machines and Growing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-merging-two-lists-into-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Merging Two Lists Into One
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-a-list-anyone-could-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: A List Anyone Could Check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-two-decades-of-honest-competition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: Two Decades of Honest Competition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-recognition-finally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: Recognition, Finally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 8: Recognition, Finally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-dongarras-approach-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Dongarra's Approach Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sophie-wilson-steve-furber/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eben-upton/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Eben Upton - Five Dollars of Computer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-benchmark-that-lied/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The Benchmark That Lied (fiction)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../059-milliseconds/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0.59 Milliseconds (capstone)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prologue-the-number-everyone-argued-about" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prologue – The Number Everyone Argued About
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-1-a-mathematician-among-the-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 1: A Mathematician Among the Machines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-2-one-fair-test-for-every-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 2: One Fair Test for Every Machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-3-the-peak-that-no-program-ever-reached" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 3: The Peak That No Program Ever Reached
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-4-twenty-machines-and-growing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 4: Twenty Machines and Growing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-5-merging-two-lists-into-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 5: Merging Two Lists Into One
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-6-a-list-anyone-could-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 6: A List Anyone Could Check
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-7-two-decades-of-honest-competition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 7: Two Decades of Honest Competition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#panel-8-recognition-finally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Panel 8: Recognition, Finally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Panel 8: Recognition, Finally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#epilogue-what-made-dongarras-approach-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Epilogue – What Made Dongarra's Approach Different?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-to-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      Call to Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/master/docs/stories/jack-dongarra/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="the-number-nobody-could-fake-jack-dongarras-honest-benchmark">The Number Nobody Could Fake: Jack Dongarra's Honest Benchmark</h1>
+<p><img alt="" src="cover.png" /></p>
+<details>
+<summary>Cover Image Prompt</summary>
+(This is the Cover Image. Do not include this label in the image.)
+Please generate a wide-landscape 16:9 cover image for this story in a warm, contemporary
+editorial-illustration graphic-novel style, semi-realistic rather than photographic, with
+muted late-20th-century color grading. Show a lean, olive-complexioned man in his late twenties
+with dark wavy hair, a trimmed mustache just coming in, and plastic-framed glasses, wearing a
+short-sleeved button-front shirt with a narrow tie, standing at the center of a split composition
+in a 1978 government research laboratory. On the left side of the frame behind him looms a
+glossy vendor poster with a huge, boldly lettered "PEAK PERFORMANCE" number on it, slightly
+tilted and slick. On the right side, tacked to a corkboard, hangs a modest, hand-typed table of
+timing results from many different machines, dog-eared and covered in penciled corrections. He
+stands with one hand resting on the corkboard table, looking directly out at the viewer with
+quiet, confident skepticism. Render the title text "THE NUMBER NOBODY COULD FAKE" at the top in
+a bold, contemporary condensed sans-serif typeface, and beneath it in smaller type "Jack
+Dongarra's Honest Benchmark." Color palette: warm amber lamplight, olive-green lab walls, and
+cool fluorescent white on the glossy poster side. Emotional tone: quiet, principled defiance —
+one honest number squaring off against an exaggerated claim. Generate the image immediately
+without asking clarifying questions.
+</details>
+
+<details>
+<summary>Narrative Prompt</summary>
+This story is set in the United States between 1974 and 2022, moving from Argonne National
+Laboratory in Illinois through the University of Tennessee and Oak Ridge National Laboratory, with
+one pivotal scene at a computing conference in Germany in 1993. The central figure is Jack
+Dongarra, a mathematician and computer scientist who helps build LINPACK, a package of software
+for solving systems of linear equations, and then notices that running the very same LINPACK
+problem on different machines gives an honest, apples-to-apples way to compare their real-world
+performance — in an era when computer vendors routinely advertised theoretical "peak" performance
+numbers that no actual program ever reached. The themes are quantitative honesty, the discipline
+of a common yardstick, and turning a private habit of careful measurement into a public
+institution (the TOP500 list) that an entire industry comes to trust. Render the story in a warm,
+contemporary editorial-illustration graphic-novel style, semi-realistic rather than photographic,
+with color grading that shifts gradually from warm 1970s amber and olive tones toward cooler,
+brighter modern tones by the final panels, reflecting the decades passing. Character consistency
+note: Dongarra should be drawn consistently across all panels as a man of Sicilian-American
+heritage with an olive complexion and dark wavy hair that grays over time, always wearing
+glasses (style updating with the decade) and, from his late twenties onward, a neatly trimmed
+mustache; his clothing should shift from 1970s short-sleeved shirts and narrow ties, to 1980s-90s
+casual academic sweaters and polos, to a formal suit in the final panel. Do not depict any real
+company logos, brand names, or trademarked product names anywhere in the artwork — render
+computers, terminals, and machine cabinets as generic, unbranded equipment appropriate to each
+decade.
+</details>
+
+<h3 id="prologue-the-number-everyone-argued-about">Prologue – The Number Everyone Argued About</h3>
+<p>In the 1970s, if you wanted to know how fast a computer really was, you had exactly one reliable
+source: the company that built it. Sales brochures promised dazzling theoretical speeds that
+existed only on paper, numbers calculated from a machine's fastest possible instruction running
+in a loop that solved nothing anyone actually needed solved. Scientists and government buyers had
+no independent way to check the claim, no common test they could run themselves, and no way to
+compare one vendor's number against another's. Jack Dongarra, a young mathematician at a
+government research laboratory outside Chicago, was about to change that — not by writing a
+better sales pitch, but by building a test simple enough, and public enough, that no one could
+argue with the result.</p>
+<h2 id="panel-1-a-mathematician-among-the-machines">Panel 1: A Mathematician Among the Machines</h2>
+<p><img alt="" src="panel-01.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 01. Do not include the panel number in the image.)
+I am about to ask you to generate a series of images for a graphic novel. Please make the images
+have a consistent style and consistent characters. Do not ask any clarifying questions. Just
+generate the image immediately when asked.
+
+Please generate a 16:9 image in a warm, contemporary editorial-illustration graphic-novel style
+depicting panel 1 of 8. The scene shows a lean, olive-complexioned man in his mid-twenties with
+dark wavy hair and plastic-framed glasses, wearing a short-sleeved button-front shirt and narrow
+tie, seated at a cluttered desk in a government numerical-computing research lab outside Chicago
+in 1974. He is writing subroutine code by hand on ruled paper, a large chalkboard behind him
+covered in matrix notation and equations for solving systems of linear equations. Colleagues in
+similar period dress work at other desks in the background beneath humming fluorescent lights.
+The color palette is warm amber lamplight against olive-green walls and beige metal furniture.
+The emotional tone is quiet, focused purpose — a young researcher absorbed in foundational work.
+Include at least six specific visual details: a boxy glowing terminal screen with green text, a
+reel-to-reel tape drive humming in the corner, tall stacks of green-and-white striped printout
+paper, a coffee mug crowded with felt-tip pens, a wall calendar clearly showing the year 1974, and
+a rotary telephone on the corner of the desk. Generate the image immediately without asking
+clarifying questions.
+</details>
+
+<p>At Argonne National Laboratory, Jack Dongarra joined a small team of numerical analysts writing
+subroutines to solve systems of linear equations — the unglamorous arithmetic buried inside
+nearly every serious scientific calculation, from weather models to structural engineering. The
+software they were building would eventually be called LINPACK, and it would end up installed on
+computers around the world. Dongarra's job was narrower than that grand future suggested: make
+the arithmetic fast, make it reliable, and make sure it worked the same way no matter which
+machine ran it.</p>
+<h2 id="panel-2-one-fair-test-for-every-machine">Panel 2: One Fair Test for Every Machine</h2>
+<p><img alt="" src="panel-02.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 02. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 2 of 8. Make the characters and style consistent with the prior panel. Show
+the same young mathematician, now in the late 1970s, alone at his desk late in the evening,
+comparing several stacks of differently formatted computer printouts spread across the surface,
+penciling numbers into a growing handwritten ledger page divided into columns. A small world map
+is pinned to the wall behind him with colored pins marking distant research labs. His reading
+glasses are pushed up onto his forehead as he squints at a printout held close. The color palette
+is warm desk-lamp amber against a darkened office. The emotional tone is quiet analytical
+absorption, the private satisfaction of noticing a pattern no one else has spotted yet. Include at
+least six specific visual details: a slide rule resting across an open notebook, a rotary
+telephone with a tangled cord, a half-eaten sandwich on waxed paper, a pinned world map with
+red string connecting several cities, an empty coffee cup with a brown ring stain, and a desk
+lamp with a green glass shade. Generate the image immediately without asking clarifying
+questions.
+</details>
+
+<p>Dongarra noticed something useful almost by accident: solving the same system of linear
+equations was a fair stand-in for how a computer handled real scientific work, and if he ran that
+exact problem on machine after machine, the timing results were directly comparable — no
+guesswork, no marketing, just a stopwatch applied equally to everyone. He began collecting those
+timing numbers in the back pages of the software's own user manual, a modest appendix meant only
+to help scientists estimate how long their own calculations might take. It would not stay modest
+for long.</p>
+<h2 id="panel-3-the-peak-that-no-program-ever-reached">Panel 3: The Peak That No Program Ever Reached</h2>
+<p><img alt="" src="panel-03.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 03. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 3 of 8. Make the characters and style consistent with prior panels. Show a
+conference room inside a government research laboratory in the late 1970s. A confident traveling
+sales representative in a wide-lapel suit gestures toward a large easel chart displaying an
+oversized, boldly lettered theoretical performance number, while a laboratory director sits with
+arms crossed and a skeptical expression. In the background, the same young mathematician stands
+near the doorway, quietly holding a single modest sheet of his own handwritten timing results
+at his side, watching the presentation with a faint, knowing skepticism. The color palette is
+cool fluorescent office light against the sales chart's glossy primary colors. The emotional tone
+is showmanship versus quiet skepticism. Include at least six specific visual details: a shiny
+travel sample case propped against a chair leg, a window showing a parking lot with period cars,
+a ceiling of drop-panel fluorescent lighting, a carafe of coffee on a side table, a wide,
+brightly patterned necktie on the sales representative, and a small chalkboard in the corner
+still bearing leftover equations from an earlier meeting. Generate the image immediately without
+asking clarifying questions.
+</details>
+
+<p>Computer vendors of the era were selling something harder to pin down than hardware: a number.
+Sales teams routinely quoted a machine's theoretical "peak" speed, the fastest rate its circuitry
+could conceivably run under ideal, contrived conditions that no real program ever produced. Buyers
+had almost no way to know what a machine would actually deliver on their own work, and every
+vendor's peak number was, conveniently, impossible to verify without buying the machine first.
+Dongarra's quiet stack of measured timings, gathered the same way on every machine, was a small
+but pointed rebuttal to that entire way of doing business.</p>
+<h2 id="panel-4-twenty-machines-and-growing">Panel 4: Twenty Machines and Growing</h2>
+<p><img alt="" src="panel-04.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 04. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 4 of 8. Make the characters and style consistent with prior panels. Show
+the same man, now in his early thirties in the early 1980s, at a cluttered university office desk
+stacked high with envelopes bearing international postmarks and mailed printouts from many
+different computing centers. A steadily lengthening typed report lies open before him, dense
+columns of machine names and timing numbers, red pen marks noting recent additions. A large wall
+map studded with colored pins fills the wall behind him, and an early boxy personal computer sits
+at the edge of the desk beside a rotary card file. The color palette is warm office ochre and
+brown against the cooler gray-blue glow of the computer screen. The emotional tone is dogged,
+meticulous stewardship — the quiet pride of tending something that keeps growing. Include at
+least six specific visual details: stacked envelopes with foreign postage stamps, a red
+felt-tip pen resting on the open report, a coffee-ring-stained desk calendar, a rotary rolodex
+card file, a small potted plant on the windowsill, and a corkboard with more printouts pinned
+in overlapping layers. Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>Word spread through the small world of scientific computing, and Dongarra's appendix of timing
+results grew into something people actively sought out: a running, honest report on how dozens of
+different machines actually performed the same linear-algebra problem. Whenever a new machine
+appeared, someone would run the test and mail him the numbers, and he would fold the result into
+the next edition. What had started as a courtesy footnote in a software manual was becoming the
+closest thing the field had to an independent referee.</p>
+<h2 id="panel-5-merging-two-lists-into-one">Panel 5: Merging Two Lists Into One</h2>
+<p><img alt="" src="panel-05.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 05. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 5 of 8. Make the characters and style consistent with prior panels. Show a
+sunlit conference room in Germany in 1993, tall windows with lace curtains, where the same man,
+now in his early forties with a few gray streaks appearing at his temples, stands at a flip-chart
+easel alongside three other men in period business-casual attire. Two separate typed ranked lists
+are pinned to the wall side by side, and one of the men is drawing a bracket to merge them into a
+single combined list on the flip chart. Conference lanyards hang around each man's neck, and
+paper coffee cups and a stack of nametags sit on the table. The color palette is bright, airy
+European daylight — soft cream walls and pale wood furniture. The emotional tone is
+collaborative resolve, four people quietly agreeing on something that will outlast the meeting.
+Include at least six specific visual details: lace curtains filtering sunlight, a stack of
+printed conference nametags on the table, a flip-chart marker uncapped and mid-stroke, a laptop
+computer with a thick boxy hinge, a hotel-conference-room water pitcher and glasses, and a
+paper agenda with a printed conference logo left deliberately blank of any readable text.
+Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>In 1993, Dongarra joined three colleagues — Hans Meuer, Erich Strohmaier, and Horst Simon — who
+had each been keeping their own scattered tallies of the world's fastest computers. Rather than
+compete, they merged their lists into one twice-yearly ranking, using Dongarra's linear-algebra
+benchmark as the single, agreed-upon measuring stick. It was a small decision made around a
+conference-room table that quietly ended years of fragmented, incompatible comparisons. From that
+meeting came the TOP500, a list that would rank the world's fastest computers by one honestly
+measured number instead of a dozen conflicting claims.</p>
+<h2 id="panel-6-a-list-anyone-could-check">Panel 6: A List Anyone Could Check</h2>
+<p><img alt="" src="panel-06.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 06. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 6 of 8. Make the characters and style consistent with prior panels. Show a
+university computing lab in the mid-1990s where two researchers in casual sweaters crowd around a
+freshly printed ranked list pulled from a fax machine, one of them tracing a finger down the
+column of numbers to find their own laboratory's entry while the other watches with a grin. A
+corkboard nearby is layered with several previous editions of the same list. Beige computer
+towers with small monitors sit at nearby desks, and sunlight streams through half-open blinds.
+The color palette is warmer and brighter than earlier panels, pale yellow sunlight against
+neutral beige office tones. The emotional tone is public accountability turning into quiet
+vindication — the pleasure of a number you can actually go check. Include at least six specific
+visual details: a fax machine mid-print with curling paper, a corkboard layered with several
+past printed lists, a beige computer tower with a small square monitor, a coffee mug reading
+nothing but a plain stripe pattern, dust motes visible in the sunbeam, and a wall clock showing
+mid-afternoon. Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>The list changed the incentives overnight. A machine's ranking was no longer whatever number its
+own maker chose to print in a brochure; it was a figure tied to a published, reproducible test
+that any laboratory could, in principle, run for itself and check. Engineers now had a public
+number to chase, and vendors had a public number to defend, twice a year, in front of the entire
+field. For the first time, bragging about performance meant showing your work.</p>
+<h2 id="panel-7-two-decades-of-honest-competition">Panel 7: Two Decades of Honest Competition</h2>
+<p><img alt="" src="panel-07.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 07. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 7 of 8. Make the characters and style consistent with prior panels. Show a
+large supercomputing center in the 2000s, rows of tall unbranded server racks with blinking
+status lights receding into the distance under a raised floor, overhead cable trays, and cool
+white lighting. A group of younger engineers in modern casual clothing and lanyard ID badges
+study a large wall-mounted screen displaying a ranked bar chart. Off to one side, the same man,
+now with fully gray hair and a gray mustache, watches with quiet satisfaction, hands in his
+pockets. The color palette shifts to cooler blues and whites, reflecting a more modern era. The
+emotional tone is quiet pride at watching a small idea become permanent institutional practice.
+Include at least six specific visual details: raised floor access tiles, overhead cable trays,
+rows of blinking status lights on server racks, a wall-mounted screen showing a bar-chart
+ranking, ID badges on lanyards, and a rolling cart holding diagnostic equipment. Generate the
+image immediately without asking clarifying questions.
+</details>
+
+<p>Over the following two decades, the twice-yearly ranking became a fixture of the
+high-performance-computing world, driving nations and companies to compete on genuine, measured
+speed rather than paper specifications. Watching that shift from the sidelines of the very
+supercomputing centers he had helped set standards for, Dongarra could see plainly what his
+small appendix had become: not a footnote anymore, but the yardstick the entire field measured
+itself against.</p>
+<h2 id="panel-8-recognition-finally">Panel 8: Recognition, Finally</h2>
+<p><img alt="" src="panel-08.png" /></p>
+<details><summary>Image Prompt</summary>
+(This is Panel 08. Do not include the panel number in the image.)
+Please generate a 16:9 image in the same warm, contemporary editorial-illustration graphic-novel
+style depicting panel 8 of 8. Make the characters and style consistent with prior panels. Show a
+formal awards ceremony stage in 2022, where the same man, now elderly with fully silver hair and
+a silver mustache, wears a dark formal suit and stands at a lectern accepting a presentation case
+holding a medal, a large screen behind him displaying an abstract honor-citation graphic. An
+audience in business attire fills rows of seats before the stage, several rising to applaud, warm
+spotlight illuminating the stage against a darker auditorium. The color palette is warm golden
+stage light against deep navy audience shadows. The emotional tone is quiet, well-earned
+culmination after decades of unglamorous, careful work. Include at least six specific visual
+details: a formal wooden lectern with a small microphone, a presentation case open to show a
+medal, rows of applauding audience members in business attire, a soft-focus screen behind the
+stage, a modest bouquet of flowers resting near the lectern, and stage curtains framing the
+scene in deep burgundy. Generate the image immediately without asking clarifying questions.
+</details>
+
+<p>In 2022, Jack Dongarra received the 2021 ACM A.M. Turing Award, computing's highest honor, for
+decades of pioneering work on the numerical algorithms and software libraries — including
+LINPACK and the benchmark it spawned — that let computational science keep pace with hardware for
+over forty years. The citation praised the algorithms; the deeper lesson was about honesty. A
+claimed number, Dongarra's whole career argued, is worth nothing until someone else can measure
+it too and get the same answer.</p>
+<h3 id="epilogue-what-made-dongarras-approach-different">Epilogue – What Made Dongarra's Approach Different?</h3>
+<p>Dongarra never tried to out-argue the vendors who inflated their performance claims — he simply
+built a test rigorous enough that arguing became pointless. By insisting that every machine run
+the identical problem, publish the identical kind of number, and submit to a public, repeatable
+ranking, he replaced marketing with measurement. That same discipline is what separates a
+trustworthy benchmark from a misleading one: not cleverness, but a refusal to let anyone,
+including yourself, grade your own homework.</p>
+<table>
+<thead>
+<tr>
+<th>Challenge</th>
+<th>How Dongarra Responded</th>
+<th>Lesson for Today</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vendors advertised unreachable theoretical "peak" performance numbers</td>
+<td>Built a benchmark that measured actual delivered performance on a realistic linear-algebra problem</td>
+<td>A peak specification is a ceiling, not a measurement — always report what your code actually achieves</td>
+</tr>
+<tr>
+<td>No common yardstick existed to compare wildly different machines</td>
+<td>Ran the identical problem on every machine he could get access to and published the results side by side</td>
+<td>A benchmark is only fair when every competitor runs the exact same workload under the same rules</td>
+</tr>
+<tr>
+<td>Competing, informally maintained performance lists caused confusion</td>
+<td>Merged efforts with Hans Meuer, Erich Strohmaier, and Horst Simon into one public ranking in 1993</td>
+<td>One agreed-upon benchmark settles arguments that a dozen incompatible ones never will</td>
+</tr>
+<tr>
+<td>Results could be quietly cherry-picked or exaggerated by a machine's own maker</td>
+<td>Made the list public and refreshed it twice a year, so any claimed ranking could be checked by outsiders</td>
+<td>Publish your methodology and raw numbers, not just your conclusion, so others can verify it</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call-to-action">Call to Action</h3>
+<p>This course spends real time teaching you the four ways a benchmark can lie, and why a benchmark's
+exclusions can quietly reverse its conclusion. That is not an abstract warning — it is exactly the
+industry-wide problem Dongarra spent his career solving. When you report your own FFT's cycle
+counts and throughput in the weeks ahead, hold yourself to his standard: run the same test the
+same way every time, and publish the number so someone else could check it.</p>
+<hr />
+<p><em>"The whole benchmarking thing came about almost as an accident."</em>
+—Jack Dongarra</p>
+<p><em>"The idea was to give users a handle on how much time it would take to solve their problem if they used our software."</em>
+—Jack Dongarra</p>
+<hr />
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Jack_Dongarra">Wikipedia: Jack Dongarra</a> - Biography covering his education, career at Argonne National Laboratory and the University of Tennessee, and the 2021 ACM Turing Award.</li>
+<li><a href="https://en.wikipedia.org/wiki/LINPACK_benchmarks">Wikipedia: LINPACK benchmarks</a> - History of the LINPACK benchmark, its origin as an appendix to the LINPACK software package's user guide, and its role in the TOP500 list.</li>
+<li><a href="https://en.wikipedia.org/wiki/TOP500">Wikipedia: TOP500</a> - History and methodology of the TOP500 list, founded in 1993 by Hans Meuer, Jack Dongarra, Erich Strohmaier, and Horst Simon.</li>
+<li><a href="https://amturing.acm.org/award_winners/dongarra_3406337.cfm">ACM: Dr. Jack Dongarra - A.M. Turing Award Laureate</a> - Official ACM citation and biography for Dongarra's 2021 Turing Award.</li>
+<li><a href="https://www.computerhistory.org/collections/catalog/102746788">Computer History Museum: Dongarra, Jack J. — oral history catalog record</a> - Museum archive record for an oral history interview covering Dongarra's career in mathematical software.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../patterson-hennessy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Patterson and Hennessy - The Case for Simplicity">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Patterson and Hennessy - The Case for Simplicity
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../sophie-wilson-steve-furber/" class="md-footer__link md-footer__link--next" aria-label="Next: Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sophie Wilson and Steve Furber - The Chip Built on Almost Nothing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "navigation.indexes", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -6,11 +6,14 @@
 # What gets uploaded:
 #   lib/*.py                     display driver etc.  -> :lib/
 #   config.py                    pin definitions      -> :config.py
+#   probes/*.py                  hardware probes      -> :probes/*.py
 #   docs/labs/NN-*/code/*.py     every lab's programs -> :NN-*.py
 #
 # config.py is uploaded before the labs so the other programs can import
 # it. Lab code lives under docs/labs/ so the markdown and the runnable file
-# are the same file — there is no second copy to drift out of sync.
+# are the same file — there is no second copy to drift out of sync. probes/
+# holds one-off hardware capability scripts (asm_thumb support, CPUID, etc.)
+# that predate the numbered labs and aren't part of that sequence.
 #
 # IMPORTANT: Quit (or "Stop/Disconnect" from) Thonny before running this.
 # Only one program can use the Pico's serial port at a time. If Thonny is
@@ -84,11 +87,12 @@ upload() {
 
 shopt -s nullglob
 lib_files=( lib/*.py )
+probe_files=( probes/*.py )
 lab_files=( "$LABS_DIR"/*/code/*.py )
 shopt -u nullglob
 
-if [[ ! -f config.py ]] && (( ${#lib_files[@]} == 0 && ${#lab_files[@]} == 0 )); then
-    echo "Nothing to upload: no config.py, no lib/*.py, no lab code." >&2
+if [[ ! -f config.py ]] && (( ${#lib_files[@]} == 0 && ${#probe_files[@]} == 0 && ${#lab_files[@]} == 0 )); then
+    echo "Nothing to upload: no config.py, no lib/*.py, no probes/*.py, no lab code." >&2
     exit 1
 fi
 
@@ -107,7 +111,16 @@ if [[ -f config.py ]]; then
     upload config.py config.py
 fi
 
-# 3. Every lab's code, in lab order.
+# 3. Hardware probes.
+if (( ${#probe_files[@]} > 0 )); then
+    echo "Uploading ${#probe_files[@]} probe script(s) to Pico :probes/ ..."
+    mpremote connect "$PORT" mkdir :probes >/dev/null 2>&1 || true
+    for f in "${probe_files[@]}"; do
+        upload "$f" "probes/$(basename "$f")"
+    done
+fi
+
+# 4. Every lab's code, in lab order.
 if (( ${#lab_files[@]} > 0 )); then
     echo "Uploading ${#lab_files[@]} lab program(s)..."
     for f in "${lab_files[@]}"; do
@@ -120,3 +133,4 @@ fi
 echo "Done. Files on Pico:"
 mpremote connect "$PORT" ls
 mpremote connect "$PORT" ls :lib 2>/dev/null || true
+mpremote connect "$PORT" ls :probes 2>/dev/null || true

@@ -10,6 +10,8 @@
 
 ## What You'll Build
 
+![](../../img/whistle-test.jpg)
+
 A live spectrum analyzer: real audio in, a 32-bar display out, with a peak-frequency readout
 that tracks your whistle.
 

@@ -25,6 +25,8 @@ undergraduates never get to touch this. You're about to.
 
 ## What you'll need
 
+![FFT Benchmarking Kit on the Pico 2](../img/fft-benchmarking-kit.jpg)
+
 | Item | Approx. cost | Used from |
 |---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Lab 1 |

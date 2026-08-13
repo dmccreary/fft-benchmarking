@@ -47,7 +47,7 @@ Instruction reference, matched to the exact core revision, saved in this repo at
 The original draft of this plan assumed a standalone Pico SDK C firmware project, because
 MicroPython's inline assembler was assumed to lack floating-point coverage. **That assumption
 was tested on the board and proved wrong.**
-[`src/kits/oled-2-buttons/04-asm-thumb-probe.py`](../../src/kits/oled-2-buttons/04-asm-thumb-probe.py)
+[`src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py`](../../src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py)
 probes the runtime directly and found **full VFP support** in `@micropython.asm_thumb`:
 
 ```
@@ -168,7 +168,7 @@ directories on the host where they can be inspected and version-controlled.
 ## 5. Precise Timing Methodology
 
 **Primary: the DWT cycle counter**, read from MicroPython via `machine.mem32` — the same
-technique already used in [`02-get-info.py`](../../src/kits/oled-2-buttons/02-get-info.py) to
+technique already used in [`02-get-info.py`](../../src/kits/fft-lab-kit/probes/02-get-info.py) to
 read `CPUID`/`MVFR0`. No C required.
 
 ```
@@ -232,7 +232,7 @@ src/fft-benchmark/
   outputs/                      # 10 spectra + 10 timing files + report
 ```
 
-Kept separate from `src/kits/oled-2-buttons/` (a different hardware kit), though it follows the
+Kept separate from `src/kits/fft-lab-kit/` (a different hardware kit), though it follows the
 same MicroPython conventions. This plan document stays out of `mkdocs.yml`'s `nav:` — it is a
 maintainer-facing artifact, not student-facing curriculum.
 
@@ -279,5 +279,5 @@ maintainer-facing artifact, not student-facing curriculum.
 - [ARM Cortex-M33 Devices Generic User Guide, r1p0](../../arm-programming-guide/arm-cortex-m33-r1p0-generic-user-guide.pdf) — matched to the confirmed CPU revision
 - [Cornell Labs: FFT/iFFT on the Pico 2](../cornell-labs/pico-example.md) — prior-art 512-sample real-time audio pipeline on the same chip
 - [`docs/chapters/12-building-the-fft/index.md`](../chapters/12-building-the-fft/index.md) — course concepts implemented here
-- [`src/kits/oled-2-buttons/02-get-info.py`](../../src/kits/oled-2-buttons/02-get-info.py) — established the `machine.mem32` register-read technique reused for DWT
-- [`src/kits/oled-2-buttons/04-asm-thumb-probe.py`](../../src/kits/oled-2-buttons/04-asm-thumb-probe.py) — the probe that settled the architecture
+- [`src/kits/fft-lab-kit/probes/02-get-info.py`](../../src/kits/fft-lab-kit/probes/02-get-info.py) — established the `machine.mem32` register-read technique reused for DWT
+- [`src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py`](../../src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py) — the probe that settled the architecture

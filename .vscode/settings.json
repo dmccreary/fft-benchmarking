@@ -20,6 +20,7 @@
         "numpy",
         "Nyquist",
         "OLED",
+        "Optum",
         "Parseval's",
         "Pico",
         "Precomputation",

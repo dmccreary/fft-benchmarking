@@ -90,7 +90,7 @@ concrete failure in the previous kit.
 | Peripheral | Interface | GPIO | Notes |
 |---|---|---|---|
 | Onboard LED | — | 25 | Lab 2 |
-| SSD1306 OLED, 128×64 | SPI0 | SCL 2, SDA 3, RES 4, DC 5, CS 6 | matches existing `src/kits/oled-2-buttons/config.py` |
+| SSD1306 OLED, 128×64 | SPI0 | SCL 2, SDA 3, RES 4, DC 5, CS 6 | matches existing `src/kits/fft-lab-kit/config.py` |
 | Button A / B | GPIO in | 14, 15 | `PULL_UP`, active low |
 | INMP441 microphone | I²S0 | SCK 10, WS 11, SD 12 | 24-bit samples in 32-bit words |
 
@@ -116,7 +116,7 @@ Column key: **New** = approximate count of new learning-graph concepts introduce
 | 2 | Blink: Your First Hardware Program | GPIO, `Pin`, output mode, loops, `sleep`, the infinite-loop pattern | 10 |
 | 3 | Know Your Board | `sys.implementation`, clock speed, RAM vs flash, `CPUID`, what "Cortex-M33" means | 12 |
 
-*Reuses [`02-get-info.py`](../../src/kits/oled-2-buttons/02-get-info.py) from this session.*
+*Reuses [`02-get-info.py`](../../src/kits/fft-lab-kit/probes/02-get-info.py) from this session.*
 
 ### Module 1 — Peripherals (Week 2)
 
@@ -196,8 +196,8 @@ honest figure was 1.26×.*
 | 30 | Talking to the FPU | `s0`–`s31`, `vldr`/`vstr`/`vadd`/`vsub`/`vmul`, `array('f')`, `uctypes.addressof`, pointers, why nothing is allocated in the timed region | 15 |
 | 31 | The Butterfly in Assembly, and a Complete FFT | One stage in assembly, then the full transform; validate bit-for-bit against the Lab 20 Python FFT | 14 |
 
-*Reuses [`04-asm-thumb-probe.py`](../../src/kits/oled-2-buttons/04-asm-thumb-probe.py),
-[`05-asm-instruction-probe.py`](../../src/kits/oled-2-buttons/05-asm-instruction-probe.py) and
+*Reuses [`04-asm-thumb-probe.py`](../../src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py),
+[`05-asm-instruction-probe.py`](../../src/kits/fft-lab-kit/probes/05-asm-instruction-probe.py) and
 [`fft_asm.py`](../../src/fft-benchmark/device/fft_asm.py).*
 
 ### Module 8 — Optimization and Capstone (Week 10)

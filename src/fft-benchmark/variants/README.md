@@ -87,7 +87,7 @@ improve.
 ## A note on file naming
 
 These filenames use underscores while the kit labs
-([`../../kits/oled-2-buttons/`](../../kits/oled-2-buttons/)) use dashes. That split is
+([`../../kits/fft-lab-kit/probes/`](../../kits/fft-lab-kit/probes/)) use dashes. That split is
 deliberate, and the rule is simple:
 
 **Dashes for scripts that are run. Underscores for modules that are imported.**
@@ -192,5 +192,5 @@ V2 + V4 + V1 + V7, deliberately excluding V6. See lesson 5.
   the work. Expected to underperform; instructive precisely for that reason.
 - **Fixed-point Q15** (Plan 02 §V9) remains **blocked**: none of the DSP instructions it needs
   (`smulbb`, `smlad`, `qadd16`, `ssat`) are exposed by MicroPython's assembler. See
-  [`../../kits/oled-2-buttons/05-asm-instruction-probe.py`](../../kits/oled-2-buttons/05-asm-instruction-probe.py).
+  [`../../kits/fft-lab-kit/probes/05-asm-instruction-probe.py`](../../kits/fft-lab-kit/probes/05-asm-instruction-probe.py).
   This is the one case that justifies returning to a C/Pico-SDK firmware build.

@@ -45,7 +45,7 @@ ability to explain *why* each row lands where it does.
 
 ## 2. Instruction Availability (Probe Result)
 
-[`src/kits/oled-2-buttons/05-asm-instruction-probe.py`](../../src/kits/oled-2-buttons/05-asm-instruction-probe.py)
+[`src/kits/fft-lab-kit/probes/05-asm-instruction-probe.py`](../../src/kits/fft-lab-kit/probes/05-asm-instruction-probe.py)
 asks the runtime directly which optimization instructions assemble:
 
 | Instruction group | Result | Consequence |
@@ -278,5 +278,5 @@ for V5 (radix-4 may lose to register pressure) and V8 (more cores may be slower)
 
 - [Plan 01: assembly FFT](01-fft-test-plan.md) — baseline, harness, and verification pipeline
 - [ARM Cortex-M33 Devices Generic User Guide r1p0](../../arm-programming-guide/arm-cortex-m33-r1p0-generic-user-guide.pdf) — §3.12 floating-point encodings (V7), §3.8–3.9 DSP/saturating (V9)
-- [`05-asm-instruction-probe.py`](../../src/kits/oled-2-buttons/05-asm-instruction-probe.py) — the availability data in §2
+- [`05-asm-instruction-probe.py`](../../src/kits/fft-lab-kit/probes/05-asm-instruction-probe.py) — the availability data in §2
 - [`outputs/verification-report.md`](../../src/fft-benchmark/outputs/verification-report.md) — V0 correctness and timing baseline

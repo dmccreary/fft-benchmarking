@@ -66,7 +66,7 @@ is copied per call and nothing is allocated inside the timed region.
 
 `dwt_timer.py` reads the Cortex-M33 **DWT cycle counter** through `machine.mem32`
 — the same memory-mapped register technique used in
-`src/kits/oled-2-buttons/02-get-info.py`. At 150 MHz one cycle is 6.667 ns, far
+`src/kits/fft-lab-kit/probes/02-get-info.py`. At 150 MHz one cycle is 6.667 ns, far
 finer than `time.ticks_us()`.
 
 The counter was verified to free-run on this silicon (it does *not* require an

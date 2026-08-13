@@ -1,6 +1,8 @@
 ---
 title: Stories
 description: Graphic-novel stories about the people behind the FFT, ARM computing, and honest benchmarking.
+hide:
+    toc
 ---
 
 # Stories

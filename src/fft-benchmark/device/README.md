@@ -65,7 +65,7 @@ DWT_CYCCNT 0xE0001004                       the counter itself
 ```
 
 Reached from MicroPython with `machine.mem32`, the same technique
-[`02-get-info.py`](../../kits/oled-2-buttons/02-get-info.py) uses to read `CPUID`.
+[`02-get-info.py`](../../kits/fft-lab-kit/probes/02-get-info.py) uses to read `CPUID`.
 
 **Verify before trusting.** On some implementations the counter only runs while a debugger is
 attached. `dwt_timer.verify()` measures the tick rate against a known delay and returns MHz;

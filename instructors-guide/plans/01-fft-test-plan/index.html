@@ -1721,7 +1721,7 @@ immediately before and after the FFT call.</p>
 <p>The original draft of this plan assumed a standalone Pico SDK C firmware project, because
 MicroPython's inline assembler was assumed to lack floating-point coverage. <strong>That assumption
 was tested on the board and proved wrong.</strong>
-<a href="../../src/kits/oled-2-buttons/04-asm-thumb-probe.py"><code>src/kits/oled-2-buttons/04-asm-thumb-probe.py</code></a>
+<a href="../../src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py"><code>src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py</code></a>
 probes the runtime directly and found <strong>full VFP support</strong> in <code>@micropython.asm_thumb</code>:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1924,7 +1924,7 @@ processed on-device, and results copied back. This keeps <code>inputs/</code> an
 directories on the host where they can be inspected and version-controlled.</p>
 <h2 id="5-precise-timing-methodology">5. Precise Timing Methodology</h2>
 <p><strong>Primary: the DWT cycle counter</strong>, read from MicroPython via <code>machine.mem32</code> — the same
-technique already used in <a href="../../src/kits/oled-2-buttons/02-get-info.py"><code>02-get-info.py</code></a> to
+technique already used in <a href="../../src/kits/fft-lab-kit/probes/02-get-info.py"><code>02-get-info.py</code></a> to
 read <code>CPUID</code>/<code>MVFR0</code>. No C required.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1991,7 +1991,7 @@ runs first and is checked against numpy, so if the assembly later disagrees we c
   reference/                    # 10 numpy ground-truth spectra
   outputs/                      # 10 spectra + 10 timing files + report
 </code></pre></div></td></tr></table></div>
-<p>Kept separate from <code>src/kits/oled-2-buttons/</code> (a different hardware kit), though it follows the
+<p>Kept separate from <code>src/kits/fft-lab-kit/</code> (a different hardware kit), though it follows the
 same MicroPython conventions. This plan document stays out of <code>mkdocs.yml</code>'s <code>nav:</code> — it is a
 maintainer-facing artifact, not student-facing curriculum.</p>
 <h2 id="8-implementation-milestones">8. Implementation Milestones</h2>
@@ -2037,8 +2037,8 @@ maintainer-facing artifact, not student-facing curriculum.</p>
 <li><a href="../../arm-programming-guide/arm-cortex-m33-r1p0-generic-user-guide.pdf">ARM Cortex-M33 Devices Generic User Guide, r1p0</a> — matched to the confirmed CPU revision</li>
 <li><a href="../cornell-labs/pico-example.md">Cornell Labs: FFT/iFFT on the Pico 2</a> — prior-art 512-sample real-time audio pipeline on the same chip</li>
 <li><a href="../chapters/12-building-the-fft/index.md"><code>docs/chapters/12-building-the-fft/index.md</code></a> — course concepts implemented here</li>
-<li><a href="../../src/kits/oled-2-buttons/02-get-info.py"><code>src/kits/oled-2-buttons/02-get-info.py</code></a> — established the <code>machine.mem32</code> register-read technique reused for DWT</li>
-<li><a href="../../src/kits/oled-2-buttons/04-asm-thumb-probe.py"><code>src/kits/oled-2-buttons/04-asm-thumb-probe.py</code></a> — the probe that settled the architecture</li>
+<li><a href="../../src/kits/fft-lab-kit/probes/02-get-info.py"><code>src/kits/fft-lab-kit/probes/02-get-info.py</code></a> — established the <code>machine.mem32</code> register-read technique reused for DWT</li>
+<li><a href="../../src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py"><code>src/kits/fft-lab-kit/probes/04-asm-thumb-probe.py</code></a> — the probe that settled the architecture</li>
 </ul>
 
 

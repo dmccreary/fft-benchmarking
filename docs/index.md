@@ -1,6 +1,6 @@
 ---
 title: Real-Time DSP on a $5 Microcontroller
-description: Build a Fast Fourier Transform from scratch on a $19 kit, then hand-write ARM assembly to make it 165x faster — real-time DSP in 35 hands-on labs.
+description: Build a Fast Fourier Transform from scratch on a $19 kit, then hand-write ARM assembly to make it 165x faster — real-time Digital Signal Processing in 35 hands-on labs.
 image: img/cover.png
 og:image: img/cover.png
 twitter:image: img/cover.png
@@ -8,8 +8,8 @@ hide:
   - toc
 ---
 
-# Real-Time DSP on a $5 Microcontroller
-*Building and Benchmarking the FFT from Scratch*
+# Real-Time Digital Signal Processing on a $5 Microcontroller
+*Building and Benchmarking the Fast Fourier Transform (FFT) from Scratch*
 
 ![](./img/cover.png)
 
@@ -18,7 +18,7 @@ hide:
     Echolocation is real-time signal processing with flippers, so trust me on this one:
     what you're about to build is a genuine superpower. **Time to transform!**
 
-Our goal is to squeeze the maximum performance out of the FFT on low-cost microcontrollers
+Our goal is to squeeze the maximum performance out of the Fast Fourier Transform FFT on low-cost microcontrollers
 — chips like the Raspberry Pi Pico 2, with its updated hardware floating point and DSP
 instructions. Most FFT libraries still don't use that power. By the end of this book, yours
 will.

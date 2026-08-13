@@ -1,5 +1,7 @@
 # FFT Benchmarking Learning Graph
 
+[View the Learning Graph Fullscreen (recommended)](../sims/graph-viewer/index.md)
+<iframe src="../sims/graph-viewer/main.html" width="100%" height="600px" scrolling="no"></iframe>
 ## Overview
 
 This directory contains a complete **learning graph** for the FFT Benchmarking course, generated using the Learning Graph Generator v0.03. The graph represents 200 interconnected concepts organized into a pedagogically sound structure.

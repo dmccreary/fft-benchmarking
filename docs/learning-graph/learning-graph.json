@@ -11,119 +11,119 @@
   },
   "groups": {
     "MATH": {
-      "classifierName": "MATH",
+      "classifierName": "Mathematical Foundations",
       "color": "MistyRose",
       "font": {
         "color": "black"
       }
     },
     "SIGP": {
-      "classifierName": "SIGP",
+      "classifierName": "Signal Processing",
       "color": "PeachPuff",
       "font": {
         "color": "black"
       }
     },
     "FOUR": {
-      "classifierName": "FOUR",
+      "classifierName": "Fourier Theory",
       "color": "LightYellow",
       "font": {
         "color": "black"
       }
     },
     "FFTA": {
-      "classifierName": "FFTA",
+      "classifierName": "FFT Algorithm",
       "color": "Honeydew",
       "font": {
         "color": "black"
       }
     },
     "HARD": {
-      "classifierName": "HARD",
+      "classifierName": "Hardware Platforms",
       "color": "PaleTurquoise",
       "font": {
         "color": "black"
       }
     },
     "DSPI": {
-      "classifierName": "DSPI",
+      "classifierName": "DSP Instructions",
       "color": "LightSteelBlue",
       "font": {
         "color": "black"
       }
     },
     "PROG": {
-      "classifierName": "PROG",
+      "classifierName": "Programming",
       "color": "Lavender",
       "font": {
         "color": "black"
       }
     },
     "LIBS": {
-      "classifierName": "LIBS",
+      "classifierName": "FFT Libraries",
       "color": "LavenderBlush",
       "font": {
         "color": "black"
       }
     },
     "BNCH": {
-      "classifierName": "BNCH",
+      "classifierName": "Benchmarking",
       "color": "Thistle",
       "font": {
         "color": "black"
       }
     },
     "PERF": {
-      "classifierName": "PERF",
+      "classifierName": "Performance Optimization",
       "color": "PaleGreen",
       "font": {
         "color": "black"
       }
     },
     "PIPE": {
-      "classifierName": "PIPE",
+      "classifierName": "Signal Pipeline",
       "color": "Aquamarine",
       "font": {
         "color": "black"
       }
     },
     "VAPP": {
-      "classifierName": "VAPP",
+      "classifierName": "Visualization and Applications",
       "color": "Plum",
       "font": {
         "color": "white"
       }
     },
     "TOOL": {
-      "classifierName": "TOOL",
+      "classifierName": "Development Environment",
       "color": "Gainsboro",
       "font": {
         "color": "black"
       }
     },
     "MCIO": {
-      "classifierName": "MCIO",
+      "classifierName": "Microcontroller I/O",
       "color": "LightCyan",
       "font": {
         "color": "black"
       }
     },
     "AUDI": {
-      "classifierName": "AUDI",
+      "classifierName": "Audio and Acoustics",
       "color": "Moccasin",
       "font": {
         "color": "black"
       }
     },
     "ASMP": {
-      "classifierName": "ASMP",
+      "classifierName": "Assembly Programming",
       "color": "LightPink",
       "font": {
         "color": "black"
       }
     },
     "LABM": {
-      "classifierName": "LABM",
+      "classifierName": "Laboratory Method",
       "color": "Khaki",
       "font": {
         "color": "black"

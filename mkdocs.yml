@@ -334,12 +334,11 @@ extra_css:
 extra_javascript:
    - javascripts/mathjax.js
    - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-#extra:
-#  analytics:
-#    provider: google
-    # https://analytics.google.com/analytics/web/#/a1420179p349994530/admin/streams/table/4433129821
-#    property: G-XXXX
 extra:
+  analytics:
+    provider: google
+    # Google Analytics ID: G-T9N52ZWFWH
+    property: G-T9N52ZWFWH
   schema: https://dmccreary.github.io/intelligent-textbooks/ns/textbook/v1
-  textbook_name: FFT Benchmarking
+  textbook_name: Real-Time DSP on a $5 Microcontroller
   textbook_version: "1.0"

@@ -1,0 +1,2533 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="An optional extension chapter applying this course's FFT and correlation skills to always-on wake word detection — the false-accept/false-reject tradeoff in noisy environments, splitting capture and inference across the RP2350's two cores, enrolling a custom trigger phrase, and using a Pico 2 W to hand detected audio off to cloud speech-to-text">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/chapters/28-wake-word-detection/">
+      
+      
+        <link rel="prev" href="../27-capstone/references/">
+      
+      
+        <link rel="next" href="quiz/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wake-word-detection-listening-for-a-trigger-phrase-on-a-dual-core-pico-2-w" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Chapters
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    List of Chapters
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../01-hello-world/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    1. Hello World: Thonny, MicroPython, and Your First GPIO Program
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../02-know-your-board/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    2. Know Your Board: ARM Cortex-M Architecture and the Pico 2
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../03-peripherals/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    3. Peripherals: The OLED Display, Buttons, and Deploying Standalone Code
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../04-waves/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    4. Waves: Amplitude, Frequency, Phase, and Harmonics
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../05-capturing-real-audio/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    5. Capturing Real Audio: The I2S Microphone
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../06-sampling-quantization-and-aliasing/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    6. Sampling, Quantization, and Aliasing
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../07-complex-numbers-and-wave-superposition/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    7. Complex Numbers and Wave Superposition
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../08-correlation/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    8. Correlation: Does My Signal Contain This Note?
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../09-computing-and-validating-the-dft/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    9. Computing and Validating the DFT
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../10-why-the-dft-is-too-slow/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    10. Why the DFT Is Too Slow
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../11-from-dft-to-fft/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    11. From DFT to FFT: Divide and Conquer, Twiddle Factors, and the Butterfly
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../12-building-the-fft/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    12. Building the FFT: A Complete Recursive Implementation
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../13-fft-variants-complexity-and-correctness/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    13. FFT Variants, Complexity, and Correctness
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../14-computing-and-displaying-a-real-spectrum/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    14. Computing and Displaying a Real Spectrum
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../15-windowing-spectral-leakage-and-peak-detection/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    15. Windowing, Spectral Leakage, and Peak Detection
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../16-building-a-real-time-spectrum-analyzer/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    16. Building a Real-Time Spectrum Analyzer
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../17-measuring-time/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    17. Measuring Time: The DWT Cycle Counter
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../18-benchmarking-methodology/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../19-the-abstraction-ladder/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    19. The Abstraction Ladder: Python, C, and Assembly Compared
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../20-does-your-cpu-have-an-fpu/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    20. Does Your CPU Have an FPU?
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../21-your-first-assembly-function/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    21. Your First Assembly Function: Registers and Loops
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../22-talking-to-the-fpu/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    22. Talking to the FPU: Floating-Point Assembly
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../23-the-butterfly-in-assembly/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    23. The Butterfly in Assembly: A Complete FFT and Production Libraries
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../24-specialization-and-branchless-code/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    24. Specialization and Branchless Code
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../25-beyond-the-assembler/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    25. Beyond the Assembler: Hand-Encoding and Instruction Formats
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../26-competing-variants/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    26. Competing Variants: Predict, Measure, Explain
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../27-capstone/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    27. Capstone: Applications, Design, and Reporting
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_29" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_29" id="__nav_4_29_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    28. (Extension) Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_29_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_29">
+            <span class="md-nav__icon md-icon"></span>
+            28. (Extension) Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Content
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Content
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-always-listening-is-a-harder-problem-than-it-sounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why "Always Listening" Is a Harder Problem Than It Sounds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#splitting-the-work-across-the-rp2350s-two-cores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splitting the Work Across the RP2350's Two Cores
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-a-custom-wake-word" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up a Custom Wake Word
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-the-wake-word-fires-handing-off-to-the-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      After the Wake Word Fires: Handing Off to the Cloud
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-pico-2-w-not-a-plain-pico-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why a Pico 2 W, Not a Plain Pico 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-this-kit-stops-and-where-the-full-smart-speaker-begins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where This Kit Stops — and Where the Full Smart Speaker Begins
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Learned
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quiz/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quiz
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annotated References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../stories/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../learning-graph/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-covered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts Covered
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-always-listening-is-a-harder-problem-than-it-sounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why "Always Listening" Is a Harder Problem Than It Sounds
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#splitting-the-work-across-the-rp2350s-two-cores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splitting the Work Across the RP2350's Two Cores
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-a-custom-wake-word" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up a Custom Wake Word
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-the-wake-word-fires-handing-off-to-the-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      After the Wake Word Fires: Handing Off to the Cloud
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-a-pico-2-w-not-a-plain-pico-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why a Pico 2 W, Not a Plain Pico 2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-this-kit-stops-and-where-the-full-smart-speaker-begins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where This Kit Stops — and Where the Full Smart Speaker Begins
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youve-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      What You've Learned
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/main/docs/chapters/28-wake-word-detection/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="wake-word-detection-listening-for-a-trigger-phrase-on-a-dual-core-pico-2-w">Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W</h1>
+<h2 id="summary">Summary</h2>
+<p>This is an <strong>optional extension chapter</strong>, sitting outside the core 35-lab sequence. It asks
+one question: can the FFT and correlation skills you already built be pointed at a genuinely
+different problem — a device that listens <em>continuously</em> for one specific phrase, the way
+"Alexa" or "Hey Google" wakes a smart speaker? The answer is yes, and the RP2350's two Cortex-M33
+cores turn out to be exactly the right shape for it. This chapter covers why "always listening"
+is a harder problem than a one-shot spectrum analysis, how to split signal capture and inference
+across the two cores, how to enroll a custom trigger phrase using nothing but correlation you
+already know, and why this is the one point in the entire course where the Pico 2 <strong>W</strong> stops
+being merely compatible and becomes actually necessary. It closes by drawing a hard line around
+scope: this chapter builds a wake-word <em>detector</em>, not a smart speaker.</p>
+<h2 id="concepts-covered">Concepts Covered</h2>
+<p>This chapter introduces the following 14 new concepts from the learning graph:</p>
+<ol>
+<li>Wake Word Detection</li>
+<li>False Accept Rate</li>
+<li>False Reject Rate</li>
+<li>Keyword Spotting Model</li>
+<li>Wake Word Enrollment</li>
+<li>Custom Trigger Phrase</li>
+<li>Dual Core Partitioning</li>
+<li>Inter Core Communication</li>
+<li>On Device Inference</li>
+<li>Always On Listening</li>
+<li>Post Wake Audio Capture</li>
+<li>Pico 2 W Wireless</li>
+<li>Cloud Speech To Text</li>
+<li>Edge Cloud Split</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>This chapter builds on concepts from:</p>
+<ul>
+<li><a href="../05-capturing-real-audio/">5. Capturing Real Audio: The I2S Microphone</a></li>
+<li><a href="../08-correlation/">8. Correlation: Does My Signal Contain This Note?</a></li>
+<li><a href="../14-computing-and-displaying-a-real-spectrum/">14. Computing and Displaying a Real Spectrum</a></li>
+<li><a href="../15-windowing-spectral-leakage-and-peak-detection/">15. Windowing, Spectral Leakage, and Peak Detection</a></li>
+<li><a href="../18-benchmarking-methodology/">18. Benchmarking Methodology: Warm-Up, Statistics, and Fair Comparison</a></li>
+<li><a href="../19-the-abstraction-ladder/">19. The Abstraction Ladder: Python, C, and Assembly Compared</a></li>
+<li><a href="../27-capstone/">27. Capstone: Applications, Design, and Reporting</a></li>
+</ul>
+<hr />
+<div class="admonition mascot-welcome">
+<p class="admonition-title">Time to transform — a whistle test into a whole conversation</p>
+<p><img alt="Echo waving welcome" class="mascot-admonition-img" src="../../img/mascot/welcome.png" />
+Every chapter so far analyzed a signal when <em>you</em> decided to look at it. A wake word
+detector has to look all the time, forever, on battery power, and be right almost every
+time it decides to interrupt you. That's a genuinely different kind of hard — let's dig in.</p>
+</div>
+<h2 id="why-always-listening-is-a-harder-problem-than-it-sounds">Why "Always Listening" Is a Harder Problem Than It Sounds</h2>
+<p>Every lab in this course so far ran the FFT on demand: press a button, capture a frame, look at
+the spectrum. A wake word system can't work that way. It has to run the same capture-and-analyze
+pipeline <strong>continuously</strong>, forever, in a room that is never actually quiet — a TV playing in the
+next room, a dishwasher running, someone else's conversation, your own voice saying a sentence
+that just happens to <em>contain</em> the trigger word inside it. Real acoustic environments are full of
+sounds that sound almost, but not quite, like the phrase you're listening for.</p>
+<p>That "almost" is the whole problem. Every wake word system has to pick an operating point on a
+tradeoff between two failure modes:</p>
+<ul>
+<li><strong>False Accept Rate</strong> — how often the system triggers on audio that was <em>not</em> the wake word.
+  Too high, and the device interrupts you constantly, streams audio it shouldn't, and burns
+  battery and bandwidth on false alarms.</li>
+<li><strong>False Reject Rate</strong> — how often the system <em>misses</em> the real wake word. Too high, and you
+  find yourself repeating "Alexa... Alexa... ALEXA" at an unresponsive speaker.</li>
+</ul>
+<p>You cannot drive both to zero at once. Make the detector stricter and false accepts drop while
+false rejects climb; loosen it and the reverse happens. Commercial engines publish numbers for
+exactly this reason — Espressif's WakeNet engine on the ESP32-S3, for example, is tuned to keep
+false accepts under roughly 2% measured in ordinary home background noise. That number is not a
+curiosity; it <em>is</em> the product, in the same sense that this course has insisted a benchmark
+number without its methodology is meaningless.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">The false-accept/false-reject tradeoff is the whole design problem</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+Nearly every decision in this chapter — how long the trigger phrase is, how many enrollment
+samples you record, how you split work across the two cores — ultimately exists to push this
+one tradeoff curve in a better direction. Keep it in the back of your mind through the rest of
+the chapter.</p>
+</div>
+<h2 id="splitting-the-work-across-the-rp2350s-two-cores">Splitting the Work Across the RP2350's Two Cores</h2>
+<p>Here is the timing problem underneath "always listening": the moment you add a keyword-spotting
+decision on top of FFT-based feature extraction, you have two jobs competing for the same chip —
+and one of them, sampling the microphone over I2S, cannot ever be late. Miss a sample deadline
+and you lose audio, exactly as <a href="../05-capturing-real-audio/">Chapter 5</a> warned. But
+keyword-spotting inference, whether it's a small neural network or a correlation match, can take
+a variable amount of time from one window to the next.</p>
+<p>The RP2350 answers this with a hardware feature this course has not yet needed: it is a genuine
+<strong>dual-core</strong> chip, with two independent Cortex-M33 cores that can each run their own code at the
+same time. That maps almost too neatly onto this problem:</p>
+<ul>
+<li><strong>Core 0 — the signal-processing core.</strong> Runs the exact pipeline you already built: I2S
+  capture, windowing, FFT, magnitude spectrum. It never touches the keyword-spotting model. Its
+  only job, every single frame, is to finish that pipeline on schedule and hand off the result.</li>
+<li><strong>Core 1 — the inference core.</strong> Continuously pulls the most recently finished feature frame
+  and runs the keyword-spotting decision against it — nothing else. If inference for one frame
+  runs a little long, Core 0 never notices; it was never waiting.</li>
+</ul>
+<p>This division of labor is called <strong>Dual Core Partitioning</strong>, and the mechanism that hands a
+finished frame from Core 0 to Core 1 without either core blocking on the other is <strong>Inter Core
+Communication</strong> — typically a small ring buffer or the RP2350's built-in inter-core FIFO,
+extending the same <a href="../05-capturing-real-audio/">Audio Buffer</a> idea from Chapter 5 across
+a core boundary instead of just across an interrupt boundary.</p>
+<div class="admonition mascot-tip">
+<p class="admonition-title">A slow inference must never stall the microphone</p>
+<p><img alt="Echo giving a tip" class="mascot-admonition-img" src="../../img/mascot/tip.png" />
+The entire reason to burn a second core on this is that a keyword-spotting model's runtime
+can vary from frame to frame in a way raw FFT computation mostly doesn't. Decoupling the two
+means a slightly slow inference costs you a slightly stale wake-word decision — never a
+dropped audio sample, which you can't get back.</p>
+</div>
+<p>MicroPython exposes the RP2350's second core through its <code>_thread</code> module; production-grade
+wake-word engines more often reach for the C SDK to get tighter timing guarantees on the
+inter-core handoff. That's the same abstraction-ladder tradeoff <a href="../19-the-abstraction-ladder/">Chapter
+19</a> already taught you to reason about, now applied one
+level higher than a single function.</p>
+<h2 id="setting-up-a-custom-wake-word">Setting Up a Custom Wake Word</h2>
+<p>A production engine like Porcupine or WakeNet ships with a trigger phrase already trained into
+its model. Building your <em>own</em> trigger phrase — "Signal Hunter," say, instead of "Alexa" — starts
+with a design decision and ends with a data-collection step:</p>
+<p><strong>Choosing a Custom Trigger Phrase.</strong> A good trigger phrase is a design choice, not an
+afterthought. Longer, multi-syllable phrases with unusual sound combinations are dramatically
+easier to detect reliably than a single short syllable, because there's simply more distinctive
+acoustic pattern for the detector to lock onto — and less chance an unrelated word accidentally
+contains it. This is a direct, practical consequence of the false-accept-rate discussion above:
+the phrase itself is your first and cheapest lever on that tradeoff, before you've written a line
+of detection code.</p>
+<p><strong>Wake Word Enrollment.</strong> Once you've picked a phrase, you record it — the same I2S capture from
+Chapter 5, repeated 20 to 50 times, ideally by more than one speaker and with some background
+noise mixed in. Each recording runs through the identical windowing-and-FFT pipeline this course
+already built, producing a short sequence of spectral frames — a time-frequency <em>fingerprint</em> of
+your phrase, exactly analogous to the single-tone correlation from <a href="../08-correlation/">Chapter
+8</a>, just stretched across many frames instead of one.</p>
+<div class="admonition mascot-thinking">
+<p class="admonition-title">Two ways to turn a fingerprint into a decision</p>
+<p><img alt="Echo thinking" class="mascot-admonition-img" src="../../img/mascot/thinking.png" />
+There are two honest ways to build the <strong>Keyword Spotting Model</strong> that judges each incoming
+frame sequence against your enrolled fingerprint:</p>
+<ul>
+<li><strong>Template correlation</strong> — average your enrollment recordings into one reference pattern,
+  then correlate every incoming window against it, the same multiply-and-sum idea from
+  Chapter 8, just applied over a sliding sequence of frames instead of one. No external
+  toolchain, no training pipeline — it runs entirely inside this course's zero-toolchain
+  philosophy.</li>
+<li><strong>A small trained neural network</strong> — the approach production engines actually use (see the
+  <a href="references/">references</a> for real published numbers from the RP2350 itself). It
+  needs an offline training step in Python and a quantized model deployed back to the board,
+  but it reliably pushes the false-accept rate much lower for the same false-reject rate.</li>
+</ul>
+<p>Comparing these two approaches honestly — same enrolled phrase, same test recordings, same
+false-accept/false-reject measurement — is exactly the kind of scoped, predict-then-measure
+project <a href="../26-competing-variants/">Chapter 26</a> and <a href="../27-capstone/">Chapter
+27</a> already trained you to run.</p>
+</div>
+<p>Running keyword-spotting inference directly on the board, whichever method you choose, is called
+<strong>On Device Inference</strong>, and running it forever, in the background, without ever pausing for a
+human to press a button, is <strong>Always On Listening</strong> — the operating mode this whole chapter has
+been building toward.</p>
+<h2 id="after-the-wake-word-fires-handing-off-to-the-cloud">After the Wake Word Fires: Handing Off to the Cloud</h2>
+<p>A wake word detector only has to answer one yes/no question: <em>was that the trigger phrase?</em> Full
+speech-to-text is a completely different scale of problem — an open vocabulary, any sentence, any
+speaker — and it needs a language model that is hundreds of megabytes, not the few kilobytes a
+keyword-spotting model needs. That model has no honest path onto a $5 microcontroller, and it
+doesn't need one. The wake word's whole job is to be the cheap, always-on filter that decides
+<em>when</em> the expensive part is even worth paying for.</p>
+<p>Once Core 1 decides the trigger phrase was heard, the board switches modes: instead of throwing
+each frame away after the keyword-spotting decision, it starts <strong>Post Wake Audio Capture</strong> —
+buffering the next several seconds of raw audio, the same <a href="../05-capturing-real-audio/">Audio
+Buffer</a> mechanism from Chapter 5, just running for longer
+and for a different purpose. That buffered clip then gets sent, over the network, to a server
+that performs <strong>Cloud Speech To Text</strong> and returns an actual transcription.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Where it runs</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I2S capture, windowing, FFT</td>
+<td>Core 0, continuously</td>
+<td>Same pipeline as Chapters 5–15</td>
+</tr>
+<tr>
+<td>Keyword-spotting decision</td>
+<td>Core 1, continuously</td>
+<td>Correlation match or on-device inference</td>
+</tr>
+<tr>
+<td>Post-wake audio buffering</td>
+<td>Core 0, only after a trigger</td>
+<td>Captures the sentence that follows the wake word</td>
+</tr>
+<tr>
+<td>Speech-to-text</td>
+<td>Remote server, only after a trigger</td>
+<td>Turns buffered audio into text</td>
+</tr>
+</tbody>
+</table>
+<p>This pattern — cheap, continuous inference on the edge device, with the expensive, general-purpose
+inference reserved for the cloud and invoked only when the edge device says so — is worth naming
+on its own: an <strong>Edge Cloud Split</strong>. It's the same "spend your budget where it counts" instinct
+this course has applied to CPU cycles all along, now applied to a network call instead of a
+clock cycle.</p>
+<h2 id="why-a-pico-2-w-not-a-plain-pico-2">Why a Pico 2 W, Not a Plain Pico 2</h2>
+<p>The <a href="../../course-description/">course description</a> has said all along that "a Pico 2 <strong>W</strong>
+works identically for every lab" — because until now, nothing in this course ever left the board.
+Every FFT, every benchmark, every assembly routine ran entirely on-chip. This chapter is the first
+place that stops being true: the moment a wake word fires, the board needs to send audio
+somewhere else.</p>
+<p>That's what <strong>Pico 2 W Wireless</strong> buys you — the W variant adds an onboard Wi-Fi/Bluetooth radio
+(an Infineon CYW43439) that the plain Pico 2 simply does not have. For every earlier chapter, the
+W was a nice-to-have that cost about two extra dollars and changed nothing. Here, it's the one
+piece of hardware this chapter cannot work without.</p>
+<div class="admonition mascot-warning">
+<p class="admonition-title">Radio time isn't free time</p>
+<p><img alt="Echo warning about a common mistake" class="mascot-admonition-img" src="../../img/mascot/warning.png" />
+It's tempting to treat the Wi-Fi radio as a background detail that doesn't compete with your
+real-time audio budget. It does — joining a network, managing a TLS connection, and uploading
+a multi-second audio clip all cost real CPU time and RAM, on a chip that is simultaneously
+trying to keep Core 0's sample deadline. Measure it, the way <a href="../18-benchmarking-methodology/">Chapter
+18</a> insisted you measure everything else. Don't
+assume it's free just because it happens after the interesting part is done.</p>
+</div>
+<h2 id="where-this-kit-stops-and-where-the-full-smart-speaker-begins">Where This Kit Stops — and Where the Full Smart Speaker Begins</h2>
+<p>It's worth being precise about scope, in the same spirit as <a href="../27-capstone/">Chapter 27's Project
+Scoping</a> discussion. What this chapter describes — a microphone, a
+Pico 2 W, on-device wake word detection, and a single audio upload after a trigger — is a <strong>wake
+word kit</strong>. It is genuinely just about the microphone.</p>
+<p>A real smart speaker product needs a great deal more, none of which this chapter attempts:</p>
+<ul>
+<li>A full speech-to-text and natural-language-understanding pipeline, not just one upload</li>
+<li>Intent parsing and skill routing — turning "set a timer for five minutes" into an actual timer</li>
+<li>A response, which means text-to-speech synthesis and a speaker, not just a microphone</li>
+<li><strong>Acoustic echo cancellation</strong>, so the device doesn't hear <em>itself</em> talking and re-trigger</li>
+<li>Multi-turn conversation state — remembering what "it" referred to a moment ago</li>
+<li>A real backend server, with accounts, security, and far more than a single STT endpoint</li>
+<li>Often, a microphone <em>array</em> with beamforming for far-field pickup, rather than one mic</li>
+</ul>
+<p>That's an entire second project, with its own hardware, its own backend, and its own course-scale
+body of knowledge — not a bigger version of this chapter. This chapter's job was narrower and more
+achievable: prove that a $5 (or $7, with the W) chip really can listen for one specific phrase,
+continuously, honestly measured, and hand off cleanly to something bigger when it hears it.</p>
+<div class="admonition mascot-encourage">
+<p class="admonition-title">Scoping down here is the same skill you already learned</p>
+<p><img alt="Echo encouraging" class="mascot-admonition-img" src="../../img/mascot/encouraging.png" />
+Chapter 27 told you a tightly scoped capstone beats a sprawling one. The exact same
+discipline applies to this chapter's kit: it does one job — wake word detection — and does it
+honestly measured, rather than gesturing vaguely at "building Alexa." That's not a
+consolation prize. It's the right size of problem to actually finish.</p>
+</div>
+<details class="question">
+<summary>You've built a template-correlation wake word detector and measured its false accept and false reject rates on a test set of recordings. A classmate suggests the natural next step is to add full on-device speech-to-text so the whole system never needs Wi-Fi. Is that a reasonable scope extension? Click to check.</summary>
+<p>No — and naming why is good practice for the scoping judgment this course has asked for all
+along. A real speech-to-text language model is hundreds of megabytes, versus the few
+kilobytes a keyword-spotting model needs; there is no honest path to running one on a
+microcontroller-class chip, so this isn't a scope <em>extension</em>, it's a different, much larger
+project with its own hardware requirements. A more honest next step, in the spirit of Chapter
+26 and 27, is to rigorously compare your template-correlation detector against a small
+trained neural network on the <em>same</em> enrolled phrase and the <em>same</em> test recordings — a
+scoped, measurable question that stays inside what this chip can actually do.</p>
+</details>
+<h2 id="what-youve-learned">What You've Learned</h2>
+<p>This chapter took the FFT and correlation skills built across the whole course and pointed them
+at a new kind of problem: one that never stops running, has to survive a noisy room, and has to
+know when <em>not</em> to act as much as when to act. You've seen why that turns into a false-accept/
+false-reject tradeoff, how the RP2350's two cores let you decouple "never miss a sample" from
+"take your time deciding," how a custom trigger phrase gets enrolled using nothing more exotic
+than correlation, and exactly where the line sits between "wake word kit" and "smart speaker."</p>
+<div class="admonition mascot-celebration">
+<p class="admonition-title">Not bad for a $5 chip that's now also listening</p>
+<p><img alt="Echo celebrating" class="mascot-admonition-img" src="../../img/mascot/celebration.png" />
+You're right on frequency. The same board that took a 512-point FFT from 21 seconds down to
+0.59 milliseconds can now sit quietly in a room, listening for exactly one phrase, and only
+speak up when it actually hears it. Time to transform — this time, into something that knows
+when to stay quiet.</p>
+</div>
+<p><a href="references/">See Annotated References</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../27-capstone/references/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Annotated References">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Annotated References
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="quiz/" class="md-footer__link md-footer__link--next" aria-label="Next: Quiz">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Quiz
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

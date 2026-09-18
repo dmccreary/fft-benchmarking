@@ -217,17 +217,46 @@ This exact instruction pattern is the arithmetic heart of correlation and the FF
 butterfly operation in Chapter 23 is fundamentally a handful of multiply-accumulate steps
 combining a sample with a twiddle factor.
 
-## SIMD Instructions: A Preview, Not a Detour
+## SIMD Instructions: What Your Chip Can and Cannot Vectorize
 
 You may notice that so far, every instruction here operates on exactly one float at a
-time. Some ARM cores also support **SIMD instructions** — Single Instruction, Multiple
-Data — which pack several values into one register and operate on all of them with a
-single instruction, processing multiple data points per cycle instead of one. That
-technique, called vectorization, is a genuinely more advanced optimization this course
-returns to directly in Chapter 24, once the scalar (one-value-at-a-time) version you're
-building now is working and validated. Naming it here is deliberate: knowing a faster
-path exists, and choosing not to reach for it yet, is itself part of writing correct code
-before writing fast code.
+time. That is not a stylistic choice — it is what the hardware offers. **SIMD
+instructions** — Single Instruction, Multiple Data — pack several values into one
+register and operate on all of them at once, processing multiple data points per
+instruction instead of one. The technique is called **vectorization**, and it is one of
+the biggest speed levers in all of signal processing.
+
+Here is the precise situation on your Pico 2, because the vague version of this fact
+causes a *lot* of confusion:
+
+- **The M33's floating-point unit is scalar.** Every instruction in this chapter —
+  `VLDR`, `VMUL`, `VMLA`, `VSTR` — touches exactly one float. There is no vector register
+  file and no "four floats at once" instruction. Vectorizing this chapter's float code is
+  not being deferred out of discipline; on this chip it is simply not on the menu.
+- **The M33 *does* have packed integer SIMD.** The ARMv8-M **DSP extension** provides
+  instructions like `SMUAD` and `QADD16` that pack two 16-bit integers into one 32-bit
+  register and process both in a single instruction. Reaching them means leaving floats
+  behind for **fixed-point Q15** arithmetic — a different number format with a different
+  accuracy tradeoff, which [Beyond the Assembler](../25-beyond-the-assembler/index.md)
+  takes up.
+- **Bigger Cortex-M cores do vectorize floats.** The Cortex-M55 and M85 add Helium, a
+  true 128-bit vector unit, and Cortex-A chips have NEON. Code written for those does not
+  come back to an M33.
+
+!!! mascot-tip "'Is it vectorized?' is two questions, not one"
+    ![Echo tip](../../img/mascot/tip.png){ class="mascot-admonition-img" }
+    When you read that a production library like CMSIS-DSP is "vectorized," always ask
+    *which data type on which core*. Its Q15 fixed-point kernels really do use the packed
+    SIMD above. Its `arm_cfft_f32` float routine on an M4 or M33 is scalar code — fast
+    because of loop unrolling, a tuned radix-4/radix-8 structure, and careful register
+    allocation, not because of vectorization. Both statements are true at once, and
+    mixing them up is how "CMSIS-DSP doesn't use SIMD" gets repeated as if it were a
+    simple yes-or-no fact.
+
+Chapter 24 returns to vectorization as a *category* of optimization, alongside cache
+effects and branchless code. This chapter's job is narrower and more useful: making sure
+you know exactly which category your own chip actually offers before you go looking for
+speed that isn't there.
 
 ## No Allocation in the Timed Region
 

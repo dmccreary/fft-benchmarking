@@ -268,11 +268,36 @@ Chapter 22 introduced **vectorization** — using SIMD instructions to process s
 values in a single instruction — as a technique this course names but does not implement.
 It belongs in this chapter's catalog for a specific reason: like cache effects, it is a
 source of speedup *independent* of the algorithmic and branch-related techniques above.
-Production libraries like CMSIS-DSP lean heavily on vectorization precisely because it
-compounds with, rather than replaces, everything in this chapter — a vectorized,
-cache-aware, trivial-twiddle-exploiting routine stacks all four gains at once, which is
-part of why a hand-tuned vendor library can outrun even a careful hand-written routine
-that only reaches for some of them.
+When it is available, it compounds with rather than replaces everything else here — a
+vectorized, cache-aware, trivial-twiddle-exploiting routine stacks all four gains at
+once.
+
+"When it is available" is doing real work in that sentence, and it is worth being exact
+about a production library rather than hand-waving. CMSIS-DSP does use SIMD heavily, but
+not uniformly:
+
+| Core and data type | What CMSIS-DSP actually uses |
+|---|---|
+| Cortex-M4/M7/M33, Q15/Q31 fixed point | Packed 2-way SIMD from the DSP extension (`SMUAD`, `SMLAD`, `QADD16`, `PKHBT`) |
+| Cortex-M4F/M33F, f32 float | **Scalar** VFP — no vectorization; speed comes from loop unrolling and radix-4/radix-8 structure |
+| Cortex-M55/M85 | Helium (MVE) 128-bit vector kernels |
+| Cortex-A | NEON kernels |
+
+So on the Pico 2's M33, a hand-tuned vendor library still outruns a careful hand-written
+float routine — but *not* because it vectorizes the float path, since it cannot. It wins
+on unrolling, structure, and register allocation. Vectorization only enters the picture
+if you also change number formats, which is a Chapter 25 conversation about fixed point,
+not a free upgrade.
+
+There is one more wrinkle that matters specifically to a benchmarking course: even on a
+core that has the DSP extension, CMSIS-DSP compiles its packed-SIMD kernels only when
+`ARM_MATH_DSP` is defined, which follows from the compiler's `__ARM_FEATURE_DSP` and
+therefore from the `-mcpu` flag used to build it. Build for `cortex-m33+nodsp` and you
+silently get the portable C fallback instead — same source, same API, materially different
+cycle counts. A benchmark that appears to show "the library doesn't use SIMD" is very
+often reporting a *build configuration*, which is exactly the kind of hidden variable
+[Benchmarking Methodology](../18-benchmarking-methodology/index.md) taught you to pin down
+and report.
 
 ## Optimization Attribution: Crediting the Right Change
 

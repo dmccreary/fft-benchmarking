@@ -73,6 +73,14 @@ Note the test is `!= 0`, not `== 1`. Different cores report different nonzero
 encodings in this field, and the probe only needs to know whether hardware
 floating point exists at all.
 
+**The field name is misleading, so read it carefully.** "A_SIMD" is inherited
+from ARM's Advanced SIMD (NEON) terminology, but on a Cortex-M part this field
+reports the presence and size of the *floating-point register file* — not the
+presence of a vector unit. A nonzero value on the M33 means "this chip has an
+FPU," not "this chip can process several floats per instruction." The M33's FPU
+is scalar; see [Talking to the FPU](../../chapters/22-talking-to-the-fpu/index.md)
+for what that does and does not let you vectorize.
+
 ## How to Use
 
 1. Start on the **Cortex-M33** card — that is what is in your Pico 2. Press the

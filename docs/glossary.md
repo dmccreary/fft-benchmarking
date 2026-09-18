@@ -962,6 +962,12 @@ The portion of a processing cycle spent updating the display, including Text Ren
 
 **Example:** Draw Time can become the Performance Bottleneck if every pixel of the OLED Display Module's Framebuffer is redrawn unnecessarily each frame.
 
+#### DSP Instructions
+
+Instructions added by the ARM DSP extension that perform saturating, packing, and multiply-accumulate operations on integers, present on Cortex-M4, Cortex-M7, and Cortex-M33 cores but absent from ARMv6-M cores such as the Cortex-M0+.
+
+**Example:** `SMUAD` and `QADD16` are DSP Instructions the Pico 2's silicon implements, though MicroPython's inline assembler does not expose them.
+
 #### DTMF Decoder Project
 
 A capstone track that identifies which telephone-keypad tone pair (DTMF) is present in an audio signal by detecting two simultaneous peaks in a Spectrum Array.
@@ -2757,6 +2763,12 @@ The process of interpreting a raw bit pattern as a two's-complement signed numbe
 A version number identifying a specific manufacturing revision of a processor chip, which can affect available features or known errata.
 
 **Example:** Reading the CPUID Register reveals the Silicon Revision of the Pico 2's RP2350 chip, useful when checking for FPU Presence Detection quirks.
+
+#### SIMD Instructions
+
+Instructions that apply one operation to several data values packed into a single register, processing them in the same instruction rather than one at a time.
+
+**Example:** The Cortex-M33 offers SIMD Instructions for pairs of 16-bit integers through its DSP Instructions, but not for Single Precision Float values, whose FPU is scalar.
 
 #### Similarity Measure
 

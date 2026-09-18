@@ -148,17 +148,17 @@ Test your understanding of the FPU's register bank, load-store architecture, and
 
 ---
 
-#### 10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?
+#### 10. The chapter states that every floating-point instruction it teaches operates on exactly one value at a time. According to the chapter, what is the actual SIMD situation on the Pico 2's Cortex-M33?
 
 <div class="upper-alpha" markdown>
-1. SIMD instructions are not supported on the Cortex-M33 at all, so they are irrelevant to this course
-2. Vectorized code is always slower than scalar code for floating-point work, so SIMD is skipped entirely
-3. SIMD instructions require a hardware multiplier that the FPU does not have
-4. Establishing a working, validated scalar (one-value-at-a-time) version first is part of writing correct code before writing fast code, and SIMD is a genuinely more advanced optimization layered on afterward
+1. The M33 supports no SIMD instructions of any kind, so vectorization is irrelevant on this chip
+2. The M33's floating-point unit is scalar, but the ARMv8-M DSP extension does provide packed *integer* SIMD, reachable only by moving from floats to fixed-point Q15 arithmetic
+3. The M33 can vectorize floats, but the course defers using it until Chapter 24 so that a validated scalar version exists first
+4. The M33 has a 128-bit Helium vector unit that MicroPython's inline assembler cannot reach
 </div>
 
 ??? question "Show Answer"
-    The correct answer is **D**. The chapter names SIMD (Single Instruction, Multiple Data) explicitly to signal that a faster path exists, while deliberately choosing not to reach for it yet — every instruction in this chapter, including the multiply-accumulate that uses the same hardware multiplier as `VMUL`, still operates on one float at a time. Knowing a faster path exists and choosing correctness first is itself part of the engineering discipline this course teaches, distinct from claiming SIMD is unsupported or always worse.
+    The correct answer is **B**. The chapter is deliberately precise here because the vague version of this fact causes confusion. The M33's FPU has no vector register file, so `VLDR`, `VMUL`, `VMLA`, and `VSTR` genuinely process one float each — float vectorization is not deferred on this chip, it is unavailable. But the DSP extension's packed instructions such as `SMUAD` and `QADD16` do process two 16-bit integers at once, which is why the fixed-point Q15 path is a real (if different) road to SIMD. A is wrong because it ignores the integer SIMD; C describes a deferral the chapter explicitly rejects; D describes the Cortex-M55/M85, not the M33.
 
     **Concept Tested:** SIMD Instructions
 

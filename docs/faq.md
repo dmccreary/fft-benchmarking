@@ -454,6 +454,30 @@ builds a hand-written FFT anyway, on the theory that understanding the internals
 correctly read, evaluate, and integrate a production library later, rather than treating it as a
 black box. See [The Butterfly in Assembly](chapters/23-the-butterfly-in-assembly/index.md).
 
+### Is it true that the CMSIS-DSP library doesn't use SIMD instructions?
+
+Not as a blanket statement — but there is a real case where it's true, and that case happens to
+be the one most people on a Pico 2 run into, which is why the claim keeps circulating.
+
+CMSIS-DSP does use SIMD, extensively. On Cortex-M4, M7, and M33 cores that include the DSP
+extension, its fixed-point Q15 and Q31 kernels are built around packed SIMD instructions such as
+`SMUAD`, `SMLAD`, `QADD16`, and `PKHBT`, which pack two 16-bit values into a single 32-bit
+register and operate on both at once. On Cortex-M55 and M85 there are full Helium vector paths,
+and on Cortex-A there are NEON paths.
+
+Where the claim *is* correct is the single-precision float path on a Cortex-M4F or M33F — exactly
+what the Pico 2 has. The M33's floating-point unit is scalar, with no vector register file, so
+`arm_cfft_f32` genuinely processes one float at a time. Its speed comes from loop unrolling, a
+tuned radix-4/radix-8 structure, and careful register allocation rather than from vectorization.
+See [Talking to the FPU](chapters/22-talking-to-the-fpu/index.md).
+
+One benchmarking trap is worth knowing about: even on a core that has the DSP extension,
+CMSIS-DSP compiles its SIMD kernels only when `ARM_MATH_DSP` is defined, which follows from the
+compiler's `__ARM_FEATURE_DSP` and therefore from the `-mcpu` flag. Build for `cortex-m33+nodsp`
+and you silently get the portable C fallback. A benchmark appearing to show "no SIMD" is very
+often reporting a build configuration rather than a property of the library — see
+[Benchmarking Methodology](chapters/18-benchmarking-methodology/index.md).
+
 ## Technical Detail Questions
 
 ### What does "frequency bin" mean, and how do you calculate a bin's center frequency?
@@ -1012,7 +1036,7 @@ benchmarking — just applied to a different signal source and a different quest
 
 ### How do open-source licenses like MIT and GPL affect the choice of an FFT library?
 
-Permissive licenses like the MIT-style terms used by CMSIS-DSP or the BSD-style terms used by
+Permissive licenses like the Apache 2.0 terms used by CMSIS-DSP or the BSD-style terms used by
 KissFFT allow a library to be used in almost any project, including closed-source or commercial
 ones, with minimal obligations. The GPL license used by FFTW is more restrictive — it generally
 requires that a project incorporating GPL-licensed code also be released under compatible terms,

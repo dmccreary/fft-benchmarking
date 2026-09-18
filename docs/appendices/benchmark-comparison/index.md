@@ -39,7 +39,7 @@ compares to our V9 (621.7 µs) is discussed in [Analysis](#analysis) below, not 
 | [pschatzmann blog](https://www.pschatzmann.ch/home/2026/07/17/microcontroller-fft-ifft-performance-benchmark-n64/) | N=64 FFT, float | **RP2350 @ 150 MHz** — same chip | C++ (bare-metal) | 91.78 µs | ≈1.10 ms |
 | same source | N=64 FFT, float | RP2040 (no hardware FPU) | C++ | 939.43 µs | not scaled — different chip |
 | [fixedpoint-fft](https://github.com/pschatzmann/fixedpoint-fft) `Performance.md` | N=64, several boards | STM32F411, ESP32(-S3), STM32H7, UNO R4, Nano | C++ | 23.4–17,166 µs | not scaled — supporting data |
-| [Cortex-M-FFT](https://github.com/PY1CX/Cortex-M-FFT) | 512-pt FFT, float32 (CMSIS-DSP) | Cortex-M4 (ST Nucleo) | Bare C, SIMD — not MicroPython | 7,113 cycles (≈71 µs @ 100 MHz, assumed) | already 512-pt |
+| [Cortex-M-FFT](https://github.com/PY1CX/Cortex-M-FFT) | 512-pt FFT, float32 (CMSIS-DSP) | Cortex-M4 (ST Nucleo) | Bare C, scalar VFP — not MicroPython | 7,113 cycles (≈71 µs @ 100 MHz, assumed) | already 512-pt |
 | [ulab_samples](https://github.com/rcolistete/ulab_samples) | 1024-pt FFT, float32, best board | OpenMV H7 (Cortex-M7 @ 480 MHz) | CircuitPython (C module) | 0.397 ms | not scaled — 3.2× our clock |
 | [Adafruit ulab guide](https://learn.adafruit.com/ulab-crunch-numbers-fast-with-circuitpython/a-simple-benchmark) | general ulab speed claims | various CircuitPython boards | CircuitPython | no FFT-specific number found | — |
 
@@ -64,7 +64,12 @@ without the scaling caveats that apply across chips.
 - **CMSIS-DSP is faster, but it isn't a MicroPython library.** ARM's own hand-tuned production
   DSP library outperforms our V9 outright, which is expected — it has no Python call boundary,
   no `viper`/`native` compilation step, nothing. It represents a ceiling for "FFT on this class
-  of core," not a competing MicroPython implementation.
+  of core," not a competing MicroPython implementation. Worth noting for anyone tempted to
+  attribute that gap to vectorization: `arm_cfft_f32` on a Cortex-M4F is **scalar** code, because
+  that core's FPU has no vector register file. The margin comes from loop unrolling, a radix-4/
+  radix-8 structure, and register allocation — all techniques available to us in principle —
+  not from SIMD. CMSIS-DSP's packed SIMD lives in its Q15/Q31 fixed-point kernels, which is a
+  different comparison entirely.
 - **No RP2040/RP2350 ulab number could be found.** ulab is the library most people mean by
   "a MicroPython FFT library," but every published ulab FFT benchmark located during this
   research used STM32/SAMD/OpenMV-class boards, not RP2040 or RP2350, and most used
@@ -88,6 +93,12 @@ without the scaling caveats that apply across chips.
 4. **No comparison here is a substitute for a same-board, same-methodology measurement.** The
    only fully controlled comparison in this research is against Peter Hinch's library, and even
    that required scaling from 1024 to 512 points.
+5. **CMSIS-DSP's build flags are unreported.** The library's performance depends on how it was
+   compiled: its packed-SIMD kernels are compiled in only when `ARM_MATH_DSP` is defined (which
+   follows from `__ARM_FEATURE_DSP`, and therefore from `-mcpu`), and `ARM_MATH_LOOPUNROLL`
+   likewise gates unrolling. The cited source does not state its flags. This does not affect the
+   f32 row above, which is scalar either way, but it would matter for any fixed-point comparison
+   added later.
 
 ## Sources
 

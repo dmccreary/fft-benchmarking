@@ -89,23 +89,26 @@ produces a clean frame.
 
 ### Step 1 — Meet `config.py`
 
-Open `config.py` on the Pico. It holds every pin number for the entire kit:
+Open `config.py` on the Pico. It holds every pin number for the entire kit, the display size
+and color constants, and the `init_*()` helper functions that build ready-to-use objects like
+the display driver:
 
 ```python
-SCL_PIN = 2
-SDA_PIN = 3
-RES_PIN = 4
-DC_PIN = 5
-CS_PIN = 6
+--8<-- "src/kits/fft-lab-kit/config.py"
 ```
-
-…plus helper functions like `init_display()`.
 
 Why bother? Because the previous version of this course *didn't*. Pin numbers were copy-pasted
 into every lab file, and over time they drifted apart. Labs stopped working with no error
 message — just a blank screen. One file, one truth, no drift.
 
 From here on, every lab starts with `import config`.
+
+!!! mascot-tip "Don't see config.py on your board?"
+    ![Echo offering a tip](../../img/mascot/tip.png){ class="mascot-admonition-img" }
+    Your instructor's `upload-code.sh` script copies this file to the Pico along with every
+    lab's code (see the Troubleshooting section below). If `import config` fails, that upload
+    step hasn't run yet on your board — the file above is exactly what should end up at
+    `/config.py`.
 
 ### Step 2 — Run the display demo
 
@@ -173,7 +176,7 @@ stays on screen after the program finishes — the display holds its own image.
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Screen completely blank | Power or wiring | Check VCC → 3V3 and GND. Then check all five signal wires |
-| `ImportError: no module named 'ssd1306'` | Driver not on the board | Re-run `upload-code.sh`; the driver goes to `/lib` |
+| `ImportError: no module named 'ssd1306'` | Driver not on the board | Re-run [`upload-code.sh`](https://github.com/dmccreary/fft-benchmarking/blob/main/src/kits/fft-lab-kit/upload-code.sh){:target="_blank"}, which copies the driver to `/lib`. No git clone or terminal handy? In Thonny, go to **Tools → Manage Packages**, search for `micropython-ssd1306py`, and install it — that puts `ssd1306.py` on the board the same way. |
 | Garbled or shifted image | SCL and SDA swapped | SCL → GPIO 2, SDA → GPIO 3 |
 | Drew something but nothing appeared | Forgot `show()` | Drawing fills a buffer; `show()` sends it |
 | Image from an old program still showing | Working as designed | The display keeps its last frame. `oled.fill(0); oled.show()` clears it |

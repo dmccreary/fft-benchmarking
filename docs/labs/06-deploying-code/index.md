@@ -61,9 +61,14 @@ minutes in this course.
 
 !!! mascot-tip "How this course puts code on your board"
     ![Echo offering a tip](../../img/mascot/tip.png){ class="mascot-admonition-img" }
-    All 35 labs' code is pre-loaded for you, using `upload-code.sh` in the kit directory.
-    It uses a tool called **mpremote** — the command-line way to talk to a Pico. If you ever
-    need to reset your board to a clean state, that script is how.
+    All 35 labs' code is pre-loaded for you, using
+    [`upload-code.sh`](https://github.com/dmccreary/fft-benchmarking/blob/main/src/kits/fft-lab-kit/upload-code.sh){:target="_blank"}
+    in the kit directory of the [course GitHub repo](https://github.com/dmccreary/fft-benchmarking).
+    It uses a tool called **mpremote** — the command-line way to talk to a Pico — so running it
+    yourself means cloning the repo and installing `mpremote` (`pip install mpremote`). If you
+    just need one missing driver back (like `ssd1306.py`) and don't have a terminal handy, you
+    can instead install it from Thonny's **Tools → Manage Packages**. If you ever need to reset
+    your board to a clean state, `upload-code.sh` is how.
 
 ### `main.py`: the autorun file
 
@@ -137,7 +142,7 @@ If a `main.py` ever locks you out:
    os.remove('main.py')
    ```
 3. Last resort: hold **BOOTSEL** while plugging in and re-flash MicroPython. This erases
-   everything — you'd re-run `upload-code.sh` afterwards.
+   everything — you'd re-run [`upload-code.sh`](https://github.com/dmccreary/fft-benchmarking/blob/main/src/kits/fft-lab-kit/upload-code.sh){:target="_blank"} afterwards.
 
 Knowing step 3 exists is what lets you experiment fearlessly.
 
@@ -178,7 +183,7 @@ it powers on, with no computer attached. See the lab for how.
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | `ImportError: no module named 'config'` | File is on your laptop, not the Pico | Check the **Raspberry Pi Pico** half of the Files panel |
-| `ImportError: no module named 'ssd1306'` | Driver missing from `/lib` | Re-run `upload-code.sh` |
+| `ImportError: no module named 'ssd1306'` | Driver missing from `/lib` | Re-run [`upload-code.sh`](https://github.com/dmccreary/fft-benchmarking/blob/main/src/kits/fft-lab-kit/upload-code.sh){:target="_blank"}, or install `micropython-ssd1306py` from Thonny's **Tools → Manage Packages** |
 | `main.py` won't stop | No escape hatch | Ctrl-C during boot, or `os.remove('main.py')` |
 | Board seems bricked | Bad `main.py` | BOOTSEL + re-flash, then re-upload |
 | Edits keep disappearing | Editing the laptop copy | Reopen from the Pico side |

@@ -4,7 +4,7 @@ site_author: 'Dan McCreary'
 repo_name: 'GitHub Repo'
 site_url: 'https://dmccreary.github.io/fft-benchmarking/'
 repo_url: 'https://github.com/dmccreary/fft-benchmarking'
-edit_uri: 'blob/master/docs'
+edit_uri: 'blob/main/docs'
 
 nav:
   - Home: index.md
@@ -306,7 +306,6 @@ theme:
     - navigation.expand
     - navigation.path
     - navigation.prune
-    - navigation.indexes
     - toc.follow
     - navigation.top
     # this adds the prev and next icons in the footer
@@ -332,7 +331,7 @@ extra_css:
    - css/extra.css
    - css/mascot.css
 extra_javascript:
-   - javascripts/mathjax.js
+   - js/mathjax.js
    - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 extra:
   analytics:

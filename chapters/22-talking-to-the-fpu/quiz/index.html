@@ -1378,9 +1378,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering" class="md-nav__link">
+  <a href="#10-the-chapter-states-that-every-floating-point-instruction-it-teaches-operates-on-exactly-one-value-at-a-time-according-to-the-chapter-what-is-the-actual-simd-situation-on-the-pico-2s-cortex-m33" class="md-nav__link">
     <span class="md-ellipsis">
-      10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?
+      10. The chapter states that every floating-point instruction it teaches operates on exactly one value at a time. According to the chapter, what is the actual SIMD situation on the Pico 2's Cortex-M33?
     </span>
   </a>
   
@@ -2113,9 +2113,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering" class="md-nav__link">
+  <a href="#10-the-chapter-states-that-every-floating-point-instruction-it-teaches-operates-on-exactly-one-value-at-a-time-according-to-the-chapter-what-is-the-actual-simd-situation-on-the-pico-2s-cortex-m33" class="md-nav__link">
     <span class="md-ellipsis">
-      10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?
+      10. The chapter states that every floating-point instruction it teaches operates on exactly one value at a time. According to the chapter, what is the actual SIMD situation on the Pico 2's Cortex-M33?
     </span>
   </a>
   
@@ -2282,18 +2282,18 @@
 <p><strong>Concept Tested:</strong> Memory Address</p>
 </details>
 <hr />
-<h4 id="10-the-chapter-mentions-that-some-arm-cores-support-simd-instructions-which-pack-several-values-into-one-register-and-process-them-together-but-defers-using-them-until-chapter-24-what-is-the-stated-reasoning-for-this-ordering">10. The chapter mentions that some ARM cores support SIMD instructions, which pack several values into one register and process them together, but defers using them until Chapter 24. What is the stated reasoning for this ordering?</h4>
+<h4 id="10-the-chapter-states-that-every-floating-point-instruction-it-teaches-operates-on-exactly-one-value-at-a-time-according-to-the-chapter-what-is-the-actual-simd-situation-on-the-pico-2s-cortex-m33">10. The chapter states that every floating-point instruction it teaches operates on exactly one value at a time. According to the chapter, what is the actual SIMD situation on the Pico 2's Cortex-M33?</h4>
 <div class="upper-alpha">
 <ol>
-<li>SIMD instructions are not supported on the Cortex-M33 at all, so they are irrelevant to this course</li>
-<li>Vectorized code is always slower than scalar code for floating-point work, so SIMD is skipped entirely</li>
-<li>SIMD instructions require a hardware multiplier that the FPU does not have</li>
-<li>Establishing a working, validated scalar (one-value-at-a-time) version first is part of writing correct code before writing fast code, and SIMD is a genuinely more advanced optimization layered on afterward</li>
+<li>The M33 supports no SIMD instructions of any kind, so vectorization is irrelevant on this chip</li>
+<li>The M33's floating-point unit is scalar, but the ARMv8-M DSP extension does provide packed <em>integer</em> SIMD, reachable only by moving from floats to fixed-point Q15 arithmetic</li>
+<li>The M33 can vectorize floats, but the course defers using it until Chapter 24 so that a validated scalar version exists first</li>
+<li>The M33 has a 128-bit Helium vector unit that MicroPython's inline assembler cannot reach</li>
 </ol>
 </div>
 <details class="question">
 <summary>Show Answer</summary>
-<p>The correct answer is <strong>D</strong>. The chapter names SIMD (Single Instruction, Multiple Data) explicitly to signal that a faster path exists, while deliberately choosing not to reach for it yet — every instruction in this chapter, including the multiply-accumulate that uses the same hardware multiplier as <code>VMUL</code>, still operates on one float at a time. Knowing a faster path exists and choosing correctness first is itself part of the engineering discipline this course teaches, distinct from claiming SIMD is unsupported or always worse.</p>
+<p>The correct answer is <strong>B</strong>. The chapter is deliberately precise here because the vague version of this fact causes confusion. The M33's FPU has no vector register file, so <code>VLDR</code>, <code>VMUL</code>, <code>VMLA</code>, and <code>VSTR</code> genuinely process one float each — float vectorization is not deferred on this chip, it is unavailable. But the DSP extension's packed instructions such as <code>SMUAD</code> and <code>QADD16</code> do process two 16-bit integers at once, which is why the fixed-point Q15 path is a real (if different) road to SIMD. A is wrong because it ignores the integer SIMD; C describes a deferral the chapter explicitly rejects; D describes the Cortex-M55/M85, not the M33.</p>
 <p><strong>Concept Tested:</strong> SIMD Instructions</p>
 </details>
 <hr />

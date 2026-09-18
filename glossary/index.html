@@ -2002,6 +2002,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dsp-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      DSP Instructions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#dtmf-decoder-project" class="md-nav__link">
     <span class="md-ellipsis">
       DTMF Decoder Project
@@ -4660,6 +4669,15 @@
   <a href="#silicon-revision" class="md-nav__link">
     <span class="md-ellipsis">
       Silicon Revision
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simd-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      SIMD Instructions
     </span>
   </a>
   
@@ -7105,6 +7123,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dsp-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      DSP Instructions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#dtmf-decoder-project" class="md-nav__link">
     <span class="md-ellipsis">
       DTMF Decoder Project
@@ -9769,6 +9796,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#simd-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      SIMD Instructions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#similarity-measure" class="md-nav__link">
     <span class="md-ellipsis">
       Similarity Measure
@@ -11128,6 +11164,9 @@
 <h4 id="draw-time">Draw Time</h4>
 <p>The portion of a processing cycle spent updating the display, including Text Rendering and Display Refresh of Spectrum Bars.</p>
 <p><strong>Example:</strong> Draw Time can become the Performance Bottleneck if every pixel of the OLED Display Module's Framebuffer is redrawn unnecessarily each frame.</p>
+<h4 id="dsp-instructions">DSP Instructions</h4>
+<p>Instructions added by the ARM DSP extension that perform saturating, packing, and multiply-accumulate operations on integers, present on Cortex-M4, Cortex-M7, and Cortex-M33 cores but absent from ARMv6-M cores such as the Cortex-M0+.</p>
+<p><strong>Example:</strong> <code>SMUAD</code> and <code>QADD16</code> are DSP Instructions the Pico 2's silicon implements, though MicroPython's inline assembler does not expose them.</p>
 <h4 id="dtmf-decoder-project">DTMF Decoder Project</h4>
 <p>A capstone track that identifies which telephone-keypad tone pair (DTMF) is present in an audio signal by detecting two simultaneous peaks in a Spectrum Array.</p>
 <p><strong>Example:</strong> The DTMF Decoder Project reuses Peak Bin detection techniques from the Chromatic Tuner but searches for two independent tones instead of one.</p>
@@ -12026,6 +12065,9 @@
 <h4 id="silicon-revision">Silicon Revision</h4>
 <p>A version number identifying a specific manufacturing revision of a processor chip, which can affect available features or known errata.</p>
 <p><strong>Example:</strong> Reading the CPUID Register reveals the Silicon Revision of the Pico 2's RP2350 chip, useful when checking for FPU Presence Detection quirks.</p>
+<h4 id="simd-instructions">SIMD Instructions</h4>
+<p>Instructions that apply one operation to several data values packed into a single register, processing them in the same instruction rather than one at a time.</p>
+<p><strong>Example:</strong> The Cortex-M33 offers SIMD Instructions for pairs of 16-bit integers through its DSP Instructions, but not for Single Precision Float values, whose FPU is scalar.</p>
 <h4 id="similarity-measure">Similarity Measure</h4>
 <p>A general term for any quantity, such as Correlation, that expresses how alike two signals or patterns are.</p>
 <p><strong>Example:</strong> Correlation Magnitude serves as the Similarity Measure between a captured signal and each candidate Test Frequency.</p>

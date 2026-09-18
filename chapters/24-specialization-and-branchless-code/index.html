@@ -2466,11 +2466,52 @@ nothing to do with the arithmetic being performed.</p>
 values in a single instruction — as a technique this course names but does not implement.
 It belongs in this chapter's catalog for a specific reason: like cache effects, it is a
 source of speedup <em>independent</em> of the algorithmic and branch-related techniques above.
-Production libraries like CMSIS-DSP lean heavily on vectorization precisely because it
-compounds with, rather than replaces, everything in this chapter — a vectorized,
-cache-aware, trivial-twiddle-exploiting routine stacks all four gains at once, which is
-part of why a hand-tuned vendor library can outrun even a careful hand-written routine
-that only reaches for some of them.</p>
+When it is available, it compounds with rather than replaces everything else here — a
+vectorized, cache-aware, trivial-twiddle-exploiting routine stacks all four gains at
+once.</p>
+<p>"When it is available" is doing real work in that sentence, and it is worth being exact
+about a production library rather than hand-waving. CMSIS-DSP does use SIMD heavily, but
+not uniformly:</p>
+<table>
+<thead>
+<tr>
+<th>Core and data type</th>
+<th>What CMSIS-DSP actually uses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cortex-M4/M7/M33, Q15/Q31 fixed point</td>
+<td>Packed 2-way SIMD from the DSP extension (<code>SMUAD</code>, <code>SMLAD</code>, <code>QADD16</code>, <code>PKHBT</code>)</td>
+</tr>
+<tr>
+<td>Cortex-M4F/M33F, f32 float</td>
+<td><strong>Scalar</strong> VFP — no vectorization; speed comes from loop unrolling and radix-4/radix-8 structure</td>
+</tr>
+<tr>
+<td>Cortex-M55/M85</td>
+<td>Helium (MVE) 128-bit vector kernels</td>
+</tr>
+<tr>
+<td>Cortex-A</td>
+<td>NEON kernels</td>
+</tr>
+</tbody>
+</table>
+<p>So on the Pico 2's M33, a hand-tuned vendor library still outruns a careful hand-written
+float routine — but <em>not</em> because it vectorizes the float path, since it cannot. It wins
+on unrolling, structure, and register allocation. Vectorization only enters the picture
+if you also change number formats, which is a Chapter 25 conversation about fixed point,
+not a free upgrade.</p>
+<p>There is one more wrinkle that matters specifically to a benchmarking course: even on a
+core that has the DSP extension, CMSIS-DSP compiles its packed-SIMD kernels only when
+<code>ARM_MATH_DSP</code> is defined, which follows from the compiler's <code>__ARM_FEATURE_DSP</code> and
+therefore from the <code>-mcpu</code> flag used to build it. Build for <code>cortex-m33+nodsp</code> and you
+silently get the portable C fallback instead — same source, same API, materially different
+cycle counts. A benchmark that appears to show "the library doesn't use SIMD" is very
+often reporting a <em>build configuration</em>, which is exactly the kind of hidden variable
+<a href="../18-benchmarking-methodology/">Benchmarking Methodology</a> taught you to pin down
+and report.</p>
 <h2 id="optimization-attribution-crediting-the-right-change">Optimization Attribution: Crediting the Right Change</h2>
 <p>Stack trivial-twiddle skipping, branchless selection, loop unrolling, and a cache-aware
 access order all into one routine, and a single before-and-after benchmark can no longer

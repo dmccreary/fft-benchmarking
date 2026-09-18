@@ -2453,7 +2453,11 @@ fixed in it benefits every project using it at once.</p>
 <li>The <strong>CMSIS-DSP library</strong> — often still called by its older name, the <strong>Arm Math
   library</strong> — is ARM's own official signal-processing library, hand-optimized by ARM
   engineers for every Cortex-M core, including FFT routines tuned specifically for chips
-  like the Cortex-M33.</li>
+  like the Cortex-M33. "Hand-optimized" means something different per core and per data
+  type: its Q15/Q31 fixed-point kernels use the DSP extension's packed SIMD instructions,
+  its Cortex-M55/M85 kernels use Helium vectors, and its <code>arm_cfft_f32</code> float routine on
+  an M33 is scalar code made fast by unrolling and structure. Chapter 22 covers why that
+  distinction matters when you read performance claims.</li>
 <li>The <strong>Pico SDK FFT</strong> support refers to FFT functionality reachable through the
   Raspberry Pi Pico C SDK ecosystem, typically by linking in CMSIS-DSP or a similar
   library from C code — the same <strong>calling C from MicroPython</strong> boundary Chapter 19

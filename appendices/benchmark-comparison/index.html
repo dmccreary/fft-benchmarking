@@ -1010,7 +1010,7 @@ compares to our V9 (621.7 µs) is discussed in <a href="#analysis">Analysis</a> 
 <td><a href="https://github.com/PY1CX/Cortex-M-FFT">Cortex-M-FFT</a></td>
 <td>512-pt FFT, float32 (CMSIS-DSP)</td>
 <td>Cortex-M4 (ST Nucleo)</td>
-<td>Bare C, SIMD — not MicroPython</td>
+<td>Bare C, scalar VFP — not MicroPython</td>
 <td style="text-align: right;">7,113 cycles (≈71 µs @ 100 MHz, assumed)</td>
 <td style="text-align: right;">already 512-pt</td>
 </tr>
@@ -1052,7 +1052,12 @@ without the scaling caveats that apply across chips.</p>
 <li><strong>CMSIS-DSP is faster, but it isn't a MicroPython library.</strong> ARM's own hand-tuned production
   DSP library outperforms our V9 outright, which is expected — it has no Python call boundary,
   no <code>viper</code>/<code>native</code> compilation step, nothing. It represents a ceiling for "FFT on this class
-  of core," not a competing MicroPython implementation.</li>
+  of core," not a competing MicroPython implementation. Worth noting for anyone tempted to
+  attribute that gap to vectorization: <code>arm_cfft_f32</code> on a Cortex-M4F is <strong>scalar</strong> code, because
+  that core's FPU has no vector register file. The margin comes from loop unrolling, a radix-4/
+  radix-8 structure, and register allocation — all techniques available to us in principle —
+  not from SIMD. CMSIS-DSP's packed SIMD lives in its Q15/Q31 fixed-point kernels, which is a
+  different comparison entirely.</li>
 <li><strong>No RP2040/RP2350 ulab number could be found.</strong> ulab is the library most people mean by
   "a MicroPython FFT library," but every published ulab FFT benchmark located during this
   research used STM32/SAMD/OpenMV-class boards, not RP2040 or RP2350, and most used
@@ -1076,6 +1081,12 @@ without the scaling caveats that apply across chips.</p>
 <li><strong>No comparison here is a substitute for a same-board, same-methodology measurement.</strong> The
    only fully controlled comparison in this research is against Peter Hinch's library, and even
    that required scaling from 1024 to 512 points.</li>
+<li><strong>CMSIS-DSP's build flags are unreported.</strong> The library's performance depends on how it was
+   compiled: its packed-SIMD kernels are compiled in only when <code>ARM_MATH_DSP</code> is defined (which
+   follows from <code>__ARM_FEATURE_DSP</code>, and therefore from <code>-mcpu</code>), and <code>ARM_MATH_LOOPUNROLL</code>
+   likewise gates unrolling. The cited source does not state its flags. This does not affect the
+   f32 row above, which is scalar either way, but it would matter for any fixed-point comparison
+   added later.</li>
 </ol>
 <h2 id="sources">Sources</h2>
 <ul>

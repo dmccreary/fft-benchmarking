@@ -575,6 +575,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optional-build-a-wiring-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Build a Wiring Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wiring" class="md-nav__link">
     <span class="md-ellipsis">
       Wiring
@@ -1398,6 +1407,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optional-build-a-wiring-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional: Build a Wiring Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wiring" class="md-nav__link">
     <span class="md-ellipsis">
       Wiring
@@ -1616,6 +1634,20 @@ This screen is <strong>monochrome</strong> — each pixel is on or off, no grey.
 pixels, one bit each, so the whole framebuffer is just <strong>1,024 bytes</strong>. Your Pico has
 ~485 KB of RAM. We can afford a lot of frames.</p>
 </div>
+<h2 id="optional-build-a-wiring-harness">Optional: Build a Wiring Harness</h2>
+<p>Seven loose jumper wires on a breadboard are the single most common source of "my code stopped
+working for no reason" in this lab — a wire walks out half a millimeter and the display goes
+dark, and it looks exactly like a software bug.</p>
+<p>If you'd rather not re-seat wires every time you touch the board, follow the
+<a href="https://dmccreary.github.io/learning-micropython/hands-on-labs/15-oled-setup/19-wiring-harness/">Wiring Harness lab</a>
+from the <em>Learning MicroPython</em> textbook before you wire up the display below. It shows you how
+to bundle the display's seven wires — power, ground, and the five SPI signal wires — into one
+connector with a couple of dabs of hot glue, so connecting the display becomes a single plug-in
+instead of five separate chances to get it wrong. Its pin layout (SCL on GPIO 2, SDA on GPIO 3,
+RES on GPIO 4, DC on GPIO 5, CS on GPIO 6) matches the wiring table below exactly, so you can
+follow it as written.</p>
+<p>This step is optional — plain jumper wires work fine for this lab — but if a wire ever falls out
+mid-course, you'll wish you'd built the harness on day one.</p>
 <h2 id="wiring">Wiring</h2>
 <table>
 <thead>

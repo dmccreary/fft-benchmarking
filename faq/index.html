@@ -957,6 +957,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#is-it-true-that-the-cmsis-dsp-library-doesnt-use-simd-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is it true that the CMSIS-DSP library doesn't use SIMD instructions?
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1999,6 +2008,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#is-it-true-that-the-cmsis-dsp-library-doesnt-use-simd-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Is it true that the CMSIS-DSP library doesn't use SIMD instructions?
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2938,6 +2956,25 @@ systems almost always call a battle-tested library rather than shipping custom c
 builds a hand-written FFT anyway, on the theory that understanding the internals is what lets you
 correctly read, evaluate, and integrate a production library later, rather than treating it as a
 black box. See <a href="../chapters/23-the-butterfly-in-assembly/">The Butterfly in Assembly</a>.</p>
+<h3 id="is-it-true-that-the-cmsis-dsp-library-doesnt-use-simd-instructions">Is it true that the CMSIS-DSP library doesn't use SIMD instructions?</h3>
+<p>Not as a blanket statement — but there is a real case where it's true, and that case happens to
+be the one most people on a Pico 2 run into, which is why the claim keeps circulating.</p>
+<p>CMSIS-DSP does use SIMD, extensively. On Cortex-M4, M7, and M33 cores that include the DSP
+extension, its fixed-point Q15 and Q31 kernels are built around packed SIMD instructions such as
+<code>SMUAD</code>, <code>SMLAD</code>, <code>QADD16</code>, and <code>PKHBT</code>, which pack two 16-bit values into a single 32-bit
+register and operate on both at once. On Cortex-M55 and M85 there are full Helium vector paths,
+and on Cortex-A there are NEON paths.</p>
+<p>Where the claim <em>is</em> correct is the single-precision float path on a Cortex-M4F or M33F — exactly
+what the Pico 2 has. The M33's floating-point unit is scalar, with no vector register file, so
+<code>arm_cfft_f32</code> genuinely processes one float at a time. Its speed comes from loop unrolling, a
+tuned radix-4/radix-8 structure, and careful register allocation rather than from vectorization.
+See <a href="../chapters/22-talking-to-the-fpu/">Talking to the FPU</a>.</p>
+<p>One benchmarking trap is worth knowing about: even on a core that has the DSP extension,
+CMSIS-DSP compiles its SIMD kernels only when <code>ARM_MATH_DSP</code> is defined, which follows from the
+compiler's <code>__ARM_FEATURE_DSP</code> and therefore from the <code>-mcpu</code> flag. Build for <code>cortex-m33+nodsp</code>
+and you silently get the portable C fallback. A benchmark appearing to show "no SIMD" is very
+often reporting a build configuration rather than a property of the library — see
+<a href="../chapters/18-benchmarking-methodology/">Benchmarking Methodology</a>.</p>
 <h2 id="technical-detail-questions">Technical Detail Questions</h2>
 <h3 id="what-does-frequency-bin-mean-and-how-do-you-calculate-a-bins-center-frequency">What does "frequency bin" mean, and how do you calculate a bin's center frequency?</h3>
 <p>A frequency bin is one discrete output slot of a DFT or FFT, representing a narrow band of
@@ -3391,7 +3428,7 @@ course builds from scratch — sampling, windowing, the FFT itself, peak detecti
 benchmarking — just applied to a different signal source and a different question. See
 <a href="../chapters/27-capstone/">Capstone</a>.</p>
 <h3 id="how-do-open-source-licenses-like-mit-and-gpl-affect-the-choice-of-an-fft-library">How do open-source licenses like MIT and GPL affect the choice of an FFT library?</h3>
-<p>Permissive licenses like the MIT-style terms used by CMSIS-DSP or the BSD-style terms used by
+<p>Permissive licenses like the Apache 2.0 terms used by CMSIS-DSP or the BSD-style terms used by
 KissFFT allow a library to be used in almost any project, including closed-source or commercial
 ones, with minimal obligations. The GPL license used by FFTW is more restrictive — it generally
 requires that a project incorporating GPL-licensed code also be released under compatible terms,

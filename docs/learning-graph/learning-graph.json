@@ -128,6 +128,13 @@
       "font": {
         "color": "black"
       }
+    },
+    "MLED": {
+      "classifierName": "Wake Word / Edge ML",
+      "color": "Wheat",
+      "font": {
+        "color": "black"
+      }
     }
   },
   "nodes": [
@@ -3014,6 +3021,76 @@
       "id": 574,
       "label": "Peer Review",
       "group": "LABM"
+    },
+    {
+      "id": 575,
+      "label": "Wake Word Detection",
+      "group": "MLED"
+    },
+    {
+      "id": 576,
+      "label": "Keyword Spotting Model",
+      "group": "MLED"
+    },
+    {
+      "id": 577,
+      "label": "On Device Inference",
+      "group": "MLED"
+    },
+    {
+      "id": 578,
+      "label": "False Accept Rate",
+      "group": "MLED"
+    },
+    {
+      "id": 579,
+      "label": "False Reject Rate",
+      "group": "MLED"
+    },
+    {
+      "id": 580,
+      "label": "Wake Word Enrollment",
+      "group": "MLED"
+    },
+    {
+      "id": 581,
+      "label": "Custom Trigger Phrase",
+      "group": "MLED"
+    },
+    {
+      "id": 582,
+      "label": "Dual Core Partitioning",
+      "group": "HARD"
+    },
+    {
+      "id": 583,
+      "label": "Inter Core Communication",
+      "group": "PIPE"
+    },
+    {
+      "id": 584,
+      "label": "Always On Listening",
+      "group": "PERF"
+    },
+    {
+      "id": 585,
+      "label": "Pico 2 W Wireless",
+      "group": "HARD"
+    },
+    {
+      "id": 586,
+      "label": "Post Wake Audio Capture",
+      "group": "PIPE"
+    },
+    {
+      "id": 587,
+      "label": "Cloud Speech To Text",
+      "group": "VAPP"
+    },
+    {
+      "id": 588,
+      "label": "Edge Cloud Split",
+      "group": "VAPP"
     }
   ],
   "edges": [
@@ -6512,6 +6589,98 @@
     {
       "from": 574,
       "to": 464
+    },
+    {
+      "from": 575,
+      "to": 49
+    },
+    {
+      "from": 575,
+      "to": 258
+    },
+    {
+      "from": 575,
+      "to": 358
+    },
+    {
+      "from": 576,
+      "to": 575
+    },
+    {
+      "from": 577,
+      "to": 576
+    },
+    {
+      "from": 578,
+      "to": 575
+    },
+    {
+      "from": 578,
+      "to": 27
+    },
+    {
+      "from": 579,
+      "to": 575
+    },
+    {
+      "from": 580,
+      "to": 576
+    },
+    {
+      "from": 581,
+      "to": 580
+    },
+    {
+      "from": 582,
+      "to": 81
+    },
+    {
+      "from": 583,
+      "to": 582
+    },
+    {
+      "from": 583,
+      "to": 264
+    },
+    {
+      "from": 584,
+      "to": 575
+    },
+    {
+      "from": 584,
+      "to": 358
+    },
+    {
+      "from": 585,
+      "to": 79
+    },
+    {
+      "from": 586,
+      "to": 575
+    },
+    {
+      "from": 586,
+      "to": 264
+    },
+    {
+      "from": 587,
+      "to": 586
+    },
+    {
+      "from": 587,
+      "to": 585
+    },
+    {
+      "from": 587,
+      "to": 189
+    },
+    {
+      "from": 588,
+      "to": 577
+    },
+    {
+      "from": 588,
+      "to": 587
     }
   ]
 }

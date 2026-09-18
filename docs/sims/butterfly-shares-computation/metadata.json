@@ -1,0 +1,86 @@
+{
+  "title": "The Butterfly Shares Computation",
+  "description": "Set a, b and the twiddle angle W with sliders, toggle whether the b*W product is shared between both outputs, and compare the multiply/add instruction counts with and without sharing.",
+  "creator": "Real-Time DSP on a $5 Microcontroller",
+  "author": "Dan McCreary",
+  "date": "2026-08-28",
+  "subject": ["Digital Signal Processing", "FFT", "Algorithms"],
+  "type": "Interactive Simulation",
+  "format": "text/html",
+  "language": "en",
+  "rights": "CC BY-NC-SA 4.0",
+  "identifier": "butterfly-shares-computation",
+  "library": "p5.js",
+  "canvasHeight": 780,
+  "bloomLevel": "Analyze",
+  "bloomVerb": "Compare, count",
+  "completion_status": "implemented",
+  "chapter_number": 19,
+  "chapter_title": "The Butterfly",
+  "chapter_dir": "19-butterfly",
+  "chapter_rel_dir": "labs/19-butterfly",
+  "educational": {
+    "gradeLevel": ["Undergraduate"],
+    "subjectArea": "Computer Engineering",
+    "topic": "Why the FFT butterfly shares one multiplication between two outputs",
+    "learningObjectives": [
+      "Compute both butterfly outputs from chosen a, b and twiddle angle W",
+      "Compare instruction counts for a butterfly that shares W*b against one that recomputes it",
+      "Explain why sharing one product between two outputs is the source of the FFT's saving"
+    ],
+    "bloomsTaxonomy": "Analyze",
+    "duration": "10 minutes",
+    "prerequisites": ["Complex arithmetic", "Twiddle factors on the unit circle"],
+    "standards": []
+  },
+  "technical": {
+    "framework": "p5.js",
+    "version": "1.0",
+    "canvasDimensions": { "width": "responsive", "height": 780 },
+    "responsive": true,
+    "dependencies": ["p5.js 1.11.10 CDN"],
+    "accessibility": { "hasAltText": true, "keyboardNavigable": true }
+  },
+  "userInterface": {
+    "controls": [
+      { "type": "slider", "label": "a (real)", "range": "-4 to 4", "default": 3 },
+      { "type": "slider", "label": "a (imaginary)", "range": "-4 to 4", "default": 1 },
+      { "type": "slider", "label": "b (real)", "range": "-4 to 4", "default": 2 },
+      { "type": "slider", "label": "b (imaginary)", "range": "-4 to 4", "default": -1 },
+      { "type": "slider", "label": "W angle (degrees)", "range": "0 to 360", "default": 45 },
+      { "type": "checkbox", "label": "Share b × W between both outputs", "default": true }
+    ]
+  },
+  "simulationModel": {
+    "modelType": "Complex arithmetic and instruction-count comparison",
+    "variables": ["a", "b", "W", "W*b", "output1", "output2", "share"],
+    "equations": [
+      "output1 = a + W*b",
+      "output2 = a - W*b",
+      "with sharing: 4 real multiplies, 6 real adds",
+      "without sharing: 8 real multiplies, 8 real adds"
+    ],
+    "assumptions": [
+      "W lies on the unit circle at the chosen angle, matching a twiddle factor",
+      "\"Without sharing\" models recomputing the same W*b product independently for each output, as a direct DFT would"
+    ],
+    "limitations": [
+      "Shows one butterfly in isolation; stage assembly appears in later labs"
+    ]
+  },
+  "pedagogical": {
+    "teachingStrategy": "Analyze-level comparison with a live instruction-count readout",
+    "keyQuestions": [
+      "How many real multiplies does sharing W*b save per butterfly?",
+      "How does that per-butterfly saving scale across a full FFT?"
+    ],
+    "commonMisconceptions": [
+      "That each butterfly output needs its own twiddle multiply",
+      "That the saving from the FFT comes from a faster multiply rather than doing fewer of them"
+    ],
+    "assessmentOpportunities": [
+      "Predict the savings percentage before toggling the checkbox",
+      "Scale the per-butterfly saving to the 2,304 butterflies in a 512-point FFT"
+    ]
+  }
+}

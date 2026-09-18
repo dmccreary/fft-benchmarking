@@ -39,18 +39,17 @@ outputs. Then you'll see how butterflies arrange into stages.
 
 ### The shape
 
-```
-        a ──────────┬─────────► a + W·b
-                     ╲       ╱
-                      ╲     ╱
-                       ╲   ╱
-                        ╳
-                       ╱   ╲
-                      ╱     ╲
-        b ──[× W]────┴───────► a − W·b
-```
-
 Two complex inputs, two complex outputs, crossing over in the middle. Hence "butterfly."
+
+<iframe src="../../sims/butterfly-shares-computation/main.html" height="782px" width="100%" scrolling="no"></iframe>
+
+[Run The Butterfly Shares Computation MicroSim Fullscreen](../../sims/butterfly-shares-computation/main.html){ .md-button }
+
+Drag `a`, `b`, and the `W angle` sliders to set up any butterfly. Then toggle
+**Share b × W between both outputs** off and on — the outputs never change,
+but the instruction-count cards below the diagram do. That's the whole point:
+sharing one product between two outputs is free in terms of the *answer* and
+expensive to skip in terms of *work*.
 
 ### The arithmetic
 

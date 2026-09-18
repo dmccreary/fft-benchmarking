@@ -1,7 +1,8 @@
 # Chapters
 
-This textbook is organized into 27 chapters covering 574 concepts, 
-built from the course's 200 core theory concepts plus 374 concepts drawn directly from the 35 hands-on labs.
+This textbook is organized into 27 core chapters covering 574 concepts,
+built from the course's 200 core theory concepts plus 374 concepts drawn directly from the 35 hands-on labs,
+plus one optional extension chapter (28) adding 14 further concepts beyond the core lab sequence.
 
 ## Chapter Overview
 
@@ -32,6 +33,10 @@ built from the course's 200 core theory concepts plus 374 concepts drawn directl
 25. [Beyond the Assembler: Hand-Encoding and Instruction Formats](25-beyond-the-assembler/index.md) — 23 concepts
 26. [Competing Variants: Predict, Measure, Explain](26-competing-variants/index.md) — 12 concepts
 27. [Capstone: Applications, Design, and Reporting](27-capstone/index.md) — 20 concepts
+
+**Optional extension**
+
+28. [Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W](28-wake-word-detection/index.md) — 14 concepts
 
 ## How to Use This Textbook
 

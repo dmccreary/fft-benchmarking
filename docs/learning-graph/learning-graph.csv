@@ -573,3 +573,17 @@ ConceptID,ConceptLabel,Dependencies,TaxonomyID
 572,Conclusion Drawing,570,LABM
 573,Project Scoping,566,LABM
 574,Peer Review,464,LABM
+575,Wake Word Detection,49|258|358,MLED
+576,Keyword Spotting Model,575,MLED
+577,On Device Inference,576,MLED
+578,False Accept Rate,575|27,MLED
+579,False Reject Rate,575,MLED
+580,Wake Word Enrollment,576,MLED
+581,Custom Trigger Phrase,580,MLED
+582,Dual Core Partitioning,81,HARD
+583,Inter Core Communication,582|264,PIPE
+584,Always On Listening,575|358,PERF
+585,Pico 2 W Wireless,79,HARD
+586,Post Wake Audio Capture,575|264,PIPE
+587,Cloud Speech To Text,586|585|189,VAPP
+588,Edge Cloud Split,577|587,VAPP

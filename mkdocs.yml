@@ -121,6 +121,10 @@ nav:
       - Content: chapters/27-capstone/index.md
       - Quiz: chapters/27-capstone/quiz.md
       - Annotated References: chapters/27-capstone/references.md
+    - '28. (Extension) Wake Word Detection: Listening for a Trigger Phrase on a Dual-Core Pico 2 W':
+      - Content: chapters/28-wake-word-detection/index.md
+      - Quiz: chapters/28-wake-word-detection/quiz.md
+      - Annotated References: chapters/28-wake-word-detection/references.md
 
   - Hands-On Labs:
       - List of Labs: labs/index.md
@@ -227,6 +231,7 @@ nav:
     - Stage Profiling Breakdown Chart: sims/stage-profiling-breakdown-chart/index.md
     - Standalone Deployment Workflow: sims/standalone-deployment-workflow/index.md
     - Switch Bounce Debounce Visualizer: sims/switch-bounce-debounce-visualizer/index.md
+    - The Butterfly Shares Computation: sims/butterfly-shares-computation/index.md
     - Thonny REPL Workflow: sims/thonny-repl-workflow/index.md
     - Unit Circle Radians Explorer: sims/unit-circle-radians-explorer/index.md
     - Variance Source Explorer: sims/variance-source-explorer/index.md
@@ -331,13 +336,14 @@ extra_css:
    - css/extra.css
    - css/mascot.css
 extra_javascript:
-   - js/mathjax.js
+   - javascripts/mathjax.js
    - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+#extra:
+#  analytics:
+#    provider: google
+    # https://analytics.google.com/analytics/web/#/a1420179p349994530/admin/streams/table/4433129821
+#    property: G-XXXX
 extra:
-  analytics:
-    provider: google
-    # Google Analytics ID: G-T9N52ZWFWH
-    property: G-T9N52ZWFWH
   schema: https://dmccreary.github.io/intelligent-textbooks/ns/textbook/v1
-  textbook_name: Real-Time DSP on a $5 Microcontroller
+  textbook_name: FFT Benchmarking
   textbook_version: "1.0"

@@ -14,7 +14,12 @@ The prices below are August 2026 street-price estimates for planning purposes on
 
 ## Raspberry Pi Pico 2
 
-**Description:** The official Raspberry Pi Pico 2, built around the RP2350 microcontroller — a dual-core ARM Cortex-M33 running at 150 MHz with a hardware floating-point unit (FPU) and 520 KB of RAM. This is the board every lab runs on.
+Prices on the MicroCenter web page:
+
+![Pico 2 on MicroCenter Website](../img/pico-2-microcenter.png){ width="200px"}
+![Pico 2 H on MicroCenter Website](../img/pico-2-h-microcenter.png){ width="200px"}
+
+**Description:** The official Raspberry Pi Pico 2, built around the RP2350 microcontroller — a dual-core ARM Cortex-M33 running at 150 MHz with a hardware floating-point unit (FPU) and 520 KB of RAM. This is the board every lab runs on.  The Pico 2 comes in two variations.  The Pico 2 does not have headers soldered in but the Pico 2 H comes with pre-soldered headers.  The Pico H costs $1 more.
 
 **Used for:** The main computing platform for the entire course — every lab from Lab 1 onward runs MicroPython directly on this board. MicroCenter carries them in-store for **$4.99**.
 

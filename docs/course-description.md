@@ -84,7 +84,9 @@ Every student needs one kit, at roughly **$19** total.
 
 A Pico 2 **W** works identically for every lab. The original Pico (RP2040) does **not** — its
 Cortex-M0+ core has no floating-point unit, so Labs 30–34 cannot run. Lab 28 teaches students to
-detect this themselves by reading the CPU's registers.
+detect this themselves by reading the CPU's registers. The W's wireless radio itself goes unused
+until the optional Chapter 28 extension below, the one point in the course where it stops being
+merely compatible and becomes required.
 
 **Software:** Thonny and stock MicroPython. No compiler, no build system, no SDK. All 35 labs'
 code ships pre-loaded on the board.
@@ -153,6 +155,25 @@ Python version and agrees with it **bit for bit**.
 
 Specialization, branchless code, hand-encoding an instruction the assembler refuses to write,
 a six-way variant comparison, and an independent capstone project.
+
+## Optional Extension: Wake Word Detection
+
+Beyond the core 35-lab, 10-week sequence, one optional chapter —
+[Chapter 28: Wake Word Detection](chapters/28-wake-word-detection/index.md) — points the course's
+FFT and correlation skills at a different kind of problem: a device that listens continuously for
+one trigger phrase, the way a smart speaker does.
+
+It is scoped narrowly and deliberately: a microphone, a Raspberry Pi Pico 2 **W**, and an
+on-device wake-word detector that hands off to a remote server for full speech-to-text once
+triggered — splitting continuous signal capture and keyword-spotting inference across the
+RP2350's two Cortex-M33 cores. It is **not** a smart-speaker project; building the rest — full
+transcription and intent handling, spoken responses, acoustic echo cancellation, multi-turn
+conversation state, a real backend — is explicitly out of scope, described in the chapter as "an
+entire second project" with its own hardware and its own course-scale body of knowledge.
+
+This chapter has no accompanying lab in the 35-lab series and does not appear in the weekly
+schedule below. Instructors may offer it as enrichment reading, an additional capstone track, or
+skip it entirely without affecting anything else in the course.
 
 ## What Students Measure Themselves
 

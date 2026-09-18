@@ -67,6 +67,24 @@ produces a clean frame.
     pixels, one bit each, so the whole framebuffer is just **1,024 bytes**. Your Pico has
     ~485 KB of RAM. We can afford a lot of frames.
 
+## Optional: Build a Wiring Harness
+
+Seven loose jumper wires on a breadboard are the single most common source of "my code stopped
+working for no reason" in this lab — a wire walks out half a millimeter and the display goes
+dark, and it looks exactly like a software bug.
+
+If you'd rather not re-seat wires every time you touch the board, follow the
+[Wiring Harness lab](https://dmccreary.github.io/learning-micropython/hands-on-labs/15-oled-setup/19-wiring-harness/)
+from the *Learning MicroPython* textbook before you wire up the display below. It shows you how
+to bundle the display's seven wires — power, ground, and the five SPI signal wires — into one
+connector with a couple of dabs of hot glue, so connecting the display becomes a single plug-in
+instead of five separate chances to get it wrong. Its pin layout (SCL on GPIO 2, SDA on GPIO 3,
+RES on GPIO 4, DC on GPIO 5, CS on GPIO 6) matches the wiring table below exactly, so you can
+follow it as written.
+
+This step is optional — plain jumper wires work fine for this lab — but if a wire ever falls out
+mid-course, you'll wish you'd built the harness on day one.
+
 ## Wiring
 
 | Display pin | Pico 2 GPIO | Purpose |

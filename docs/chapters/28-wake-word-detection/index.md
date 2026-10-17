@@ -283,4 +283,6 @@ than correlation, and exactly where the line sits between "wake word kit" and "s
     speak up when it actually hears it. Time to transform — this time, into something that knows
     when to stay quiet.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

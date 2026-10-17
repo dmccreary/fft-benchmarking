@@ -304,4 +304,6 @@ students this gap leaves curious.
     every variant you've built — from Chapter 12's Python FFT through today's hand-encoded
     instruction — into one honest, predicted-then-measured comparison.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

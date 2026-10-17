@@ -251,4 +251,6 @@ trusting any hardware-specific code path.
     Module 7 needs. Chapter 21 puts that confirmed hardware to work — your very first
     hand-written ARM assembly function.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

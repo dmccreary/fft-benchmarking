@@ -72,7 +72,11 @@ On the receiving end of all that wiring sits a **display driver chip** — a sma
 
 ## The SSD1306 and the Framebuffer
 
-The specific driver chip used throughout this course is the **SSD1306 controller** — a widely used display driver chip, found on countless small OLED modules, that this course's 128×64-pixel display is built around. Because the SSD1306 is so common, MicroPython ships with a ready-made software library for talking to it, which means you will rarely write raw SPI commands by hand for the display — you will call methods on an SSD1306 driver object instead.
+The specific driver chip used throughout this course is the **SSD1306 controller** — a widely used display driver chip, found on countless small OLED modules, that this course's 128×64-pixel display is built around. Because the SSD1306 is so common, a ready-made software library for talking to it already exists — but it is **not** part of the MicroPython binary itself. `ssd1306.py` is a separate driver file that has to be copied onto your board's filesystem before `import ssd1306` will work; MicroPython does not come with it pre-installed. Once it is on the board, you will rarely write raw SPI commands by hand for the display — you will call methods on an SSD1306 driver object instead.
+
+!!! mascot-tip "Getting the driver onto your board with Thonny"
+    <img src="../../img/mascot/tip.png" class="mascot-admonition-img" alt="Echo giving a tip">
+    No terminal handy for `mpremote`? In Thonny, go to **Tools → Manage Packages**, search for `micropython-ssd1306py`, and click **Install**. Thonny installs `ssd1306.py` straight onto the board's `/lib` folder, and `import ssd1306` will work from then on — no different from installing any other MicroPython driver.
 
 Before drawing anything, that driver object needs somewhere to build an image before sending it to the screen. That somewhere is the **framebuffer**: a block of memory that holds a complete image of everything that should appear on the display, one bit (or byte) per pixel, which your program modifies freely and privately before it is ever sent to the physical screen in one batch. Working through a framebuffer, rather than writing directly to the display for every single pixel change, is both faster and avoids showing a half-drawn image mid-update.
 
@@ -346,5 +350,7 @@ Key ideas to carry forward:
 !!! mascot-celebration "Your board can see, listen, and stand on its own"
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Screen wired, buttons debounced, code deployed to run without a laptop in sight — that's the complete hardware platform this entire course builds on. Everything from here forward is about what you choose to *show* on that screen and *compute* in response to those buttons. Time to transform!
+
+[Take the Chapter Quiz](./quiz.md)
 
 [See Annotated References](./references.md)

@@ -454,4 +454,6 @@ table's real job is making that tradeoff visible rather than picking a winner fo
     down this ladder on your own board: does your chip's CPU actually have the hardware
     to run the assembly you're about to write?
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

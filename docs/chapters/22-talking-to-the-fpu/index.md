@@ -325,4 +325,6 @@ operation builds on directly.
     Chapter 23 assembles all of it, plus everything from Chapters 21 and 22, into a
     complete, working FFT written entirely in hand-crafted ARM assembly.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

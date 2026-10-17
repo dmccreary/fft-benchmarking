@@ -147,4 +147,6 @@ Key ideas to carry forward:
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     A working DFT that's 530 times too slow isn't a failure — it's the exact gap this entire course is built to close. You now know precisely why it's slow, in numbers you derived yourself, not just a vague sense that "it takes a while." Next module: the Fast Fourier Transform, which computes the identical, mathematically-proven-equal result while throwing away almost all of that wasted work. Time to transform!
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

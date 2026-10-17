@@ -272,4 +272,6 @@ GPIO blink to whatever you build for this capstone.
     every tool you need to answer it honestly. Time to transform — one more time, on your
     own terms.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

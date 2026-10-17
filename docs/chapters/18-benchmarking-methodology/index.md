@@ -342,4 +342,6 @@ only looks rigorous.
     telling a trustworthy result from a flattering one. Chapter 19 puts it straight to
     work, comparing MicroPython, C, and assembly on the very same computation.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

@@ -275,4 +275,6 @@ what each mnemonic does.
     FPU's own register bank, which is the last piece you need before hand-writing the
     FFT's butterfly operation itself.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

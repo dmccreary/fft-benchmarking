@@ -283,4 +283,6 @@ Key ideas to carry forward:
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Capture, FFT, windowing, peak detection, and display, all running together, continuously, on your own five-dollar board — that's Module 5, complete. You've also found, with real measurements, exactly where the next module needs to focus: compute time. Time to go measure it properly. Time to transform!
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

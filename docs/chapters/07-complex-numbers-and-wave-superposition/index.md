@@ -350,4 +350,6 @@ Key ideas to carry forward:
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Complex numbers, Euler's formula, superposition — that is genuinely graduate-level mathematical machinery, and you just built working intuition for all of it. Next stop: using orthogonality to answer one precise question — does my signal contain this note? — which is the exact seed the DFT grows from. Now *that's* a superpower.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

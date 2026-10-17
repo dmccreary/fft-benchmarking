@@ -339,4 +339,6 @@ first principles.
     exploiting specific properties of this exact computation to make the hot loop even
     faster.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

@@ -148,4 +148,6 @@ Key ideas to carry forward:
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     Radix-2, radix-4, split-radix, real, complex, forward, inverse — you now know where your own implementation sits in the much larger FFT landscape, and you've calibrated it against the professionals. Next up: pointing this transform at real, live captured sound and watching an actual spectrum appear on your OLED. Time to transform!
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

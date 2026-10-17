@@ -221,4 +221,6 @@ is an incomplete comparison.
     head. Chapter 27 turns this same discipline outward, onto a project entirely of your
     own design.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

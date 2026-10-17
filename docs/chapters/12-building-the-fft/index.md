@@ -349,4 +349,6 @@ Key ideas to carry forward:
     <img src="../../img/mascot/celebration.png" class="mascot-admonition-img" alt="Echo celebrating">
     You now own a complete FFT implementation, proven correct against a reference you built and validated yourself. 146× faster than where you started, with a precisely measured 3.5× still to close. The next module takes this exact validated algorithm and puts it to work on real, live captured audio. Now *that's* a superpower.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

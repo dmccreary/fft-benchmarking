@@ -419,4 +419,6 @@ it will not be re-explained.
     instrument to work — and shows you all the ways a careless benchmark can lie even
     with a perfectly good timer in hand.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

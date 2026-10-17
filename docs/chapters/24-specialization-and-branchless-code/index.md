@@ -363,4 +363,6 @@ Implementation: Chart.js waterfall-style bar chart (floating bars with connector
     deeper still: hand-encoding a machine instruction the assembler itself refuses to
     write.
 
+[Take the Chapter Quiz](./quiz.md)
+
 [See Annotated References](./references.md)

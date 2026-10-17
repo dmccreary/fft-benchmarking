@@ -91,7 +91,7 @@
 
 - [ ] Best FFT time: `docs/index.md` says **0.622 ms**, `docs/course-description.md` says **0.59 ms**. Pick the measured number and use it everywhere.
 - [ ] Audience: `README.md` says a 10-week college course for juniors and seniors, while promotion targets high school seniors plus college signal-processing students. Align the README, course description and FAQ.
-- [ ] `docs/index.md` claims both "35,000x" overall and "165x faster" than pure Python. Double-check both against the table (21,000 / 0.622 = about 33,800x).
+- [x] (Done 2026-10-17: changed to "over 30,000x" everywhere.) `docs/index.md` claims both "35,000x" overall and "165x faster" than pure Python. Double-check both against the table (21,000 / 0.622 = about 33,800x).
 
 ## Promotion
 

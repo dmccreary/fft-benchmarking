@@ -169,7 +169,7 @@
       "id": "faq-008",
       "category": "Getting Started",
       "question": "What will I be able to build by the end of the course?",
-      "answer": "By the end you will have built, from scratch and validated at every step: a working DFT, a\nworking FFT cross-checked against that DFT, a live spectrum analyzer with a real-time display, a\nchromatic tuner accurate to about 1.3 Hz, a hand-written ARM assembly FFT that agrees with the\nPython version bit-for-bit, and an independent capstone project of your own design. **Example:**\nstudents measure a 512-point FFT going from roughly 21,000 ms on a brute-force DFT down to about\n0.59 ms on the best optimized assembly variant — a real, self-measured speedup of over 35,000×\nacross the whole course. See the [course description](course-description.md) for the full table\nof self-measured milestones.",
+      "answer": "By the end you will have built, from scratch and validated at every step: a working DFT, a\nworking FFT cross-checked against that DFT, a live spectrum analyzer with a real-time display, a\nchromatic tuner accurate to about 1.3 Hz, a hand-written ARM assembly FFT that agrees with the\nPython version bit-for-bit, and an independent capstone project of your own design. **Example:**\nstudents measure a 512-point FFT going from roughly 21,000 ms on a brute-force DFT down to about\n0.59 ms on the best optimized assembly variant — a real, self-measured speedup of over 30,000×\nacross the whole course. See the [course description](course-description.md) for the full table\nof self-measured milestones.",
       "bloom_level": "Understand",
       "difficulty": "easy",
       "concepts": [

@@ -169,7 +169,7 @@ Look back at the numbers you've measured yourself:
 | Assembly FFT (Lab 31) | 0.85 ms | **2.1% of budget** |
 | Best variant (Lab 34) | 0.59 ms | **1.5% of budget** |
 
-A 35,000× improvement from your first working transform to your best one — on a chip that
+An improvement of over 30,000× from your first working transform to your best one — on a chip that
 costs less than a sandwich.
 
 But the durable skill isn't the assembly. It's that you can now **look at a performance claim

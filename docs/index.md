@@ -39,7 +39,7 @@ The payoff is a real number you measure yourself, on your own board:
 | Hand-written assembly FFT | 0.85 ms | 2.1% of budget |
 | Best optimized variant | **0.622 ms** | 1.5% of budget |
 
-That's a **35,000x** speedup from first working code to final assembly, and the assembly
+That's a speedup of **over 30,000x** from first working code to final assembly, and the assembly
 version alone runs **165x faster** than its pure-Python counterpart — while agreeing with it
 bit for bit. Every millisecond above was clocked with the chip's own cycle counter, not taken
 from a spec sheet.

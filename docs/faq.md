@@ -96,7 +96,7 @@ working FFT cross-checked against that DFT, a live spectrum analyzer with a real
 chromatic tuner accurate to about 1.3 Hz, a hand-written ARM assembly FFT that agrees with the
 Python version bit-for-bit, and an independent capstone project of your own design. **Example:**
 students measure a 512-point FFT going from roughly 21,000 ms on a brute-force DFT down to about
-0.59 ms on the best optimized assembly variant — a real, self-measured speedup of over 35,000×
+0.59 ms on the best optimized assembly variant — a real, self-measured speedup of over 30,000×
 across the whole course. See the [course description](course-description.md) for the full table
 of self-measured milestones.
 

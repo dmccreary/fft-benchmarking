@@ -318,7 +318,10 @@ theme:
     - content.action.edit
 plugins:
   - search
-#  - social
+  - social
+  # Experimental plugins for the learning graph and concept map
+  # Must run 
+  - graph
 markdown_extensions:
   - admonition
   - footnotes

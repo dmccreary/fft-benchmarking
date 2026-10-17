@@ -52,10 +52,51 @@
       Normalising these to canonical names makes the BOM page derivable from
       the labs instead of a second thing to keep in sync by hand.
 
-    - **Resolve the price discrepancy while you are in there.** `README.md`
+    - **(Done 2026-10-17: standardized to "$5 Pico 2" / "~$20 full kit" across README and site.)** ~~Resolve the price discrepancy while you are in there.~~ `README.md`
       describes a "$6 Raspberry Pi Pico 2" and `docs/labs/index.md` says
       "a $5 chip". Both are defensible depending on the variant and the
       seller, but a BOM page makes the number load-bearing — pick one, say
       which variant it refers to, and date the price.
 
     - **Status:** not started.
+
+## Site configuration
+
+- [ ] Finish the half-written `mkdocs.yml` comment `# Must run ...` above the `graph` plugin.
+- [ ] Confirm the `social` plugin cards look right (240 cards generated at `assets/images/social/`; the home page overrides with `img/cover.png`).
+- [ ] Confirm the experimental `graph` plugin behaves (writes `graph/graph.json`, 240 nodes / 696 edges) and decide whether to keep it.
+
+## Broken links (from a 2026-10-17 crawl of the live site)
+
+- [ ] Instructor's guide links to unpublished files:
+    - [ ] `instructors-guide/plans/course-description.md`
+    - [ ] `instructors-guide/plans/learning-graph/index.md`
+    - [ ] `instructors-guide/plans/cornell-labs/pico-example.md` and `cornell-labs/pico-example.md`
+    - [ ] `instructors-guide/arm-programming-guide/` (and the ARM Cortex-M33 user guide PDF linked from `plans/01-fft-test-plan.md`)
+    - [ ] `src/fft-benchmark/outputs/verification-report.md` (from `plans/01-fft-test-plan.md`) and `variant-comparison.md` (from `appendices/benchmark-comparison/`)
+- [ ] `src/` code links that 404 on the site:
+    - [ ] `src/fft-benchmark/device/dwt_timer.py`
+    - [ ] `src/fft-benchmark/device/fft_asm.py`
+    - [ ] `src/fft-benchmark/variants/README.md`
+    - [ ] Probe scripts `src/kits/fft-lab-kit/probes/02-get-info.py`, `04-asm-thumb-probe.py`, `05-asm-instruction-probe.py`
+    - Suggested fix: link to the files on GitHub instead of relative paths outside `docs/`.
+- [ ] `javascripts/mathjax.js` returns 404, so equations may not render. Check `extra_javascript` in `mkdocs.yml`.
+
+## Missing images
+
+- [ ] `sims/butterfly-shares-computation/butterfly-shares-computation.png`
+- [ ] `sims/graph-viewer/graph-viewer.png`
+
+## Content consistency
+
+- [ ] Best FFT time: `docs/index.md` says **0.622 ms**, `docs/course-description.md` says **0.59 ms**. Pick the measured number and use it everywhere.
+- [ ] Audience: `README.md` says a 10-week college course for juniors and seniors, while promotion targets high school seniors plus college signal-processing students. Align the README, course description and FAQ.
+- [ ] `docs/index.md` claims both "35,000x" overall and "165x faster" than pure Python. Double-check both against the table (21,000 / 0.622 = about 33,800x).
+
+## Promotion
+
+- [ ] Add a `docs/kits/` kit page (parts, photo, wiring, what you will build) so promos have a dedicated link.
+- [ ] Decide whether to commit the video recipe in `media/kits/fft-lab-kit/` (currently untracked; videos are on the `kit-videos` GitHub release, never in git).
+- [ ] Optional: fix the "~21,000 ms" line wrap in the vertical promo video (widen `.val` in the portrait CSS and re-render).
+- [ ] Optional: write the recipe's `README.md`, `PORTRAIT.md` and `LANDSCAPE.md` notes, like the other kit videos have.
+

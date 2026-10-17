@@ -44,7 +44,7 @@ and cosine), and patience for wiring a breadboard. See the
 
 ### What hardware do I need to buy for this course?
 
-Every student needs one kit costing roughly $19 total: a Raspberry Pi Pico 2 (RP2350, about $5),
+Every student needs one kit costing roughly $20 total: a Raspberry Pi Pico 2 (RP2350, about $5),
 an SSD1306 OLED display (128×64, SPI, about $5), two momentary push buttons (about $1), an
 INMP441 I²S MEMS microphone (about $3), and a breadboard with jumper wires (about $5). **Example:**
 the whole kit — board, display, mic, buttons, and breadboard — costs less than a single textbook,

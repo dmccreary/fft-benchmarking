@@ -102,7 +102,7 @@ Each of the **35 labs** takes about 45 minutes and walks a student through a spe
 
 ### The Hardware Kit
 
-Every student needs one kit, at roughly **$19** total:
+Every student needs one kit, at roughly **$20** total:
 
 | Component | Approx. cost | First used | Purpose |
 |---|---|---|---|

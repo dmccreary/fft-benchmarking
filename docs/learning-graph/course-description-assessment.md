@@ -8,7 +8,7 @@ quality_score: 97
 
 ## Summary
 
-The current `docs/course-description.md` (rewritten since the last learning-graph generation) is an unusually complete and specific course description. It documents 35 hands-on labs across 8 modules, a $19 hardware kit, exact measured performance numbers students will reproduce, a full weekly schedule, a grading breakdown, and Bloom's-Taxonomy-organized outcomes with lab-verified items flagged `(lab)`.
+The current `docs/course-description.md` (rewritten since the last learning-graph generation) is an unusually complete and specific course description. It documents 35 hands-on labs across 8 modules, a ~$20 hardware kit, exact measured performance numbers students will reproduce, a full weekly schedule, a grading breakdown, and Bloom's-Taxonomy-organized outcomes with lab-verified items flagged `(lab)`.
 
 **Estimated concept yield:** 500–600 distinct, pedagogically meaningful concepts. This is well above the 200-concept minimum and supports the requested ~550-concept target, because the course description is backed by 35 individually detailed lab pages (`docs/labs/01-*` … `docs/labs/35-*`), each with its own learning objectives and (for several labs) explicit "Concepts Introduced" lists. Comparable 10-week, lab-driven embedded/DSP courses typically yield 300–450 concepts from the syllabus alone; the addition of full lab-level detail here is what pushes the ceiling toward 550.
 

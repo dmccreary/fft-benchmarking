@@ -44,7 +44,7 @@ composition reads as one image rather than a collage of unrelated styles:
 
 - **Raspberry Pi Pico 2 on a breadboard** — a small green microcontroller
   board wired with jumper wires to a tiny OLED display and a microphone
-  module, evoking the course's real $19 hardware kit.
+  module, evoking the course's real ~$20 hardware kit.
 - **Waveform transforming into a spectrum** — a time-domain sine-like
   waveform on one side flowing (with a subtle arrow or morph effect) into a
   frequency-domain spectrum with sharp vertical peaks on the other side.

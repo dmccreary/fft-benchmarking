@@ -72,7 +72,7 @@ What is explicitly taught from zero, with no assumed background:
 
 ## The Hardware Kit
 
-Every student needs one kit, at roughly **$19** total.
+Every student needs one kit, at roughly **$20** total.
 
 | Component | Approx. cost | First used | Purpose |
 |---|---|---|---|

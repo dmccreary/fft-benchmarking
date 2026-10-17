@@ -34,7 +34,7 @@ This course takes a fundamentally different approach. It is built on a **learnin
 This textbook is designed for a 10-week course or self-paced independent study. Each chapter builds on the ones before it, so working through the material in order is recommended — with Module 3 (Chapters 8–10) and the FPU check in Chapter 20 called out as load-bearing for everything that follows. The book includes:
 
 - **27 Chapters** covering waves, sampling, the DFT and FFT, real-time spectrum analysis, ARM assembly, and benchmarking methodology
-- **35 Hands-On Labs** performed on real hardware — a Raspberry Pi Pico 2, an OLED display, and a MEMS microphone, at roughly $19 for the full kit
+- **35 Hands-On Labs** performed on real hardware — a Raspberry Pi Pico 2, an OLED display, and a MEMS microphone, at roughly $20 for the full kit
 - **61 Interactive MicroSims** — browser-based simulations for exploring the math, the signals, and the hardware directly
 - **Quizzes** at the end of each chapter to test understanding
 - **Annotated References** linking to Wikipedia and authoritative sources

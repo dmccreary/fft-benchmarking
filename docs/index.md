@@ -1,6 +1,6 @@
 ---
 title: Real-Time DSP on a $5 Microcontroller
-description: Build a Fast Fourier Transform from scratch on a $19 kit, then hand-write ARM assembly to make it 165x faster — real-time Digital Signal Processing in 35 hands-on labs.
+description: Build a Fast Fourier Transform from scratch on a ~$20 kit, then hand-write ARM assembly to make it 165x faster — real-time Digital Signal Processing in 35 hands-on labs.
 image: img/cover.png
 og:image: img/cover.png
 twitter:image: img/cover.png
@@ -44,9 +44,9 @@ version alone runs **165x faster** than its pure-Python counterpart — while ag
 bit for bit. Every millisecond above was clocked with the chip's own cycle counter, not taken
 from a spec sheet.
 
-## Fun labs on a $20 kit
+## Fun labs on a ~$20 kit
 
-Everything here runs on hardware you can buy for about **$19** and solder-free wire onto a
+Everything here runs on hardware you can buy for about **$20** and solder-free wire onto a
 breadboard in an afternoon:
 
 | Component | Approx. cost | Purpose |
@@ -77,7 +77,7 @@ you need **zero prior experience** with FFTs, DSP, or assembly language to start
 | Metric | Value | What it means |
 |---|---|---|
 | Chapters | **27** | Major content divisions, from your first correlation-based DFT to hand-written ARM assembly. |
-| Hands-on labs | **35** | Step-by-step exercises you run yourself on the $19 hardware kit. |
+| Hands-on labs | **35** | Step-by-step exercises you run yourself on the ~$20 hardware kit. |
 | Interactive MicroSims | **61** | Browser-based simulations for exploring butterflies, twiddle factors, aliasing, and more. |
 | Concepts | **574** | Individual ideas tracked in the [learning graph](learning-graph/index.md), each linked to the concepts it depends on. |
 | Glossary terms | **550** | Precise, one-sentence definitions for every technical term used in the book. |

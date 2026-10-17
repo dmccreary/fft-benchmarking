@@ -17,7 +17,7 @@ An educational resource for learning how to objectively benchmark Fast Fourier T
 - Benchmarking methodologies for comparing FFT implementations
 - ARM Cortex-M33 and M4 DSP instruction sets
 - Trade-offs between integer and floating-point implementations
-- Real-time signal processing on affordable microcontrollers ($6 Raspberry Pi Pico 2)
+- Real-time signal processing on affordable microcontrollers ($5 Raspberry Pi Pico 2)
 - Performance visualization and analysis techniques
 
 ## Course Structure
@@ -108,7 +108,7 @@ This course and website would not be possible without the contributions of the o
 
 ### Hardware Platforms
 - **ARM** - For developing DSP-capable Cortex-M processors
-- **Raspberry Pi Foundation** - For making real-time signal processing affordable with the $6 Pico 2 (RP2350)
+- **Raspberry Pi Foundation** - For making real-time signal processing affordable with the $5 Pico 2 (RP2350)
 
 ### Community
 Thank you to all students, educators, and developers who contribute to making signal processing education accessible and practical.

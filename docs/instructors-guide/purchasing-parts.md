@@ -5,7 +5,7 @@ description: Where to buy each component in the hardware kit, what it costs at s
 
 # Purchasing Your Own Parts
 
-Every student needs one hardware kit to complete the 35 hands-on labs. The kit costs roughly **$19 per student** at retail single-unit prices (see [Course Description](../course-description.md) and the [Instructor's Guide](index.md#the-hardware-kit)), and considerably less per unit when ordered in bulk for a whole class.
+Every student needs one hardware kit to complete the 35 hands-on labs. The kit costs roughly **$20 per student** at retail single-unit prices (see [Course Description](../course-description.md) and the [Instructor's Guide](index.md#the-hardware-kit)), and considerably less per unit when ordered in bulk for a whole class.
 
 !!! warning "Order the Pico 2, not the original Pico"
     A **Pico 2 (RP2350)** is required. The original Pico (RP2040) has no floating-point unit and cannot run Labs 30–34, the ARM assembly and FPU labs. Double-check the listing title and product page before buying — sellers frequently list both boards side by side.
@@ -157,7 +157,7 @@ A single spool set easily supplies an entire classroom rather than one per stude
 | Dupont ribbon cable | $2.50 | $1.50–$2.00 |
 | **Per-student total** | **~$25** | **~$18–$23** |
 
-The QTY 1 total runs higher than the book's advertised $19 kit price because retail single-unit shipping and packaging (especially for the microphone and OLED) cost more per piece than bulk classroom ordering. At QTY 10, per-student cost lands close to the ~$19 estimate quoted in the [Instructor's Guide](index.md#the-hardware-kit); 22-gauge hookup wire is excluded from this table since it's normally shared, not purchased per student.
+The QTY 1 total runs higher than the book's advertised ~$20 kit price because retail single-unit shipping and packaging (especially for the microphone and OLED) cost more per piece than bulk classroom ordering. At QTY 10, per-student cost lands close to the ~$20 estimate quoted in the [Instructor's Guide](index.md#the-hardware-kit); 22-gauge hookup wire is excluded from this table since it's normally shared, not purchased per student.
 
 !!! info "Order at least two weeks ahead"
     The INMP441 microphone and SSD1306 OLED are common parts but not always in stock at every seller. A single bulk order placed two or more weeks before the term starts is far more reliable than asking students to source parts individually — see [Classroom Logistics Tips](index.md#classroom-logistics-tips) in the Instructor's Guide.

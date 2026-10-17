@@ -2,8 +2,6 @@
 title: Real-Time DSP on a $5 Microcontroller
 description: Build a Fast Fourier Transform from scratch on a ~$20 kit, then hand-write ARM assembly to make it 165x faster — real-time Digital Signal Processing in 35 hands-on labs.
 image: img/cover.png
-og:image: img/cover.png
-twitter:image: img/cover.png
 hide:
   - toc
 ---

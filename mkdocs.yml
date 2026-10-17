@@ -316,11 +316,18 @@ theme:
     # this adds the prev and next icons in the footer
     - navigation.footer
     - content.action.edit
+# Hooks -- loaded as raw Python modules, not plugins (avoids name collisions).
+# `plugins/social_override.py` overrides og:image and twitter:image with the
+# page's `image:` frontmatter value when present. Pages without `image:` are
+# untouched -- mkdocs-material's default meta tags (and the social plugin's
+# generated card, if enabled) pass through.
+hooks:
+  - plugins/social_override.py
 plugins:
   - search
   - social
   # Experimental plugins for the learning graph and concept map
-  # Must run 
+  # Must run
   - graph
 markdown_extensions:
   - admonition

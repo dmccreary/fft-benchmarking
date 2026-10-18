@@ -49,6 +49,7 @@ least three weeks before the term starts, and four to five weeks for a full clas
 
 **Optional**
 
+- [1.3-inch OLED Display (SH1106, SPI)](#13-inch-oled-display-sh1106-spi) — smaller, cheaper alternative to the 2.42-inch display — FFT Lab Kit (~$2.95)
 - [Raspberry Pi Pico 2 W](#raspberry-pi-pico-2-w) — wireless board for the Chapter 28 wake-word extension — FFT Lab Kit (~$6.99)
 - [22-Gauge Solid-Core Hookup Wire](#22-gauge-solid-core-hookup-wire) — shared classroom wire for custom wiring — FFT Lab Kit (~$14.99 per classroom)
 
@@ -405,6 +406,63 @@ strip on a module header when the order arrives.
 
 ---
 
+### 1.3-inch OLED Display (SH1106, SPI)
+
+![1.3-inch 128x64 OLED display on a breadboard showing a clock; this one is the 4-pin I2C version](./oled-1-3-inch-sh1106.jpg){ width="350" }
+
+*This photo shows the 4-pin I2C version of the module. For this course, buy the 7-pin SPI version.*
+
+**Used in:** FFT Lab Kit (optional, ×1, replaces the 2.42-inch display)
+
+**Used for:** The same labs as the 2.42-inch display:
+[Lab 4](../../labs/04-oled-display/index.md), [Lab 8](../../labs/08-sound-levels/index.md),
+[Lab 21](../../labs/21-real-spectrum/index.md), [Lab 23](../../labs/23-tuner/index.md) and
+[Lab 24](../../labs/24-realtime-analyzer/index.md). Some students still have this older display
+from earlier kits.
+
+The 1.3-inch module is the older, cheaper display: the same 128×64 resolution, sold in white or
+blue. It costs well under half the price of the 2.42-inch display. The tradeoff is size. The
+active area is about 29 × 15 mm against 55 × 27 mm, so it is **smaller and noticeably harder to
+read**. A spectrum or tuner readout that is clear on the 2.42-inch screen from across a table
+has to be read up close on this one.
+
+**Requirements:** Buy the **7-pin SPI** version (GND, VCC, SCL/CLK, SDA/MOSI, RES, DC, CS) so it
+matches the book's wiring on GPIO 2–6. The same listings also offer a 4-pin I2C version, which
+does not match the labs without wiring and code changes.
+
+!!! tip "1.3-inch OLEDs use the SH1106 controller: use an SH1106 driver"
+    Most 1.3-inch modules use the **SH1106** controller, not the SSD1306 or SSD1309. The SH1106
+    has 132 columns of display memory, but the panel shows only the middle 128. The course's
+    `ssd1306` driver therefore draws everything **shifted 2 pixels**, with garbage or a stripe of
+    leftover pixels at one edge. Use an SH1106 MicroPython driver instead, such as the common
+    `sh1106.py`, and its SPI class (`SH1106_SPI`) in place of `SSD1306_SPI` in `config.py`.
+    The wiring stays the same.
+
+**Prep work:** Usually none, because most 7-pin modules ship with the header soldered. Check
+the listing photo; a loose header takes about 5 minutes to solder. Copy `sh1106.py` to the
+Pico's `/lib` folder alongside the other drivers.
+
+**Cost:** ~$2.95 in quantity 1 (AliExpress EstarDyn "1.3 inch OLED Module" listing: $2.95 for
+one, $2.79 each for 2 or more) · ~$2.65 each in a classroom order of 20+ (the same listing's
+price for 5 or more) · ~$2.35 each at district scale (Alibaba 7-pin SPI SH1106 listings at
+$2.30–$2.75 with a 30-piece minimum order; one supplier lists $1.98 with no minimum).
+
+**Spotting a bad batch:** Look for a dead pixel row or a module that stays blank with
+known-good wiring. If the image is shifted or shows a stripe at one edge, the module is not
+faulty: you are running the SSD1306 driver on an SH1106 (see the tip above).
+
+**Search keywords:** `1.3 inch OLED SH1106 SPI 7 pin 128x64`, `1.3" OLED module 12864 SPI`,
+`SH1106 OLED 7 pin`
+
+**Where to buy:**
+
+- [Search eBay for "1.3 inch OLED SH1106 SPI 7 pin 128x64"](https://www.ebay.com/sch/i.html?_nkw=1.3+inch+OLED+SH1106+SPI+7+pin+128x64)
+- [Search AliExpress for "1.3 inch OLED SH1106 SPI 7 pin 128x64"](https://www.aliexpress.com/w/wholesale-1-3-inch-oled-sh1106-spi-7-pin-128x64.html)
+- [Search Amazon for "1.3 inch OLED SH1106 SPI 7 pin 128x64"](https://www.amazon.com/s?k=1.3+inch+OLED+SH1106+SPI+7+pin+128x64)
+- [Search Alibaba for "1.3 inch OLED SH1106 SPI 7 pin 128x64"](https://www.alibaba.com/trade/search?SearchText=1.3+inch+OLED+SH1106+SPI+7+pin+128x64)
+
+---
+
 ### Raspberry Pi Pico 2 W
 
 <!-- TODO: image needed — see pico-2-w-image-description.md -->
@@ -546,10 +604,13 @@ student instead of $20.
 | Male-to-male jumper set | Required | FFT Lab Kit | 1 set | 20 sets | $40.00 |
 | Dupont ribbon, 40-wire M-F 20 cm | Required | FFT Lab Kit | 1/3 ribbon | 7 ribbons | $7.00 |
 | Pico 2 W upgrade (difference over Pico 2 H) | Optional | FFT Lab Kit | 1 | 20 | $40.00 |
+| 1.3-inch SH1106 OLED (replaces the 2.42-inch display) | Optional | FFT Lab Kit | 1 | 20 | $53.00 |
 | | | | | **Required subtotal** | **$390.22** |
-| | | | | **With optional parts** | **$430.22** |
+| | | | | **With the Pico 2 W upgrade** | **$430.22** |
+| | | | | **With the 1.3-inch display instead of the 2.42-inch** | **$299.22** |
 
-**Per student:** ~$19.51 required · ~$21.51 with the Pico 2 W upgrade. Add about $29 for two spares
+**Per student:** ~$19.51 required · ~$21.51 with the Pico 2 W upgrade · ~$14.96 with the
+1.3-inch display in place of the 2.42-inch ($144.00 − $53.00 saves $91.00 for 20 students). Add about $29 for two spares
 each of the Pico 2 H, display, microphone and breadboard.
 
 <!-- For district orders (100+), use the district prices in each part section:

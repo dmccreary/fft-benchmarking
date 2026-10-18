@@ -18,7 +18,7 @@
         <link rel="prev" href="../faq/">
       
       
-        <link rel="next" href="purchasing-parts/">
+        <link rel="next" href="../learning-graph/teachers-guide/">
       
       
       <link rel="icon" href="../img/favicon.ico">
@@ -1317,11 +1317,11 @@
   
   
     <li class="md-nav__item">
-      <a href="purchasing-parts/" class="md-nav__link">
+      <a href="../learning-graph/teachers-guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Purchasing Parts
+    Purchasing Guide
   </span>
   
 
@@ -2292,8 +2292,8 @@
 <td>Cortex-M33, 150 MHz, hardware FPU</td>
 </tr>
 <tr>
-<td>SSD1306 OLED, 128×64, SPI</td>
-<td>$5</td>
+<td>2.42" SSD1309 OLED, 128×64, SPI</td>
+<td>~$7.20</td>
 <td>Lab 4</td>
 <td>Live spectrum display</td>
 </tr>
@@ -2321,7 +2321,8 @@
 <p class="admonition-title">Order the Pico 2, not the original Pico</p>
 <p>A Pico 2 <strong>W</strong> works identically for every lab. The original Pico (RP2040) does <strong>not</strong> — its Cortex-M0+ core has no floating-point unit, so Labs 30–34 (the ARM assembly and FPU labs) cannot run on it. Double-check this when ordering kits for a class; Lab 28 teaches students to detect the problem themselves by reading the CPU's own registers, but by then it's too late to swap hardware mid-semester.</p>
 </div>
-<p>No soldering is required — every component connects via breadboard and jumper wires.</p>
+<p>Some minor soldering required: most INMP441 microphones ship with their six-pin header loose, and soldering it takes about 5 minutes per kit. Every other component connects via breadboard and jumper wires.</p>
+<p>For part-by-part prices, search links and ordering lead times, see the <a href="../learning-graph/teachers-guide/#purchasing-guide">Purchasing Guide</a>.</p>
 <h3 id="the-eight-lab-modules">The Eight Lab Modules</h3>
 <table>
 <thead>
@@ -2395,7 +2396,7 @@
 </ol>
 <h3 id="classroom-logistics-tips">Classroom Logistics Tips</h3>
 <ul>
-<li><strong>Order kits at least two weeks ahead.</strong> The INMP441 microphone and SSD1306 OLED are common but not always in-stock everywhere; a class-wide bulk order is more reliable than asking students to source parts individually.</li>
+<li><strong>Order kits at least two weeks ahead.</strong> The INMP441 microphone and 2.42" SSD1309 OLED are common but not always in-stock everywhere; a class-wide bulk order is more reliable than asking students to source parts individually.</li>
 <li><strong>One shared pin-mapping file.</strong> Every lab imports pin numbers from a single <code>config.py</code>, set up once in Lab 4. If a student's wiring doesn't match <code>config.py</code>, that's the first thing to check.</li>
 <li><strong>Pair students for Labs 28–34.</strong> The ARM assembly labs are the most conceptually dense in the course; pairing helps students debug register-level mistakes together.</li>
 <li><strong>Keep a few spare boards on hand.</strong> A Pico 2 that won't mount as a USB drive is almost always a bad MicroPython flash, not a dead board — re-flashing (covered in Lab 1) fixes the vast majority of "my board is broken" reports.</li>
@@ -2800,13 +2801,13 @@ mkdocs<span class="w"> </span>serve
         
         
           
-          <a href="purchasing-parts/" class="md-footer__link md-footer__link--next" aria-label="Next: Purchasing Parts">
+          <a href="../learning-graph/teachers-guide/" class="md-footer__link md-footer__link--next" aria-label="Next: Purchasing Guide">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Purchasing Parts
+                Purchasing Guide
               </div>
             </div>
             <div class="md-footer__button md-icon">

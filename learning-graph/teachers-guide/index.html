@@ -1,0 +1,1906 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Instructor's Guide for Real-Time DSP on a $5 Microcontroller, including a Purchasing Guide with every FFT Lab Kit part, single, classroom and district prices, lead times, and where to buy each one.">
+      
+      
+        <meta name="author" content="Dan McCreary">
+      
+      
+        <link rel="canonical" href="https://dmccreary.github.io/fft-benchmarking/learning-graph/teachers-guide/">
+      
+      
+        <link rel="prev" href="../../instructors-guide/">
+      
+      
+        <link rel="next" href="../../instructors-guide/plans/">
+      
+      
+      <link rel="icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Instructor's Guide - Real-Time DSP on a $5 Microcontroller</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/mascot.css">
+    
+      <link rel="stylesheet" href="../../css/graph.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Instructor's Guide - Real-Time DSP on a $5 Microcontroller" >
+      
+        <meta  property="og:description"  content="Instructor's Guide for Real-Time DSP on a $5 Microcontroller, including a Purchasing Guide with every FFT Lab Kit part, single, classroom and district prices, lead times, and where to buy each one." >
+      
+        <meta  property="og:image"  content="https://dmccreary.github.io/fft-benchmarking/assets/images/social/learning-graph/teachers-guide/index.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://dmccreary.github.io/fft-benchmarking/learning-graph/teachers-guide/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Instructor's Guide - Real-Time DSP on a $5 Microcontroller" >
+      
+        <meta  name="twitter:description"  content="Instructor's Guide for Real-Time DSP on a $5 Microcontroller, including a Purchasing Guide with every FFT Lab Kit part, single, classroom and district prices, lead times, and where to buy each one." >
+      
+        <meta  name="twitter:image"  content="https://dmccreary.github.io/fft-benchmarking/assets/images/social/learning-graph/teachers-guide/index.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#instructors-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-header__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Real-Time DSP on a $5 Microcontroller
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Instructor's Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Real-Time DSP on a $5 Microcontroller" class="md-nav__button md-logo" aria-label="Real-Time DSP on a $5 Microcontroller" data-md-component="logo">
+      
+  <img src="../../img/mascot/welcome.png" alt="logo">
+
+    </a>
+    Real-Time DSP on a $5 Microcontroller
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dmccreary/fft-benchmarking" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../course-description/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Course Description
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../chapters/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Chapters
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../labs/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Hands-On Labs
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sims/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    MicroSims
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../stories/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Stories
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../appendices/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Appendices
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Learning Graph
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Instructor's Guide
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            Instructor's Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../instructors-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Purchasing Guide
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Purchasing Guide
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purchasing-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purchasing Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Purchasing Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-parts-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary of Parts List
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-pico-2-h" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi Pico 2 H
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#micro-usb-data-cable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Micro-USB Data Cable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242-inch-oled-display-ssd1309-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.42-inch OLED Display (SSD1309, SPI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inmp441-i2s-mems-microphone" class="md-nav__link">
+    <span class="md-ellipsis">
+      INMP441 I²S MEMS Microphone
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#momentary-push-buttons-66-mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Momentary Push Buttons (6×6 mm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solderless-breadboard-830-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solderless Breadboard (830 Point)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#male-to-male-jumper-wires" class="md-nav__link">
+    <span class="md-ellipsis">
+      Male-to-Male Jumper Wires
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupont-ribbon-cable-male-to-female-20-cm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dupont Ribbon Cable (Male-to-Female, 20 cm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-pico-2-w" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi Pico 2 W
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-gauge-solid-core-hookup-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      22-Gauge Solid-Core Hookup Wire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#things-you-do-not-need-to-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things You Do Not Need to Buy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purchasing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purchasing Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Purchasing Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordering-lead-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordering lead time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classroom-order-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classroom Order Worksheet
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Classroom Order Worksheet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-classroom-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared classroom tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../instructors-guide/plans/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    AI Plans
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../references/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    References
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../license/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contact/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contact
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#purchasing-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purchasing Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Purchasing Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#summary-of-parts-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary of Parts List
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-pico-2-h" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi Pico 2 H
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#micro-usb-data-cable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Micro-USB Data Cable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242-inch-oled-display-ssd1309-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.42-inch OLED Display (SSD1309, SPI)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inmp441-i2s-mems-microphone" class="md-nav__link">
+    <span class="md-ellipsis">
+      INMP441 I²S MEMS Microphone
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#momentary-push-buttons-66-mm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Momentary Push Buttons (6×6 mm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solderless-breadboard-830-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      Solderless Breadboard (830 Point)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#male-to-male-jumper-wires" class="md-nav__link">
+    <span class="md-ellipsis">
+      Male-to-Male Jumper Wires
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupont-ribbon-cable-male-to-female-20-cm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dupont Ribbon Cable (Male-to-Female, 20 cm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raspberry-pi-pico-2-w" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raspberry Pi Pico 2 W
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-gauge-solid-core-hookup-wire" class="md-nav__link">
+    <span class="md-ellipsis">
+      22-Gauge Solid-Core Hookup Wire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#things-you-do-not-need-to-buy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things You Do Not Need to Buy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#purchasing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Purchasing Strategy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Purchasing Strategy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ordering-lead-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ordering lead time
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classroom-order-worksheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classroom Order Worksheet
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Classroom Order Worksheet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-classroom-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shared classroom tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/dmccreary/fft-benchmarking/blob/main/docs/learning-graph/teachers-guide/index.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="instructors-guide">Instructor's Guide</h1>
+<p>This page holds the Purchasing Guide section of the Instructor's Guide. Teaching notes,
+module pacing and classroom logistics are in the main
+<a href="../../instructors-guide/">Instructor's Guide introduction</a>.</p>
+<h2 id="purchasing-guide">Purchasing Guide</h2>
+<p><img alt="The FFT Lab Kit: a Pico 2, a 2.42-inch OLED showing a live spectrum, two push buttons and an INMP441 microphone on a breadboard" src="../../img/fft-benchmarking-kit.jpg" width="600" /></p>
+<p>The whole course runs on a single kit, the <strong>FFT Lab Kit</strong>: a Raspberry Pi Pico 2, a 2.42-inch
+128×64 OLED display, an INMP441 I²S microphone, two push buttons, a breadboard and wiring. Every
+one of the 35 labs uses it. One kit costs about <strong><span class="arithmatex">\(25** at single-unit prices, about **\)</span>19.50 per
+student</strong> for a class of 20, and about <strong>$16 per student</strong> at district scale (100+ students). The
+cheapest route is direct from China, which took <strong>8–15 days</strong> in our 2026 orders, so order at
+least three weeks before the term starts, and four to five weeks for a full classroom set.</p>
+<div class="admonition note">
+<p class="admonition-title">Prices checked October 2026</p>
+<p>Component prices move, and marketplace listings turn over constantly. Treat every figure
+here as a planning estimate, not a quote. Prices were checked with web searches of
+Micro Center, Amazon, AliExpress, Alibaba and specialty retailers on October 18, 2026;
+figures marked <em>estimate</em> could not be confirmed from a current listing, and each one says
+how it was estimated.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Don't order the wrong one: Pico 2, not the original Pico</p>
+<p>A <strong>Raspberry Pi Pico 2 (RP2350)</strong> is required. The original Pico (RP2040) looks almost
+identical in listing photos, but its Cortex-M0+ core has no floating-point unit, so
+<a href="../../labs/30-fpu-assembly/">Labs 30–34</a> (the FPU and assembly labs) cannot run on
+it. Look for "Pico 2" and "RP2350" in the listing title. Sellers often list both boards
+side by side, and the RP2040 Pico is cheaper, so it is the one that ends up in the cart.</p>
+</div>
+<h3 id="summary-of-parts-list">Summary of Parts List</h3>
+<p><strong>Required</strong></p>
+<ul>
+<li><a href="#raspberry-pi-pico-2-h">Raspberry Pi Pico 2 H</a> — the microcontroller every lab runs on — FFT Lab Kit (~$4.99)</li>
+<li><a href="#micro-usb-data-cable">Micro-USB Data Cable</a> — power and the Thonny connection — FFT Lab Kit (~$2.50)</li>
+<li><a href="#242-inch-oled-display-ssd1309-spi">2.42-inch OLED Display (SSD1309, SPI)</a> — the spectrum, meter and tuner display — FFT Lab Kit (~$7.20)</li>
+<li><a href="#inmp441-i2s-mems-microphone">INMP441 I²S MEMS Microphone</a> — the only audio input — FFT Lab Kit (~$3.00)</li>
+<li><a href="#momentary-push-buttons-66-mm">Momentary Push Buttons (6×6 mm)</a> — mode switching, two per kit — FFT Lab Kit (~$0.10 for two)</li>
+<li><a href="#solderless-breadboard-830-point">Solderless Breadboard (830 Point)</a> — holds the whole circuit — FFT Lab Kit (~$2.00)</li>
+<li><a href="#male-to-male-jumper-wires">Male-to-Male Jumper Wires</a> — short breadboard connections — FFT Lab Kit (~$2.00)</li>
+<li><a href="#dupont-ribbon-cable-male-to-female-20-cm">Dupont Ribbon Cable (Male-to-Female, 20 cm)</a> — display and microphone cables — FFT Lab Kit (~$2.95)</li>
+</ul>
+<p><strong>Optional</strong></p>
+<ul>
+<li><a href="#raspberry-pi-pico-2-w">Raspberry Pi Pico 2 W</a> — wireless board for the Chapter 28 wake-word extension — FFT Lab Kit (~$6.99)</li>
+<li><a href="#22-gauge-solid-core-hookup-wire">22-Gauge Solid-Core Hookup Wire</a> — shared classroom wire for custom wiring — FFT Lab Kit (~$14.99 per classroom)</li>
+</ul>
+<p><strong>Estimated total per kit:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Kit</th>
+<th>One kit (single-unit prices)</th>
+<th>Per student, class of 20</th>
+<th>Per student, district (100+)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FFT Lab Kit</td>
+<td>~$24.74</td>
+<td>~$19.51</td>
+<td>~$16.08</td>
+</tr>
+</tbody>
+</table>
+<p>The course description quotes the kit at <strong>about $20 per student</strong>. A single kit costs more,
+about <span class="arithmatex">\(25, for two reasons: the ribbon cable and USB cable are sold in packs that serve
+several kits, and single-unit shipping on the display and microphone costs more per piece.
+If you buy one kit from scratch, the cash outlay is about **\)</span>35**, because you also buy a
+100-pack of buttons and a 3-pack of USB cables. A classroom order of 20 lands right on the
+quoted ~$20. Shared tools, such as the hookup wire, are kept out of the per-student figures.</p>
+<h3 id="raspberry-pi-pico-2-h">Raspberry Pi Pico 2 H</h3>
+<p><img alt="Raspberry Pi Pico 2 board, top view, on a light background" src="pico-2.jpg" width="400" /></p>
+<p><em>Photo: Suyash Dwivedi, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a> via <a href="https://commons.wikimedia.org/wiki/File:Raspberry_PI_Pico_2_02.jpg">Wikimedia Commons</a>. The photo shows the plain Pico 2; the Pico 2 H is the same board with header pins already soldered on.</em></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1)</p>
+<p><strong>Used for:</strong> Every lab, starting with <a href="../../labs/01-hello-world/">Lab 1: Hello World</a>;
+<a href="../../labs/28-fpu-check/">Lab 28: Does Your CPU Have an FPU?</a> and
+<a href="../../labs/30-fpu-assembly/">Labs 30–34</a> depend on its hardware FPU.</p>
+<p>The Pico 2 is built on the RP2350: a dual-core Arm Cortex-M33 at 150 MHz with a hardware
+floating-point unit and 520 KB of RAM. Every lab runs MicroPython directly on it. Buy the
+<strong>Pico 2 H</strong> (the "H" means headers are pre-soldered) so the board itself needs no soldering. The plain
+Pico 2 is a dollar cheaper but arrives with bare holes along both edges.</p>
+<p><strong>Requirements:</strong> It must be an RP2350 board with the hardware FPU. Wireless is not needed for
+any of the 35 labs, so the Pico 2 W is only worth buying for the optional Chapter 28 extension.</p>
+<p><strong>Prep work:</strong> None. The Pico 2 H is breadboard-ready as shipped. If you buy the plain Pico 2
+instead, solder two 20-pin male headers to it, which takes about 15 minutes per board with a
+breadboard used as a jig.</p>
+<p><strong>Cost:</strong> ~$4.99 each in quantity 1 (Micro Center Pico 2 H, sale price, regularly $5.99,
+in-store pickup only; the plain Pico 2 is <span class="arithmatex">\(3.99 and ships) · ~\)</span>4.99 each in a classroom order of
+20+ · ~$5.99 each at district scale (<em>estimate</em>: Raspberry Pi holds a fixed retail price, so
+we found no distributor discount and assume the regular $5.99 price). Raspberry Pi lists the
+Pico 2 from $5.</p>
+<p><strong>Trusted sellers:</strong> Buy from authorized resellers: Micro Center, Adafruit, SparkFun, Digi-Key
+or PiShop.us. Relabeled RP2040 boards and clones do appear on general marketplaces. A genuine
+board has the Raspberry Pi logo, "Pico 2" on the silkscreen, and an RP2350 chip, and the price
+is close to the fixed retail price. A listing far below $4 is a warning sign.</p>
+<p><strong>Search keywords:</strong> <code>Raspberry Pi Pico 2 H</code>, <code>Pico 2 RP2350 with headers</code>, <code>SC1632</code>
+(the manufacturer part number for the Pico 2 H; <code>SC1631</code> is the plain Pico 2)</p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=Raspberry+Pi+Pico+2+H+RP2350">Search eBay for "Raspberry Pi Pico 2 H RP2350"</a></li>
+<li><a href="https://www.amazon.com/s?k=Raspberry+Pi+Pico+2+H+RP2350">Search Amazon for "Raspberry Pi Pico 2 H RP2350"</a></li>
+<li><a href="https://www.microcenter.com/search/search_results.aspx?Ntt=Raspberry+Pi+Pico+2+H+RP2350">Search Micro Center for "Raspberry Pi Pico 2 H RP2350"</a></li>
+</ul>
+<hr />
+<h3 id="micro-usb-data-cable">Micro-USB Data Cable</h3>
+<p><img alt="USB-A to Micro-USB cable, showing both plugs" src="micro-usb-cable.jpg" width="350" /></p>
+<p><em>Photo: Electronicgrup, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a> via <a href="https://commons.wikimedia.org/wiki/File:USB_2.0_A_MACHO_-_MICRO_USB_B_MACHO.jpg">Wikimedia Commons</a></em></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1)</p>
+<p><strong>Used for:</strong> <a href="../../labs/01-hello-world/">Lab 1: Hello World</a> and every lab after it.
+It powers the Pico 2 and carries the Thonny connection.</p>
+<p>The Pico 2 has a <strong>Micro-USB</strong> port, not USB-C. The cable has to carry <strong>data</strong>, not just
+power. Charge-only cables look the same, and they are the most common reason a Pico "isn't
+detected" on day one. Many students already own a suitable cable. If your laptops only have
+USB-C ports, buy USB-C to Micro-USB cables instead.</p>
+<div class="admonition tip">
+<p class="admonition-title">Confirm it says data or sync</p>
+<p>Look for "data", "sync" or "480 Mbps" in the listing. A cable sold only as a "charging
+cord" may have no data wires at all.</p>
+</div>
+<p><strong>Prep work:</strong> None. Test each cable with a Pico 2 in Thonny on arrival, and label or discard
+any cable that only charges.</p>
+<p><strong>Cost:</strong> ~$2.50 each in quantity 1 (Cable Matters 3-pack, $7.49 on Amazon; Amazon Basics
+3-pack <span class="arithmatex">\(9.44) · ~\)</span>2.50 each in a classroom order of 20+ (seven 3-packs) · ~$1.00 each at
+district scale (<em>estimate</em>: we could not confirm a current bulk listing, so this assumes the
+same roughly 60% discount we saw on the other commodity parts in China-direct bulk orders).</p>
+<p><strong>Spotting a bad batch:</strong> A charge-only cable or a loose plug shows up as a Pico 2 that is
+missing from Thonny's port list. Test on arrival and replace the odd dud rather than returning
+it.</p>
+<p><strong>Search keywords:</strong> <code>micro USB data sync cable 3ft</code>, <code>USB-A to Micro-B data cable</code>,
+<code>USB-C to Micro-USB data cable</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=micro+USB+data+sync+cable+3ft">Search eBay for "micro USB data sync cable 3ft"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-micro-usb-data-sync-cable-3ft.html">Search AliExpress for "micro USB data sync cable 3ft"</a></li>
+<li><a href="https://www.amazon.com/s?k=micro+USB+data+sync+cable+3ft">Search Amazon for "micro USB data sync cable 3ft"</a></li>
+</ul>
+<hr />
+<h3 id="242-inch-oled-display-ssd1309-spi">2.42-inch OLED Display (SSD1309, SPI)</h3>
+<p><img alt="2.42-inch white OLED display running a clock, showing the size and readability of the module" src="oled-2-42-inch.jpg" width="400" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1)</p>
+<p><strong>Used for:</strong> <a href="../../labs/04-oled-display/">Lab 4: The OLED Display</a> onward, including
+<a href="../../labs/08-sound-levels/">Lab 8: Sound Levels</a>,
+<a href="../../labs/21-real-spectrum/">Lab 21: Spectrum of a Real Sound</a>,
+<a href="../../labs/23-tuner/">Lab 23: Build a Tuner</a> and
+<a href="../../labs/24-realtime-analyzer/">Lab 24: Real-Time Spectrum Analyzer</a>. It is the only
+visual output in the kit.</p>
+<p>This is a 2.42-inch, 128×64-pixel monochrome OLED module. We chose the 2.42-inch size over the
+common 0.96-inch one because a spectrum is readable from across a table. The modules use the
+<strong>SSD1309</strong> controller. The course's <code>ssd1306</code> MicroPython driver works with it unchanged,
+and <code>config.py</code> already notes both chips. The colour (white, blue, yellow or green) is a matter
+of taste.</p>
+<p><strong>Requirements:</strong> It must be the <strong>7-pin SPI module board</strong> (pins GND, VCC, SCL, SDA, RES, DC,
+CS), because <code>config.py</code> and every wiring diagram assume SPI on GPIO 2–6.</p>
+<div class="admonition tip">
+<p class="admonition-title">Confirm the 7-pin SPI module, not a bare panel or the 4-pin I2C version</p>
+<p>Two lookalikes turn up in the same search. The <strong>4-pin</strong> version is I2C-only and will not
+match the labs without code and wiring changes. A <strong>bare 24-pin panel</strong> with a thin ribbon
+(0.5 mm pitch) cannot plug into a breadboard at all. Count seven pins in the listing photo.
+Seven-pin boards ship set to SPI by default (I2C needs resistors moved), which is what you
+want.</p>
+</div>
+<p><strong>Prep work:</strong> Usually none, because most 7-pin modules ship with the header already
+soldered. Check the listing photo; if the header is loose, soldering it takes about 5 minutes.
+The optional <a href="https://dmccreary.github.io/learning-micropython/hands-on-labs/15-oled-setup/19-wiring-harness/">wiring harness</a>
+described in Lab 4 takes about 10 minutes per kit and saves a lot of "my display went dark"
+debugging later.</p>
+<p><strong>Cost:</strong> ~$7.20 each in quantity 1 (AliExpress, TZT 7-pin SPI listing at <span class="arithmatex">\(7.15–\)</span>7.26; the same
+module is <span class="arithmatex">\(13.99 on Amazon for fast domestic delivery) · ~\)</span>7.20 each in a classroom order of
+20+ · ~$6.50 each at district scale (factory listings at <span class="arithmatex">\(6.41–\)</span>7.90 with a 3-piece minimum
+order). This is the most expensive part in the kit, and the one where ordering ahead saves the
+most.</p>
+<p><strong>Spotting a bad batch:</strong> Look for dead pixel rows, a cracked glass corner (the panel extends
+past the circuit board), or a module that stays blank with known-good wiring. Run Lab 4's test
+pattern on every display on arrival.</p>
+<p><strong>Search keywords:</strong> <code>2.42 inch OLED SSD1309 SPI 7 pin</code>, <code>2.42" 128x64 OLED module</code>, <code>12864 OLED
+SSD1309</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=2.42+inch+OLED+SSD1309+SPI+7+pin">Search eBay for "2.42 inch OLED SSD1309 SPI 7 pin"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-2-42-inch-oled-ssd1309-spi-7-pin.html">Search AliExpress for "2.42 inch OLED SSD1309 SPI 7 pin"</a></li>
+<li><a href="https://www.amazon.com/s?k=2.42+inch+OLED+SSD1309+SPI+7+pin">Search Amazon for "2.42 inch OLED SSD1309 SPI 7 pin"</a></li>
+<li><a href="https://www.alibaba.com/trade/search?SearchText=2.42+inch+OLED+SSD1309+SPI+7+pin">Search Alibaba for "2.42 inch OLED SSD1309 SPI 7 pin"</a></li>
+</ul>
+<hr />
+<h3 id="inmp441-i2s-mems-microphone">INMP441 I²S MEMS Microphone</h3>
+<p><img alt="INMP441 microphone breakout board, round, with a loose six-pin yellow header beside it" src="inmp441-microphone.png" width="350" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1)</p>
+<p><strong>Used for:</strong> <a href="../../labs/07-first-sound/">Lab 7: Your First Sound Capture</a> and every
+audio lab after it:
+<a href="../../labs/08-sound-levels/">Lab 8</a>, <a href="../../labs/09-aliasing/">Lab 9</a>,
+<a href="../../labs/10-bit-depth/">Lab 10</a>, <a href="../../labs/21-real-spectrum/">Lab 21</a>,
+<a href="../../labs/23-tuner/">Lab 23</a> and <a href="../../labs/24-realtime-analyzer/">Lab 24</a>.</p>
+<p>The INMP441 is a digital MEMS microphone with its own amplifier, filter and 24-bit ADC on
+board. It sends samples straight to the Pico 2 over I²S, so it needs no analog circuitry. Buy
+the <strong>INMP441</strong> by name. Lookalike "INMP441-compatible" modules (MS3625, MS4030) are cheaper,
+but the labs were tested on the INMP441.</p>
+<p><strong>Prep work:</strong> Some minor soldering required. Most listings ship with the six-pin header
+<strong>loose</strong>, as in the photo, and soldering the headers takes about 5 minutes per board. This
+is the only soldering in the kit. Some listings are sold as
+"solderless" with the header already fitted, and these are worth the extra few cents if you
+want a no-solder kit. When wiring, students must not skip the L/R pin: Lab 7 ties it to GND.</p>
+<p><strong>Cost:</strong> ~$3.00 each in quantity 1 (AliExpress singles at <span class="arithmatex">\(2.19–\)</span>4.39; an Amazon 3-pack is
+<span class="arithmatex">\(8.54–\)</span>9.99) · ~$1.00 each in a classroom order of 20+ (AliExpress listings around <span class="arithmatex">\(0.99) ·
+~\)</span>0.89 each at district scale (an Alibaba tiered listing at $0.89 for 10–999 pieces and $0.79
+at 1,000+).</p>
+<p><strong>Spotting a bad batch:</strong> A dead or badly soldered microphone reads as all zeros, or as one
+constant number, in Lab 7, which looks exactly like a wiring mistake. Check the solder joints
+first, then swap in a spare. At $1 each, buy two or three extras rather than returning duds.</p>
+<p><strong>Search keywords:</strong> <code>INMP441 I2S microphone module</code>, <code>INMP441 MEMS omnidirectional</code>,
+<code>INMP441 solderless</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=INMP441+I2S+microphone+module">Search eBay for "INMP441 I2S microphone module"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-inmp441-i2s-microphone-module.html">Search AliExpress for "INMP441 I2S microphone module"</a></li>
+<li><a href="https://www.amazon.com/s?k=INMP441+I2S+microphone+module">Search Amazon for "INMP441 I2S microphone module"</a></li>
+<li><a href="https://www.alibaba.com/trade/search?SearchText=INMP441+I2S+microphone+module">Search Alibaba for "INMP441 I2S microphone module"</a></li>
+</ul>
+<hr />
+<h3 id="momentary-push-buttons-66-mm">Momentary Push Buttons (6×6 mm)</h3>
+<p><img alt="Momentary tactile push button with a round cap and four leads" src="momentary-push-button.png" width="250" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×2)</p>
+<p><strong>Used for:</strong> <a href="../../labs/05-buttons/">Lab 5: Buttons and Interaction</a>,
+<a href="../../labs/06-deploying-code/">Lab 6: Deploying Code</a>, and mode switching in the
+tuner, the analyzer and the <a href="../../labs/35-capstone/">Lab 35 capstone</a>.</p>
+<p>Standard 6×6 mm, four-leg, through-hole tactile switches. Each button connects one GPIO pin
+(GPIO 14 or 15) to GND and uses the Pico's internal pull-up, so no resistor is needed. Caps
+are optional, but they make the buttons easier to press.</p>
+<p><strong>Prep work:</strong> None. They are breadboard-ready as shipped. Show students that the four legs
+are two connected pairs, so a button set across the breadboard's center gap is the reliable
+way to place it.</p>
+<p><strong>Cost:</strong> ~$0.10 for two in quantity 1 (a 100-pack is $4.99 on Amazon, about <span class="arithmatex">\(0.05 each) ·
+~\)</span>0.05 each in a classroom order of 20+ (one 100-pack covers 20 kits with 60 spares) · ~$0.04
+each at district scale (Alibaba 4-pin 6×6 mm switches at a 1,000-piece minimum order).</p>
+<p><strong>Spotting a bad batch:</strong> Look for legs bent too short to seat, or switches that stay closed
+or never click. Discard the odd bad one; the 100-pack has plenty of spares.</p>
+<p><strong>Search keywords:</strong> <code>6x6mm tactile push button 4 pin</code>, <code>tact switch 6x6x5 DIP</code>,
+<code>momentary tactile switch</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=6x6mm+tactile+push+button+4+pin">Search eBay for "6x6mm tactile push button 4 pin"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-6x6mm-tactile-push-button-4-pin.html">Search AliExpress for "6x6mm tactile push button 4 pin"</a></li>
+<li><a href="https://www.amazon.com/s?k=6x6mm+tactile+push+button+4+pin">Search Amazon for "6x6mm tactile push button 4 pin"</a></li>
+<li><a href="https://www.alibaba.com/trade/search?SearchText=6x6mm+tactile+push+button+4+pin">Search Alibaba for "6x6mm tactile push button 4 pin"</a></li>
+</ul>
+<hr />
+<h3 id="solderless-breadboard-830-point">Solderless Breadboard (830 Point)</h3>
+<p><img alt="Full-size 830-point solderless breadboard, transparent, with power rails along both edges" src="breadboard-830.jpg" width="450" /></p>
+<p><em>Photo: oomlout, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a> via <a href="https://commons.wikimedia.org/wiki/File:BREB-02_(14335226011).jpg">Wikimedia Commons</a></em></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1)</p>
+<p><strong>Used for:</strong> Every wired lab from <a href="../../labs/04-oled-display/">Lab 4</a> on. It holds the
+Pico 2, the display cable, the microphone and the buttons.</p>
+<p>A full-size 830 tie-point breadboard, about 6.5 × 2.2 inches, often sold as "MB-102". Buy the
+full size: the half-size 400-point boards used in other kits are too short to hold the Pico 2,
+two buttons and two cable headers without crowding.</p>
+<p><strong>Prep work:</strong> None. It is breadboard-ready as shipped. Optionally, mark the 3V3 and GND rails
+with a permanent marker, since the most expensive mistake in the course is a display wired to
+5 V.</p>
+<p><strong>Cost:</strong> ~$2.00 each in quantity 1 (an Amazon 10-pack at $19.99; a single board is <span class="arithmatex">\(6.94 from
+Circuit Specialists) · ~\)</span>1.10 each in a classroom order of 20+ (AliExpress MB-102 listings at
+<span class="arithmatex">\(0.68–\)</span>2.61, most around <span class="arithmatex">\(0.99–\)</span>1.21) · ~$0.40 each at district scale (Alibaba listings at
+$0.40 for 5–49 pieces, plus a flat shipping charge).</p>
+<p><strong>Spotting a bad batch:</strong> Cheap breadboards are sometimes factory seconds. The usual defect is
+a rail or row clip that is not bent properly, so wires will not seat or make only intermittent
+contact. Test each board with a jumper on arrival and throw out the odd bad one. Returns are
+not worth the time at $1 a board.</p>
+<p><strong>Search keywords:</strong> <code>830 point solderless breadboard</code>, <code>MB-102 breadboard</code>, <code>full size breadboard</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=830+point+solderless+breadboard">Search eBay for "830 point solderless breadboard"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-830-point-solderless-breadboard.html">Search AliExpress for "830 point solderless breadboard"</a></li>
+<li><a href="https://www.amazon.com/s?k=830+point+solderless+breadboard">Search Amazon for "830 point solderless breadboard"</a></li>
+<li><a href="https://www.alibaba.com/trade/search?SearchText=830+point+solderless+breadboard">Search Alibaba for "830 point solderless breadboard"</a></li>
+</ul>
+<hr />
+<h3 id="male-to-male-jumper-wires">Male-to-Male Jumper Wires</h3>
+<p><img alt="A bundle of male-to-male breadboard jumper wires in assorted colors" src="jumper-wires-male-to-male.png" width="400" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×1 set)</p>
+<p><strong>Used for:</strong> <a href="../../labs/04-oled-display/">Lab 4</a> and
+<a href="../../labs/05-buttons/">Lab 5</a>: the short breadboard-to-breadboard links for power
+rails, ground and the buttons.</p>
+<p>A mixed-length set of male-to-male jumpers with pin ends that plug straight into breadboard
+rows. Each kit needs only about ten wires, so a 65-piece set can be split among several
+students if you prefer.</p>
+<p><strong>Prep work:</strong> None. They are breadboard-ready as shipped.</p>
+<p><strong>Cost:</strong> ~$2.00 per set in quantity 1 (65-piece sets at <span class="arithmatex">\(1.99–\)</span>5.50) · ~<span class="arithmatex">\(2.00 per set in a
+classroom order of 20+ · ~\)</span>1.00 per set at district scale (<em>estimate</em>: we found no current
+bulk listing, so this assumes the same roughly 50% bulk discount as the ribbon cable below).</p>
+<p><strong>Spotting a bad batch:</strong> Pin ends that snap off or wobble in their crimp are the usual
+defect. They cause intermittent faults that look like code bugs. Throw out any jumper whose
+tip moves.</p>
+<p><strong>Search keywords:</strong> <code>breadboard jumper wires male to male</code>, <code>65 pcs jumper wire kit</code>,
+<code>dupont jumper M-M</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=breadboard+jumper+wires+male+to+male">Search eBay for "breadboard jumper wires male to male"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-breadboard-jumper-wires-male-to-male.html">Search AliExpress for "breadboard jumper wires male to male"</a></li>
+<li><a href="https://www.amazon.com/s?k=breadboard+jumper+wires+male+to+male">Search Amazon for "breadboard jumper wires male to male"</a></li>
+</ul>
+<hr />
+<h3 id="dupont-ribbon-cable-male-to-female-20-cm">Dupont Ribbon Cable (Male-to-Female, 20 cm)</h3>
+<p><img alt="A multicolored Dupont ribbon cable with male pins on one end and female sockets on the other" src="dupont-ribbon-cable-m-f.png" width="450" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (×13 wires, about one-third of a 40-wire ribbon)</p>
+<p><strong>Used for:</strong> The 7-wire display cable in <a href="../../labs/04-oled-display/">Lab 4</a> and the
+6-wire microphone cable in <a href="../../labs/07-first-sound/">Lab 7</a>.</p>
+<p>A 40-wire ribbon of Dupont jumpers, with a female socket on one end and a male pin on the
+other. Peel off a strip of seven wires for the display and six for the microphone. The female
+ends push onto the module's header pins, and the male ends go into the breadboard. One 40-wire
+ribbon makes cables for three kits.</p>
+<p><strong>Prep work:</strong> Peel the ribbon into 7-wire and 6-wire strips. It takes about 2 minutes per
+kit. Keep the strips intact, because a ribbon strip stays in pin order and is far harder to
+miswire than loose jumpers.</p>
+<p><strong>Cost:</strong> ~<span class="arithmatex">\(2.95 per 40-wire ribbon in quantity 1 (US\)</span>2.95 at PiShop; €2.49 in Europe) ·
+~$1.00 per ribbon in a classroom order of 20+ (AliExpress kits from about $0.99), about <span class="arithmatex">\(0.33
+per kit · ~\)</span>0.65 per ribbon at district scale (an Alibaba listing for 40-pin 20 cm M-F), about
+$0.22 per kit.</p>
+<p><strong>Spotting a bad batch:</strong> Female sockets that are too loose to grip a header pin. Test-fit one
+strip on a module header when the order arrives.</p>
+<p><strong>Search keywords:</strong> <code>dupont jumper wire 40 pin male to female 20cm</code>, <code>M-F dupont ribbon cable</code>,
+<code>40P jumper wire female male</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=dupont+jumper+wire+40+pin+male+to+female+20cm">Search eBay for "dupont jumper wire 40 pin male to female 20cm"</a></li>
+<li><a href="https://www.aliexpress.com/w/wholesale-dupont-jumper-wire-40-pin-male-to-female-20cm.html">Search AliExpress for "dupont jumper wire 40 pin male to female 20cm"</a></li>
+<li><a href="https://www.amazon.com/s?k=dupont+jumper+wire+40+pin+male+to+female+20cm">Search Amazon for "dupont jumper wire 40 pin male to female 20cm"</a></li>
+<li><a href="https://www.alibaba.com/trade/search?SearchText=dupont+jumper+wire+40+pin+male+to+female+20cm">Search Alibaba for "dupont jumper wire 40 pin male to female 20cm"</a></li>
+</ul>
+<hr />
+<h3 id="raspberry-pi-pico-2-w">Raspberry Pi Pico 2 W</h3>
+<!-- TODO: image needed — see pico-2-w-image-description.md -->
+<p><em>Photo pending. See the <a href="pico-2-w-image-description/">image brief</a>.</em></p>
+<p><strong>Used in:</strong> FFT Lab Kit (optional, ×1, replaces the Pico 2 H)</p>
+<p><strong>Used for:</strong> The optional extension
+<a href="../../chapters/28-wake-word-detection/">Chapter 28: Wake Word Detection</a>, which hands
+detected audio to a cloud service over Wi-Fi. It also runs all 35 labs exactly as the
+Pico 2 does.</p>
+<p>The wireless version of the Pico 2: the same RP2350, plus 2.4 GHz Wi-Fi and Bluetooth 5.2. Buy
+it only if you plan to teach the Chapter 28 extension. Note that the onboard LED on a W board
+is reached as <code>Pin("LED")</code>, and the course's <code>config.py</code> already handles this.</p>
+<p><strong>Requirements:</strong> It must be the <strong>Pico 2 W (RP2350)</strong>, not the older Pico W (RP2040). The same
+FPU warning as the Pico 2 applies.</p>
+<p><strong>Prep work:</strong> None for the pre-soldered "WH" version. The plain Pico 2 W needs headers soldered
+on (about 15 minutes).</p>
+<p><strong>Cost:</strong> ~<span class="arithmatex">\(6.99 each in quantity 1 (Micro Center Pico 2 W) · ~\)</span>6.99 each in a classroom order
+of 20+, about <span class="arithmatex">\(2.00 more per student than the Pico 2 H · ~\)</span>6.99 at district scale
+(<em>estimate</em>: we assume the fixed retail price holds, as it does for the Pico 2).</p>
+<p><strong>Trusted sellers:</strong> As for the Pico 2, buy from Micro Center, Adafruit, SparkFun, Digi-Key or
+PiShop.us.</p>
+<p><strong>Search keywords:</strong> <code>Raspberry Pi Pico 2 W</code>, <code>Pico 2 WH</code>, <code>RP2350 wireless</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=Raspberry+Pi+Pico+2+W">Search eBay for "Raspberry Pi Pico 2 W"</a></li>
+<li><a href="https://www.amazon.com/s?k=Raspberry+Pi+Pico+2+W">Search Amazon for "Raspberry Pi Pico 2 W"</a></li>
+<li><a href="https://www.microcenter.com/search/search_results.aspx?Ntt=Raspberry+Pi+Pico+2+W">Search Micro Center for "Raspberry Pi Pico 2 W"</a></li>
+</ul>
+<hr />
+<h3 id="22-gauge-solid-core-hookup-wire">22-Gauge Solid-Core Hookup Wire</h3>
+<p><img alt="Three 22-gauge solid-core wires with stripped ends, ready to push into a breadboard" src="22-gauge-solid-wire.jpg" width="250" /></p>
+<p><strong>Used in:</strong> FFT Lab Kit (optional, shared by the classroom)</p>
+<p><strong>Used for:</strong> Replacing a worn jumper, extending a connection, and the custom wiring students
+do in the <a href="../../labs/35-capstone/">Lab 35 capstone</a>. No lab requires it.</p>
+<p>Solid-core 22 AWG wire holds its shape and pushes cleanly into a breadboard, unlike stranded
+wire. It is usually sold as a six-colour kit of 25–30 ft spools. One kit supplies a whole
+classroom for years.</p>
+<p><strong>Prep work:</strong> Cut and strip to length as needed. A pair of wire strippers per table helps.</p>
+<p><strong>Cost:</strong> ~$14.99 per six-spool kit in quantity 1 (Amazon kits at <span class="arithmatex">\(13.59–\)</span>16.19; Adafruit's 6 × 25
+ft set is $15.95) · one kit per classroom, not per student · no separate district price (buy
+one kit per room).</p>
+<p><strong>Search keywords:</strong> <code>22 AWG solid core hookup wire kit</code>, <code>22 gauge solid wire 6 colors</code></p>
+<p><strong>Where to buy:</strong></p>
+<ul>
+<li><a href="https://www.ebay.com/sch/i.html?_nkw=22+AWG+solid+core+hookup+wire+kit">Search eBay for "22 AWG solid core hookup wire kit"</a></li>
+<li><a href="https://www.amazon.com/s?k=22+AWG+solid+core+hookup+wire+kit">Search Amazon for "22 AWG solid core hookup wire kit"</a></li>
+</ul>
+<hr />
+<h3 id="things-you-do-not-need-to-buy">Things You Do Not Need to Buy</h3>
+<ul>
+<li><strong>A tone source</strong> for <a href="../../labs/09-aliasing/">Lab 9: Sampling Rate and Aliasing</a>
+  and the tuner lab: a free tone-generator app on a phone, or an online tone generator in a
+  browser, works.</li>
+<li><strong>Software:</strong> Thonny and MicroPython are free.</li>
+</ul>
+<h3 id="purchasing-strategy">Purchasing Strategy</h3>
+<p><strong>Lead time is the real tradeoff.</strong> Direct-from-China listings on AliExpress and many eBay
+sellers run 40–70% cheaper than Amazon for the same commodity part. The 2.42-inch display is
+$7.20 from China against $13.99 on Amazon. Order a semester ahead and the savings are free.
+Order the week before the unit starts and you pay the Amazon premium.</p>
+<h4 id="ordering-lead-time">Ordering lead time</h4>
+<p>These figures are <strong>based on our 2026 orders to Minnesota</strong>: 75 deliveries measured from order
+date to arrival.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Orders measured</th>
+<th>Typical delivery</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AliExpress</td>
+<td>8 packages</td>
+<td>8–12 days (median 9)</td>
+<td>Every 2026 package arrived within two weeks</td>
+</tr>
+<tr>
+<td>eBay</td>
+<td>64 orders</td>
+<td>median 9 days</td>
+<td>US sellers 3–6 days; China sellers 8–15 days; about 10% took 15+ days, the worst 43 days</td>
+</tr>
+<tr>
+<td>Digi-Key</td>
+<td>—</td>
+<td>1–3 days</td>
+<td>The fastest shipped option for authentic boards</td>
+</tr>
+<tr>
+<td>Micro Center</td>
+<td>—</td>
+<td>same day</td>
+<td>In-store pickup; the Pico 2 H is pickup-only</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Our recommendation:</strong> place AliExpress and eBay orders <strong>at least three weeks</strong> before you need
+the parts, and <strong>four to five weeks ahead for a full classroom set</strong>. That way, a lost or very
+late package (about one in ten eBay orders took more than 15 days) can be reordered and still
+arrive in time. Use Digi-Key or Micro Center to fill last-minute gaps: a missing Pico 2, or a
+few extra cables the week of the lab. Expect longer delays around Lunar New Year, when Chinese
+factories and shipping largely stop for two weeks or more.</p>
+<p><strong>Buy one, then buy twenty.</strong> Order a single display and microphone from a seller first,
+confirm they are the 7-pin SPI display and a genuine INMP441, then place the classroom order
+with that same seller.</p>
+<p><strong>Order spares.</strong> Add 10–15% over the class count for the display, microphone and Pico 2.
+Microphones get mis-soldered, someone wires a display to 5 V, and a dead station in the middle
+of a lab costs more than the spare. Two spares of each module add about $29 to a class order.</p>
+<p><strong>Watch the pack sizes.</strong> Much of the classroom savings comes from pack breakpoints (buttons in
+hundreds, breadboards in tens, ribbons that serve three kits), not from per-unit discounts.
+Round the order up to the pack, not to the roster.</p>
+<p><strong>Buy boards from authorized resellers.</strong> Counterfeit and relabeled microcontroller boards turn
+up on general marketplaces. Micro Center, Adafruit, SparkFun, Digi-Key and PiShop.us sell
+genuine Pico 2 boards at the fixed retail price.</p>
+<p><strong>Expect the odd bad unit, not a bad order.</strong> The cheapest breadboards, buttons and jumpers are
+sometimes factory seconds. Test on arrival and discard the occasional dud.</p>
+<p><strong>District-scale orders.</strong> For 100+ students, Alibaba factory listings bring breadboards to
+about $0.40 and microphones under $0.90, at the cost of a minimum order quantity, a flat
+shipping fee, and a longer lead time than the figures above.</p>
+<p><strong>Check your district's purchasing rules first.</strong> Many districts cannot reimburse AliExpress or
+direct international orders and require a domestic vendor with a W-9. If that is your
+constraint, the Amazon and Micro Center prices are your real prices. Plan on about $30 per
+student instead of $20.</p>
+<h3 id="classroom-order-worksheet">Classroom Order Worksheet</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Required?</th>
+<th>Used in kits</th>
+<th>Qty per student</th>
+<th>Qty for 20 students</th>
+<th>Est. cost for 20</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raspberry Pi Pico 2 H</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>20</td>
+<td>$99.80</td>
+</tr>
+<tr>
+<td>Micro-USB data cable</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>21 (7 three-packs)</td>
+<td>$52.43</td>
+</tr>
+<tr>
+<td>2.42-inch OLED (SSD1309, SPI)</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>20</td>
+<td>$144.00</td>
+</tr>
+<tr>
+<td>INMP441 microphone</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>20</td>
+<td>$20.00</td>
+</tr>
+<tr>
+<td>6×6 mm push buttons</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>2</td>
+<td>100 (1 pack of 100)</td>
+<td>$4.99</td>
+</tr>
+<tr>
+<td>830-point breadboard</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>20</td>
+<td>$22.00</td>
+</tr>
+<tr>
+<td>Male-to-male jumper set</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1 set</td>
+<td>20 sets</td>
+<td>$40.00</td>
+</tr>
+<tr>
+<td>Dupont ribbon, 40-wire M-F 20 cm</td>
+<td>Required</td>
+<td>FFT Lab Kit</td>
+<td>1/3 ribbon</td>
+<td>7 ribbons</td>
+<td>$7.00</td>
+</tr>
+<tr>
+<td>Pico 2 W upgrade (difference over Pico 2 H)</td>
+<td>Optional</td>
+<td>FFT Lab Kit</td>
+<td>1</td>
+<td>20</td>
+<td>$40.00</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>Required subtotal</strong></td>
+<td><strong>$390.22</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>With optional parts</strong></td>
+<td><strong>$430.22</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Per student:</strong> ~<span class="arithmatex">\(19.51 required · ~\)</span>21.51 with the Pico 2 W upgrade. Add about $29 for two spares
+each of the Pico 2 H, display, microphone and breadboard.</p>
+<!-- For district orders (100+), use the district prices in each part section:
+     about $16.08 per student before shipping. -->
+
+<h4 id="shared-classroom-tools">Shared classroom tools</h4>
+<p>These are bought once and reused for years, so they are kept out of the per-student figure.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Cost</th>
+<th>How many</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22 AWG solid-core hookup wire kit</td>
+<td>~$14.99</td>
+<td>1 per classroom</td>
+</tr>
+<tr>
+<td>Wire strippers</td>
+<td>$8–15</td>
+<td>1 per table</td>
+</tr>
+<tr>
+<td>Soldering iron and solder (only if you buy plain Pico 2 boards or microphones with loose headers)</td>
+<td>$15–40</td>
+<td>1 per 4–6 students</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../instructors-guide/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Introduction
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../instructors-guide/plans/" class="md-footer__link md-footer__link--next" aria-label="Next: List of Plans">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                List of Plans
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "navigation.path", "navigation.prune", "toc.follow", "navigation.top", "navigation.footer", "content.action.edit"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+      
+        <script src="../../js/graph.js"></script>
+      
+    
+  <script>window.graph_options = {    debug: false,    base_path: '/fft-benchmarking/'};</script></body>
+</html>

@@ -30,7 +30,7 @@ undergraduates never get to touch this. You're about to.
 | Item | Approx. cost | Used from |
 |---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Lab 1 |
-| 2.42" SSD1309 OLED display, 128×64, SPI | $5 | Lab 4 |
+| 2.42" SSD1309 OLED display, 128×64, SPI | ~$7.20 | Lab 4 |
 | Two push buttons | $1 | Lab 5 |
 | INMP441 I²S MEMS microphone | $3 | Lab 7 |
 | Breadboard + jumper wires | $5 | Lab 4 |

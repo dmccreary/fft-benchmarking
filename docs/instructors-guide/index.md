@@ -107,7 +107,7 @@ Every student needs one kit, at roughly **$20** total:
 | Component | Approx. cost | First used | Purpose |
 |---|---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Lab 1 | Cortex-M33, 150 MHz, hardware FPU |
-| 2.42" SSD1309 OLED, 128×64, SPI | $5 | Lab 4 | Live spectrum display |
+| 2.42" SSD1309 OLED, 128×64, SPI | ~$7.20 | Lab 4 | Live spectrum display |
 | Two momentary push buttons | $1 | Lab 5 | Mode switching |
 | INMP441 I²S MEMS microphone | $3 | Lab 7 | Real audio capture |
 | Breadboard and jumper wires | $5 | Lab 4 | Connections |

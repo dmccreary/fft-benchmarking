@@ -44,8 +44,8 @@ from a spec sheet.
 
 ## Fun labs on a ~$20 kit
 
-Everything here runs on hardware you can buy for about **$20** and solder-free wire onto a
-breadboard in an afternoon:
+Everything here runs on hardware you can buy for about **$20** and wire onto a
+breadboard in an afternoon. Some minor soldering required (about 5 minutes for the microphone's header):
 
 | Component | Approx. cost | Purpose |
 |---|---|---|

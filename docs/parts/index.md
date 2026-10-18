@@ -1,5 +1,8 @@
 # Parts Used in the FFT Benchmarking Course
 
+For prices, search links and ordering lead times for every part, see the
+[Purchasing Guide](../learning-graph/teachers-guide/index.md#purchasing-guide).
+
 ## Raspberry Pi Pico 2
 
 [](https://dmccreary.github.io/learning-micropython/chapters/04-microcontrollers-hardware/#the-raspberry-pi-pico-family)

@@ -55,7 +55,7 @@ What genuinely helps:
 
 - **Basic programming** in any language. If you can write a loop and a function, you can do this.
 - **Comfort with algebra**, including sine and cosine as functions. No calculus is required.
-- **Willingness to plug in wires.** Five components on a breadboard, no soldering.
+- **Willingness to plug in wires.** Five components on a breadboard. Some minor soldering required (about 5 minutes to solder the microphone's header).
 
 What is explicitly taught from zero, with no assumed background:
 
@@ -77,7 +77,7 @@ Every student needs one kit, at roughly **$20** total.
 | Component | Approx. cost | First used | Purpose |
 |---|---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Lab 1 | Cortex-M33, 150 MHz, hardware FPU |
-| SSD1306 OLED, 128×64, SPI | $5 | Lab 4 | Live spectrum display |
+| 2.42" SSD1309 OLED, 128×64, SPI | $5 | Lab 4 | Live spectrum display |
 | Two momentary push buttons | $1 | Lab 5 | Mode switching |
 | INMP441 I²S MEMS microphone | $3 | Lab 7 | Real audio capture |
 | Breadboard and jumper wires | $5 | Lab 4 | Connections |

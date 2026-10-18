@@ -1,6 +1,6 @@
 # Lab 4: The OLED Display
 
-**Time:** ~45 minutes  |  **Prerequisites:** [Lab 3](../03-know-your-board/index.md)  |  **Hardware:** Pico 2, SSD1306 OLED, breadboard, jumper wires
+**Time:** ~45 minutes  |  **Prerequisites:** [Lab 3](../03-know-your-board/index.md)  |  **Hardware:** Pico 2, 2.42" SSD1309 OLED, breadboard, jumper wires
 
 !!! mascot-welcome "Time to give your chip a face"
     ![Echo waving welcome](../../img/mascot/welcome.png){ class="mascot-admonition-img" }

@@ -281,7 +281,7 @@ nav:
   - FAQ: faq.md
   - Instructor's Guide:
     - Introduction: instructors-guide/index.md
-    - Purchasing Parts: instructors-guide/purchasing-parts.md
+    - Purchasing Guide: learning-graph/teachers-guide/index.md
     - AI Plans:
       - List of Plans: instructors-guide/plans/index.md
       - Plan 1: instructors-guide/plans/01-fft-test-plan.md

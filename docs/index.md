@@ -50,7 +50,7 @@ breadboard in an afternoon:
 | Component | Approx. cost | Purpose |
 |---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Cortex-M33 core, 150 MHz, hardware FPU |
-| SSD1306 OLED, 128x64, SPI | $5 to $17 | Live spectrum display on a bright screen |
+| 2.42" SSD1309 OLED, 128x64, SPI | $5 to $17 | Live spectrum display on a bright screen |
 | Two momentary push buttons | $1 | Mode switching or changing parameters |
 | INMP441 I2S MEMS microphone | $3 | Real audio capture |
 | Breadboard and jumper wires | $2 | Building kit and making connections |

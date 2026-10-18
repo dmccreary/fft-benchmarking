@@ -29,7 +29,7 @@ have no prior background in FFTs, digital signal processing, or assembly languag
 the course's binding design constraint. What genuinely helps going in is basic programming
 experience in any language (if you can write a loop and a function, you're ready), comfort with
 algebra including sine and cosine as functions, and a willingness to plug wires into a
-breadboard. No calculus, no prior microcontroller experience, and no soldering are required. See
+breadboard. No calculus and no prior microcontroller experience are required. Some minor soldering required: about 5 minutes to solder the microphone's header. See
 the [course description](course-description.md) for the full prerequisites table.
 
 ### What prior knowledge do I need before starting?
@@ -45,7 +45,7 @@ and cosine), and patience for wiring a breadboard. See the
 ### What hardware do I need to buy for this course?
 
 Every student needs one kit costing roughly $20 total: a Raspberry Pi Pico 2 (RP2350, about $5),
-an SSD1306 OLED display (128×64, SPI, about $5), two momentary push buttons (about $1), an
+a 2.42" SSD1309 OLED display (128×64, SPI, about $5), two momentary push buttons (about $1), an
 INMP441 I²S MEMS microphone (about $3), and a breadboard with jumper wires (about $5). **Example:**
 the whole kit — board, display, mic, buttons, and breadboard — costs less than a single textbook,
 which is the point: real-time signal processing hardware that used to require a dedicated lab

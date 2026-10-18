@@ -107,7 +107,7 @@ Every student needs one kit, at roughly **$20** total:
 | Component | Approx. cost | First used | Purpose |
 |---|---|---|---|
 | Raspberry Pi Pico 2 (RP2350) | $5 | Lab 1 | Cortex-M33, 150 MHz, hardware FPU |
-| SSD1306 OLED, 128×64, SPI | $5 | Lab 4 | Live spectrum display |
+| 2.42" SSD1309 OLED, 128×64, SPI | $5 | Lab 4 | Live spectrum display |
 | Two momentary push buttons | $1 | Lab 5 | Mode switching |
 | INMP441 I²S MEMS microphone | $3 | Lab 7 | Real audio capture |
 | Breadboard and jumper wires | $5 | Lab 4 | Connections |
@@ -115,7 +115,9 @@ Every student needs one kit, at roughly **$20** total:
 !!! warning "Order the Pico 2, not the original Pico"
     A Pico 2 **W** works identically for every lab. The original Pico (RP2040) does **not** — its Cortex-M0+ core has no floating-point unit, so Labs 30–34 (the ARM assembly and FPU labs) cannot run on it. Double-check this when ordering kits for a class; Lab 28 teaches students to detect the problem themselves by reading the CPU's own registers, but by then it's too late to swap hardware mid-semester.
 
-No soldering is required — every component connects via breadboard and jumper wires.
+Some minor soldering required: most INMP441 microphones ship with their six-pin header loose, and soldering it takes about 5 minutes per kit. Every other component connects via breadboard and jumper wires.
+
+For part-by-part prices, search links and ordering lead times, see the [Purchasing Guide](../learning-graph/teachers-guide/index.md#purchasing-guide).
 
 ### The Eight Lab Modules
 
@@ -148,7 +150,7 @@ Every lab follows the same structure, which is worth knowing before you assign o
 
 ### Classroom Logistics Tips
 
-- **Order kits at least two weeks ahead.** The INMP441 microphone and SSD1306 OLED are common but not always in-stock everywhere; a class-wide bulk order is more reliable than asking students to source parts individually.
+- **Order kits at least two weeks ahead.** The INMP441 microphone and 2.42" SSD1309 OLED are common but not always in-stock everywhere; a class-wide bulk order is more reliable than asking students to source parts individually.
 - **One shared pin-mapping file.** Every lab imports pin numbers from a single `config.py`, set up once in Lab 4. If a student's wiring doesn't match `config.py`, that's the first thing to check.
 - **Pair students for Labs 28–34.** The ARM assembly labs are the most conceptually dense in the course; pairing helps students debug register-level mistakes together.
 - **Keep a few spare boards on hand.** A Pico 2 that won't mount as a USB drive is almost always a bad MicroPython flash, not a dead board — re-flashing (covered in Lab 1) fixes the vast majority of "my board is broken" reports.

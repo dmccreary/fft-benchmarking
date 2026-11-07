@@ -1,0 +1,211 @@
+{
+  "slug": "fft-lab-kit",
+  "title": "Real-Time DSP on a $5 Microcontroller (FFT Lab Kit)",
+  "kit_docs": "docs/index.md",
+  "duration": 30,
+  "fps": 30,
+  "animation": "animation.html",
+  "output": {
+    "name": "fft-lab-kit-30s"
+  },
+  "formats": {
+    "portrait": {
+      "default": true,
+      "width": 720,
+      "height": 1280,
+      "scale": 1.5,
+      "suffix": ""
+    },
+    "landscape": {
+      "width": 1280,
+      "height": 720,
+      "scale": 1.5,
+      "suffix": "-landscape"
+    }
+  },
+  "storyboard": [
+    {
+      "from": 0,
+      "to": 3,
+      "scene": "Meet the kit",
+      "caption": "Real-time DSP on a $5 Pico 2"
+    },
+    {
+      "from": 3,
+      "to": 8,
+      "scene": "Wire it",
+      "caption": "5 parts. No soldering."
+    },
+    {
+      "from": 8,
+      "to": 14,
+      "scene": "Listen",
+      "caption": "Whistle. Watch your spectrum."
+    },
+    {
+      "from": 14,
+      "to": 26,
+      "scene": "Speed race",
+      "caption": "21 seconds down to 0.62 ms"
+    },
+    {
+      "from": 26,
+      "to": 30,
+      "scene": "35 labs",
+      "caption": "Learn Python. Master the FFT."
+    }
+  ],
+  "music": {
+    "seed": 23,
+    "bpm": 120,
+    "transpose": 2,
+    "progression": [
+      "C",
+      "Am",
+      "F",
+      "G"
+    ],
+    "final_chord": "C",
+    "final_at": 29.0,
+    "fade_in": 1.2,
+    "fade_out": 1.1,
+    "limiter_drive": 1.6,
+    "peak": 0.68,
+    "layers": {
+      "arp": {
+        "from": 0.0,
+        "gain": 0.1,
+        "gain_full": 0.13,
+        "full_from": 8.0
+      },
+      "bass": {
+        "from": 4.0,
+        "gain": 0.3
+      },
+      "hats": {
+        "from": 3.0,
+        "soft_gain": 0.08,
+        "full_from": 12.0
+      },
+      "kick": {
+        "from": 8.0,
+        "gain": 0.85
+      },
+      "snare": {
+        "from": 12.0,
+        "gain": 0.45
+      },
+      "lead": {
+        "from": 14.0,
+        "to": 26.0,
+        "gain": 0.17
+      },
+      "riser": {
+        "from": 6.0,
+        "dur": 1.55
+      }
+    },
+    "accents": [
+      {
+        "type": "scale",
+        "t": 3.3,
+        "step": 0.15,
+        "preset": "pentatonic12",
+        "dur": 0.22,
+        "gain": 0.14
+      },
+      {
+        "type": "bell",
+        "t": 7.55,
+        "midi": 72,
+        "dur": 0.2,
+        "gain": 0.22
+      },
+      {
+        "type": "bell",
+        "t": 7.65,
+        "midi": 76,
+        "dur": 0.2,
+        "gain": 0.22
+      },
+      {
+        "type": "bell",
+        "t": 7.75,
+        "midi": 79,
+        "dur": 0.2,
+        "gain": 0.22
+      },
+      {
+        "type": "bell",
+        "t": 7.85,
+        "midi": 84,
+        "dur": 0.6,
+        "gain": 0.26
+      },
+      {
+        "type": "bell",
+        "t": 10.0,
+        "midi": 88,
+        "dur": 0.5,
+        "gain": 0.2
+      },
+      {
+        "type": "click",
+        "t": 26.0
+      },
+      {
+        "type": "scale",
+        "t": 26.65,
+        "step": 0.2,
+        "dur": 0.2,
+        "gain": 0.17,
+        "notes": [
+          60,
+          62,
+          64,
+          65,
+          67,
+          69,
+          71,
+          72,
+          74
+        ]
+      },
+      {
+        "type": "stab",
+        "t": 29.0,
+        "notes": [
+          60,
+          64,
+          67,
+          72,
+          76
+        ],
+        "bass": 36
+      },
+      {
+        "type": "boop",
+        "t": 15.0
+      },
+      {
+        "type": "boop",
+        "t": 17.0
+      },
+      {
+        "type": "boop",
+        "t": 19.0
+      },
+      {
+        "type": "boop",
+        "t": 21.0
+      },
+      {
+        "type": "bell",
+        "t": 22.5,
+        "midi": 84,
+        "dur": 0.6,
+        "gain": 0.24
+      }
+    ]
+  }
+}

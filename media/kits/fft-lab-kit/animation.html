@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>FFT Lab Kit Animation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&amp;family=VT323&amp;display=swap">
+<script>(function(){var m=location.search.match(/format=(\w+)/);if(m)document.documentElement.setAttribute('data-format',m[1]);})();</script>
+<style>
+body{margin:0;background:#0b0e13}
+:root{--W:1280px;--H:720px;--stage-bg:radial-gradient(900px 540px at 60% 50%,#13253a 0%,#0b0e13 72%);
+--cap-l:64px;--cap-t:30px;--cap-w:1152px;--kick-fs:15px;--kick-ls:.14em;--head-fs:44px;--head-mt:10px;
+--prog-l:64px;--prog-t:704px;--prog-w:1152px;--tag-fs:16px;
+--rig:translate(90px,170px) scale(1);
+--race-l:120px;--race-t:170px;--race-w:1040px;--lab-w:300px;--row-fs:22px;--row-h:78px;--stamp-fs:64px;
+--out-l:0px;--out-t:200px;--out-w:1280px;--img-h:320px;--url-fs:34px}
+.root{position:relative;width:var(--W);height:var(--H);overflow:hidden}
+.stage{position:absolute;inset:0;width:var(--W);height:var(--H);overflow:hidden;background:var(--stage-bg);font-family:'Rubik',system-ui,sans-serif;color:#e8edf5}
+.cover{position:absolute;inset:0;background:#0b0e13;z-index:10;animation:cover 30s linear infinite both}
+.cap{position:absolute;left:var(--cap-l);top:var(--cap-t);width:var(--cap-w);opacity:0}
+.kick{font-size:var(--kick-fs);font-weight:500;letter-spacing:var(--kick-ls);text-transform:uppercase;color:#2fd8f0}
+.head{font-size:var(--head-fs);font-weight:700;line-height:1.1;margin-top:var(--head-mt);color:#fff;text-wrap:balance}
+.cap0{animation:cap0 30s ease-out infinite both}.cap1{animation:cap1 30s ease-out infinite both}.cap2{animation:cap2 30s ease-out infinite both}.cap3{animation:cap3 30s ease-out infinite both}.cap4{animation:cap4 30s ease-out infinite both}
+.prog-track{position:absolute;left:var(--prog-l);top:var(--prog-t);width:var(--prog-w);height:4px;border-radius:2px;background:#1d2633}
+.prog-fill{position:absolute;left:var(--prog-l);top:var(--prog-t);width:var(--prog-w);height:4px;border-radius:2px;background:#2fd8f0;transform-origin:0 50%;animation:prog 30s linear infinite both}
+.kitwrap{position:absolute;inset:0;animation:kitVis 30s linear infinite both}
+.rig{position:absolute;left:0;top:0;width:1100px;height:460px;transform-origin:0 0;transform:var(--rig)}
+.rise{animation:rise 30s ease-out infinite both}
+.bb{background-color:#e9e4d8;background-image:radial-gradient(circle,#9c9686 1.6px,transparent 2.2px);background-size:16px 16px;border-radius:12px;box-shadow:inset 0 0 0 3px #cfc8b6,0 24px 40px rgba(0,0,0,.45)}
+.wires-vis{animation:wiresVis 30s linear infinite both}
+.w{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:700;animation:draw 30s linear infinite both}
+.led-on{animation:ledOn 30s linear infinite both}
+.tag{position:absolute;padding:6px 14px;border:1.5px solid #2fd8f0;border-radius:999px;background:#0b0e13;font-size:var(--tag-fs);font-weight:500;white-space:nowrap;opacity:0;animation:tagIntro 30s linear infinite both}
+.screen{position:absolute;left:20px;top:30px;width:340px;height:190px;background:#000;overflow:hidden;border-radius:4px}
+.spec{position:absolute;left:14px;bottom:30px;width:312px;height:160px;display:flex;align-items:flex-end;gap:3px;animation:specVis 30s linear infinite both}
+.sb{flex:1;background:#7dd3fc;transform-origin:50% 100%;animation-name:eq;animation-iteration-count:infinite;animation-direction:alternate;animation-timing-function:ease-in-out}
+.sb.pk{background:#fde047}
+.hz{position:absolute;left:0;bottom:4px;width:100%;text-align:center;font:22px VT323,monospace;color:#7dd3fc;animation:specVis 30s linear infinite both}
+.screen-off{position:absolute;inset:0;background:#05070a;animation:screenOff 30s linear infinite both}
+.waves{position:absolute;left:400px;top:-20px;width:190px;height:120px;animation:specVis 30s linear infinite both}
+.wv{position:absolute;left:55px;top:40px;width:80px;height:80px;border-radius:50%;border:4px solid #2fd8f0;animation:wave 1s ease-out infinite}
+.note{position:absolute;left:330px;top:0px;font-size:54px;color:#fde047;animation:specVis 30s linear infinite both}
+.race{position:absolute;left:var(--race-l);top:var(--race-t);width:var(--race-w);opacity:0;animation:raceVis 30s linear infinite both}
+.rtitle{font-size:calc(var(--row-fs) - 2px);color:#9fb0c6;margin-bottom:18px}.rtitle span{color:#5d6b80}
+.row{display:flex;align-items:center;height:var(--row-h);gap:16px;font-size:var(--row-fs);opacity:0}
+.lab{width:var(--lab-w);font-weight:500}.track{flex:1;height:34px;position:relative}
+.bar{position:absolute;left:0;top:0;height:100%;width:var(--w);border-radius:6px;transform-origin:0 50%}
+.slow{background:#ef4444}.mid{background:#f59e0b}.fast{background:#22c55e}.best{background:#2fd8f0}
+.val{width:150px;text-align:right;font-weight:700}
+.r0{animation:r0 30s ease-out infinite both}.r1{animation:r1 30s ease-out infinite both}.r2{animation:r2 30s ease-out infinite both}.r3{animation:r3 30s ease-out infinite both}
+.r0 .bar{animation:b0 30s ease-out infinite both}.r1 .bar{animation:b1 30s ease-out infinite both}.r2 .bar{animation:b2 30s ease-out infinite both}.r3 .bar{animation:b3 30s ease-out infinite both}
+.stamp{margin-top:22px;text-align:center;font-size:var(--stamp-fs);font-weight:700;color:#fde047;opacity:0;animation:stamp 30s ease-out infinite both}
+.outro{position:absolute;left:var(--out-l);top:var(--out-t);width:var(--out-w);text-align:center;opacity:0;animation:outro 30s ease-out infinite both}
+.outro img{height:var(--img-h)}.url{margin-top:18px;font-size:var(--url-fs);font-weight:500;color:#2fd8f0}
+@keyframes cover{0%,1% {opacity:1} 4%,97.5% {opacity:0} 100% {opacity:1}}
+@keyframes prog{0% {transform:scaleX(0)} 100% {transform:scaleX(1)}}
+@keyframes rise{0%,2% {opacity:0;transform:translateY(28px)} 7%,100% {opacity:1;transform:none}}
+@keyframes kitVis{0%,45.5% {opacity:1} 47%,100% {opacity:0}}
+@keyframes wiresVis{0%,10% {opacity:0} 10.3%,100% {opacity:1}}
+@keyframes draw{0%,10.7% {stroke-dashoffset:700} 20%,100% {stroke-dashoffset:0}}
+@keyframes ledOn{0%,26.5% {opacity:0} 26.7%,100% {opacity:1}}
+@keyframes tagIntro{0%,3.7% {opacity:0} 5%,25.5% {opacity:1} 26.7%,100% {opacity:0}}
+@keyframes screenOff{0%,26.9% {opacity:1} 27.6%,100% {opacity:0}}
+@keyframes specVis{0%,27.5% {opacity:0} 29%,100% {opacity:1}}
+@keyframes eq{0% {transform:scaleY(.35)} 100% {transform:scaleY(1)}}
+@keyframes wave{0% {transform:scale(.4);opacity:.9} 100% {transform:scale(1.5);opacity:0}}
+@keyframes raceVis{0%,46.7% {opacity:0} 48%,85.5% {opacity:1} 86.7%,100% {opacity:0}}
+@keyframes stamp{0%,75% {opacity:0;transform:scale(1.6)} 76.5%,100% {opacity:1;transform:scale(1)}}
+@keyframes outro{0%,86.7% {opacity:0;transform:translateY(20px)} 88.5%,100% {opacity:1;transform:none}}
+:root[data-format=portrait]{--W:720px;--H:1280px;--stage-bg:radial-gradient(760px 760px at 50% 48%,#13253a 0%,#0b0e13 72%);
+--cap-l:40px;--cap-t:170px;--cap-w:600px;--kick-fs:18px;--kick-ls:.08em;--head-fs:52px;--head-mt:14px;
+--prog-l:40px;--prog-t:1014px;--prog-w:600px;--tag-fs:26px;
+--rig:translate(48px,470px) scale(.5);
+--race-l:40px;--race-t:420px;--race-w:600px;--lab-w:220px;--row-fs:26px;--row-h:96px;--stamp-fs:60px;
+--out-l:40px;--out-t:430px;--out-w:600px;--img-h:380px;--url-fs:30px}
+:root[data-format=portrait] .lab{width:100%}
+:root[data-format=portrait] .row{flex-wrap:wrap;gap:4px 12px;height:auto;margin-bottom:14px}
+:root[data-format=portrait] .track{flex:1 1 260px}
+:root[data-format=portrait] .val{width:170px;white-space:nowrap}
+
+@keyframes cap0 {0%,2.000% {opacity:0;transform:translateY(10px)} 3.333%,9.000% {opacity:1;transform:translateY(0)} 10.000%,100% {opacity:0;transform:translateY(-8px)}}
+@keyframes cap1 {0%,9.333% {opacity:0;transform:translateY(10px)} 10.667%,25.667% {opacity:1;transform:translateY(0)} 26.667%,100% {opacity:0;transform:translateY(-8px)}}
+@keyframes cap2 {0%,26.000% {opacity:0;transform:translateY(10px)} 27.333%,45.667% {opacity:1;transform:translateY(0)} 46.667%,100% {opacity:0;transform:translateY(-8px)}}
+@keyframes cap3 {0%,46.000% {opacity:0;transform:translateY(10px)} 47.333%,85.667% {opacity:1;transform:translateY(0)} 86.667%,100% {opacity:0;transform:translateY(-8px)}}
+@keyframes cap4 {0%,86.000% {opacity:0;transform:translateY(10px)} 87.333%,97.667% {opacity:1;transform:translateY(0)} 98.667%,100% {opacity:0;transform:translateY(-8px)}}
+@keyframes r0 {0%,50.000% {opacity:0;transform:translateX(-20px)} 51.000%,100% {opacity:1;transform:none}}
+@keyframes b0 {0%,50.667% {transform:scaleX(0)} 53.667%,100% {transform:scaleX(1)}}
+@keyframes r1 {0%,56.667% {opacity:0;transform:translateX(-20px)} 57.667%,100% {opacity:1;transform:none}}
+@keyframes b1 {0%,57.333% {transform:scaleX(0)} 60.333%,100% {transform:scaleX(1)}}
+@keyframes r2 {0%,63.333% {opacity:0;transform:translateX(-20px)} 64.333%,100% {opacity:1;transform:none}}
+@keyframes b2 {0%,64.000% {transform:scaleX(0)} 67.000%,100% {transform:scaleX(1)}}
+@keyframes r3 {0%,70.000% {opacity:0;transform:translateX(-20px)} 71.000%,100% {opacity:1;transform:none}}
+@keyframes b3 {0%,70.667% {transform:scaleX(0)} 73.667%,100% {transform:scaleX(1)}}
+
+</style><meta name="viewport" content="width=1280"></head>
+<body><div class="root"><div class="stage" role="img" aria-label="A 30-second animation of the FFT lab kit: a Raspberry Pi Pico 2, INMP441 microphone, OLED screen and two buttons are wired on a breadboard. A whistle makes a live spectrum appear on the screen. A race chart shows a 512-point transform dropping from about 21,000 ms to 0.622 ms. The book has 35 hands-on labs.">
+<div class="cap cap0"><div class="kick">FFT lab kit · Raspberry Pi Pico 2</div><div class="head">Real-time DSP on a $5 Pico&nbsp;2</div></div>
+<div class="cap cap1"><div class="kick">Step 1 · Wire it</div><div class="head">5 parts. No soldering.</div></div>
+<div class="cap cap2"><div class="kick">Step 2 · Gather sound</div><div class="head">Whistle. Watch your spectrum.</div></div>
+<div class="cap cap3"><div class="kick">Step 3 · Make it fast · 512-point FFT</div><div class="head">21 seconds down to 0.62&nbsp;ms</div></div>
+<div class="cap cap4"><div class="kick">35 hands-on labs · high school &amp; college</div><div class="head">Learn Python. Master the FFT.</div></div>
+<div class="kitwrap"><div class="rig">
+ <div class="bb rise" style="position:absolute;left:0;top:40px;width:620px;height:400px"></div>
+ <div class="rise" style="position:absolute;left:50px;top:130px;width:310px;height:120px;border-radius:8px;background:#1b7a46;box-shadow:0 10px 24px rgba(0,0,0,.5)"><div style="position:absolute;left:14px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:14px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:28px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:28px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:42px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:42px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:56px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:56px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:70px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:70px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:84px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:84px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:98px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:98px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:112px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:112px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:126px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:126px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:140px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:140px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:154px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:154px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:168px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:168px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:182px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:182px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:196px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:196px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:210px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:210px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:224px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:224px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:238px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:238px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:252px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:252px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:266px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:266px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:280px;top:0;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div><div style="position:absolute;left:280px;top:112px;width:8px;height:8px;background:#e6c35c;border-radius:2px"></div>
+  <div style="position:absolute;left:-14px;top:42px;width:30px;height:36px;border-radius:4px;background:#d5d9df"></div>
+  <div style="position:absolute;left:130px;top:36px;width:48px;height:48px;border-radius:3px;background:#101216"></div>
+  <div style="position:absolute;left:195px;top:48px;font:500 15px Rubik;color:#d7f5e3">Pico 2</div>
+  <div class="led-on" style="position:absolute;left:30px;top:20px;width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80"></div></div>
+ <div class="rise" style="position:absolute;left:430px;top:60px;width:130px;height:95px;border-radius:10px;background:linear-gradient(160deg,#2563eb,#1e3a8a);box-shadow:0 14px 28px rgba(0,0,0,.5)">
+  <svg width="130" height="20" style="position:absolute;left:0;top:76px"><circle cx="20" cy="10" r="5" fill="#e6c35c"/><circle cx="44" cy="10" r="5" fill="#e6c35c"/><circle cx="68" cy="10" r="5" fill="#e6c35c"/><circle cx="92" cy="10" r="5" fill="#e6c35c"/><circle cx="116" cy="10" r="5" fill="#e6c35c"/></svg>
+  <div style="position:absolute;left:45px;top:18px;width:40px;height:40px;border-radius:50%;background:#c9ced6;box-shadow:inset 0 0 0 8px #8d949f"></div></div>
+ <div class="waves"><div class="wv" style="animation-delay:0s"></div><div class="wv" style="animation-delay:-.33s"></div><div class="wv" style="animation-delay:-.66s"></div></div>
+ <div class="note">♪</div>
+ <div class="rise" style="position:absolute;left:430px;top:320px;width:46px;height:46px;border-radius:8px;background:#2b2f36"><div style="margin:9px;width:28px;height:28px;border-radius:50%;background:#1d4fc4"></div></div>
+ <div class="rise" style="position:absolute;left:520px;top:320px;width:46px;height:46px;border-radius:8px;background:#2b2f36"><div style="margin:9px;width:28px;height:28px;border-radius:50%;background:#c42d1d"></div></div>
+ <svg style="position:absolute;left:0;top:0" width="1100" height="460"><g class="wires-vis"><path class="w" style="stroke:#e53935;animation-delay:0.00s" d="M300 130 C360 100 420 110 455 150"></path><path class="w" style="stroke:#212121;animation-delay:0.15s" d="M320 130 C370 90 440 100 485 150"></path><path class="w" style="stroke:#fdd835;animation-delay:0.30s" d="M340 130 C390 80 460 90 515 150"></path><path class="w" style="stroke:#1e88e5;animation-delay:0.45s" d="M220 240 C280 310 400 300 450 330"></path><path class="w" style="stroke:#43a047;animation-delay:0.60s" d="M260 240 C330 330 480 310 540 330"></path><path class="w" style="stroke:#fb8c00;animation-delay:0.75s" d="M360 150 C520 60 600 120 728 130"></path><path class="w" style="stroke:#8e24aa;animation-delay:0.90s" d="M360 170 C520 90 600 150 728 160"></path><path class="w" style="stroke:#ef5350;animation-delay:1.05s" d="M360 190 C520 120 600 180 728 190"></path><path class="w" style="stroke:#42a5f5;animation-delay:1.20s" d="M360 210 C520 150 600 210 728 220"></path><path class="w" style="stroke:#9e9e9e;animation-delay:1.35s" d="M360 230 C520 190 600 240 728 250"></path></g></svg>
+ <div class="rise" style="position:absolute;left:720px;top:80px;width:380px;height:250px;border-radius:12px;background:#1a1d24;box-shadow:0 30px 60px rgba(0,0,0,.55),inset 0 0 0 3px #2e333d">
+  <div class="screen"><div class="spec"><div class="sb" style="height:18px;animation-duration:0.39s;animation-delay:-0.14s"></div><div class="sb" style="height:22px;animation-duration:0.4s;animation-delay:-0.24s"></div><div class="sb" style="height:30px;animation-duration:0.49s;animation-delay:-0.04s"></div><div class="sb" style="height:26px;animation-duration:0.63s;animation-delay:-0.55s"></div><div class="sb" style="height:40px;animation-duration:0.43s;animation-delay:-0.46s"></div><div class="sb" style="height:60px;animation-duration:0.45s;animation-delay:-0.32s"></div><div class="sb" style="height:90px;animation-duration:0.39s;animation-delay:-0.1s"></div><div class="sb pk" style="height:150px;animation-duration:0.67s;animation-delay:-0.13s"></div><div class="sb pk" style="height:120px;animation-duration:0.63s;animation-delay:-0.5s"></div><div class="sb" style="height:70px;animation-duration:0.42s;animation-delay:-0.48s"></div><div class="sb" style="height:45px;animation-duration:0.57s;animation-delay:-0.19s"></div><div class="sb" style="height:35px;animation-duration:0.65s;animation-delay:-0.44s"></div><div class="sb" style="height:28px;animation-duration:0.38s;animation-delay:-0.53s"></div><div class="sb" style="height:24px;animation-duration:0.59s;animation-delay:-0.36s"></div><div class="sb" style="height:30px;animation-duration:0.41s;animation-delay:-0.3s"></div><div class="sb" style="height:26px;animation-duration:0.38s;animation-delay:-0.28s"></div><div class="sb" style="height:20px;animation-duration:0.65s;animation-delay:-0.56s"></div><div class="sb" style="height:18px;animation-duration:0.46s;animation-delay:-0.33s"></div><div class="sb" style="height:16px;animation-duration:0.55s;animation-delay:-0.55s"></div><div class="sb" style="height:14px;animation-duration:0.65s;animation-delay:-0.53s"></div><div class="sb" style="height:13px;animation-duration:0.49s;animation-delay:-0.31s"></div><div class="sb" style="height:12px;animation-duration:0.5s;animation-delay:-0.36s"></div><div class="sb" style="height:11px;animation-duration:0.46s;animation-delay:-0.1s"></div><div class="sb" style="height:10px;animation-duration:0.37s;animation-delay:-0.49s"></div></div><div class="hz">peak follows your pitch</div><div class="screen-off"></div></div></div>
+ <div class="tag tag-intro" style="left:30px;top:-10px">Pico 2 · 150 MHz · FPU + DSP</div>
+ <div class="tag tag-intro" style="left:400px;top:190px">INMP441 mic</div>
+ <div class="tag tag-intro" style="left:760px;top:350px">OLED 128 x 64</div>
+</div></div>
+<div class="race"><div class="rtitle">Time per 512-point FFT, same chip <span>(log scale)</span></div><div class="row r0"><div class="lab">Brute-force DFT</div><div class="track"><div class="bar slow" style="--w:100%"></div></div><div class="val">~21,000 ms</div></div><div class="row r1"><div class="lab">Pure-Python FFT</div><div class="track"><div class="bar mid" style="--w:59%"></div></div><div class="val">140 ms</div></div><div class="row r2"><div class="lab">Hand-written assembly FFT</div><div class="track"><div class="bar fast" style="--w:17%"></div></div><div class="val">0.85 ms</div></div><div class="row r3"><div class="lab">Best optimized variant</div><div class="track"><div class="bar best" style="--w:15%"></div></div><div class="val">0.622 ms</div></div><div class="stamp">over 30,000x faster</div></div>
+<div class="outro"><img src="../../../docs/img/mascot/welcome.png" alt=""><div class="url">dmccreary.github.io/fft-benchmarking</div></div>
+<div class="prog-track"></div><div class="prog-fill"></div>
+<div class="cover"></div>
+</div></div></body></html>
